@@ -1,0 +1,300 @@
+/* リセットとベーススタイル */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Meiryo', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+}
+
+/* コンテナレイアウト */
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* サイドバー（目次） */
+.sidebar {
+    width: 300px;
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.sidebar h3 {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+}
+
+.toc {
+    list-style: none;
+}
+
+.toc li {
+    margin-bottom: 8px;
+}
+
+.toc a {
+    color: #ecf0f1;
+    text-decoration: none;
+    display: block;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    font-size: 0.9em;
+}
+
+.toc a:hover {
+    background-color: #34495e;
+    color: #3498db;
+}
+
+.toc ul {
+    margin-left: 15px;
+    margin-top: 5px;
+}
+
+.toc ul a {
+    font-size: 0.85em;
+    padding: 6px 12px;
+}
+
+/* メインコンテンツ */
+.main-content {
+    margin-left: 300px;
+    padding: 40px;
+    max-width: 1000px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    min-height: 100vh;
+}
+
+/* 見出しスタイル */
+h1 {
+    color: #2c3e50;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    font-size: 2.2em;
+    counter-reset: h2-counter;
+    counter-increment: h1-counter;
+}
+
+h1::before {
+    content: counter(h1-counter) ". ";
+    color: #3498db;
+    font-weight: bold;
+}
+
+h2 {
+    color: #34495e;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-size: 1.6em;
+    counter-reset: h3-counter;
+    counter-increment: h2-counter;
+}
+
+h2::before {
+    content: counter(h1-counter) "." counter(h2-counter) " ";
+    color: #3498db;
+    font-weight: bold;
+}
+
+h3 {
+    color: #2c3e50;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+    counter-reset: h4-counter;
+    counter-increment: h3-counter;
+}
+
+h3::before {
+    content: counter(h1-counter) "." counter(h2-counter) "." counter(h3-counter) " ";
+    color: #3498db;
+    font-weight: bold;
+}
+
+h4 {
+    color: #2c3e50;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    counter-increment: h4-counter;
+}
+
+h4::before {
+    content: counter(h1-counter) "." counter(h2-counter) "." counter(h3-counter) "." counter(h4-counter) " ";
+    color: #3498db;
+    font-weight: bold;
+}
+
+/* カウンターリセット */
+body {
+    counter-reset: h1-counter;
+}
+
+/* 段落とテキスト */
+p {
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+/* コードブロック */
+pre {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 15px;
+    margin: 15px 0;
+    overflow-x: auto;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+code {
+    background-color: #f1f3f4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+    color: #d63384;
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+    color: #333;
+}
+
+/* ---- Prism.js シンタックスハイライト ---- */
+pre code[class*="language-"] {
+    font-family: 'Courier New', Courier, monospace !important;
+}
+
+/* 既存の独自ハイライト用スタイル（使用しない場合は削除可能） */
+pre code .token { white-space: pre-wrap; }
+pre code .token-prompt { color: #6c757d; font-weight: 600; }
+pre code .token-command { color: #0d6efd; font-weight: 600; }
+pre code .token-flag { color: #7952b3; }
+pre code .token-path { color: #198754; }
+pre code .token-number { color: #fd7e14; }
+pre code .token-operator { color: #20c997; }
+pre code .token-string { color: #d63384; }
+pre code .token-comment { color: #6c757d; font-style: italic; }
+
+/* リスト */
+ul, ol {
+    margin: 15px 0;
+    padding-left: 30px;
+}
+
+li {
+    margin-bottom: 8px;
+}
+
+/* ヒントボックス */
+.hint {
+    background-color: #e8f4fd;
+    border-left: 4px solid #3498db;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+}
+
+.hint p {
+    margin-bottom: 8px;
+}
+
+.hint p:last-child {
+    margin-bottom: 0;
+}
+
+/* PAGE TOP ボタン */
+.page-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.page-top:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+}
+
+.page-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        max-height: 300px;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+    
+    .page-top {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+}
+
+/* スムーズスクロール */
+html {
+    scroll-behavior: smooth;
+}
+
+/* アクティブな目次項目のハイライト */
+.toc a.active {
+    background-color: #3498db;
+    color: white;
+}
+
+/* 見出しのアンカーリンク用のオフセット */
+h1, h2, h3, h4 {
+    scroll-margin-top: 20px;
+}
