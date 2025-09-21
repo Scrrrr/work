@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 目次のリンク要素を取得
     const tocLinks = document.querySelectorAll('.toc a');
     
-    // 見出し要素を取得
-    const headings = document.querySelectorAll('h1, h2, h3, h4');
+    // 見出し要素を取得（メインコンテンツのみ）
+    const headings = document.querySelectorAll('.main-content h1, .main-content h2, .main-content h3, .main-content h4');
     
     // PAGE TOPボタンの表示/非表示制御
     function togglePageTopButton() {
@@ -105,12 +105,14 @@ document.addEventListener('DOMContentLoaded', function() {
     tocItems.forEach(item => {
         const subList = item.querySelector('ul');
         if (subList) {
-            const mainLink = item.querySelector('> a');
-            mainLink.style.cursor = 'pointer';
-            mainLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                subList.style.display = subList.style.display === 'none' ? 'block' : 'none';
-            });
+            const mainLink = item.querySelector(':scope > a');
+            if (mainLink) {
+                mainLink.style.cursor = 'pointer';
+                mainLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    subList.style.display = subList.style.display === 'none' ? 'block' : 'none';
+                });
+            }
         }
     });
     
@@ -144,6 +146,51 @@ document.addEventListener('DOMContentLoaded', function() {
             window.history.pushState(null, '', url);
         });
     });
+
+    // 見出しにチェックボックスを追加（h1と目次は除外）
+    function addCheckboxesToHeadings() {
+        headings.forEach(heading => {
+            // h1は除外
+            if (heading.tagName.toLowerCase() === 'h1') return;
+            
+            // 目次の見出しは除外
+            if (heading.textContent.trim() === '目次') return;
+            
+            // 既にチェックボックスが存在する場合はスキップ
+            if (heading.querySelector('.chkbo')) return;
+            
+            // チェックボックスを作成
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'chkbo';
+            checkbox.id = `checkbox-${heading.id}`;
+            
+            // 見出しにチェックボックスを追加
+            heading.appendChild(checkbox);
+            
+            // チェックボックスの状態をローカルストレージに保存
+            const storageKey = `heading-checked-${heading.id}`;
+            const isChecked = localStorage.getItem(storageKey) === 'true';
+            checkbox.checked = isChecked;
+            
+            // チェックボックスの変更イベント
+            checkbox.addEventListener('change', function() {
+                localStorage.setItem(storageKey, this.checked);
+            });
+        });
+    }
+
+    // チェックボックスを追加
+    addCheckboxesToHeadings();
+
+    // Prism.jsの初期化
+    function initializePrism() {
+        if (window.Prism) {
+            Prism.highlightAll();
+        } else {
+            setTimeout(initializePrism, 100);
+        }
+    }
 
     initializePrism();
 });
