@@ -143,8 +143,23 @@ h4::before {
 }
 
 /* カウンターリセット */
-body {
+.main-content {
     counter-reset: h1-counter;
+}
+
+/* サイドバーの見出しには番号を表示しない */
+.sidebar h3::before {
+    content: none;
+}
+
+/* サイドバーのh3には通常のh3スタイルを適用しない */
+.sidebar h3 {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    counter-reset: none;
+    counter-increment: none;
 }
 
 /* 段落とテキスト */
@@ -196,6 +211,7 @@ pre code .token-number { color: #fd7e14; }
 pre code .token-operator { color: #20c997; }
 pre code .token-string { color: #d63384; }
 pre code .token-comment { color: #6c757d; font-style: italic; }
+pre code .token-red { background-color: #d63384; }
 
 /* リスト */
 ul, ol {
@@ -297,4 +313,22 @@ html {
 /* 見出しのアンカーリンク用のオフセット */
 h1, h2, h3, h4 {
     scroll-margin-top: 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 見出しのチェックボックス */
+.chkbo {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    accent-color: #3498db;
+    flex-shrink: 0;
+}
+
+.chkbo:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
 }
