@@ -9,6 +9,7 @@ $user = $_GET['username'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ubuntuのインストール</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/plugins/command-line/prism-command-line.css">
     <link rel="stylesheet" href="assets/css/styles.css">
    </head>
 <body>
@@ -50,6 +51,7 @@ $user = $_GET['username'];
 
     <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/command-line/prism-command-line.min.js"></script>
     <script src="assets/js/script.js"></script>
    <footer>
       <br><br>

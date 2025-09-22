@@ -299,6 +299,44 @@ h1, h2, h3, h4 {
     scroll-margin-top: 20px;
 }
 
+/* Prism Command Line プラグインのプロンプトを選択不可にする */
+.command-line .command-line-prompt > span {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    pointer-events: none;
+    color: #6c757d;
+    font-weight: 600;
+}
+
+/* Command Line プラグインの余白と区切りの調整 */
+.command-line .command-line-prompt {
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+}
+
+/* 不要な区切り（例えば "|"）を除去し、純粋なプロンプトのみ表示 */
+/* プラグインの既定contentをそのまま使用するため、擬似要素の上書きは行わない */
+
+/* コマンド列の余白を最小化 */
+.command-line .command-line-output {
+    margin: 0 !important;
+}
+
+/* コード行の左右余白を詰める */
+.command-line pre[class*="language-"] > code,
+.command-line code[class*="language-"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* プロンプトとコマンドの間隔を半角スペース相当に固定 */
+.command-line .command-line-prom
+
 /* シェルプロンプト部分の選択不可設定 */
 .shell-prompt {
     user-select: none;
