@@ -298,3 +298,30 @@ html {
 h1, h2, h3, h4 {
     scroll-margin-top: 20px;
 }
+
+/* シェルプロンプト部分の選択不可設定 */
+.shell-prompt {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    color: #6c757d;
+    font-weight: 600;
+    pointer-events: none;
+}
+
+/* シェルプロンプトを含むコードブロック内での選択制御 */
+pre code.language-bash {
+    position: relative;
+}
+
+pre code.language-bash .shell-prompt {
+    display: inline-block;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    color: #6c757d;
+    font-weight: 600;
+}

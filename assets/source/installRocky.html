@@ -1,0 +1,444 @@
+   <div class="main"><!-- 1 -->
+<!--================================ TOC ================================-->
+   <div class="side"><!-- 2 -->
+      <div class="inde">
+         <h2>目次</h2>
+         <a href="#1">1. 序章</a>
+         <a href="#2">2. インストール</a>
+         <a href="#2.1">&ensp;2.1 言語選択</a>
+         <a href="#2.2">&ensp;2.2 ディスクパーティション</a>
+         <a href="#2.3">&ensp;2.3 Kdump</a>
+         <a href="#2.4">&ensp;2.4 ネットワーク設定</a>
+         <a href="#2.5">&ensp;2.5 追加ソフトウェアの選択</a>
+         <a href="#3">3. 初期設定</a>
+         <a href="#3.1">&ensp;3.1 ログイン</a>
+         <a href="#3.2">&ensp;3.2 デスクトップアイコンの設定</a>
+         <a href="#3.3">&ensp;3.3 Firefoxの設定</a>
+         <a href="#3.4">&ensp;3.4 端末の設定</a>
+         <a href="#3.5">&ensp;3.5 入力方式の設定</a>
+         <a href="#3.6">&ensp;3.6 コンピュータの設定</a>
+         <a href="#4">4. 設定</a>
+         <a href="#4.1">&ensp;4.1 ネットワークの設定</a>
+         <a href="#4.2">&ensp;4.2 セキュリティなどの設定</a>
+         <a href="#4.3">&ensp;4.3 アップデート</a>
+         <a href="#4.4">&ensp;4.4 NTPの設定</a>
+         <a href="#4.5">&ensp;4.5 IPv6の無効化</a>
+         <a href="#4.6">&ensp;4.6 電源管理設定</a>
+         <a href="#4.7">&ensp;4.7 ユーザの設定</a>
+         <a href="#4.8">&ensp;4.8 ログイン画面の設定</a>
+         <a href="#4.9">&ensp;4.9 Firewallの設定</a>
+         <a href="#5">5. リモートアクセスの設定</a>
+         <a href="#5.1">&ensp;5.1 rloginとrshの設定</a>
+         <a href="#5.2">&ensp;5.2 sshの設定</a>
+      </div>
+   </div><!-- 2 -->
+<!--================================ end ================================-->
+   <div class="content"><!-- 3 -->
+   <h1>OSインストール練習</h1>
+   <br><br>
+<!--================================start================================-->
+   <h2 id="1">1. 序章</h2>
+   <p>　OSのインストール練習として，RockyLinuxのインストールを行う．</p>
+   <h2>RockyLinux</h2>
+   <p>　RockyLinuxは，Red Hat EnterpriseLinux(RHEL)のダウンストリーム版であるCentOSの開発が中止され，CentOS創設者であるGregory Kurtzer氏がプロジェクトを立ち上げた．開発はRockyLinux Projectで行われており，2021年から正式なリリースが行われた．</p>
+<br>
+   <h2 id="2">2. インストール</h2>
+   <h3 id="2.1">2.1 言語選択</h3>
+   <p>インストールが開始されると言語選択メニューが表示される．左のメニューの中央付近にある[日本語]を選択し，[続行]を選択する．</p>
+<br>
+   <h2 id="2.2">2.2 ディスクパーティション</h2>
+   <p>インストール先のディスクパーティションの設定を行う．[インストール先]を選択し，その他のストレージオプションから，[パーティションを自分で構成する]にチェックを入れ，[完了]を選択する．</p>
+   <p>その後，以下のような画面が表示されるため，[+]を選択し，マウントポイントに/bootを選択，割り当てる領域に500mbを入力し，[マウントポイントの追加]を選択．</p>
+   <br clear="ALL"/>
+   <p>再度，[+]を選択し，マウントポイントにswapを選択，割り当てる領域に2gbを入力し，[マウントポイントの追加]を選択する．さらに，[+]を選択し，マウントポイントに/を選択，割り当てる領域は空欄にし，[マウントポイントの追加]を選択する．</p>
+   <p>その後，[完了]をクリックし，[変更を許可する]を選択する．</p>
+<br>
+   <h2 id="2.3">2.3 Kdump</h2>
+   <p>Kdumpの無効化を行うために，[KDUMP]を選択し，[kdumpを有効にする]のチェックを外し，[完了]を選択する．</p>
+<br>
+   <h2 id="2.4">2.4 ネットワーク設定</h2>
+   <p>次に，ネットワークの設定を行う．[ネットワークとホスト名]を選択し，<br>
+      ホスト名に<?php echo $serv ?>.netsys.cs.t-kougei.ac.jpを入力する．</p>
+   <p>ホスト名入力後，[適用]をクリックする．</p>
+   <p>ここで，[適用]をクリックしないと設定が反映されないため注意</p>
+   <p>さらに，[設定]を選択し，[IPv4のセッティング]をクリックし，方式を自動(DHCP)から手動に変更する．</p>
+   <p>アドレスの[追加]を選択し，アドレスに<?php echo $ipad ?>，ネットマスクに255.255.255.0，ゲートウェイに<?php echo $gate ?>を入力する．</p>
+   <p>DNSサーバに<?php echo $gate ?>，ドメインを検索にnetsys.cs.t-kougei.ac.jp,cs.t-kougei.ac.jp,t-kougei.ac.jpを入力し，[保存]を選択する．</p>
+   <p>保存後，右上の[オフ]を[オン]に変更し，IPアドレスなどが表示されているか確認し，[完了]を選択する．</p>
+<br>
+   <h2 id="2.5">2.5 追加ソフトウェアの選択</h2>
+   <p>インストールするソフトウェアの選択を行う．[ソフトウェアの選択]を選択し，[サーバー(GUI使用)]を選択する.DNSネームサーバー，メールサーバー，FTPサーバー，ファイルとストレージサーバー．ネットワークファイルシステムクライアント，互換性ライブラリー，開発ツールにチェックを入れ，[完了]を選択する．</p>
+   <p>ソフトウェアの選択が完了後，[インストールの開始]を選択する．rootのパスワードとユーザーの作成を行う．<br>
+   rootのパスワードには，指定されたパスワード[netsys00]を入力し，[完了]を選択する．<br>
+   ユーザーの作成では，フルネームにtome，パスワードにはrootと同じパスワードし，[完了]を選択する．</p>
+   <p class="kei">また，インストールには時間がかかるため，終わるまで待機する．</p>
+   <p>上記のように［このパスワードは辞書チェックに失敗しました］と表示されるが，この場合完了を2回クリックする．<br>
+   インストール完了後，再起動を行う．再起動後，ライセンスに同意する項目が表示されるため，それを選択し，[ライセンス規約に同意します]にチェックを入れ，[完了]を選択する．その後，[設定の完了]をクリックする．</p>
+<br>
+   <h2 id="3">3. 初期設定</h2>
+   <h2 id="3.1">3.1 ログイン</h2>
+   <p>ライセンスに同意後，ログイン画面が表示されるため，ログインを行う．rootでログインを行うため，</p>
+   <p>[アカウントが見つかりませんか？]を選択する．</p>
+   <p>ユーザの入力後，右下にある歯車のマークをクリックし、GNOMEクラシックを選択する．<br>
+   選択を完了したらパスワードを入力し，ログインする．</p>
+<br>
+   <h2 id="3.2">3.2 デスクトップアイコンの設定</h2>
+   <p>デフォルト設定だとデスクトップアイコンの表示が大きいため，小さくする．[ホーム]をダブルクリックし，<br>
+   三本線左側の[▼]ボタンからプルダウンを行い，[-]をクリックし，50%にする</p>
+   <p>次に，デスクトップ画面に[端末]と[Firefox]を配置する．[他の場所]を選択し，[コンピューター]から[usr]をクリックする．</p>
+<br>
+   <p>その後，[share]を選択し，[applications]をクリックする．</p>
+   <p>[applications]ディレクトリから，[Firefox]と[端末]を探し出し，デスクトップに貼り付ける．<br>
+   貼り付けには，[ctrl]+[c]，[ctrl]+[v]もしくは[右クリック]，[コピー]，[貼り付け]を使用する．<br>
+   ドラッグ＆ドロップではできない</p>
+<br>
+   <h2 id="3.3">3.3 Firefoxの設定</h2>
+   <p>[applications]ディレクトリは必要ないため閉じる．<br>
+   閉じた後，[firefox.desktop]をダブルクリックし，[起動を許可する]を選択する．その後，Firefoxが起動するため，右上の[三本線]をクリックし，[設定]を選択する．</p>
+   <p>次に，[ホームページ]にhttp://www.cs.t-kougei.ac.jp/netsysを記入する．</p>
+   <p>その後，ネットワークプロキシ設定を行う．設定画面の一番下にあるネットワークプロキシの[接続設定]を選択し，[手動でプロキシを設定する]をクリックする．</p>
+   <p>［このプロキシーを HTTPSでも使用する］にチェックを入れる．<br>
+   <p>その後，HTTPプロキシにproxy-a.t-kougei.ac.jpを入力し，ポートに8080を入力する．<br>
+   次に，[すべてのプロトコルでこのプロキシを使用する]にチェックを入れる．</p>
+   <p>次に，プロキシなしで接続に*.t-kougei.ac.jpを記入し，[OK]をクリックする．クリック後，家マークを選択し，ネットワークシステム研究室のホームページが表示されれば正しく設定されている．Firefoxはもう必要ないため，×ボタンで閉じる．</p>
+<br>
+   <h2 id="3.4">3.4 端末の設定</h2>
+   <p>[org.gnome.Terminal.desktop]をダブルクリックし，[起動を許可する]を選択する．また，今は必要ないため×ボタンでいったん端末を閉じる．</p>
+<br>
+   <h2 id="3.5">3.5 入力方式の設定</h2>
+   <p>設定の[keyboard]をクリックし，[日本語]下の[＋]を選択する．次に，[日本語]をクリックし，[日本語(Anthy)]を選択する．</p>
+   <p>右上[ja]を選択し，[日本語(Anthy)]を選択する．</p>
+<br>
+   <h2 id="3.6">3.6 コンピュータの設定</h2>
+   <p>[ネットワーク]を選択する．</p>
+   <p>ネットワークプロキシの[歯車マーク]をクリックし，[手動]を選択する．</p>
+   <p>その後，すべてのプロキシにproxy-a.t-kougei.ac.jpとポート8080を入力する．<br>
+   次に，次のホストを無視するに*.t-kougei.ac.jpを入力する．その後，×ボタンを押す．</p>
+   <p>次に，[電源]を選択し，Screen Blankを[Never]に変更し，×ボタンで閉じる．</p>
+<br>
+   <h2 id="4">4. 設定</h2>
+   <p>サーバとしての設定を行うために，[端末]を起動する．</p>
+
+<br>
+   <h2 id="4.1">4.1 ネットワークの設定</h2>
+   <h2><span class="kei">以降の[Enter]はEnterキーを押す．コマンドに入力はしなくてよい<br>
+   コマンドの実行後，<input type="checkbox" class="chkbo"> にチェックを入れる．</span></h2>
+   <p>ネットワークの設定を行う．IPv6は必要ないため無効化する．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>cd /etc/sysconfig/network-scripts/</code></pre>
+   <pre class="src"><code>ls</code></pre>
+   <p>出力結果:</p>
+   <pre class="vim">ifcfg-ens3 … … …</pre>
+   <p>出力されたifcfg-ens3は機種によって違うため注意．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>vi /etc/sysconfig/network-scripts/ifcfg-ens3</code></pre>
+   <p>以下を変更:</p>
+   <pre class="linenumbered">
+<code><span class="non">IPV6INIT="yes" → </span>IPV6INIT="no"<span class="non">に変更する</span></code></pre>
+   <p>またONBOOT=が"no"となっていた場合は"yes"に変更する．<br>
+   ネットワーク設定を反映させるためにネットワークサービスを再起動する．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>systemctl restart network</code></pre>
+<br>
+   <h2 id="4.2">4.2 セキュリティなどの設定</h2>
+   <p>SELinuxの無効化を行う．<br>
+   この設定にミスがあるとコンピュータが起動しなくなる可能性があるため注意</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>vi /etc/selinux/config</code></pre>
+   <p>以下を変更:</p>
+   <pre class="linenumbered">
+<code>SELINUX=disabled</code></pre>
+   <p>起動などに時間がかかるバグがあるためその対処を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>vi /etc/systemd/system.conf</code></pre>
+   <p>以下を変更:</p>
+   <pre class="linenumbered">
+<code>#LogLevel=info → 先頭の#を削除しLogLevel=noticeに変更</code>
+<code><span class="non">#DefaultTimeoutStartSec=90s → 先頭の#を削除し</span><span class="non">DefaultTimeoutStartSec=30s</span>に変更</code>
+<code><span class="non">#DefaultTimeoutStopSec=90s → 先頭の#を削除し</span><span class="non">DefaultTimeoutStopSec=10s</span>に変更</code></pre>
+   <p>bashrcの設定を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>cd</code></pre>
+   <pre class="src"><code>vi /root/.bashrc</code></pre>
+   <p>alias mv='mv -i'の下に以下を記入:</p>
+   <pre class="linenumbered">
+<code>export PATH=$PATH:.</code></pre>
+   <p>設定を反映させるために，.bashrcを読み込む</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>source /root/.bashrc</code></pre>
+<br>
+   <h2 id="4.3">4.3 アップデート</h2>
+   <p>アップデート前に，設定を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>vi /etc/yum.conf</code></pre>
+   <p>distroverpkg=RockyLinux-releaseの下に以下を記入:</p>
+   <pre class="linenumbered">
+<code>proxy=http://proxy-a.t-kougei.ac.jp:8080/</code>
+<code>timeout=900</code></pre>
+   <p>アップデート用のファイルをダウンロードするためのリポジトリの変更を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>vi /etc/yum.repos.d/RockyLinux-Base.repo</code></pre>
+   <p>4つのmirrorlist=の最後に&amp;cc=jpを追加する</p>
+   <pre class="linenumbered">
+<code>[base]</code>
+<code>mirrorlist=http://mirrorlist.RockyLinux.org/ ・・・ $infra&amp;cc=jp</code>
+<code>[updates]</code>
+<code>mirrorlist=http://mirrorlist.RockyLinux.org/ ・・・ $infra&amp;cc=jp</code>
+<code>[extras]</code>
+<code>mirrorlist=http://mirrorlist.RockyLinux.org/ ・・・ $infra&amp;cc=jp</code>
+<code>[RockyLinuxplus]</code>
+<code>mirrorlist=http://mirrorlist.RockyLinux.org/ ・・・ $infra&amp;cc=jp</code></pre>
+   <p>アップデート用のファイルのキャッシュの作成を行う</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>yum makecache fast</code></pre>
+   <p>出力結果:</p>
+   <pre class="vim">読み込んだプラグイン:fastestmirror, langpacks
+Loading mirror speeds from cached hostfile
+* base: ftp.riken.jp
+* extras: ftp.riken.jp
+* updates: ftp.riken.jp
+base | 3.6 kB 00:00:00
+extras | 2.9 kB 00:00:00
+updates | 2.9 kB 00:00:00
+(1/4): extras/7/x86_64/primary_db | 232 kB 00:00:00
+(2/4): base/7/x86_64/group_gz | 153 kB 00:00:00
+(3/4): base/7/x86_64/primary_db | 6.1 MB 00:00:03
+(4/4): updates/7/x86_64/primary_db | 7.1 MB 00:00:04
+メタデータのキャッシュを作成しました</pre>
+   <p>アップデートを行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>yum -y update --nobest</code></pre>
+   <p>アップデートにはしばらく時間がかかるため待機する．</p>
+   <p>アップデートが終了したら，再起動を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>systemctl reboot</code></pre>
+   <p>再起動完了後，rootでログインを行う．</p>
+<br>
+   <h2 id="4.4">4.4 NTPの設定</h2>
+   <p>NTPを使用するためにchronydの設定を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>vi /etc/chrony.conf</code></pre>
+   <p>以下を変更:</p>
+   <pre class="linenumbered">
+<code>server 0.RockyLinux.pool.ntp.org iburst</code><span class="non"> ← 先頭に#をつける</span>
+<code>server 1.RockyLinux.pool.ntp.org iburst</code><span class="non"> ← 先頭に#をつける</span>
+<code>server 2.RockyLinux.pool.ntp.org iburst</code><span class="non"> ← 先頭に#をつける</span>
+<code>server 3.RockyLinux.pool.ntp.org iburst</code><span class="non"> ← 先頭に#をつける</span>
+<code>server ntp-a.t-kougei.ac.jp iburtst</code><span class="non"> ← 追加</span></pre>
+   <p>設定を反映させるためにchronydの再起動を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>systemctl restart chronyd</code></pre>
+<br>
+   <h2 id="4.5">4.5 IPv6の無効化</h2>
+   <p>再起動後もIPv6の無効化をするために．rc.localファイルにその設定を記入する．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>vi /etc/rc.d/rc.local</code></pre>
+   <p>以下を変更:</p>
+   <pre class="linenumbered">
+<code>echo 1 &gt; /proc/sys/net/ipv6/conf/all/disable_ipv6</code>
+<code>echo 1 &gt; /proc/sys/net/ipv6/conf/default/disable_ipv6</code></pre>
+<br>
+   <h2 id="4.6">4.6 電源管理設定</h2>
+   <p>電源管理用のデーモンであるacpidのインストールを行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>yum -y install acpid</code></pre>
+   <p>インストール後，acpidの起動を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>systemctl start acpid</code></pre>
+<br>
+   <h2 id="4.7">4.7 ユーザの設定</h2>
+   <p>tomeユーザの削除を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>userdel -r tome</code></pre>
+   <p>staffユーザの作成を行う．パスワード入力時に良くないパスワードと聞かれるが無視してよい</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>useradd -c staff -d /home/staff -u 1000 -g 100 -s /bin/tcsh staff</code></pre>
+   <pre class="src"><code>passwd staff</code></pre>
+   <p>出力結果:</p>
+   <pre class="vim">ユーザー staff のパスワードを変更。
+新しいパスワード: <span class="kei">rootと同じパスワード</span>
+よくないパスワード: このパスワードは辞書チェックに失敗しました。 - 辞書の単語に基づいています
+新しいパスワードを再入力してください: <span class="kei">rootと同じパスワード</span>
+passwd: すべての認証トークンが正しく更新できました。
+checkユーザの作成を行う．パスワード入力時に良くないパスワードと聞かれるが無視してよい</pre>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>groupadd check -g 1001</code></pre>
+   <pre class="src"><code>useradd -c check -d /home/check -u 1001 -g check -s /bin/tcsh check</code></pre>
+   <pre class="src"><code>passwd check</code></pre>
+   <p>出力結果:</p>
+   <pre class="vim">ユーザー check のパスワードを変更。
+新しいパスワード: <span class="kei">check123</span>
+よくないパスワード: このパスワードは一部に何らかの形でユーザー名が含まれています。
+新しいパスワードを再入力してください: <span class="kei">check123</span>
+passwd: すべての認証トークンが正しく更新できました。</pre>
+   <p>suユーザの設定を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>usermod -G wheel root</code></pre>
+   <pre class="src"><code>usermod -G wheel staff</code></pre>
+   <p>suユーザの設定ファイルの編集を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>vi /etc/pam.d/su</code></pre>
+   <p>以下を変更:</p>
+   <pre class="linenumbered">
+<code>#auth sufficient pam_wheel.so trust use_uid</code><span class="non"> ← 先頭の#を削除</span></pre>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>vi /etc/login.defs</code></pre>
+   <p>最終行に以下を追加:</p>
+   <pre class="linenumbered">
+<code>SU_WHEEL_ONLY yes</code></pre>
+<br>
+   <h2 id="4.8">4.8 ログイン画面の設定</h2>
+   <p>ログイン画面にユーザリストの非表示を行う．実行後，ログアウトを行い，確認後ログインをする．<br>
+   また，実行後にNo protocol specifiedと表示されることがあるが無視してよい．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>sudo -u gdm dbus-launch gsettings set org.gnome.login-screendisable-user-list true</code></pre>
+<br>
+   <h2 id="4.9">4.9 Firewallの設定</h2>
+   <p>Firewallサービスが起動しているかの確認を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>systemctl status firewalld</code></pre>
+   <p>出力結果:</p>
+   <pre class="vim"><span class="act">●</span> firewalld.service - firewalld - dynamic firewall daemon
+Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendorpreset: enabled)
+Active: <span class="act">active (running)</span> since 水 2021-04-14 10:09:28 JST; 4h 52min ago
+Docs: man:firewalld(1)</pre>
+   <p>Activeの項目がactive (running)となっている場合はサービスが起動しているため，OK<br>
+   inactiveとなっている場合は起動していないため，以下のコマンドを実行する．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>systemctl start firewalld</code></pre>
+   <p>再度確認を行い，activeとなっていればOK．</p>
+   <p>Firewallの設定確認を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>firewall-cmd --list-all</code></pre>
+   <p>出力結果:</p>
+   <pre class="vim">public (active)
+target: default
+icmp-block-inversion: no
+interfaces: ens3
+sources:
+services: dhcpv6-client ssh
+ports:
+protocols:
+masquerade: no
+forward-ports:
+source-ports:
+icmp-blocks:
+rich rules:</pre>
+   <p>必要のないdhcpv6-clientとsshの削除を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>firewall-cmd --permanent --remove-service=dhcpv6-client</code></pre>
+   <pre class="src"><code>firewall-cmd --permanent --remove-service=ssh</code></pre>
+   <p>出力結果:</p>
+   <pre class="vim">success</pre>
+   <p>設定の反映を行う</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>firewall-cmd --reload</code></pre>
+   <p>出力結果:</p>
+   <pre class="vim">success</pre>
+   <p>再度確認を行い，servicesの項目に消えていればOK.</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>firewall-cmd --list-all</code></pre>
+   <p>出力結果:</p>
+   <pre class="vim">public (active)
+target: default
+icmp-block-inversion: no
+interfaces: ens3
+sources:
+services:
+ports:
+protocols:
+masquerade: no
+forward-ports:
+source-ports:
+icmp-blocks:
+rich rules:</pre>
+   <p>Firewallの特定のIPアドレスからのアクセス許可を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="127.0.0.1/32" accept"</code></pre>
+   <pre class="src"><code>firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="<?php echo $gate ?>/32" accept"</code></pre>
+   <pre class="src"><code>firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="<?php echo $ipcl ?>/32" accept"</code></pre>
+   <p>出力結果:</p>
+   <pre class="vim">success</pre>
+   <p>設定の反映を行う</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>firewall-cmd --reload</code></pre>
+   <p>出力結果:</p>
+   <pre class="vim">success</pre>
+   <p>再度確認を行い，rich rules:の項目に追加したIPアドレスが表示されていればOK．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>firewall-cmd --list-all</code></pre>
+   <p>出力結果:</p>
+   <pre class="vim">public (active)
+target: default
+icmp-block-inversion: no
+interfaces: ens3
+sources:
+services:
+ports:
+protocols:
+masquerade: no
+forward-ports:
+source-ports:
+icmp-blocks:
+rich rules:
+rule family="ipv4" source address="127.0.0.1/32" accept
+rule family="ipv4" source address="<?php echo $gate ?>/32" accept
+rule family="ipv4" source address="<?php echo $gate ?>/32" accept</pre>
+<br>
+   <h2 id="5">5. リモートアクセスの設定</h2>
+   <h2 id="5.1">5.1 rloginとrshの設定</h2>
+   <p>rloginとrshのインストールを行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>yum -y install rsh rsh-server</code></pre>
+   <p>インストール後，設定を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>vi /usr/lib/systemd/system/rsh.socket</code></pre>
+   <p>以下を変更:</p>
+   <pre class="linenumbered">
+<code>ListenStream=514 → ListenStream=0.0.0.0:514に変更</code></pre>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>vi /usr/lib/systemd/system/rlogin.socket</code></pre>
+   <p>以下を変更:</p>
+   <pre class="linenumbered">
+<code>ListenStream=513 → ListenStream=0.0.0.0:513に変更</code></pre>
+   <p>設定の反映を行う</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>systemctl daemon-reload</code></pre>
+   <p>rloginとrshの起動と自動起動設定を行う．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>systemctl start rsh</code></pre>
+   <pre class="src"><code>systemctl start rlogin</code></pre>
+   <pre class="src"><code>systemctl enable rsh</code></pre>
+   <pre class="src"><code>systemctl enable rlogin</code></pre>
+   <p>パスワード無しでログインを許可する．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>vi /root/.rhosts</code></pre>
+   <p>以下を記入:</p>
+   <pre class="linenumbered">
+<code><?php echo $gate ?> root</code>
+<code><?php echo $gate ?> user1</code>
+<code><?php echo $ipcl ?> root</code>
+<code><?php echo $ipcl ?> check</code></pre>
+   <p>rootユーザでログインを可能にする．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>vi /etc/pam.d/rsh</code></pre>
+   <pre class="src"><code>vi /etc/pam.d/rlogin</code></pre>
+   <p>以下を変更:</p>
+   <pre class="linenumbered">
+<code>#auth require pam_securetty.so ← 先頭の#を削除</code></pre>
+<br>
+   <h2 id="5.2">5.2 sshの設定</h2>
+   <p>sshの設定を変更する．</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>vi /etc/ssh/sshd_config</code></pre>
+   <p>以下を変更:</p>
+   <pre class="linenumbered">
+<code>#PermitRootLogin Yes → 先頭の#を削除し，PermitRootLogin Noに変更</code>
+<code>#PermitEmptyPasswords No ← 先頭の#を削除する</code></pre>
+   <p>設定の反映を行う</p>
+   <pre class="ser"> <input type="checkbox" class="chkbo"> <?php echo $serv ?></pre>
+   <pre class="src"><code>systemctl restart sshd</code></pre>
+   <p class="cmp" align="center">以上でOSのインストールと設定は完了となる．</p>
+<!--================================ end ================================-->
+   </div><!-- 3 -->
+   </div><!-- 1 -->
