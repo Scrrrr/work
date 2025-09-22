@@ -105,12 +105,14 @@ document.addEventListener('DOMContentLoaded', function() {
     tocItems.forEach(item => {
         const subList = item.querySelector('ul');
         if (subList) {
-            const mainLink = item.querySelector('> a');
-            mainLink.style.cursor = 'pointer';
-            mainLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                subList.style.display = subList.style.display === 'none' ? 'block' : 'none';
-            });
+            const mainLink = item.querySelector('a:first-child');
+            if (mainLink) {
+                mainLink.style.cursor = 'pointer';
+                mainLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    subList.style.display = subList.style.display === 'none' ? 'block' : 'none';
+                });
+            }
         }
     });
     
@@ -145,7 +147,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Prism.jsの初期化
+    function initializePrism() {
+        if (typeof Prism !== 'undefined') {
+            Prism.highlightAll();
+        }
+    }
+    
     initializePrism();
 });
-
-
