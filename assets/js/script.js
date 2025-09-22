@@ -147,8 +147,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Prism.jsの初期化
+    // Prism.jsの初期化（前処理で余計な改行や前後空白を除去）
     function initializePrism() {
+        // command-line ブロックの前後空白や末尾改行を削除
+        document.querySelectorAll('pre.command-line code').forEach(function(codeEl) {
+            if (codeEl && codeEl.textContent) {
+                codeEl.textContent = codeEl.textContent.replace(/^\s+|\s+$/g, '');
+            }
+        });
         if (typeof Prism !== 'undefined') {
             Prism.highlightAll();
         }
