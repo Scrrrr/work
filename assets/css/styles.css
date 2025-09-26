@@ -288,11 +288,7 @@ html {
     scroll-behavior: smooth;
 }
 
-/* アクティブな目次項目のハイライト */
-.toc a.active {
-    background-color: #3498db;
-    color: white;
-}
+/* アクティブな目次項目のハイライト（削除） */
 
 /* 見出しのアンカーリンク用のオフセット */
 h1, h2, h3, h4 {
@@ -335,7 +331,7 @@ h1, h2, h3, h4 {
 }
 
 /* プロンプトとコマンドの間隔を半角スペース相当に固定 */
-.command-line .command-line-prom
+
 
 /* シェルプロンプト部分の選択不可設定 */
 .shell-prompt {
@@ -371,6 +367,7 @@ pre code.language-bash .shell-prompt {
     cursor: pointer;
     accent-color: #3498db;
     flex-shrink: 0;
+    margin-left: 6px;
 }
 
 .chkbo:hover {
