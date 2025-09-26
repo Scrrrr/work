@@ -363,3 +363,18 @@ pre code.language-bash .shell-prompt {
     color: #6c757d;
     font-weight: 600;
 }
+
+/* チェックボックス */
+.chkbo {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    accent-color: #3498db;
+    flex-shrink: 0;
+}
+
+.chkbo:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
+}
+

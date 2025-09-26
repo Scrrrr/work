@@ -159,6 +159,42 @@ document.addEventListener('DOMContentLoaded', function() {
             Prism.highlightAll();
         }
     }
+
+    // 見出しにチェックボックスを追加（h1と目次は除外）
+    function addCheckboxesToHeadings() {
+        headings.forEach(heading => {
+            // h1は除外
+            if (heading.tagName.toLowerCase() === 'h1') return;
+            
+            // 目次の見出しは除外
+            if (heading.textContent.trim() === '目次') return;
+            
+            // 既にチェックボックスが存在する場合はスキップ
+            if (heading.querySelector('.chkbo')) return;
+            
+            // チェックボックスを作成
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'chkbo';
+            checkbox.id = `checkbox-${heading.id}`;
+            
+            // 見出しにチェックボックスを追加
+            heading.appendChild(checkbox);
+            
+            // チェックボックスの状態をローカルストレージに保存
+            const storageKey = `heading-checked-${heading.id}`;
+            const isChecked = localStorage.getItem(storageKey) === 'true';
+            checkbox.checked = isChecked;
+            
+            // チェックボックスの変更イベント
+            checkbox.addEventListener('change', function() {
+                localStorage.setItem(storageKey, this.checked);
+            });
+        });
+    }
+
+    // チェックボックスを追加
+    addCheckboxesToHeadings();
     
     initializePrism();
 });
