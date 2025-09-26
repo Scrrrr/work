@@ -82,7 +82,7 @@ body {
 }
 
 /* 見出しスタイル */
-h1 {
+.main-content h1 {
     color: #2c3e50;
     border-bottom: 3px solid #3498db;
     padding-bottom: 10px;
@@ -92,13 +92,13 @@ h1 {
     counter-increment: h1-counter;
 }
 
-h1::before {
+.main-content h1::before {
     content: counter(h1-counter) ". ";
     color: #3498db;
     font-weight: bold;
 }
 
-h2 {
+.main-content h2 {
     color: #34495e;
     margin-top: 40px;
     margin-bottom: 20px;
@@ -107,13 +107,13 @@ h2 {
     counter-increment: h2-counter;
 }
 
-h2::before {
+.main-content h2::before {
     content: counter(h1-counter) "." counter(h2-counter) " ";
     color: #3498db;
     font-weight: bold;
 }
 
-h3 {
+.main-content h3 {
     color: #2c3e50;
     margin-top: 30px;
     margin-bottom: 15px;
@@ -122,13 +122,13 @@ h3 {
     counter-increment: h3-counter;
 }
 
-h3::before {
+.main-content h3::before {
     content: counter(h1-counter) "." counter(h2-counter) "." counter(h3-counter) " ";
     color: #3498db;
     font-weight: bold;
 }
 
-h4 {
+.main-content h4 {
     color: #2c3e50;
     margin-top: 20px;
     margin-bottom: 10px;
@@ -136,14 +136,14 @@ h4 {
     counter-increment: h4-counter;
 }
 
-h4::before {
+.main-content h4::before {
     content: counter(h1-counter) "." counter(h2-counter) "." counter(h3-counter) "." counter(h4-counter) " ";
     color: #3498db;
     font-weight: bold;
 }
 
 /* カウンターリセット */
-body {
+.main-content {
     counter-reset: h1-counter;
 }
 
@@ -200,7 +200,7 @@ pre code .token-comment { color: #6c757d; font-style: italic; }
 /* リスト */
 ul, ol {
     margin: 15px 0;
-    padding-left: 30px;
+    padding-left: 10px;
 }
 
 li {
