@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 目次のリンク要素を取得
     const tocLinks = document.querySelectorAll('.toc a');
     
-    // 見出し要素を取得
-    const headings = document.querySelectorAll('h1, h2, h3, h4');
+    // 見出し要素を取得（本文領域に限定: h2〜h4）
+    const headings = document.querySelectorAll('.main-content h2, .main-content h3, .main-content h4');
     
     // PAGE TOPボタンの表示/非表示制御
     function togglePageTopButton() {
@@ -42,39 +42,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // 現在の見出しに基づいて目次のアクティブ状態を更新
-    function updateActiveTocLink() {
-        let currentHeading = null;
-        
-        // 現在表示されている見出しを特定
-        headings.forEach(heading => {
-            const rect = heading.getBoundingClientRect();
-            if (rect.top <= 100 && rect.bottom >= 100) {
-                currentHeading = heading;
-            }
-        });
-        
-        // 目次のアクティブ状態をリセット
-        tocLinks.forEach(link => {
-            link.classList.remove('active');
-        });
-        
-        // 現在の見出しに対応する目次リンクをアクティブにする
-        if (currentHeading) {
-            const activeLink = document.querySelector(`.toc a[href="#${currentHeading.id}"]`);
-            if (activeLink) {
-                activeLink.classList.add('active');
-            }
-        }
-    }
+    // 目次リンクのアクティブハイライト機能は無効化
     
     // スクロールイベントリスナー
     function handleScroll() {
         togglePageTopButton();
-        updateActiveTocLink();
     }
     
-    // スクロールイベントを追加（パフォーマンスを考慮してthrottle）
+    // スクロールイベントを追加（パフォーマンスを考慮して簡易debounce）
     let scrollTimeout;
     window.addEventListener('scroll', function() {
         if (scrollTimeout) {
@@ -85,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 初期状態の設定
     togglePageTopButton();
-    updateActiveTocLink();
     
     // ページ読み込み時のスムーズスクロール対応
     if (window.location.hash) {
@@ -141,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
     headings.forEach(heading => {
         heading.style.cursor = 'pointer';
         heading.addEventListener('click', function() {
+            if (!this.id) return;
             const url = new URL(window.location);
             url.hash = this.id;
             window.history.pushState(null, '', url);
