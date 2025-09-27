@@ -3,24 +3,9 @@
  * 既存のUbuntuインストールマニュアルテーマに完全対応
  */
 class MarkdownParser {
-    constructor(options = {}) {
-        this.options = {
-            enableTOC: true,
-            enableCheckboxes: true,
-            enableSyntaxHighlight: true,
-            enableShellPrompt: true,
-            enableHintBoxes: true,
-            enableDynamicVars: true,
-            ...options
-        };
-        
-        // 動的変数のデフォルト値
-        this.variables = {
-            serverHostname: 'tr253',
-            serverIP: '10.10.0.253',
-            gatewayIP: '10.10.0.254',
-            clientIP: '10.10.0.1'
-        };
+    constructor() {
+        // 動的変数は外部で設定される
+        this.variables = {};
     }
 
     /**
@@ -46,17 +31,13 @@ class MarkdownParser {
         let processed = markdown;
 
         // ヒントボックス記法を処理
-        if (this.options.enableHintBoxes) {
-            processed = processed.replace(
-                /:::hint\s*\n([\s\S]*?)\n:::/g,
-                '<div class="hint">\n<p><strong>ヒント:</strong></p>\n$1\n</div>'
-            );
-        }
+        processed = processed.replace(
+            /:::hint\s*\n([\s\S]*?)\n:::/g,
+            '<div class="hint">\n<p><strong>ヒント:</strong></p>\n<p>$1</p>\n</div>'
+        );
 
         // 動的変数の処理
-        if (this.options.enableDynamicVars) {
-            processed = this.processDynamicVariables(processed);
-        }
+        processed = this.processDynamicVariables(processed);
 
         return processed;
     }
@@ -87,6 +68,11 @@ class MarkdownParser {
         let codeBlockContent = '';
         let inList = false;
         let listType = '';
+        
+        // セクション番号の追跡
+        let sectionNumber = 0;
+        let subsectionNumber = 0;
+        let currentSection = 0;
 
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
@@ -122,7 +108,17 @@ class MarkdownParser {
                 if (match) {
                     const level = match[1].length;
                     const text = match[2];
-                    const id = this.generateId(text);
+                    
+                    // セクション番号の更新
+                    if (level === 1) {
+                        sectionNumber++;
+                        subsectionNumber = 0;
+                        currentSection = sectionNumber;
+                    } else if (level === 2) {
+                        subsectionNumber++;
+                    }
+                    
+                    const id = this.generateId(text, level, sectionNumber, subsectionNumber);
                     html += `<h${level} id="${id}">${text}</h${level}>\n`;
                 }
                 continue;
@@ -198,98 +194,144 @@ class MarkdownParser {
      */
     postprocess(html) {
         // シェルプロンプトの処理（class="language-bash"が適用されている場合のみ）
-        if (this.options.enableShellPrompt) {
-            html = html.replace(
-                /<pre><code class="language-bash">([\s\S]*?)<\/code><\/pre>/g,
-                (match, code) => {
-                    const processedCode = code
-                        .split('\n')
-                        .map(line => {
-                            // シェルプロンプトのパターンを検出
-                            if (line.match(/^\w+@\w+[:\$]\s*.*$/)) {
-                                const parts = line.split('$');
-                                if (parts.length === 2) {
-                                    return `<span class="shell-prompt">${parts[0]}$</span>${parts[1]}`;
-                                }
+        html = html.replace(
+            /<pre><code class="language-bash">([\s\S]*?)<\/code><\/pre>/g,
+            (match, code) => {
+                const processedCode = code
+                    .split('\n')
+                    .map(line => {
+                        // シェルプロンプトのパターンを検出
+                        if (line.match(/^\w+@\w+[:\$]\s*.*$/)) {
+                            const parts = line.split('$');
+                            if (parts.length === 2) {
+                                return `<span class="shell-prompt">${parts[0]}$</span>${parts[1]}`;
                             }
-                            return line;
-                        })
-                        .join('\n');
-                    
-                    return `<pre><code class="language-bash">${processedCode}</code></pre>`;
-                }
-            );
-        }
+                        }
+                        return line;
+                    })
+                    .join('\n');
+                
+                return `<pre><code class="language-bash">${processedCode}</code></pre>`;
+            }
+        );
 
-        // ヒントボックスの改行処理
-        html = html.replace(/<div class="hint">\s*<p><strong>ヒント:<\/strong><\/p>\s*([\s\S]*?)<\/div>/g, (match, content) => {
-            const processedContent = content
-                .replace(/<p>(.*?)<\/p>/g, '$1')
-                .trim()
-                .split('\n')
-                .filter(line => line.trim())
-                .map(line => `<p>${line.trim()}</p>`)
-                .join('\n');
-            
-            return `<div class="hint">\n<p><strong>ヒント:</strong></p>\n${processedContent}\n</div>`;
-        });
+        // ヒントボックスの重複<p>タグを修正
+        html = html.replace(
+            /<p><div class="hint"><\/p>\s*<p><p><strong>ヒント:<\/strong><\/p><\/p>\s*<p><p>([\s\S]*?)<\/p><\/p>\s*<p><\/div><\/p>/g,
+            '<div class="hint">\n<p><strong>ヒント:</strong></p>\n<p>$1</p>\n</div>'
+        );
 
         return html;
     }
 
     /**
-     * IDを生成
+     * IDを生成（番号ベース）
      */
-    generateId(text) {
-        return text
-            .toLowerCase()
-            .replace(/[^\w\s-]/g, '')
-            .replace(/\s+/g, '-')
-            .trim();
+    generateId(text, level, sectionNumber, subsectionNumber = null) {
+        if (level === 1) {
+            return sectionNumber.toString();
+        } else if (level === 2) {
+            return `${sectionNumber}.${subsectionNumber}`;
+        } else if (level >= 3) {
+            // レベル3以上は、レベル2の番号に追加の番号を付与
+            return `${sectionNumber}.${subsectionNumber}.${this.getSubSubSectionNumber()}`;
+        }
+        return '';
     }
 
     /**
-     * 目次を生成
+     * サブサブセクション番号を取得（簡易実装）
+     */
+    getSubSubSectionNumber() {
+        if (!this.subSubSectionCounter) {
+            this.subSubSectionCounter = 1;
+        } else {
+            this.subSubSectionCounter++;
+        }
+        return this.subSubSectionCounter;
+    }
+
+    /**
+     * 目次を生成（レベル1とレベル2のみ）
      */
     generateTOC(html) {
-        const headings = html.match(/<h([1-6])[^>]*id="([^"]*)"[^>]*>(.*?)<\/h[1-6]>/g);
-        if (!headings) return '';
+        const headings = this.extractHeadings(html);
+        if (!headings.length) return '';
 
-        let toc = '<ul class="toc">\n';
-        let stack = []; // 開いているulタグのレベルを追跡
+        const sections = this.groupHeadingsByLevel1(headings);
+        return this.buildTOC(sections);
+    }
+
+    /**
+     * HTMLから見出しを抽出
+     */
+    extractHeadings(html) {
+        const headingRegex = /<h([1-6])[^>]*id="([^"]*)"[^>]*>(.*?)<\/h[1-6]>/g;
+        const headings = [];
+        let match;
+
+        while ((match = headingRegex.exec(html)) !== null) {
+            const level = parseInt(match[1]);
+            const id = match[2];
+            const text = match[3];
+
+            // レベル1とレベル2のみを対象とする
+            if (level === 1 || level === 2) {
+                headings.push({ level, id, text });
+            }
+        }
+
+        return headings;
+    }
+
+    /**
+     * 見出しをレベル1でグループ化
+     */
+    groupHeadingsByLevel1(headings) {
+        const sections = [];
+        let currentSection = null;
 
         headings.forEach(heading => {
-            const levelMatch = heading.match(/<h([1-6])/);
-            const idMatch = heading.match(/id="([^"]*)"/);
-            const textMatch = heading.match(/>([^<]*)</);
-            
-            if (!levelMatch || !idMatch || !textMatch) return;
-
-            const level = parseInt(levelMatch[1]);
-            const id = idMatch[1];
-            const text = textMatch[1];
-
-            // 現在のレベルより高い場合は、新しいulを開く
-            while (stack.length < level) {
-                toc += '<ul>\n';
-                stack.push(level);
+            if (heading.level === 1) {
+                // 新しいレベル1セクションを開始
+                currentSection = {
+                    level1: heading,
+                    level2s: []
+                };
+                sections.push(currentSection);
+            } else if (heading.level === 2 && currentSection) {
+                // 現在のセクションにレベル2を追加
+                currentSection.level2s.push(heading);
             }
-
-            // 現在のレベルより低い場合は、ulを閉じる
-            while (stack.length > level) {
-                toc += '</ul>\n';
-                stack.pop();
-            }
-
-            toc += `<li><a href="#${id}">${text}</a></li>\n`;
         });
 
-        // 残りのulタグを閉じる
-        while (stack.length > 0) {
-            toc += '</ul>\n';
-            stack.pop();
-        }
-        
+        return sections;
+    }
+
+    /**
+     * TOCのHTMLを構築
+     */
+    buildTOC(sections) {
+        let toc = '<ul class="toc">\n';
+
+        sections.forEach(section => {
+            const { level1, level2s } = section;
+            
+            // レベル1の見出し
+            toc += `<li><a href="#${level1.id}">${level1.text}</a>`;
+            
+            // レベル2の見出しがある場合
+            if (level2s.length > 0) {
+                toc += '\n<ul>\n';
+                level2s.forEach(level2 => {
+                    toc += `<li><a href="#${level2.id}">${level2.text}</a></li>\n`;
+                });
+                toc += '</ul>\n';
+            }
+            
+            toc += '</li>\n';
+        });
+
         toc += '</ul>';
         return toc;
     }
@@ -332,6 +374,27 @@ class MarkdownParser {
     <script src="assets/js/script.js"></script>
 </body>
 </html>`;
+    }
+
+    /**
+     * インクルード用のHTMLコンテンツを生成（TOCと本文のみ）
+     */
+    generateIncludeHTML(markdown) {
+        const content = this.parse(markdown);
+        const toc = this.generateTOC(content);
+
+        return `<div class="container">
+        <!-- サイドバー（目次） -->
+        <nav class="sidebar">
+            <h3>目次</h3>
+            ${toc}
+        </nav>
+
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+            ${content}
+        </main>
+    </div>`;
     }
 }
 

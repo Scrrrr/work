@@ -33,9 +33,9 @@ UbuntuはLinuxディストリビューションの中でもサーバ向け、デ
 
 ## あなたの情報を入力してください
 ```{shell}
-あなたの名前：tome
-コンピュータの名前：{{serverHostname}}
-ユーザ名の入力：tome
+あなたの名前：tome  
+コンピュータの名前：{{serverHostname}}  
+ユーザ名の入力：tome  
 パスワードの入力：netsys00
 パスワードの確認：netsys00
 ```
@@ -97,7 +97,7 @@ tome@{{serverHostname}}:~$ sudo vi /etc/pam.d/su
 15行目付近にある以下のコメントを外し、末尾に `group=adm` を付けます。
 
 ```
-auth required pam_wheel.so **group=adm**
+auth required pam_wheel.so group=adm
 ```
 
 :::hint
@@ -172,7 +172,7 @@ NFSはネットワーク上でファイルの送受信を行うためのプロ�
 NFSクライアントはNFSサーバからファイルを取得するためのソフトです。
 
 ## NFSのインストール
-```
+```bash
 tome@{{serverHostname}}:~$ sudo apt -y install nfs-common
 ```
 ## NFSマウントの例
@@ -372,7 +372,7 @@ sudo ufw disable
 # ログインサーバ（SSH）
 SSHは離れたコンピュータをセキュアに遠隔操作することが出来ます。
 
-### インストールと起動確認
+## インストールと起動確認
 ```bash
 tome@{{serverHostname}}:~$ sudo apt -y install openssh-server
 ```
@@ -381,7 +381,7 @@ tome@{{serverHostname}}:~$ sudo apt -y install openssh-server
 tome@{{serverHostname}}:~$ sudo systemctl status sshd
 ```
 
-### rootログインの許可（必要な場合のみ）
+## rootログインの許可（必要な場合のみ）
 
 ```bash
 sudo vi /etc/ssh/sshd_config
@@ -402,10 +402,10 @@ sudo systemctl restart ssh
 接続例:
 
 ```bash
-# サーバからクライアントへ
-ssh -l root {{clientIP}}
-# クライアントからサーバへ
-ssh -l root {{serverIP}}
+# サーバからクライアントへ  
+ssh -l root {{clientIP}}  
+# クライアントからサーバへ  
+ssh -l root {{serverIP}}  
 ```
 
 ## telnet サーバ
@@ -427,12 +427,15 @@ sudo apt -y install rsh-client rsh-server
 # サーバ側（{{serverHostname}}）
 sudo sh -c 'echo "root {{clientIP}}" > /root/.rhosts'
 sudo vi /root/.rhosts
+```
 
 以下を記入
 ```
 root {{clientIP}}
 ```
+クライアントからサーバへ接続
 
+```bash
 # クライアント側（client1）
 sudo sh -c 'echo "root {{serverIP}}" > /root/.rhosts'
 ```

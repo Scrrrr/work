@@ -1,150 +1,109 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ubuntuのインストール</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
-</head>
-<body>
-    <div class="container">
+<div class="container">
         <!-- サイドバー（目次） -->
         <nav class="sidebar">
             <h3>目次</h3>
             <ul class="toc">
+<li><a href="#1">Ubuntuのインストール</a>
 <ul>
-<li><a href="#ubuntu">Ubuntuのインストール</a></li>
+<li><a href="#1.1">インストールする前に</a></li>
+<li><a href="#1.2">ブートローダーの起動</a></li>
+<li><a href="#1.3">言語の選択</a></li>
+<li><a href="#1.4">キーボードレイアウトの設定</a></li>
+<li><a href="#1.5">アップデートと他のソフトウェア</a></li>
+<li><a href="#1.6">インストールの種類</a></li>
+<li><a href="#1.7">どこに住んでいますか</a></li>
+<li><a href="#1.8">あなたの情報を入力してください</a></li>
+<li><a href="#1.9">インストールの開始</a></li>
+</ul>
+</li>
+<li><a href="#2">Ubuntuサーバの設定</a>
 <ul>
-<li><a href="#">インストールする前に</a></li>
-<li><a href="#">ブートローダーの起動</a></li>
-<li><a href="#">言語の選択</a></li>
-<li><a href="#">キーボードレイアウトの設定</a></li>
-<li><a href="#">アップデートと他のソフトウェア</a></li>
-<li><a href="#">インストールの種類</a></li>
-<li><a href="#">どこに住んでいますか</a></li>
-<li><a href="#">あなたの情報を入力してください</a></li>
-<li><a href="#">インストールの開始</a></li>
+<li><a href="#2.1">基本設定</a></li>
+<li><a href="#2.2">root に関する設定</a></li>
+<li><a href="#2.3">ネットワーク設定（root 権限で実施）</a></li>
+<li><a href="#2.4">便利ツールの追加</a></li>
 </ul>
-<li><a href="#ubuntu">Ubuntuサーバの設定</a></li>
+</li>
+<li><a href="#3">NFS クライアント</a>
 <ul>
-<li><a href="#">基本設定</a></li>
+<li><a href="#3.1">NFSのインストール</a></li>
+<li><a href="#3.2">NFSマウントの例</a></li>
+</ul>
+</li>
+<li><a href="#4">Mail サーバ</a>
 <ul>
-<li><a href="#vi-">vi の設定</a></li>
-<li><a href="#">省電力設定（デスクトップ環境）</a></li>
+<li><a href="#4.1">Postfix</a></li>
+<li><a href="#4.2">Dovecot（POP3）</a></li>
 </ul>
-<li><a href="#root-">root に関する設定</a></li>
+</li>
+<li><a href="#5">ファイアウォールの設定（UFW）</a></li>
+<li><a href="#6">ログインサーバ（SSH）</a>
 <ul>
-<li><a href="#root-">root パスワードの設定</a></li>
-<li><a href="#pam">PAMの設定</a></li>
+<li><a href="#6.1">インストールと起動確認</a></li>
+<li><a href="#6.2">rootログインの許可（必要な場合のみ）</a></li>
+<li><a href="#6.3">telnet サーバ</a></li>
+<li><a href="#6.4">rsh サーバ</a></li>
 </ul>
-<li><a href="#root-">ネットワーク設定（root 権限で実施）</a></li>
-<ul>
-<li><a href="#ipnmtui">IPアドレスの設定（nmtui）</a></li>
-<li><a href="#">ホスト名の設定</a></li>
-<li><a href="#">設定確認とネットワーク再起動</a></li>
-<li><a href="#apt">APTのプロキシ設定</a></li>
-</ul>
-<li><a href="#">便利ツールの追加</a></li>
-</ul>
-<li><a href="#nfs-">NFS クライアント</a></li>
-<ul>
-<li><a href="#nfs">NFSのインストール</a></li>
-<li><a href="#nfs">NFSマウントの例</a></li>
-</ul>
-<li><a href="#mail-">Mail サーバ</a></li>
-<ul>
-<li><a href="#postfix">Postfix</a></li>
-<ul>
-<li><a href="#postfix-">Postfix のインストール</a></li>
-<li><a href="#postfix">postfixの設定</a></li>
-<li><a href="#postfix">postfixの設定の反映</a></li>
-<li><a href="#">メール転送の設定</a></li>
-<li><a href="#">メール送受信確認（ローカル）</a></li>
-<ul>
-<li><a href="#mail">mailコマンドのインストール</a></li>
-<li><a href="#mailtome">mailコマンドでtomeに送信</a></li>
-<li><a href="#smtp-">SMTP レベルでの確認（任意）:</a></li>
-</ul>
-</ul>
-<li><a href="#dovecotpop3">Dovecot（POP3）</a></li>
-<ul>
-<li><a href="#dovecot">Dovecotのインストール</a></li>
-<li><a href="#dovecot">Dovecotの設定</a></li>
-<li><a href="#dovecot">Dovecotの設定の反映</a></li>
-<li><a href="#client1-pop3-">client1からの POP3 動作確認</a></li>
-</ul>
-</ul>
-<li><a href="#ufw">ファイアウォールの設定（UFW）</a></li>
-<li><a href="#ssh">ログインサーバ（SSH）</a></li>
-<ul>
-<ul>
-<li><a href="#">インストールと起動確認</a></li>
-<li><a href="#root">rootログインの許可（必要な場合のみ）</a></li>
-</ul>
-<li><a href="#telnet-">telnet サーバ</a></li>
-<li><a href="#rsh-">rsh サーバ</a></li>
-</ul>
-<li><a href="#">参考</a></li>
-</ul>
+</li>
+<li><a href="#7">参考</a></li>
 </ul>
         </nav>
 
         <!-- メインコンテンツ -->
         <main class="main-content">
-            <h1 id="ubuntu">Ubuntuのインストール</h1>
+            <h1 id="1">Ubuntuのインストール</h1>
 <p>UbuntuはLinuxディストリビューションの中でもサーバ向け、デスクトップ向け共に人気の高いディストリビューションです。これからUbuntuをコンピュータにインストールしてメール、ウェブ、ファイル共有、リモートログイン機能を持ったサーバを構築していきます。</p>
 <p>今回インストールするバージョンはUbuntu 24.04.2 - Desktopです。</p>
 
-<h2 id="">インストールする前に</h2>
+<h2 id="1.1">インストールする前に</h2>
 <p>このマニュアルは設定内容と基本説明のみで構成されています。 そのため、コマンドの操作などは実際に調べて設定してもらいます。 コマンドの調べ方は「[コマンドの名前] 操作方法」または「[コマンドの名前] 使い方」で検索してブログ記事やオンラインマニュアルから探してください。</p>
-<h2 id="">ブートローダーの起動</h2>
+<h2 id="1.2">ブートローダーの起動</h2>
 <p>黒い画面が現れたら<code>「Try or Install Ubuntu」</code>に矢印キーでカーソルを合わせて[Enter]</p>
 <p>しばらくの時間、起動の準備が行われます。</p>
 
-<h2 id="">言語の選択</h2>
+<h2 id="1.3">言語の選択</h2>
 <p>使用する言語を選択します。デフォルトでは[英語]に設定</p>
 <p>されているので、左のリストを下にスクロールして、[日本語]を選択します。</p>
 <p>[Ubuntuをインストール]を選択します。</p>
 
-<h2 id="">キーボードレイアウトの設定</h2>
+<h2 id="1.4">キーボードレイアウトの設定</h2>
 <p>キーボードの配列を設定します。</p>
 <p>デフォルトでは日本語配列になっています。</p>
 <p>問題がなければ、[続ける]を選択します。</p>
 
-<h2 id="">アップデートと他のソフトウェア</h2>
+<h2 id="1.5">アップデートと他のソフトウェア</h2>
 <p>[通常のインストール]を選択し、[続ける]を選択します。</p>
 
-<h2 id="">インストールの種類</h2>
+<h2 id="1.6">インストールの種類</h2>
 <p>[ディスクを削除してUbuntuをインストール]を選択し、[インストール]を選択します。</p>
 <p>※警告が表示されますが、無視してください。</p>
 
 <p>[ディスクに変更を書き込みますか]と問われるので、[続ける]を選択します。</p>
 
-<h2 id="">どこに住んでいますか</h2>
+<h2 id="1.7">どこに住んでいますか</h2>
 <p>時刻の設定をします。  </p>
 <p>世界地図で日本にピンが刺されてあり、下の入力欄に「Tokyo」とあったら[続ける]を選択します。</p>
 
-<h2 id="">あなたの情報を入力してください</h2>
-<pre><code>あなたの名前：tome
-コンピュータの名前：<?php echo $serverHostname; ?>
-ユーザ名の入力：tome
+<h2 id="1.8">あなたの情報を入力してください</h2>
+<pre><code>あなたの名前：tome  
+コンピュータの名前：<?php echo $serverHostname; ?>  
+ユーザ名の入力：tome  
 パスワードの入力：netsys00
 パスワードの確認：netsys00</code></pre>
 <p>[ログイン時にパスワードを要求する]で[続ける]</p>
 
 
-<h2 id="">インストールの開始</h2>
+<h2 id="1.9">インストールの開始</h2>
 <p>全ての設定項目を終えると、インストールが開始されます。</p>
 <p>しばらくすると、再起動を促されます。</p>
 
 <p>再起動をすると、「Please remove the installation medium, then press ENTER:(インストールメディアを取り出し、ENTER キーを押してください。)」と表示されます。指示通り、Enterを押すとマシンが完全に停止します。</p>
 
-<h1 id="ubuntu">Ubuntuサーバの設定</h1>
+<h1 id="2">Ubuntuサーバの設定</h1>
 
-<h2 id="">基本設定</h2>
+<h2 id="2.1">基本設定</h2>
 
-<h3 id="vi-">vi の設定</h3>
+<h3 id="2.1.1">vi の設定</h3>
 <p><code>Ctrl+Alt+T</code>でターミナルを開きます。</p>
 
 <p>ホームディレクトリで <code>~/.vimrc</code> を作成して互換モードを無効化します。</p>
@@ -156,17 +115,17 @@
 
 <p><div class="hint"></p>
 <p><p><strong>ヒント:</strong></p></p>
-<p>viは「i」でインサートモード。「Esc」を押して通常モードに戻る。</p>
-<p>「:w」で保存「:q」で終了、「:wq」で保存して終了。</p>
+<p><p>viは「i」でインサートモード。「Esc」を押して通常モードに戻る。</p>
+<p>「:w」で保存「:q」で終了、「:wq」で保存して終了。</p></p>
 <p></div>  </p>
 
-<h3 id="">省電力設定（デスクトップ環境）</h3>
+<h3 id="2.1.2">省電力設定（デスクトップ環境）</h3>
 <p>右上のスピーカーアイコン → 設定 → 電源管理 から、以下を設定します。</p>
 <ul>
 <li>画面のブランク: しない</li>
 </ul>
-<h2 id="root-">root に関する設定</h2>
-<h3 id="root-">root パスワードの設定</h3>
+<h2 id="2.2">root に関する設定</h2>
+<h3 id="2.2.3">root パスワードの設定</h3>
 <p>端末を開き、root のパスワードを設定します。</p>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo passwd root [Enter]
@@ -175,24 +134,24 @@ tomeのパスワード:
 新しいパスワードを再入力してください:(tomeと同じ)</code></pre>
 <p>※パスワードの入力中は文字が何も表示されません。</p>
 
-<h3 id="pam">PAMの設定</h3>
+<h3 id="2.2.4">PAMの設定</h3>
 <p>続いて <code>su</code>コマンドが使用できるユーザを制御します。</p>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/pam.d/su</code></pre>
 
 <p>15行目付近にある以下のコメントを外し、末尾に <code>group=adm</code> を付けます。</p>
 
-<pre><code>auth required pam_wheel.so **group=adm**</code></pre>
+<pre><code>auth required pam_wheel.so group=adm</code></pre>
 
 <p><div class="hint"></p>
 <p><p><strong>ヒント:</strong></p></p>
-<p>vimは通常モードで</p>
-<p>「h」で左に移動、「j」で下に移動、「k」で上に移動、「l」で右に移動</p>
+<p><p>vimは通常モードで</p>
+<p>「h」で左に移動、「j」で下に移動、「k」で上に移動、「l」で右に移動</p></p>
 <p></div>  </p>
 
-<h2 id="root-">ネットワーク設定（root 権限で実施）</h2>
+<h2 id="2.3">ネットワーク設定（root 権限で実施）</h2>
 
-<h3 id="ipnmtui">IPアドレスの設定（nmtui）</h3>
+<h3 id="2.3.5">IPアドレスの設定（nmtui）</h3>
 <p><code>nmtui</code>コマンドを用いてIPアドレスを手動で設定します。</p>
 
 <pre><code class="language-bash">sudo nmtui</code></pre>
@@ -207,13 +166,13 @@ tomeのパスワード:
 </ul>
 <p>設定後、OK → 戻る → 終了。</p>
 
-<h3 id="">ホスト名の設定</h3>
+<h3 id="2.3.6">ホスト名の設定</h3>
 
 <p><code>hostnamectl</code>コマンドを使用してホスト名を変更します。</p>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ hostnamectl set-hostname <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp [Enter]</code></pre>
 
-<h3 id="">設定確認とネットワーク再起動</h3>
+<h3 id="2.3.7">設定確認とネットワーク再起動</h3>
 
 <p>IPアドレスが適切にenp10のinetに割り当てられているか確認します。</p>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ ip a</code></pre>
@@ -222,7 +181,7 @@ tomeのパスワード:
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo systemctl restart NetworkManager</code></pre>
 
-<h3 id="apt">APTのプロキシ設定</h3>
+<h3 id="2.3.8">APTのプロキシ設定</h3>
 <p>APTパッケージマネージャーが大学内のプロキシサーバを経由できるように設定を行います。</p>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/apt/apt.conf</code></pre>
@@ -232,20 +191,20 @@ tomeのパスワード:
 <pre><code>Acquire::http::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 
-<h2 id="">便利ツールの追加</h2>
+<h2 id="2.4">便利ツールの追加</h2>
 <p>ネットワークの利用状況を確認する</p>
 <p><code>netstat</code>コマンドなどを使用するために <code>net-tools</code> を導入します。</p>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install net-tools</code></pre>
 
-<h1 id="nfs-">NFS クライアント</h1>
+<h1 id="3">NFS クライアント</h1>
 
 <p>NFSはネットワーク上でファイルの送受信を行うためのプロトコルです。  </p>
 <p>NFSクライアントはNFSサーバからファイルを取得するためのソフトです。</p>
 
-<h2 id="nfs">NFSのインストール</h2>
-<pre><code>tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install nfs-common</code></pre>
-<h2 id="nfs">NFSマウントの例</h2>
+<h2 id="3.1">NFSのインストール</h2>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install nfs-common</code></pre>
+<h2 id="3.2">NFSマウントの例</h2>
 <p>初めにマウントポイントを作成します。  </p>
 <p><code>mount</code>コマンドの<code>-t</code>オプションでnfsであることを明記します。  </p>
 <p>使用後は<code>umount</code>コマンドでアンマウントを行います。</p>
@@ -253,20 +212,20 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 tome@<?php echo $serverHostname; ?>:~$ sudo mount -t nfs 172.21.14.1:/home1/unix/install /jpc1
 tome@<?php echo $serverHostname; ?>:~$ sudo umount /jpc1</code></pre>
 
-<h1 id="mail-">Mail サーバ</h1>
+<h1 id="4">Mail サーバ</h1>
 
 <p>Mailサーバはメールの送受信を行うためのサーバです。  </p>
 
-<h2 id="postfix">Postfix</h2>
+<h2 id="4.1">Postfix</h2>
 <p>メールの送信には<strong>Postfix</strong>が、受信には<strong>Davcot</strong>が使用されます。  </p>
 
-<h3 id="postfix-">Postfix のインストール</h3>
+<h3 id="4.1.9">Postfix のインストール</h3>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install postfix</code></pre>
 
 <p>インストーラで「インターネットサイト」を選択し、ホスト名を確認します。</p>
 
-<h3 id="postfix">postfixの設定</h3>
+<h3 id="4.1.10">postfixの設定</h3>
 <p>postfixの設定ファイルである<code>/etc/postfix/main.cf</code>を<code>vi</code>エディタで編集します。</p>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/postfix/main.cf</code></pre>
@@ -289,12 +248,12 @@ home_mailbox = Maildir/</code></pre>
 <li>`mydestination`: 受信するドメイン</li>
 <li>`mynetworks`: メールリレーを許可するネットワーク</li>
 </ul>
-<h3 id="postfix">postfixの設定の反映</h3>
+<h3 id="4.1.11">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo systemctl restart postfix.service</code></pre>
 
-<h3 id="">メール転送の設定</h3>
+<h3 id="4.1.12">メール転送の設定</h3>
 <p><code>/etc/aliases</code>ファイルに、 <code>転送元: 転送先</code> を指定することでメールを自動的に転送することができます。</p>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/aliases</code></pre>
 
@@ -304,33 +263,33 @@ home_mailbox = Maildir/</code></pre>
 <p><code>newaliases</code>コマンドで、<code>/etc/aliases</code>ファイルの設定を反映させます。</p>
 <pre><code class="language-bash">sudo newaliases</code></pre>
 
-<h3 id="">メール送受信確認（ローカル）</h3>
+<h3 id="4.1.13">メール送受信確認（ローカル）</h3>
 
 <p>mailコマンドをインストールしてメールの送信テストをします。</p>
 
-<h4 id="mail">mailコマンドのインストール</h4>
+<h4 id="4.1.14">mailコマンドのインストール</h4>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install mailutils</code></pre>
 
-<h4 id="mailtome">mailコマンドでtomeに送信</h4>
+<h4 id="4.1.15">mailコマンドでtomeに送信</h4>
 <p><code>mail</code>コマンドでtomeに「Test」というメッセージを送ります。  </p>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ echo "test" | mail tome</code></pre>
 
 <p><code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「Test」とあれば、成功です。</p>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ ls /home/tome/Maildir/new</code></pre>
 
-<h4 id="smtp-">SMTP レベルでの確認（任意）:</h4>
+<h4 id="4.1.16">SMTP レベルでの確認（任意）:</h4>
 
 <p><code>telnet</code>コマンドでSMTPが起動しているか確認します。</p>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ telnet localhost 25
 > quit</code></pre>
 
-<h2 id="dovecotpop3">Dovecot（POP3）</h2>
+<h2 id="4.2">Dovecot（POP3）</h2>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
 
-<h3 id="dovecot">Dovecotのインストール</h3>
+<h3 id="4.2.17">Dovecotのインストール</h3>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install dovecot-core dovecot-pop3d</code></pre>
 
-<h3 id="dovecot">Dovecotの設定</h3>
+<h3 id="4.2.18">Dovecotの設定</h3>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-ssl.conf</code>ファイルをviエディタで開きます。</p>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
 
@@ -354,12 +313,12 @@ home_mailbox = Maildir/</code></pre>
 <pre><code># mail_location = mbox:~/mail:INBOX=/var/mail/%u
 mail_location = maildir:~/Maildir</code></pre>
 
-<h3 id="dovecot">Dovecotの設定の反映</h3>
+<h3 id="4.2.19">Dovecotの設定の反映</h3>
 <p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo systemctl restart dovecot</code></pre>
 
-<h3 id="client1-pop3-">client1からの POP3 動作確認</h3>
+<h3 id="4.2.20">client1からの POP3 動作確認</h3>
 <p>cilent1を起動して、client1から</p>
 <p><code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
 
@@ -371,7 +330,7 @@ retr 1
 dele 1
 quit</code></pre>
 
-<h1 id="ufw">ファイアウォールの設定（UFW）</h1>
+<h1 id="5">ファイアウォールの設定（UFW）</h1>
 
 <p>25 番ポート（IPv4）を許可:</p>
 <pre><code class="language-bash">sudo ufw allow proto tcp to 0.0.0.0/0 port 25</code></pre>
@@ -390,15 +349,15 @@ sudo ufw disable</code></pre>
 <p>起動/停止は <code>systemctl</code> でも制御可能です。</p>
 
 
-<h1 id="ssh">ログインサーバ（SSH）</h1>
+<h1 id="6">ログインサーバ（SSH）</h1>
 <p>SSHは離れたコンピュータをセキュアに遠隔操作することが出来ます。</p>
 
-<h3 id="">インストールと起動確認</h3>
+<h2 id="6.1">インストールと起動確認</h2>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install openssh-server</code></pre>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo systemctl status sshd</code></pre>
 
-<h3 id="root">rootログインの許可（必要な場合のみ）</h3>
+<h2 id="6.2">rootログインの許可（必要な場合のみ）</h2>
 
 <pre><code class="language-bash">sudo vi /etc/ssh/sshd_config</code></pre>
 
@@ -412,17 +371,17 @@ sudo ufw disable</code></pre>
 
 <p>接続例:</p>
 
-<pre><code class="language-bash"># サーバからクライアントへ
-ssh -l root <?php echo $clientIP; ?>
-# クライアントからサーバへ
+<pre><code class="language-bash"># サーバからクライアントへ  
+ssh -l root <?php echo $clientIP; ?>  
+# クライアントからサーバへ  
 ssh -l root <?php echo $serverIP; ?></code></pre>
 
-<h2 id="telnet-">telnet サーバ</h2>
+<h2 id="6.3">telnet サーバ</h2>
 
 <pre><code class="language-bash">sudo apt -y install telnetd
 telnet <?php echo $serverHostname; ?></code></pre>
 
-<h2 id="rsh-">rsh サーバ</h2>
+<h2 id="6.4">rsh サーバ</h2>
 
 <pre><code class="language-bash">sudo apt -y install rsh-client rsh-server</code></pre>
 
@@ -430,14 +389,16 @@ telnet <?php echo $serverHostname; ?></code></pre>
 
 <pre><code class="language-bash"># サーバ側（<?php echo $serverHostname; ?>）
 sudo sh -c 'echo "root <?php echo $clientIP; ?>" > /root/.rhosts'
-sudo vi /root/.rhosts
+sudo vi /root/.rhosts</code></pre>
 
-以下を記入</code></pre>
-<p>root <?php echo $clientIP; ?></p>
-<pre><code># クライアント側（client1）
+<p>以下を記入</p>
+<pre><code>root <?php echo $clientIP; ?></code></pre>
+<p>クライアントからサーバへ接続</p>
+
+<pre><code class="language-bash"># クライアント側（client1）
 sudo sh -c 'echo "root <?php echo $serverIP; ?>" > /root/.rhosts'</code></pre>
 
-<h1 id="">参考</h1>
+<h1 id="7">参考</h1>
 <p>（参考）suができるユーザの設定</p>
 <p>（参考）# usermod -aG adm ユーザ名</p>
 
@@ -447,12 +408,3 @@ sudo sh -c 'echo "root <?php echo $serverIP; ?>" > /root/.rhosts'</code></pre>
 
         </main>
     </div>
-
-    <!-- PAGE TOP ボタン -->
-    <button id="pageTop" class="page-top" title="ページトップへ">↑</button>
-
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
-    <script src="assets/js/script.js"></script>
-</body>
-</html>
