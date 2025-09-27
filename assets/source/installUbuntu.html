@@ -91,7 +91,7 @@
 
             <h2 id="1.8">あなたの情報を入力してください</h2>
             <pre><code>あなたの名前：tome
-コンピュータの名前：<?php echo $serverHostname; ?>
+コンピュータの名前：<?php echo $serverHostname; ?> 
 ユーザ名の入力：tome
 パスワードの入力：netsys00
 パスワードの確認：netsys00</code></pre>
@@ -109,7 +109,7 @@
             <h3>vi の設定</h3>
             <p><code>Ctrl+Alt+T</code>でターミナルを開きます。</p>
             <p>ホームディレクトリで <code>~/.vimrc</code> を作成して互換モードを無効化します。</p>
-            <pre class="command-line" data-prompt="tome@<?php echo $serverHostname; ?>:~$ "><code class="language-bash">vi ~/.vimrc</code></pre>
+            <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ vi ~/.vimrc</code></pre>
             <p>以下を追記します。</p>
             <pre><code>set nocompatible</code></pre>
             <div class="hint">
@@ -138,7 +138,7 @@ tomeのパスワード:
             <p>続いて <code>su</code>コマンドが使用できるユーザを制御します。</p>
             <pre><code class="language-bash"><span class="shell-prompt">tome@<?php echo $serverHostname; ?>:~$</span> sudo vi /etc/pam.d/su</code></pre>
             <p>15行目付近にある以下のコメントを外し、末尾に <code>group=adm</code> を付けます。</p>
-            <pre><code class="language-bash">auth required pam_wheel.so **group=adm**</code></pre>
+            <pre><code class="language-bash">auth required pam_wheel.so <code>group=adm</code></code></pre>
             <div class="hint">
                 <p><strong>ヒント:</strong></p>
                 <p>vimは通常モードで</p>
