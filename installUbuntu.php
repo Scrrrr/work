@@ -51,7 +51,6 @@ $user = $_GET['username'];
 
     <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs/plugins/command-line/prism-command-line.min.js"></script>
     <script src="assets/js/script.js"></script>
    <footer>
       <br><br>

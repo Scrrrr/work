@@ -88,14 +88,7 @@ try {
 }
 
 // MarkdownParserのインスタンスを作成
-const parser = new MarkdownParser({
-    enableTOC: true,
-    enableCheckboxes: true,
-    enableSyntaxHighlight: true,
-    enableShellPrompt: true,
-    enableHintBoxes: true,
-    enableDynamicVars: true
-});
+const parser = new MarkdownParser();
 
 // 動的変数を設定（PHPのecho文として出力される）
 parser.variables = {
@@ -105,8 +98,8 @@ parser.variables = {
     clientIP: 'clientIP'
 };
 
-// HTMLを生成
-const html = parser.generateFullHTML(markdownContent, options.title);
+// HTMLを生成（インクルード用）
+const html = parser.generateIncludeHTML(markdownContent);
 
 // 出力ディレクトリを作成（必要に応じて）
 const outputDir = path.dirname(options.output);

@@ -4,24 +4,18 @@ $user = $_GET['username'];
 
 <!DOCTYPE html>
 <html lang="ja">
-   <head>
-   <title>OSインストール練習</title>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <link rel="stylesheet" href="../CSS/reset.css" type="text/css">
-   <link rel="stylesheet" href="../CSS/style.css" type="text/css">
-   <link rel="stylesheet" href="../CSS/all.css">
-   <script src="../JS/jquery-3.5.1.min.js"></script>
-   <script type="text/javascript" src="../JS/jquery.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RockyLinuxのインストール</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/plugins/command-line/prism-command-line.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
    </head>
-   <header>
-   <div id="page_top"><a href="#"></a></div>
-   <div class="topnav" id="myTopnav">
-</header>
-   <body>
+<body>
 <!--================================ PHP ================================-->
    <?php
-   $servers = ["tr253", "client1"];
+   $servers = ["tr200", "client1"];
 
    $ip = [];
    $ser = [];
@@ -40,13 +34,21 @@ $user = $_GET['username'];
       }
    }
 
-   $ipcl = $ip["client1"];
-   $serv = $ser["tr253"];
-   $ipad = $ip["tr253"];
-   $gate = "10.10.$no.254";
+   // よく使用される変数を個別に設定（installUbuntu.phpと同じ変数名）
+   $clientIP = $ip["client1"];
+   $serverHostname = $ser["tr200"];
+   $serverIP = $ip["tr200"];
+   $gatewayIP = "10.10.$no.254";
    ?>
 <!--================================ end ================================-->
-	<?php require 'assets/installRocky.html'?>
+	<?php require 'assets/source/installRocky.html'?>
+
+    <!-- PAGE TOP ボタン -->
+    <button id="pageTop" class="page-top" title="ページトップ">↑</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
+    <script src="assets/js/script.js"></script>
    <footer>
       <br><br>
       <p align="center">© All rights reserved by SSCTS.</p>
