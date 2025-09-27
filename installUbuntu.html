@@ -12,7 +12,8 @@
         <!-- サイドバー（目次） -->
         <nav class="sidebar">
             <h3>目次</h3>
-            <ul>
+            <ul class="toc">
+<ul>
 <li><a href="#ubuntu">Ubuntuのインストール</a></li>
 <ul>
 <li><a href="#">インストールする前に</a></li>
@@ -86,7 +87,7 @@
 </ul>
 <li><a href="#">参考</a></li>
 </ul>
-
+</ul>
         </nav>
 
         <!-- メインコンテンツ -->
@@ -125,8 +126,8 @@
 <p>世界地図で日本にピンが刺されてあり、下の入力欄に「Tokyo」とあったら[続ける]を選択します。</p>
 
 <h2 id="">あなたの情報を入力してください</h2>
-<pre><code class="language-">あなたの名前：tome
-コンピュータの名前：tr253
+<pre><code>あなたの名前：tome
+コンピュータの名前：<?php echo $serverHostname; ?>
 ユーザ名の入力：tome
 パスワードの入力：netsys00
 パスワードの確認：netsys00</code></pre>
@@ -148,10 +149,10 @@
 
 <p>ホームディレクトリで <code>~/.vimrc</code> を作成して互換モードを無効化します。</p>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> vi ~/.vimrc</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ vi ~/.vimrc</code></pre>
 
 <p>以下を追記します。</p>
-<pre><code class="language-">set nocompatible</code></pre>
+<pre><code>set nocompatible</code></pre>
 
 <p><div class="hint"></p>
 <p><p><strong>ヒント:</strong></p></p>
@@ -168,7 +169,7 @@
 <h3 id="root-">root パスワードの設定</h3>
 <p>端末を開き、root のパスワードを設定します。</p>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo passwd root [Enter]
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo passwd root [Enter]
 tomeのパスワード:
 新しいパスワード:(tomeと同じ)
 新しいパスワードを再入力してください:(tomeと同じ)</code></pre>
@@ -177,11 +178,11 @@ tomeのパスワード:
 <h3 id="pam">PAMの設定</h3>
 <p>続いて <code>su</code>コマンドが使用できるユーザを制御します。</p>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo vi /etc/pam.d/su</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/pam.d/su</code></pre>
 
 <p>15行目付近にある以下のコメントを外し、末尾に <code>group=adm</code> を付けます。</p>
 
-<pre><code class="language-">auth required pam_wheel.so **group=adm**</code></pre>
+<pre><code>auth required pam_wheel.so **group=adm**</code></pre>
 
 <p><div class="hint"></p>
 <p><p><strong>ヒント:</strong></p></p>
@@ -199,9 +200,9 @@ tomeのパスワード:
 <ul>
 <li>接続の編集 → 対象インターフェースを選択 → 編集</li>
 <li>IPv4 の設定: 手作業</li>
-<li>アドレス: `10.10.0.253/24`</li>
-<li>ゲートウェイ: `10.10.0.254`</li>
-<li>DNS サーバー: `10.10.0.254`</li>
+<li>アドレス: `<?php echo $serverIP; ?>/24`</li>
+<li>ゲートウェイ: `<?php echo $gatewayIP; ?>`</li>
+<li>DNS サーバー: `<?php echo $gatewayIP; ?>`</li>
 <li>検索ドメイン: `netsys.cs.t-kougei.ac.jp cs.t-kougei.ac.jp t-kougei.ac.jp`</li>
 </ul>
 <p>設定後、OK → 戻る → 終了。</p>
@@ -210,32 +211,32 @@ tomeのパスワード:
 
 <p><code>hostnamectl</code>コマンドを使用してホスト名を変更します。</p>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> hostnamectl set-hostname tr253.netsys.cs.t-kougei.ac.jp [Enter]</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ hostnamectl set-hostname <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp [Enter]</code></pre>
 
 <h3 id="">設定確認とネットワーク再起動</h3>
 
 <p>IPアドレスが適切にenp10のinetに割り当てられているか確認します。</p>
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> ip a</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ ip a</code></pre>
 
 <p>もしも割り当てられていなかったらNetworkManagerを再起動します。</p>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo systemctl restart NetworkManager</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo systemctl restart NetworkManager</code></pre>
 
 <h3 id="apt">APTのプロキシ設定</h3>
 <p>APTパッケージマネージャーが大学内のプロキシサーバを経由できるように設定を行います。</p>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo vi /etc/apt/apt.conf</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/apt/apt.conf</code></pre>
 
 <p>以下を設定します。</p>
 
-<pre><code class="language-">Acquire::http::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
+<pre><code>Acquire::http::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 
 <h2 id="">便利ツールの追加</h2>
 <p>ネットワークの利用状況を確認する</p>
 <p><code>netstat</code>コマンドなどを使用するために <code>net-tools</code> を導入します。</p>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo apt -y install net-tools</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install net-tools</code></pre>
 
 <h1 id="nfs-">NFS クライアント</h1>
 
@@ -243,14 +244,14 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 <p>NFSクライアントはNFSサーバからファイルを取得するためのソフトです。</p>
 
 <h2 id="nfs">NFSのインストール</h2>
-<pre><code class="language-">tome@tr253:~$ sudo apt -y install nfs-common</code></pre>
+<pre><code>tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install nfs-common</code></pre>
 <h2 id="nfs">NFSマウントの例</h2>
 <p>初めにマウントポイントを作成します。  </p>
 <p><code>mount</code>コマンドの<code>-t</code>オプションでnfsであることを明記します。  </p>
 <p>使用後は<code>umount</code>コマンドでアンマウントを行います。</p>
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo mkdir -p /jpc1
-<span class="shell-prompt">tome@tr253:~$</span> sudo mount -t nfs 172.21.14.1:/home1/unix/install /jpc1
-<span class="shell-prompt">tome@tr253:~$</span> sudo umount /jpc1</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo mkdir -p /jpc1
+tome@<?php echo $serverHostname; ?>:~$ sudo mount -t nfs 172.21.14.1:/home1/unix/install /jpc1
+tome@<?php echo $serverHostname; ?>:~$ sudo umount /jpc1</code></pre>
 
 <h1 id="mail-">Mail サーバ</h1>
 
@@ -261,18 +262,18 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 
 <h3 id="postfix-">Postfix のインストール</h3>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo apt -y install postfix</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install postfix</code></pre>
 
 <p>インストーラで「インターネットサイト」を選択し、ホスト名を確認します。</p>
 
 <h3 id="postfix">postfixの設定</h3>
 <p>postfixの設定ファイルである<code>/etc/postfix/main.cf</code>を<code>vi</code>エディタで編集します。</p>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo vi /etc/postfix/main.cf</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/postfix/main.cf</code></pre>
 
 <p>以下の設定を行います。</p>
 
-<pre><code class="language-">myhostname = tr253.netsys.cs.t-kougei.ac.jp
+<pre><code>myhostname = <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp
 mydomain = netsys.cs.t-kougei.ac.jp
 myorigin = $mydomain
 mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
@@ -291,14 +292,14 @@ home_mailbox = Maildir/</code></pre>
 <h3 id="postfix">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo systemctl restart postfix.service</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo systemctl restart postfix.service</code></pre>
 
 <h3 id="">メール転送の設定</h3>
 <p><code>/etc/aliases</code>ファイルに、 <code>転送元: 転送先</code> を指定することでメールを自動的に転送することができます。</p>
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo vi /etc/aliases</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/aliases</code></pre>
 
 <p><code>/etc/aliases</code>ファイルに下記を記述します。</p>
-<pre><code class="language-">root: kitamura@st.t-kougei.ac.jp</code></pre>
+<pre><code>root: kitamura@st.t-kougei.ac.jp</code></pre>
 
 <p><code>newaliases</code>コマンドで、<code>/etc/aliases</code>ファイルの設定を反映させます。</p>
 <pre><code class="language-bash">sudo newaliases</code></pre>
@@ -308,61 +309,61 @@ home_mailbox = Maildir/</code></pre>
 <p>mailコマンドをインストールしてメールの送信テストをします。</p>
 
 <h4 id="mail">mailコマンドのインストール</h4>
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo apt -y install mailutils</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install mailutils</code></pre>
 
 <h4 id="mailtome">mailコマンドでtomeに送信</h4>
 <p><code>mail</code>コマンドでtomeに「Test」というメッセージを送ります。  </p>
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> echo "test" | mail tome</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ echo "test" | mail tome</code></pre>
 
 <p><code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「Test」とあれば、成功です。</p>
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> ls /home/tome/Maildir/new</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ ls /home/tome/Maildir/new</code></pre>
 
 <h4 id="smtp-">SMTP レベルでの確認（任意）:</h4>
 
 <p><code>telnet</code>コマンドでSMTPが起動しているか確認します。</p>
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> telnet localhost 25
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ telnet localhost 25
 > quit</code></pre>
 
 <h2 id="dovecotpop3">Dovecot（POP3）</h2>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
 
 <h3 id="dovecot">Dovecotのインストール</h3>
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo apt -y install dovecot-core dovecot-pop3d</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install dovecot-core dovecot-pop3d</code></pre>
 
 <h3 id="dovecot">Dovecotの設定</h3>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-ssl.conf</code>ファイルをviエディタで開きます。</p>
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
 
 <p>SSLを無効にします。</p>
 
-<pre><code class="language-">ssl = no</code></pre>
+<pre><code>ssl = no</code></pre>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-auth.conf</code>ファイルをviエディタで開きます。</p>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
 
 <p>プレーンテキスト認証を許可します。</p>
 
-<pre><code class="language-">disable_plaintext_auth = no</code></pre>
+<pre><code>disable_plaintext_auth = no</code></pre>
 
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-mail.conf</code>ファイルをviエディタで開きます。</p>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
 
 <p><code>mail_location</code> を <code>maildir</code> に変更します。</p>
 
-<pre><code class="language-"># mail_location = mbox:~/mail:INBOX=/var/mail/%u
+<pre><code># mail_location = mbox:~/mail:INBOX=/var/mail/%u
 mail_location = maildir:~/Maildir</code></pre>
 
 <h3 id="dovecot">Dovecotの設定の反映</h3>
 <p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo systemctl restart dovecot</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo systemctl restart dovecot</code></pre>
 
 <h3 id="client1-pop3-">client1からの POP3 動作確認</h3>
 <p>cilent1を起動して、client1から</p>
 <p><code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@client1:~$</span> telnet tr253 110
+<pre><code class="language-bash">tome@client1:~$ telnet <?php echo $serverHostname; ?> 110
 user tome
 pass netsys00
 list
@@ -376,7 +377,7 @@ quit</code></pre>
 <pre><code class="language-bash">sudo ufw allow proto tcp to 0.0.0.0/0 port 25</code></pre>
 
 <p>特定のIPアドレスを許可:</p>
-<pre><code class="language-bash">sudo ufw allow proto tcp from 10.10.0.1</code></pre>
+<pre><code class="language-bash">sudo ufw allow proto tcp from <?php echo $clientIP; ?></code></pre>
 
 <p>状態確認とルール削除:</p>
 <pre><code class="language-bash">sudo ufw status numbered
@@ -393,9 +394,9 @@ sudo ufw disable</code></pre>
 <p>SSHは離れたコンピュータをセキュアに遠隔操作することが出来ます。</p>
 
 <h3 id="">インストールと起動確認</h3>
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo apt -y install openssh-server</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install openssh-server</code></pre>
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@tr253:~$</span> sudo systemctl status sshd</code></pre>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo systemctl status sshd</code></pre>
 
 <h3 id="root">rootログインの許可（必要な場合のみ）</h3>
 
@@ -403,7 +404,7 @@ sudo ufw disable</code></pre>
 
 <p>以下を追加/変更します。</p>
 
-<pre><code class="language-">PermitRootLogin yes</code></pre>
+<pre><code>PermitRootLogin yes</code></pre>
 
 <p>反映:</p>
 
@@ -412,14 +413,14 @@ sudo ufw disable</code></pre>
 <p>接続例:</p>
 
 <pre><code class="language-bash"># サーバからクライアントへ
-ssh -l root 10.10.0.1
+ssh -l root <?php echo $clientIP; ?>
 # クライアントからサーバへ
-ssh -l root 10.10.0.253</code></pre>
+ssh -l root <?php echo $serverIP; ?></code></pre>
 
 <h2 id="telnet-">telnet サーバ</h2>
 
 <pre><code class="language-bash">sudo apt -y install telnetd
-telnet tr253</code></pre>
+telnet <?php echo $serverHostname; ?></code></pre>
 
 <h2 id="rsh-">rsh サーバ</h2>
 
@@ -427,14 +428,14 @@ telnet tr253</code></pre>
 
 <p>パスワードなし接続の例（検証用途）:</p>
 
-<pre><code class="language-bash"># サーバ側（tr253）
-sudo sh -c 'echo "root 10.10.0.1" > /root/.rhosts'
+<pre><code class="language-bash"># サーバ側（<?php echo $serverHostname; ?>）
+sudo sh -c 'echo "root <?php echo $clientIP; ?>" > /root/.rhosts'
 sudo vi /root/.rhosts
 
 以下を記入</code></pre>
-<p>root 10.10.0.1</p>
-<pre><code class="language-"># クライアント側（client1）
-sudo sh -c 'echo "root 10.10.0.253" > /root/.rhosts'</code></pre>
+<p>root <?php echo $clientIP; ?></p>
+<pre><code># クライアント側（client1）
+sudo sh -c 'echo "root <?php echo $serverIP; ?>" > /root/.rhosts'</code></pre>
 
 <h1 id="">参考</h1>
 <p>（参考）suができるユーザの設定</p>

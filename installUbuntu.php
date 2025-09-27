@@ -47,7 +47,7 @@ $user = $_GET['username'];
 	<?php require 'assets/source/installUbuntu.html'?>
 
     <!-- PAGE TOP ボタン -->
-    <button id="pageTop" class="page-top" title="ページトップへ">↑</button>
+    <button id="pageTop" class="page-top" title="ページトップ">↑</button>
 
     <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-bash.min.js"></script>
