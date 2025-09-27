@@ -67,10 +67,10 @@ class MarkdownParser {
     processDynamicVariables(markdown) {
         let processed = markdown;
         
-        // {{variable}} 形式の変数を処理
+        // {{variable}} 形式の変数をPHPのecho文に変換
         Object.keys(this.variables).forEach(key => {
             const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
-            processed = processed.replace(regex, this.variables[key]);
+            processed = processed.replace(regex, `<?php echo $${key}; ?>`);
         });
         
         return processed;
@@ -101,7 +101,10 @@ class MarkdownParser {
                 } else {
                     // コードブロックの終了
                     inCodeBlock = false;
-                    html += `<pre><code class="language-${codeBlockLang}">${codeBlockContent.trim()}</code></pre>\n`;
+                    // bashまたはshellの場合のみclass="language-bash"を適用
+                    const className = (codeBlockLang === 'bash' || codeBlockLang === 'shell') ? 'language-bash' : '';
+                    const classAttr = className ? ` class="${className}"` : '';
+                    html += `<pre><code${classAttr}>${codeBlockContent.trim()}</code></pre>\n`;
                     codeBlockContent = '';
                 }
                 continue;
@@ -194,7 +197,7 @@ class MarkdownParser {
      * 後処理：テーマ固有の処理
      */
     postprocess(html) {
-        // シェルプロンプトの処理
+        // シェルプロンプトの処理（class="language-bash"が適用されている場合のみ）
         if (this.options.enableShellPrompt) {
             html = html.replace(
                 /<pre><code class="language-bash">([\s\S]*?)<\/code><\/pre>/g,
@@ -252,9 +255,8 @@ class MarkdownParser {
         const headings = html.match(/<h([1-6])[^>]*id="([^"]*)"[^>]*>(.*?)<\/h[1-6]>/g);
         if (!headings) return '';
 
-        let toc = '';
-        let currentLevel = 0;
-        let openTags = '';
+        let toc = '<ul class="toc">\n';
+        let stack = []; // 開いているulタグのレベルを追跡
 
         headings.forEach(heading => {
             const levelMatch = heading.match(/<h([1-6])/);
@@ -267,22 +269,28 @@ class MarkdownParser {
             const id = idMatch[1];
             const text = textMatch[1];
 
-            // レベルに応じてタグを調整
-            while (currentLevel < level) {
+            // 現在のレベルより高い場合は、新しいulを開く
+            while (stack.length < level) {
                 toc += '<ul>\n';
-                openTags += '</ul>\n';
-                currentLevel++;
+                stack.push(level);
             }
-            while (currentLevel > level) {
+
+            // 現在のレベルより低い場合は、ulを閉じる
+            while (stack.length > level) {
                 toc += '</ul>\n';
-                openTags = openTags.replace('</ul>\n', '');
-                currentLevel--;
+                stack.pop();
             }
 
             toc += `<li><a href="#${id}">${text}</a></li>\n`;
         });
 
-        toc += openTags;
+        // 残りのulタグを閉じる
+        while (stack.length > 0) {
+            toc += '</ul>\n';
+            stack.pop();
+        }
+        
+        toc += '</ul>';
         return toc;
     }
 
