@@ -82,16 +82,41 @@ class MarkdownParser {
             if (trimmedLine.startsWith('```')) {
                 if (!inCodeBlock) {
                     inCodeBlock = true;
-                    codeBlockLang = trimmedLine.substring(3).trim();
+                    const langAndFile = trimmedLine.substring(3).trim();
+                    
+                    // {file=filename} 形式を処理
+                    const fileMatch = langAndFile.match(/^\{file=([^}]+)\}$/);
+                    if (fileMatch) {
+                        codeBlockLang = '';
+                        this.currentCodeBlockFile = fileMatch[1];
+                    } else {
+                        // language:filename 形式を処理
+                        if (langAndFile.includes(':')) {
+                            const parts = langAndFile.split(':');
+                            codeBlockLang = parts[0];
+                            this.currentCodeBlockFile = parts[1];
+                        } else {
+                            codeBlockLang = langAndFile;
+                            this.currentCodeBlockFile = null;
+                        }
+                    }
                     codeBlockContent = '';
                 } else {
                     // コードブロックの終了
                     inCodeBlock = false;
+                    
+                    // ファイル名の表示を追加
+                    let fileInfo = '';
+                    if (this.currentCodeBlockFile) {
+                        fileInfo = `<div class="code-file-info">📁 ${this.currentCodeBlockFile}</div>\n`;
+                    }
+                    
                     // bashまたはshellの場合のみclass="language-bash"を適用
                     const className = (codeBlockLang === 'bash' || codeBlockLang === 'shell') ? 'language-bash' : '';
                     const classAttr = className ? ` class="${className}"` : '';
-                    html += `<pre><code${classAttr}>${codeBlockContent.trim()}</code></pre>\n`;
+                    html += `${fileInfo}<pre><code${classAttr}>${codeBlockContent.trim()}</code></pre>\n`;
                     codeBlockContent = '';
+                    this.currentCodeBlockFile = null;
                 }
                 continue;
             }
@@ -132,7 +157,15 @@ class MarkdownParser {
                     inList = true;
                     listType = 'ul';
                 }
-                const text = trimmedLine.substring(2);
+                let text = trimmedLine.substring(2);
+                
+                // インラインコードの処理
+                text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+                
+                // 強調の処理
+                text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+                text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+                
                 html += `<li>${text}</li>\n`;
                 continue;
             }
@@ -144,7 +177,15 @@ class MarkdownParser {
                     inList = true;
                     listType = 'ol';
                 }
-                const text = trimmedLine.substring(trimmedLine.indexOf('.') + 2);
+                let text = trimmedLine.substring(trimmedLine.indexOf('.') + 2);
+                
+                // インラインコードの処理
+                text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+                
+                // 強調の処理
+                text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+                text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+                
                 html += `<li>${text}</li>\n`;
                 continue;
             }
@@ -193,6 +234,18 @@ class MarkdownParser {
      * 後処理：テーマ固有の処理
      */
     postprocess(html) {
+        // すべてのコードブロックでgitの追加と削除を表す背景を処理（Prism.jsの処理前に実行）
+        html = html.replace(
+            /<pre><code[^>]*>([\s\S]*?)<\/code><\/pre>/g,
+            (match, code) => {
+                const processedCode = code
+                    .replace(/\+\[\[([^\]]+)\]\]/g, '<span class="git-add">$1</span>')
+                    .replace(/\-\[\[([^\]]+)\]\]/g, '<span class="git-remove">$1</span>');
+                
+                return match.replace(code, processedCode);
+            }
+        );
+
         // シェルプロンプトの処理（class="language-bash"が適用されている場合のみ）
         html = html.replace(
             /<pre><code class="language-bash">([\s\S]*?)<\/code><\/pre>/g,

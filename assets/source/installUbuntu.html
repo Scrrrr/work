@@ -111,6 +111,7 @@
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ vi ~/.vimrc</code></pre>
 
 <p>以下を追記します。</p>
+<div class="code-file-info">📁 ~/.vimrc</div>
 <pre><code>set nocompatible</code></pre>
 
 <p><div class="hint"></p>
@@ -141,7 +142,7 @@ tomeのパスワード:
 
 <p>15行目付近にある以下のコメントを外し、末尾に <code>group=adm</code> を付けます。</p>
 
-<pre><code>auth required pam_wheel.so group=adm</code></pre>
+<pre><code>auth required pam_wheel.so <span class="git-add">group=adm</span></code></pre>
 
 <p><div class="hint"></p>
 <p><p><strong>ヒント:</strong></p></p>
@@ -159,10 +160,10 @@ tomeのパスワード:
 <ul>
 <li>接続の編集 → 対象インターフェースを選択 → 編集</li>
 <li>IPv4 の設定: 手作業</li>
-<li>アドレス: `<?php echo $serverIP; ?>/24`</li>
-<li>ゲートウェイ: `<?php echo $gatewayIP; ?>`</li>
-<li>DNS サーバー: `<?php echo $gatewayIP; ?>`</li>
-<li>検索ドメイン: `netsys.cs.t-kougei.ac.jp cs.t-kougei.ac.jp t-kougei.ac.jp`</li>
+<li>アドレス: <code><?php echo $serverIP; ?>/24</code></li>
+<li>ゲートウェイ: <code><?php echo $gatewayIP; ?></code></li>
+<li>DNS サーバー: <code><?php echo $gatewayIP; ?></code></li>
+<li>検索ドメイン: <code>netsys.cs.t-kougei.ac.jp cs.t-kougei.ac.jp t-kougei.ac.jp</code></li>
 </ul>
 <p>設定後、OK → 戻る → 終了。</p>
 
@@ -244,9 +245,9 @@ home_mailbox = Maildir/</code></pre>
 
 <p>参考:</p>
 <ul>
-<li>`myorigin`: 外行きメールに使うドメイン</li>
-<li>`mydestination`: 受信するドメイン</li>
-<li>`mynetworks`: メールリレーを許可するネットワーク</li>
+<li><code>myorigin</code>: 外行きメールに使うドメイン</li>
+<li><code>mydestination</code>: 受信するドメイン</li>
+<li><code>mynetworks</code>: メールリレーを許可するネットワーク</li>
 </ul>
 <h3 id="4.1.11">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>

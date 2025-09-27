@@ -62,7 +62,7 @@ tome@{{serverHostname}}:~$ vi ~/.vimrc
 ```
 
 以下を追記します。
-```
+```{file=~/.vimrc}
 set nocompatible
 ```
 
@@ -97,7 +97,7 @@ tome@{{serverHostname}}:~$ sudo vi /etc/pam.d/su
 15行目付近にある以下のコメントを外し、末尾に `group=adm` を付けます。
 
 ```
-auth required pam_wheel.so group=adm
+auth required pam_wheel.so +[[group=adm]]
 ```
 
 :::hint

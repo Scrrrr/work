@@ -312,3 +312,51 @@ h1, h2, h3, h4 {
     transition: transform 0.2s ease;
 }
 
+/* Gitの追加を表す緑色の背景 */
+.git-add {
+    background-color: #d4edda;
+    color: #333;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: normal;
+    border: 1px solid #c3e6cb;
+}
+
+/* Gitの削除を表す赤色の背景 */
+.git-remove {
+    background-color: #f8d7da;
+    color: #333;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: normal;
+    border: 1px solid #f5c6cb;
+}
+
+/* コードブロックのファイル名表示 */
+.code-file-info {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    padding: 4px 8px;
+    margin: 15px 0 0 0;
+    border: 1px solid #dee2e6;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    font-size: 0.75em;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 500;
+    display: inline-block;
+    max-width: fit-content;
+}
+
+/* ファイル名表示の直後のpreタグの調整 */
+.code-file-info + pre {
+    margin-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: none;
+}
+
+.code-file-info + pre code {
+    margin: 0;
+}
+
