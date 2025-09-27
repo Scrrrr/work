@@ -4,8 +4,6 @@ UbuntuはLinuxディストリビューションの中でもサーバ向け、デ
 
 ## インストールする前に
 このマニュアルは設定内容と基本説明のみで構成されています。 そのため、コマンドの操作などは実際に調べて設定してもらいます。 コマンドの調べ方は「[コマンドの名前] 操作方法」または「[コマンドの名前] 使い方」で検索してブログ記事やオンラインマニュアルから探してください。
-
-# Ubuntuのインストール
 ## ブートローダーの起動
 黒い画面が現れたら`「Try or Install Ubuntu」`に矢印キーでカーソルを合わせて[Enter]
 しばらくの時間、起動の準備が行われます。
@@ -33,10 +31,10 @@ UbuntuはLinuxディストリビューションの中でもサーバ向け、デ
 時刻の設定をします。  
 世界地図で日本にピンが刺されてあり、下の入力欄に「Tokyo」とあったら[続ける]を選択します。
 
-## あなたの情報を入力してください。
+## あなたの情報を入力してください
 ```
 あなたの名前：tome
-コンピュータの名前：tr253
+コンピュータの名前：{{serverHostname}}
 ユーザ名の入力：tome
 パスワードの入力：netsys00
 パスワードの確認：netsys00
@@ -60,7 +58,7 @@ UbuntuはLinuxディストリビューションの中でもサーバ向け、デ
 ホームディレクトリで `~/.vimrc` を作成して互換モードを無効化します。
 
 ```bash
-tome@tr253:~$ vi ~/.vimrc
+tome@{{serverHostname}}:~$ vi ~/.vimrc
 ```
 
 以下を追記します。
@@ -68,9 +66,9 @@ tome@tr253:~$ vi ~/.vimrc
 set nocompatible
 ```
 
-:::hint  
-viは「i」でインサートモード。「Esc」を押して通常モードに戻る。  
-「:w」で保存「:q」で終了、「:wq」で保存して終了。  
+:::hint
+viは「i」でインサートモード。「Esc」を押して通常モードに戻る。
+「:w」で保存「:q」で終了、「:wq」で保存して終了。
 :::  
 
 ### 省電力設定（デスクトップ環境）
@@ -82,7 +80,7 @@ viは「i」でインサートモード。「Esc」を押して通常モード�
 端末を開き、root のパスワードを設定します。
 
 ```bash
-tome@tr253:~$ sudo passwd root [Enter]
+tome@{{serverHostname}}:~$ sudo passwd root [Enter]
 tomeのパスワード:
 新しいパスワード:(tomeと同じ)
 新しいパスワードを再入力してください:(tomeと同じ)
@@ -93,7 +91,7 @@ tomeのパスワード:
 続いて `su`コマンドが使用できるユーザを制御します。
 
 ```bash
-tome@tr253:~$ sudo vi /etc/pam.d/su
+tome@{{serverHostname}}:~$ sudo vi /etc/pam.d/su
 ```
 
 15行目付近にある以下のコメントを外し、末尾に `group=adm` を付けます。
@@ -102,9 +100,9 @@ tome@tr253:~$ sudo vi /etc/pam.d/su
 auth required pam_wheel.so **group=adm**
 ```
 
-:::hint  
-vimは通常モードで  
-「h」で左に移動、「j」で下に移動、「k」で上に移動、「l」で右に移動  
+:::hint
+vimは通常モードで
+「h」で左に移動、「j」で下に移動、「k」で上に移動、「l」で右に移動
 :::  
 
 ## ネットワーク設定（root 権限で実施）
@@ -118,9 +116,9 @@ sudo nmtui
 
 - 接続の編集 → 対象インターフェースを選択 → 編集
 - IPv4 の設定: 手作業
-- アドレス: `10.10.0.253/24`
-- ゲートウェイ: `10.10.0.254`
-- DNS サーバー: `10.10.0.254`
+- アドレス: `{{serverIP}}/24`
+- ゲートウェイ: `{{gatewayIP}}`
+- DNS サーバー: `{{gatewayIP}}`
 - 検索ドメイン: `netsys.cs.t-kougei.ac.jp cs.t-kougei.ac.jp t-kougei.ac.jp`
 
 設定後、OK → 戻る → 終了。
@@ -130,27 +128,27 @@ sudo nmtui
 `hostnamectl`コマンドを使用してホスト名を変更します。
 
 ```bash
-tome@tr253:~$ hostnamectl set-hostname tr253.netsys.cs.t-kougei.ac.jp [Enter]
+tome@{{serverHostname}}:~$ hostnamectl set-hostname {{serverHostname}}.netsys.cs.t-kougei.ac.jp [Enter]
 ```
 
 ### 設定確認とネットワーク再起動
 
 IPアドレスが適切にenp10のinetに割り当てられているか確認します。
 ```bash
-tome@tr253:~$ ip a
+tome@{{serverHostname}}:~$ ip a
 ```
 
 もしも割り当てられていなかったらNetworkManagerを再起動します。
 
 ```bash
-tome@tr253:~$ sudo systemctl restart NetworkManager
+tome@{{serverHostname}}:~$ sudo systemctl restart NetworkManager
 ```
 
 ### APTのプロキシ設定
 APTパッケージマネージャーが大学内のプロキシサーバを経由できるように設定を行います。
 
 ```bash
-tome@tr253:~$ sudo vi /etc/apt/apt.conf
+tome@{{serverHostname}}:~$ sudo vi /etc/apt/apt.conf
 ```
 
 以下を設定します。
@@ -165,7 +163,7 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 `netstat`コマンドなどを使用するために `net-tools` を導入します。
 
 ```bash
-tome@tr253:~$ sudo apt -y install net-tools
+tome@{{serverHostname}}:~$ sudo apt -y install net-tools
 ```
 
 # NFS クライアント
@@ -175,16 +173,16 @@ NFSクライアントはNFSサーバからファイルを取得するための�
 
 ## NFSのインストール
 ```
-tome@tr253:~$ sudo apt -y install nfs-common
+tome@{{serverHostname}}:~$ sudo apt -y install nfs-common
 ```
 ## NFSマウントの例
 初めにマウントポイントを作成します。  
 `mount`コマンドの`-t`オプションでnfsであることを明記します。  
 使用後は`umount`コマンドでアンマウントを行います。
 ```bash
-tome@tr253:~$ sudo mkdir -p /jpc1
-tome@tr253:~$ sudo mount -t nfs 172.21.14.1:/home1/unix/install /jpc1
-tome@tr253:~$ sudo umount /jpc1
+tome@{{serverHostname}}:~$ sudo mkdir -p /jpc1
+tome@{{serverHostname}}:~$ sudo mount -t nfs 172.21.14.1:/home1/unix/install /jpc1
+tome@{{serverHostname}}:~$ sudo umount /jpc1
 ```
 
 # Mail サーバ
@@ -197,7 +195,7 @@ Mailサーバはメールの送受信を行うためのサーバです。
 ### Postfix のインストール
 
 ```bash
-tome@tr253:~$ sudo apt -y install postfix
+tome@{{serverHostname}}:~$ sudo apt -y install postfix
 ```
 
 インストーラで「インターネットサイト」を選択し、ホスト名を確認します。
@@ -206,13 +204,13 @@ tome@tr253:~$ sudo apt -y install postfix
 postfixの設定ファイルである`/etc/postfix/main.cf`を`vi`エディタで編集します。
 
 ```bash
-tome@tr253:~$ sudo vi /etc/postfix/main.cf
+tome@{{serverHostname}}:~$ sudo vi /etc/postfix/main.cf
 ```
 
 以下の設定を行います。
 
 ```
-myhostname = tr253.netsys.cs.t-kougei.ac.jp
+myhostname = {{serverHostname}}.netsys.cs.t-kougei.ac.jp
 mydomain = netsys.cs.t-kougei.ac.jp
 myorigin = $mydomain
 mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
@@ -232,13 +230,13 @@ home_mailbox = Maildir/
 `systemctl`コマンドでpostfixを再起動します。
 
 ```bash
-tome@tr253:~$ sudo systemctl restart postfix.service
+tome@{{serverHostname}}:~$ sudo systemctl restart postfix.service
 ```
 
 ### メール転送の設定
 `/etc/aliases`ファイルに、 `転送元: 転送先` を指定することでメールを自動的に転送することができます。
 ```bash
-tome@tr253:~$ sudo vi /etc/aliases
+tome@{{serverHostname}}:~$ sudo vi /etc/aliases
 ```
 
 `/etc/aliases`ファイルに下記を記述します。
@@ -257,25 +255,25 @@ mailコマンドをインストールしてメールの送信テストをしま�
 
 #### mailコマンドのインストール
 ```bash
-tome@tr253:~$ sudo apt -y install mailutils
+tome@{{serverHostname}}:~$ sudo apt -y install mailutils
 ```
 
 #### mailコマンドでtomeに送信 
 `mail`コマンドでtomeに「Test」というメッセージを送ります。  
 ```bash
-tome@tr253:~$ echo "test" | mail tome
+tome@{{serverHostname}}:~$ echo "test" | mail tome
 ```
 
 `/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「Test」とあれば、成功です。
 ```bash
-tome@tr253:~$ ls /home/tome/Maildir/new
+tome@{{serverHostname}}:~$ ls /home/tome/Maildir/new
 ```
 
 #### SMTP レベルでの確認（任意）:  
 
 `telnet`コマンドでSMTPが起動しているか確認します。
 ```bash
-tome@tr253:~$ telnet localhost 25
+tome@{{serverHostname}}:~$ telnet localhost 25
 > quit
 ```
 
@@ -284,13 +282,13 @@ Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオー�
 
 ### Dovecotのインストール
 ```bash
-tome@tr253:~$ sudo apt -y install dovecot-core dovecot-pop3d
+tome@{{serverHostname}}:~$ sudo apt -y install dovecot-core dovecot-pop3d
 ```
 
 ### Dovecotの設定
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-ssl.conf`ファイルをviエディタで開きます。
 ```bash
-tome@tr253:~$ sudo vi /etc/dovecot/conf.d/10-ssl.conf
+tome@{{serverHostname}}:~$ sudo vi /etc/dovecot/conf.d/10-ssl.conf
 ```
 
 SSLを無効にします。
@@ -301,7 +299,7 @@ ssl = no
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-auth.conf`ファイルをviエディタで開きます。
 
 ```bash
-tome@tr253:~$ sudo vi /etc/dovecot/conf.d/10-auth.conf
+tome@{{serverHostname}}:~$ sudo vi /etc/dovecot/conf.d/10-auth.conf
 ```
 
 プレーンテキスト認証を許可します。
@@ -313,7 +311,7 @@ disable_plaintext_auth = no
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-mail.conf`ファイルをviエディタで開きます。
 
 ```bash
-tome@tr253:~$ sudo vi /etc/dovecot/conf.d/10-mail.conf
+tome@{{serverHostname}}:~$ sudo vi /etc/dovecot/conf.d/10-mail.conf
 ```
 
 `mail_location` を `maildir` に変更します。
@@ -327,7 +325,7 @@ mail_location = maildir:~/Maildir
 `systemctl`コマンドでdovecotを再起動します。
 
 ```bash
-tome@tr253:~$ sudo systemctl restart dovecot
+tome@{{serverHostname}}:~$ sudo systemctl restart dovecot
 ```
 
 ### client1からの POP3 動作確認
@@ -335,7 +333,7 @@ cilent1を起動して、client1から
 `telnet`コマンドを使用してメールの受信を確認します。
 
 ```bash
-tome@client1:~$ telnet tr253 110
+tome@client1:~$ telnet {{serverHostname}} 110
 user tome
 pass netsys00
 list
@@ -353,7 +351,7 @@ sudo ufw allow proto tcp to 0.0.0.0/0 port 25
 
 特定のIPアドレスを許可:
 ```bash
-sudo ufw allow proto tcp from 10.10.0.1
+sudo ufw allow proto tcp from {{clientIP}}
 ```
 
 状態確認とルール削除:
@@ -376,11 +374,11 @@ SSHは離れたコンピュータをセキュアに遠隔操作することが�
 
 ### インストールと起動確認
 ```bash
-tome@tr253:~$ sudo apt -y install openssh-server
+tome@{{serverHostname}}:~$ sudo apt -y install openssh-server
 ```
 
 ```bash
-tome@tr253:~$ sudo systemctl status sshd
+tome@{{serverHostname}}:~$ sudo systemctl status sshd
 ```
 
 ### rootログインの許可（必要な場合のみ）
@@ -405,16 +403,16 @@ sudo systemctl restart ssh
 
 ```bash
 # サーバからクライアントへ
-ssh -l root 10.10.0.1
+ssh -l root {{clientIP}}
 # クライアントからサーバへ
-ssh -l root 10.10.0.253
+ssh -l root {{serverIP}}
 ```
 
 ## telnet サーバ
 
 ```bash
 sudo apt -y install telnetd
-telnet tr253
+telnet {{serverHostname}}
 ```
 
 ## rsh サーバ
@@ -426,17 +424,17 @@ sudo apt -y install rsh-client rsh-server
 パスワードなし接続の例（検証用途）:
 
 ```bash
-# サーバ側（tr253）
-sudo sh -c 'echo "root 10.10.0.1" > /root/.rhosts'
+# サーバ側（{{serverHostname}}）
+sudo sh -c 'echo "root {{clientIP}}" > /root/.rhosts'
 sudo vi /root/.rhosts
 
 以下を記入
 ```
-root 10.10.0.1
+root {{clientIP}}
 ```
 
 # クライアント側（client1）
-sudo sh -c 'echo "root 10.10.0.253" > /root/.rhosts'
+sudo sh -c 'echo "root {{serverIP}}" > /root/.rhosts'
 ```
 
 # 参考
