@@ -6,8 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 目次のリンク要素を取得
     const tocLinks = document.querySelectorAll('.toc a');
     
-    // 見出し要素を取得（本文領域に限定: h2〜h4）
-    const headings = document.querySelectorAll('.main-content h2, .main-content h3, .main-content h4');
+    // 見出し要素を取得（メインコンテンツのみ）
+    const headings = document.querySelectorAll('.main-content h1, .main-content h2, .main-content h3, .main-content h4');
     
     // PAGE TOPボタンの表示/非表示制御
     function togglePageTopButton() {
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
     tocItems.forEach(item => {
         const subList = item.querySelector('ul');
         if (subList) {
-            const mainLink = item.querySelector('a:first-child');
+            const mainLink = item.querySelector(':scope > a');
             if (mainLink) {
                 mainLink.style.cursor = 'pointer';
                 mainLink.addEventListener('click', function(e) {
@@ -122,13 +122,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Prism.jsの初期化
-    function initializePrism() {
-        if (typeof Prism !== 'undefined') {
-            Prism.highlightAll();
-        }
-    }
-
     // 見出しにチェックボックスを追加（h1と目次は除外）
     function addCheckboxesToHeadings() {
         headings.forEach(heading => {
@@ -164,6 +157,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // チェックボックスを追加
     addCheckboxesToHeadings();
-    
+
+    // Prism.jsの初期化
+    function initializePrism() {
+        if (window.Prism) {
+            Prism.highlightAll();
+        } else {
+            setTimeout(initializePrism, 100);
+        }
+    }
+
     initializePrism();
 });
