@@ -90,14 +90,6 @@ try {
 // MarkdownParserのインスタンスを作成
 const parser = new MarkdownParser();
 
-// 動的変数を設定（PHPのecho文として出力される）
-parser.variables = {
-    serverHostname: 'serverHostname',
-    serverIP: 'serverIP', 
-    gatewayIP: 'gatewayIP',
-    clientIP: 'clientIP'
-};
-
 // HTMLを生成（インクルード用）
 const html = parser.generateIncludeHTML(markdownContent);
 

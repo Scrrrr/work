@@ -21,9 +21,7 @@ work/
     ├── images/                  # 画像ファイル
     └── source/                  # 生成されたHTMLファイル
         ├── installUbuntu.html
-        ├── installUbuntu_.html
         ├── installRocky.html
-        └── installRocky_.html
 ```
 
 ## 機能
@@ -86,45 +84,12 @@ IPアドレス: {{serverIP}}
 
 ## 使用方法
 
-### 1. 基本的な使用方法
-
-```javascript
-const MarkdownParser = require('./markdown-parser.js');
-
-const parser = new MarkdownParser();
-
-// 動的変数を設定
-parser.variables = {
-    serverHostname: 'server1',
-    serverIP: '192.168.1.100',
-    gatewayIP: '192.168.1.1'
-};
-
-// Markdownをパース
-const markdown = fs.readFileSync('installUbuntu.md', 'utf8');
-const html = parser.parse(markdown);
-```
-
-### 2. 完全なHTMLページの生成
-
-```javascript
-const fullHTML = parser.generateFullHTML(markdown, 'Ubuntuのインストール');
-```
-
-### 3. インクルード用HTMLの生成
-
-```javascript
-const includeHTML = parser.generateIncludeHTML(markdown);
-```
-
-### 4. コマンドラインからの使用
-
 ```bash
 # 基本的な変換
-node generate-html.js
+node generate-html.js installRocky.md
 
 # 出力ファイルを指定
-node generate-html.js -d output.html
+node generate-html.js installRocky.md -d assets/source/installRocky.html
 
 # タイトルを指定
 node generate-html.js -t "カスタムタイトル"
@@ -144,15 +109,6 @@ node generate-html.js -h
 - `.toc` - 目次
 - `.page-top` - ページトップボタン
 
-### カスタマイズ
-
-`assets/css/styles.css`を編集してスタイルをカスタマイズできます。特に以下の要素を調整できます：
-
-- カラーテーマ
-- フォントサイズ
-- レイアウト
-- レスポンシブデザイン
-
 ## 目次機能
 
 パーサーは自動的に目次（TOC）を生成します：
@@ -167,19 +123,3 @@ node generate-html.js -h
 - **ブラウザ**: モダンブラウザ対応
 - **依存関係**: なし（純粋なJavaScript）
 - **Prism.js**: シンタックスハイライト対応
-
-## ライセンス
-
-このプロジェクトはMITライセンスの下で公開されています。
-
-## 貢献
-
-バグ報告や機能追加の提案は、GitHubのIssueでお知らせください。
-
-## 更新履歴
-
-- v1.0.0: 基本的なMarkdownパーサー機能
-- v1.1.0: ヒントボックス機能追加
-- v1.2.0: ファイル名表示機能追加
-- v1.3.0: Git差分表示機能追加
-- v1.4.0: 動的変数機能追加
