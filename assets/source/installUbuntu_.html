@@ -59,7 +59,7 @@
         <main class="main-content">
             <h1 id="1">Ubuntuのインストール</h1>
             <p>UbuntuはLinuxディストリビューションの中でもサーバ向け、デスクトップ向け共に人気の高いディストリビューションです。これからUbuntuをコンピュータにインストールしてメール、ウェブ、ファイル共有、リモートログイン機能を持ったサーバを構築していきます。</p>
-            <p>今回インストールするバージョンはUbuntu 24.04.2 - Desktopです。</p>
+            <p>今回インストールするバージョンはUbuntu 22.04.2 - Desktopです。</p>
 
             <h2 id="1.1">インストールする前に</h2>
             <p>このマニュアルは設定内容と基本説明のみで構成されています。 そのため、コマンドの操作などは実際に調べて設定してもらいます。 コマンドの調べ方は「[コマンドの名前] 操作方法」または「[コマンドの名前] 使い方」で検索してブログ記事やオンラインマニュアルから探してください。</p>
@@ -234,9 +234,9 @@ home_mailbox = Maildir/</code></pre>
             <p><code>/etc/aliases</code>ファイルに、 <code>転送元: 転送先</code> を指定することでメールを自動的に転送することができます。</p>
             <pre><code class="language-bash"><span class="shell-prompt">tome@<?php echo $serverHostname; ?>:~$</span> sudo vi /etc/aliases</code></pre>
             <p><code>/etc/aliases</code>ファイルに下記を記述します。</p>
-            <pre><code class="language-bash">root: kitamura@st.t-kougei.ac.jp</code></pre>
+            <pre><code>root: kitamura@st.t-kougei.ac.jp</code></pre>
             <p><code>newaliases</code>コマンドで、<code>/etc/aliases</code>ファイルの設定を反映させます。</p>
-            <pre><code class="language-bash">sudo newaliases</code></pre>
+            <pre><code class="language-bash">tome@tr253:~$ sudo newaliases</code></pre>
 
             <h3>メール送受信確認（ローカル）</h3>
             <p>mailコマンドをインストールしてメールの送信テストをします。</p>
@@ -265,15 +265,15 @@ home_mailbox = Maildir/</code></pre>
             <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-ssl.conf</code>ファイルをviエディタで開きます。</p>
             <pre><code class="language-bash"><span class="shell-prompt">tome@<?php echo $serverHostname; ?>:~$</span> sudo vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
             <p>SSLを無効にします。</p>
-            <pre><code class="language-bash">ssl = no</code></pre>
+            <pre><code>ssl = no</code></pre>
             <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-auth.conf</code>ファイルをviエディタで開きます。</p>
             <pre><code class="language-bash"><span class="shell-prompt">tome@<?php echo $serverHostname; ?>:~$</span> sudo vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
             <p>プレーンテキスト認証を許可します。</p>
-            <pre><code class="language-bash">disable_plaintext_auth = no</code></pre>
+            <pre>disable_plaintext_auth = no</code></pre>
             <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-mail.conf</code>ファイルをviエディタで開きます。</p>
             <pre><code class="language-bash"><span class="shell-prompt">tome@<?php echo $serverHostname; ?>:~$</span> sudo vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
             <p><code>mail_location</code> を <code>maildir</code> に変更します。</p>
-            <pre><code class="language-bash"># mail_location = mbox:~/mail:INBOX=/var/mail/%u
+            <pre><code># mail_location = mbox:~/mail:INBOX=/var/mail/%u
 mail_location = maildir:~/Maildir</code></pre>
 
             <h3>Dovecotの設定の反映</h3>
@@ -292,15 +292,15 @@ quit</code></pre>
 
             <h1 id="5">ファイアウォールの設定（UFW）</h1>
             <p>25 番ポート（IPv4）を許可:</p>
-            <pre><code class="language-bash">sudo ufw allow proto tcp to 0.0.0.0/0 port 25</code></pre>
+            <pre><code class="language-bash">tome@tr253:~$ sudo ufw allow proto tcp to 0.0.0.0/0 port 25</code></pre>
             <p>特定のIPアドレスを許可:</p>
-            <pre><code class="language-bash">sudo ufw allow proto tcp from 10.10.0.1</code></pre>
+            <pre><code class="language-bash">tome@tr253:~$ sudo ufw allow proto tcp from 10.10.0.1</code></pre>
             <p>状態確認とルール削除:</p>
-            <pre><code class="language-bash">sudo ufw status numbered
-sudo ufw delete &lt;番号&gt;</code></pre>
+            <pre><code class="language-bash">tome@tr253:~$ sudo ufw status numbered
+tome@tr253:~$ sudo ufw delete &lt;番号&gt;</code></pre>
             <p>有効化/無効化:</p>
-            <pre><code class="language-bash">sudo ufw enable
-sudo ufw disable</code></pre>
+            <pre><code class="language-bash">tome@tr253:~$ sudo ufw enable
+tome@tr253:~$ sudo ufw disable</code></pre>
             <p>起動/停止は <code>systemctl</code> でも制御可能です。</p>
 
             <h1 id="6">ログインサーバ（SSH）</h1>
@@ -311,14 +311,14 @@ sudo ufw disable</code></pre>
             <pre><code class="language-bash"><span class="shell-prompt">tome@<?php echo $serverHostname; ?>:~$</span> sudo systemctl status sshd</code></pre>
 
             <h2>rootログインの許可（必要な場合のみ）</h2>
-            <pre><code class="language-bash">sudo vi /etc/ssh/sshd_config</code></pre>
+            <pre><code class="language-bash">tome@tr253:~$ sudo vi /etc/ssh/sshd_config</code></pre>
             <p>以下を追加/変更します。</p>
-            <pre><code class="language-bash">PermitRootLogin yes</code></pre>
+            <pre><code>PermitRootLogin yes</code></pre>
             <p>反映:</p>
-            <pre><code class="language-bash">sudo systemctl restart ssh</code></pre>
+            <pre><code class="language-bash">tome@tr253:~$ sudo systemctl restart ssh</code></pre>
             <p>接続例:</p>
             <pre><code class="language-bash"># サーバからクライアントへ
-ssh -l root 10.10.0.1
+tome@tr253:~$ ssh -l root 10.10.0.1
 # クライアントからサーバへ
 ssh -l root <?php echo $serverIP; ?></code></pre>
 
@@ -327,7 +327,7 @@ ssh -l root <?php echo $serverIP; ?></code></pre>
 telnet <?php echo $serverHostname; ?></code></pre>
 
             <h2 id="6.2">rsh サーバ</h2>
-            <pre><code class="language-bash">sudo apt -y install rsh-client rsh-server</code></pre>
+            <pre><code class="language-bash">tome@tr253:~$ sudo apt -y install rsh-client rsh-server</code></pre>
             <p>パスワードなし接続の例（検証用途）:</p>
             <pre><code class="language-bash"># サーバ側（<?php echo $serverHostname; ?>）
 sudo sh -c 'echo "root 10.10.0.1" > /root/.rhosts'
