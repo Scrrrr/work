@@ -223,10 +223,10 @@ li {
     margin-bottom: 8px;
 }
 
-/* ヒントボックス */
+/* 情報ボックス */
 .hint {
-    background-color: #e8f4fd;
-    border-left: 4px solid #3498db;
+    background-color: #e8f5e8;
+    border-left: 4px solid #57ab5a;
     padding: 15px;
     margin: 20px 0;
     border-radius: 0 6px 6px 0;
@@ -237,6 +237,70 @@ li {
 }
 
 .hint p:last-child {
+    margin-bottom: 0;
+}
+
+.note {
+    background-color: #e8f4fd;
+    border-left: 4px solid #539bf5;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+}
+
+.note p {
+    margin-bottom: 8px;
+}
+
+.note p:last-child {
+    margin-bottom: 0;
+}
+
+.important {
+    background-color: #f0e6ff;
+    border-left: 4px solid #986ee2;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+}
+
+.important p {
+    margin-bottom: 8px;
+}
+
+.important p:last-child {
+    margin-bottom: 0;
+}
+
+.warning {
+    background-color: #ffeaea;
+    border-left: 4px solid #e5534b;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+}
+
+.warning p {
+    margin-bottom: 8px;
+}
+
+.warning p:last-child {
+    margin-bottom: 0;
+}
+
+.caution {
+    background-color: #fff8e1;
+    border-left: 4px solid #c69026;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+}
+
+.caution p {
+    margin-bottom: 8px;
+}
+
+.caution p:last-child {
     margin-bottom: 0;
 }
 
@@ -330,6 +394,103 @@ h1, h2, h3, h4 {
 }
 
 /* Command Line 関連のスタイルは不要のため削除 */
+
+/* テーブル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* テーブルレイアウト */
+table.table-fixed {
+    table-layout: fixed;
+}
+
+table.table-auto {
+    table-layout: auto;
+    width: auto;
+    max-width: 100%;
+}
+
+table th,
+table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* 自動レイアウトテーブルのセル余白を調整 */
+table.table-auto th,
+table.table-auto td {
+    padding: 8px 12px;
+    white-space: nowrap;
+}
+
+table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+}
+
+table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* 引用ブロック */
+blockquote {
+    border-left: 4px solid #3498db;
+    margin: 20px 0;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    color: #555;
+    font-style: italic;
+}
+
+blockquote p {
+    margin-bottom: 8px;
+}
+
+blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+/* 水平線 */
+hr {
+    border: none;
+    border-top: 2px solid #e9ecef;
+    margin: 30px 0;
+}
+
+/* リンク */
+a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* 画像 */
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin: 10px 0;
+}
 
 /* チェックボックス */
 .chkbo {

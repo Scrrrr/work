@@ -7,7 +7,8 @@ function parseArgs() {
     const options = {
         input: 'installUbuntu.md',
         output: 'installUbuntu.html',
-        title: 'Ubuntuのインストール'
+        title: 'Ubuntuのインストール',
+        outputSet: false
     };
 
     for (let i = 0; i < args.length; i++) {
@@ -17,6 +18,7 @@ function parseArgs() {
             // 出力ファイル指定
             if (i + 1 < args.length) {
                 options.output = args[i + 1];
+                options.outputSet = true;
                 i++; // 次の引数をスキップ
             }
         } else if (arg === '-t' || arg === '--title') {
@@ -40,7 +42,8 @@ function parseArgs() {
 
 例:
   node generate-html.js installUbuntu.md -d ./source/installUbuntu.html
-  node generate-html.js installRocky.md -d ./source/installRocky.html -t "RockyLinuxのインストール"
+  node generate-html.js installRocky.md -t "RockyLinuxのインストール"
+  node generate-html.js myManual.md  # 出力: myManual.html
             `);
             process.exit(0);
         } else if (!arg.startsWith('-')) {
@@ -54,6 +57,12 @@ function parseArgs() {
 
 // 引数を解析
 const options = parseArgs();
+
+// 出力ファイルが指定されていない場合は入力ファイル名から生成
+if (!options.outputSet) {
+    const inputBasename = path.basename(options.input, path.extname(options.input));
+    options.output = inputBasename + '.html';
+}
 
 // 引数が指定されていない場合はヘルプを表示
 if (process.argv.length === 2) {
@@ -70,7 +79,8 @@ if (process.argv.length === 2) {
 
 例:
   node generate-html.js installUbuntu.md -d ./source/installUbuntu.html
-  node generate-html.js installRocky.md -d ./source/installRocky.html -t "RockyLinuxのインストール"
+  node generate-html.js installRocky.md -t "RockyLinuxのインストール"
+  node generate-html.js myManual.md  # 出力: myManual.html
             `);
     process.exit(0);
 }
