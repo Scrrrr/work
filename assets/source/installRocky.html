@@ -3,39 +3,54 @@
         <nav class="sidebar">
             <h3>目次</h3>
             <ul class="toc">
-<li><a href="#1">RockyLinuxのインストール</a>
+<li><a href="#1">RockyLinuxについて</a>
 <ul>
 <li><a href="#1.1">序章</a></li>
-<li><a href="#1.2">インストール</a></li>
 </ul>
 </li>
-<li><a href="#2">初期設定</a>
+<li><a href="#2">RockyLinuxのインストール</a>
 <ul>
-<li><a href="#2.1">ログイン</a></li>
-<li><a href="#2.2">デスクトップアイコンの設定</a></li>
-<li><a href="#2.3">Firefoxの設定</a></li>
-<li><a href="#2.4">端末の設定</a></li>
-<li><a href="#2.5">入力方式の設定</a></li>
-<li><a href="#2.6">コンピュータの設定</a></li>
+<li><a href="#2.1">言語選択</a></li>
+<li><a href="#2.2">ディスクパーティション</a></li>
+<li><a href="#2.3">Kdump</a></li>
+<li><a href="#2.4">ネットワーク設定</a></li>
+<li><a href="#2.5">NTPの設定</a></li>
+<li><a href="#2.6">追加ソフトウェアの選択</a></li>
+<li><a href="#2.7">rootパスワードの設定</a></li>
+<li><a href="#2.8">ユーザーの作成</a></li>
+<li><a href="#2.9">インストールの開始</a></li>
 </ul>
 </li>
-<li><a href="#3">設定</a>
+<li><a href="#3">初期設定</a>
 <ul>
-<li><a href="#3.1">ネットワークの設定</a></li>
-<li><a href="#3.2">セキュリティなどの設定</a></li>
-<li><a href="#3.3">アップデート</a></li>
-<li><a href="#3.4">NTPの設定</a></li>
-<li><a href="#3.5">IPv6の無効化</a></li>
-<li><a href="#3.6">電源管理設定</a></li>
-<li><a href="#3.7">ユーザの設定</a></li>
-<li><a href="#3.8">ログイン画面の設定</a></li>
-<li><a href="#3.9">Firewallの設定</a></li>
+<li><a href="#3.1">ログイン</a></li>
+<li><a href="#3.2">デスクトップアイコンの設定</a></li>
+<li><a href="#3.3">Firefoxの設定</a></li>
 </ul>
 </li>
-<li><a href="#4">リモートアクセスの設定</a>
+<li><a href="#4">コンピュータの設定</a>
 <ul>
-<li><a href="#4.1">rloginとrshの設定</a></li>
-<li><a href="#4.2">sshの設定</a></li>
+<li><a href="#4.1">入力方式の設定</a></li>
+<li><a href="#4.2">ネットワークの設定</a></li>
+<li><a href="#4.3">電源の設定</a></li>
+</ul>
+</li>
+<li><a href="#5">サーバの設定</a>
+<ul>
+<li><a href="#5.1">SELinuxの無効化</a></li>
+<li><a href="#5.2">systemdユニットファイルのカスタム設定</a></li>
+<li><a href="#5.3">bashrcの設定</a></li>
+<li><a href="#5.4">yumの設定</a></li>
+<li><a href="#5.5">電源管理設定</a></li>
+<li><a href="#5.6">ユーザの設定</a></li>
+<li><a href="#5.7">ログイン画面の設定</a></li>
+<li><a href="#5.8">Firewallの設定</a></li>
+</ul>
+</li>
+<li><a href="#6">リモートアクセスの設定</a>
+<ul>
+<li><a href="#6.1">rloginとrshの設定</a></li>
+<li><a href="#6.2">sshの設定</a></li>
 </ul>
 </li>
 </ul>
@@ -43,7 +58,7 @@
 
         <!-- メインコンテンツ -->
         <main class="main-content">
-            <h1 id="1">RockyLinuxのインストール</h1>
+            <h1 id="1">RockyLinuxについて</h1>
 
 <p>RockyLinuxは、Red Hat EnterpriseLinux(RHEL)のダウンストリーム版であるCentOSの開発が中止され、CentOS創設者であるGregory Kurtzer氏がプロジェクトを立ち上げたLinuxディストリビューションです。開発はRockyLinux Projectで行われており、2021年から正式なリリースが行われています。</p>
 
@@ -51,12 +66,12 @@
 
 <p>OSのインストール練習として、RockyLinuxのインストールを行います。</p>
 
-<h2 id="1.2">インストール</h2>
+<h1 id="2">RockyLinuxのインストール</h1>
 
-<h3 id="1.2.1">言語選択</h3>
+<h2 id="2.1">言語選択</h2>
 <p>インストールが開始されると言語選択メニューが表示されます。左のメニューの中央付近にある[日本語]を選択し、[続行]を選択します。</p>
 
-<h3 id="1.2.2">ディスクパーティション</h3>
+<h2 id="2.2">ディスクパーティション</h2>
 <p>インストール先のディスクパーティションの設定を行います。[インストール先]を選択し、その他のストレージオプションから、[カスタム]にチェックを入れ、[完了]を選択します。</p>
 
 <p>その後、以下のような画面が表示されるため、[+]を選択し、マウントポイントに/bootを選択、割り当てる領域に512MBを入力し、[マウントポイントの追加]を選択します。</p>
@@ -65,10 +80,10 @@
 
 <p>その後、[完了]をクリックし、[変更の概要]ウィンドウより[変更を許可する]を選択します。</p>
 
-<h3 id="1.2.3">Kdump</h3>
+<h2 id="2.3">Kdump</h2>
 <p>Kdumpの無効化を行うために、[KDUMP]を選択し、[kdumpを有効にする]のチェックを外し、[完了]を選択します。</p>
 
-<h3 id="1.2.4">ネットワーク設定</h3>
+<h2 id="2.4">ネットワーク設定</h2>
 <p>次に、ネットワークの設定を行います。[ネットワークとホスト名]を選択し、ホスト名に<code>{{serverHostname}}.netsys.cs.t-kougei.ac.jp</code>を入力します。</p>
 
 <p>ホスト名入力後、[適用]をクリックします。</p>
@@ -82,7 +97,9 @@
 
 <p>保存後、右上の[オフ]を[オン]に変更し、IPアドレスなどが表示されているか確認し、[完了]を選択します。</p>
 
-<h3 id="1.2.5">追加ソフトウェアの選択</h3>
+<h2 id="2.5">NTPの設定</h2>
+
+<h2 id="2.6">追加ソフトウェアの選択</h2>
 <p>インストールするソフトウェアの選択を行います。[ソフトウェアの選択]を選択し、ベース環境は[サーバー(GUI使用)]を選択します。</p>
 <p>選択した環境用のその他のソフトウェアは以下を選択します。</p>
 <ul>
@@ -95,12 +112,12 @@
 </ul>
 <p>開発ツールにチェックを入れ[完了]を選択します。</p>
 
-<h3 id="1.2.6">rootパスワードの設定</h3>
+<h2 id="2.7">rootパスワードの設定</h2>
 <p>rootのパスワードには、指定されたパスワード[netsys00]を入力し、[完了]を選択します。</p>
 
 <p>［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。</p>
 
-<h3 id="1.2.7">ユーザーの作成</h3>
+<h2 id="2.8">ユーザーの作成</h2>
 <p>ユーザーtomeを作成します。</p>
 
 <table class="table-auto">
@@ -132,128 +149,182 @@
 
 <p>rootのパスワードと同様に［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。</p>
 
-<h3 id="1.2.8">インストールの開始</h3>
+<h2 id="2.9">インストールの開始</h2>
 <p>全ての設定項目が完了したら、[インストールの開始]を選択します。</p>
-<div class="hint">
-<p><strong>ヒント:</strong></p>
+<div class="note">
+<p><strong>注記:</strong></p>
 <p>インストールには時間がかかるため、終わるまで待機してください。</p>
 </div>
 
-<div class="note">
-<p><strong>注記:</strong></p>
-<p>これはノートです。</p>
-</div>
+<p>インストールが完了したら、[システムの再起動]を選択して、サーバを再起動します。</p>
+<p>サーバが停止したら、SCTSメニューより、[インストールサーバの起動]->[RockyLinux]でサーバを起動します。</p>
 
-<div class="warning">
-<p><strong>警告:</strong></p>
-<p>警告</p>
-</div>
+<h1 id="3">初期設定</h1>
 
-<div class="important">
-<p><strong>重要:</strong></p>
-<p>重要です</p>
-</div>
+<h2 id="3.1">ログイン</h2>
+<p>ライセンスに同意後、ログイン画面が表示されるため、ログインを行います。rootでログインを行うため、[アカウントが見つかりませんか？]を選択しrootでログインします。</p>
 
-<div class="caution">
-<p><strong>注意:</strong></p>
-<p>注意です</p>
-</div>
-
-<h1 id="2">初期設定</h1>
-
-<h2 id="2.1">ログイン</h2>
-<p>ライセンスに同意後、ログイン画面が表示されるため、ログインを行います。rootでログインを行うため、[アカウントが見つかりませんか？]を選択します。</p>
-
-<p>ユーザの入力後、右下にある歯車のマークをクリックし、GNOMEクラシックを選択します。</p>
+<p>ユーザ名の入力後、右下にある歯車のマークをクリックし、GNOMEクラシックを選択します。</p>
 <p>選択を完了したらパスワードを入力し、ログインします。</p>
 
-<h2 id="2.2">デスクトップアイコンの設定</h2>
-<p>デフォルト設定だとデスクトップアイコンの表示が大きいため、小さくします。[ホーム]をダブルクリックし、三本線左側の[▼]ボタンからプルダウンを行い、[-]をクリックし、50%にします。</p>
+<table class="table-auto">
+<thead>
+<tr>
+<th>項目名</th>
+<th>入力値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ユーザネーム</td>
+<td>root</td>
+</tr>
+<tr>
+<td>パスワード</td>
+<td>netsys00</td>
+</tr>
+</tbody>
+</table>
 
-<p>次に、デスクトップ画面に[端末]と[Firefox]を配置します。[他の場所]を選択し、[コンピューター]から[usr]をクリックします。</p>
+<h2 id="3.2">デスクトップアイコンの設定</h2>
+<p>デフォルト設定だとデスクトップアイコンの表示が大きいため、小さくします。  </p>
+<p>右上の<code>[アプリケーション]</code>-><code>[ファイル]</code>を選択します。</p>
 
-<p>その後、[share]を選択し、[applications]をクリックします。</p>
+<p>画面右側上部にある三本線マークの隣の<code>[▼]ボタン</code>からプルダウンを行い、[-]をクリックし、50%にします。</p>
 
-<p>[applications]ディレクトリから、[Firefox]と[端末]を探し出し、デスクトップに貼り付けます。</p>
+<p>次に、デスクトップ画面にfirefoxと端末を配置します。</p>
+<p>ファイルマネージャーより、左の項目欄末尾にある<code>[他の場所]</code>を選択し、<code>[コンピューター]</code>から<code>[usr]</code>-><code>[share]</code>-><code>[applications]</code>の順でクリックします。</p>
+
+<p><code>[applications]</code>ディレクトリから、<code>org.gnome.Termianl.desktop</code>と<code>firefox.desktop</code>を探し出し、デスクトップに貼り付けます。</p>
 <p>貼り付けには、[ctrl]+[c]、[ctrl]+[v]もしくは[右クリック]、[コピー]、[貼り付け]を使用します。</p>
 <p>ドラッグ＆ドロップではできません。</p>
 
-<h2 id="2.3">Firefoxの設定</h2>
-<p>[applications]ディレクトリは必要ないため閉じます。</p>
-<p>閉じた後、[firefox.desktop]をダブルクリックし、[起動を許可する]を選択します。その後、Firefoxが起動するため、右上の[三本線]をクリックし、[設定]を選択します。</p>
+<p>ファイルマネージャは必要ないため閉じます。</p>
 
-<p>次に、[ホームページ]にhttp://www.cs.t-kougei.ac.jp/netsysを記入します。</p>
+<p>デスクトップに配置した、firefoxと端末のファイルをそれぞれ、右クリックし、[起動を許可する]を選択します。</p>
+<p>正常であれば、アイコンが正しく表示されるようになります。</p>
 
-<p>その後、ネットワークプロキシ設定を行います。設定画面の一番下にあるネットワークプロキシの[接続設定]を選択し、[手動でプロキシを設定する]をクリックします。</p>
+<h2 id="3.3">Firefoxの設定</h2>
+<p>firefoxを起動して右上の[三本線]をクリックし、[設定]を選択します。</p>
 
-<p>［このプロキシーを HTTPSでも使用する］にチェックを入れます。</p>
+<h3 id="3.3.1">カスタムホームページの設定</h3>
 
-<p>その後、HTTPプロキシにproxy-a.t-kougei.ac.jpを入力し、ポートに8080を入力します。</p>
-<p>次に、[すべてのプロトコルでこのプロキシを使用する]にチェックを入れます。</p>
+<p>[ホーム]->[ホームページ]よりカスタムURLを設定します。  </p>
+<p>[ホームページと新しいウィンドウ]に<code>http://www.cs.t-kougei.ac.jp/netsys</code>を記入します。</p>
 
-<p>次に、プロキシなしで接続に*.t-kougei.ac.jpを記入し、[OK]をクリックします。クリック後、家マークを選択し、ネットワークシステム研究室のホームページが表示されれば正しく設定されています。Firefoxはもう必要ないため、×ボタンで閉じます。</p>
+<h3 id="3.3.2">プロキシの設定</h3>
 
-<h2 id="2.4">端末の設定</h2>
-<p>[org.gnome.Terminal.desktop]をダブルクリックし、[起動を許可する]を選択します。また、今は必要ないため×ボタンでいったん端末を閉じます。</p>
+<p>ネットワークプロキシ設定を行います。設定画面の<code>[一般]</code>から設定画面の一番下にある<code>[接続設定]</code>を選択します。</p>
+<p><code>[手動でプロキシを設定する]</code>のボタンを選択し、以下の項目を入力します。。</p>
 
-<h2 id="2.5">入力方式の設定</h2>
-<p>設定の[keyboard]をクリックし、[日本語]下の[＋]を選択します。次に、[日本語]をクリックし、[日本語(Anthy)]を選択します。</p>
+<table class="table-fixed">
+<thead>
+<tr>
+<th>項目名</th>
+<th>入力値</th>
+<th>ポート</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTPプロキシー</td>
+<td>proxy-a.t-kougei.ac.jp</td>
+<td>8080</td>
+</tr>
+</tbody>
+</table>
 
-<p>右上[ja]を選択し、[日本語(Anthy)]を選択します。</p>
+<p><code>[このプロキシーを HTTPSでも使用する]</code>にチェックを入れます。</p>
 
-<h2 id="2.6">コンピュータの設定</h2>
-<p>[ネットワーク]を選択します。</p>
+<p>次に、<code>[プロキシなしで接続]</code>に<code>*.t-kougei.ac.jp</code>を記入し、[OK]をクリックします。</p>
 
-<p>ネットワークプロキシの[歯車マーク]をクリックし、[手動]を選択します。</p>
+<h3 id="3.3.3">設定確認</h3>
+<p>ホームボタン、または新規タブで、ネットワークシステム研究室のホームページが表示されれば正しく設定されています。  </p>
+<p>Firefoxはもう必要ないため、×ボタンで閉じます。</p>
 
-<p>その後、すべてのプロキシにproxy-a.t-kougei.ac.jpとポート8080を入力します。</p>
-<p>次に、次のホストを無視するに*.t-kougei.ac.jpを入力します。その後、×ボタンを押します。</p>
+<h1 id="4">コンピュータの設定</h1>
 
-<p>次に、[電源]を選択し、Screen Blankを[Never]に変更し、×ボタンで閉じます。</p>
+<h2 id="4.1">入力方式の設定</h2>
+<p>入力方式の設定を行います。  </p>
+<p>右上の<code>[アプリケーション]->[ユーティリティ]->設定</code>を選択して、設定画面を起動します。</p>
+<p>左の項目欄から<code>[keyboard]</code>を選択し、<code>[入力ソース]</code>項目より<code>[日本語]</code>下にある<code>[＋]</code>マークを選択します。次に、<code>[入力ソースの追加]</code>メニューから<code>[日本語]</code>を選択し、<code>[日本語(Anthy)]</code>を追加します。</p>
 
-<h1 id="3">設定</h1>
+<p>右上日付の隣のトレイバーにある<code>[ja]</code>をクリックし、<code>[日本語(Anthy)]</code>を選択します。</p>
 
-<p>サーバとしての設定を行うために、[端末]を起動します。</p>
+<h2 id="4.2">ネットワークの設定</h2>
+<p>設定より<code>[ネットワーク]</code>を選択します。</p>
 
-<h2 id="3.1">ネットワークの設定</h2>
+<h3 id="4.2.4">IPv6の無効化</h3>
+<p>[有線]の[歯車マーク]をクリックし、[IPv6]項目を選択し、<code>IPv6メゾット</code>を<code>無効</code>にして適用します。</p>
 
-<div class="hint">
-<p><strong>ヒント:</strong></p>
-<p>以降の[Enter]はEnterキーを押します。コマンドに入力はしなくてよい</p>
-<p>コマンドの実行後、チェックボックスにチェックを入れてください。</p>
-</div>
+<h3 id="4.2.5">プロキシの設定</h3>
+<p>ネットワークプロキシの[歯車マーク]をクリックし、[手動]を選択し以下を記入します。</p>
 
-<p>ネットワークの設定を行います。IPv6は必要ないため無効化します。</p>
+<table class="table-fixed">
+<thead>
+<tr>
+<th>項目名</th>
+<th>入力値</th>
+<th>ポート</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTPプロキシ</td>
+<td>proxy-a.t-kougei.ac.jp</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>HTTPSプロキシ</td>
+<td>proxy-a.t-kougei.ac.jp</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>FTPプロキシ</td>
+<td>proxy-a.t-kougei.ac.jp</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>Socksホスト</td>
+<td>proxy-a.t-kougei.ac.jp</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>次のホストを無視する</td>
+<td>*.t-kougei.ac.jp</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
 
-<pre><code class="language-bash">cd /etc/sysconfig/network-scripts/</code></pre>
+<p>入力が完了したら×で閉じます。</p>
 
-<pre><code class="language-bash">ls</code></pre>
+<h2 id="4.3">電源の設定</h2>
+<p>設定より[電源]を選択し、Screen Blankを[Never]に変更します。</p>
 
-<p>出力結果:</p>
-<pre><code>ifcfg-ens3 … … …</code></pre>
+<p>すべての設定項目を終えたら、設定画面を×で閉じます。  </p>
 
-<p>出力されたifcfg-ens3は機種によって違うため注意してください。</p>
+<h1 id="5">サーバの設定</h1>
+<p>サーバとしての設定を行うために、デスクトップから[端末]を起動します。</p>
 
-<pre><code class="language-bash">vi /etc/sysconfig/network-scripts/ifcfg-ens3</code></pre>
-
-<p>以下を変更:</p>
-<pre><code>IPV6INIT="yes" → IPV6INIT="no"に変更する</code></pre>
-
-<p>またONBOOT=が"no"となっていた場合は"yes"に変更します。</p>
-<p>ネットワーク設定を反映させるためにネットワークサービスを再起動します。</p>
-
-<pre><code class="language-bash">systemctl restart network</code></pre>
-
-<h2 id="3.2">セキュリティなどの設定</h2>
+<h2 id="5.1">SELinuxの無効化</h2>
 <p>SELinuxの無効化を行います。</p>
+
+<div class="warning">
+<p><strong>警告:</strong></p>
 <p>この設定にミスがあるとコンピュータが起動しなくなる可能性があるため注意してください。</p>
+</div>
 
 <pre><code class="language-bash">vi /etc/selinux/config</code></pre>
 
 <p>以下を変更:</p>
+<p><!--</p>
+<pre><code>-<span class="git-remove">SELINUX=enforcing</span>
++<span class="git-add">SELINUX=disabled</span></code></pre>
+<p>--></p>
 <pre><code>SELINUX=disabled</code></pre>
-
-<p>起動などに時間がかかるバグがあるためその対処を行います。</p>
+<p><!--</p>
+<h2 id="5.2">systemdユニットファイルのカスタム設定</h2>
 
 <pre><code class="language-bash">vi /etc/systemd/system.conf</code></pre>
 
@@ -262,99 +333,35 @@
 #DefaultTimeoutStartSec=90s → 先頭の#を削除しDefaultTimeoutStartSec=30sに変更
 #DefaultTimeoutStopSec=90s → 先頭の#を削除しDefaultTimeoutStopSec=10sに変更</code></pre>
 
+<h2 id="5.3">bashrcの設定</h2>
 <p>bashrcの設定を行います。</p>
 
 <pre><code class="language-bash">cd</code></pre>
 
 <pre><code class="language-bash">vi /root/.bashrc</code></pre>
 
-<p>alias mv='mv -i'の下に以下を記入:</p>
+<p><code>alias mv='mv -i'</code>の下に以下を記入:</p>
 <pre><code>export PATH=$PATH:.</code></pre>
 
 <p>設定を反映させるために、.bashrcを読み込みます。</p>
 
 <pre><code class="language-bash">source /root/.bashrc</code></pre>
+<p>--></p>
 
-<h2 id="3.3">アップデート</h2>
-<p>アップデート前に、設定を行います。</p>
+<h2 id="5.4">yumの設定</h2>
+<p>パッケージマネージャyumの設定を行います。</p>
 
 <pre><code class="language-bash">vi /etc/yum.conf</code></pre>
 
-<p>distroverpkg=RockyLinux-releaseの下に以下を記入:</p>
+<p><code>skip_if_unavailable=False</code>の下に以下を記入:</p>
 <pre><code>proxy=http://proxy-a.t-kougei.ac.jp:8080/
 timeout=900</code></pre>
 
-<p>アップデート用のファイルをダウンロードするためのリポジトリの変更を行います。</p>
-
-<pre><code class="language-bash">vi /etc/yum.repos.d/RockyLinux-Base.repo</code></pre>
-
-<p>4つのmirrorlist=の最後に&cc=jpを追加します。</p>
-
-<pre><code>[base]
-mirrorlist=http://mirrorlist.RockyLinux.org/ ・・・ $infra&cc=jp
-[updates]
-mirrorlist=http://mirrorlist.RockyLinux.org/ ・・・ $infra&cc=jp
-[extras]
-mirrorlist=http://mirrorlist.RockyLinux.org/ ・・・ $infra&cc=jp
-[RockyLinuxplus]
-mirrorlist=http://mirrorlist.RockyLinux.org/ ・・・ $infra&cc=jp</code></pre>
-
-<p>アップデート用のファイルのキャッシュの作成を行います。</p>
-
-<pre><code class="language-bash">yum makecache fast</code></pre>
-
-<p>出力結果:</p>
-<pre><code>読み込んだプラグイン:fastestmirror, langpacks
-Loading mirror speeds from cached hostfile
-* base: ftp.riken.jp
-* extras: ftp.riken.jp
-* updates: ftp.riken.jp
-base | 3.6 kB 00:00:00
-extras | 2.9 kB 00:00:00
-updates | 2.9 kB 00:00:00
-(1/4): extras/7/x86_64/primary_db | 232 kB 00:00:00
-(2/4): base/7/x86_64/group_gz | 153 kB 00:00:00
-(3/4): base/7/x86_64/primary_db | 6.1 MB 00:00:03
-(4/4): updates/7/x86_64/primary_db | 7.1 MB 00:00:04
-メタデータのキャッシュを作成しました</code></pre>
-
-<p>アップデートを行います。</p>
+<p>保存して終了後アップデートを行います。</p>
 
 <pre><code class="language-bash">yum -y update --nobest</code></pre>
-
-<p>アップデートにはしばらく時間がかかるため待機します。</p>
-<p>アップデートが終了したら、再起動を行います。</p>
-
-<pre><code class="language-bash">systemctl reboot</code></pre>
-
-<p>再起動完了後、rootでログインを行います。</p>
-
-<h2 id="3.4">NTPの設定</h2>
-<p>NTPを使用するためにchronydの設定を行います。</p>
-
-<pre><code class="language-bash">vi /etc/chrony.conf</code></pre>
-
-<p>以下を変更:</p>
-<pre><code>server 0.RockyLinux.pool.ntp.org iburst ← 先頭に#をつける
-server 1.RockyLinux.pool.ntp.org iburst ← 先頭に#をつける
-server 2.RockyLinux.pool.ntp.org iburst ← 先頭に#をつける
-server 3.RockyLinux.pool.ntp.org iburst ← 先頭に#をつける
-server ntp-a.t-kougei.ac.jp iburtst ← 追加</code></pre>
-
-<p>設定を反映させるためにchronydの再起動を行います。</p>
-
-<pre><code class="language-bash">systemctl restart chronyd</code></pre>
-
-<h2 id="3.5">IPv6の無効化</h2>
-<p>再起動後もIPv6の無効化をするために、rc.localファイルにその設定を記入します。</p>
-
-<pre><code class="language-bash">vi /etc/rc.d/rc.local</code></pre>
-
-<p>以下を変更:</p>
-<pre><code>echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
-echo 1 > /proc/sys/net/ipv6/conf/default/disable_ipv6</code></pre>
-
-<h2 id="3.6">電源管理設定</h2>
+<p><!--</p>
+<h2 id="5.5">電源管理設定</h2>
 <p>電源管理用のデーモンであるacpidのインストールを行います。</p>
 
 <pre><code class="language-bash">yum -y install acpid</code></pre>
@@ -363,7 +370,7 @@ echo 1 > /proc/sys/net/ipv6/conf/default/disable_ipv6</code></pre>
 
 <pre><code class="language-bash">systemctl start acpid</code></pre>
 
-<h2 id="3.7">ユーザの設定</h2>
+<h2 id="5.6">ユーザの設定</h2>
 <p>tomeユーザの削除を行います。</p>
 
 <pre><code class="language-bash">userdel -r tome</code></pre>
@@ -414,13 +421,13 @@ passwd: すべての認証トークンが正しく更新できました。</code
 <p>最終行に以下を追加:</p>
 <pre><code>SU_WHEEL_ONLY yes</code></pre>
 
-<h2 id="3.8">ログイン画面の設定</h2>
+<h2 id="5.7">ログイン画面の設定</h2>
 <p>ログイン画面にユーザリストの非表示を行います。実行後、ログアウトを行い、確認後ログインをします。</p>
 <p>また、実行後にNo protocol specifiedと表示されることがあるが無視してよいです。</p>
 
 <pre><code class="language-bash">sudo -u gdm dbus-launch gsettings set org.gnome.login-screendisable-user-list true</code></pre>
-
-<h2 id="3.9">Firewallの設定</h2>
+<p>--></p>
+<h2 id="5.8">Firewallの設定</h2>
 <p>Firewallサービスが起動しているかの確認を行います。</p>
 
 <pre><code class="language-bash">systemctl status firewalld</code></pre>
@@ -532,9 +539,9 @@ rule family="ipv4" source address="127.0.0.1/32" accept
 rule family="ipv4" source address="{{gatewayIP}}/32" accept
 rule family="ipv4" source address="{{clientIP}}/32" accept</code></pre>
 
-<h1 id="4">リモートアクセスの設定</h1>
+<h1 id="6">リモートアクセスの設定</h1>
 
-<h2 id="4.1">rloginとrshの設定</h2>
+<h2 id="6.1">rloginとrshの設定</h2>
 <p>rloginとrshのインストールを行います。</p>
 
 <pre><code class="language-bash">yum -y install rsh rsh-server</code></pre>
@@ -584,7 +591,7 @@ rule family="ipv4" source address="{{clientIP}}/32" accept</code></pre>
 <p>以下を変更:</p>
 <pre><code>#auth require pam_securetty.so ← 先頭の#を削除</code></pre>
 
-<h2 id="4.2">sshの設定</h2>
+<h2 id="6.2">sshの設定</h2>
 <p>sshの設定を変更します。</p>
 
 <pre><code class="language-bash">vi /etc/ssh/sshd_config</code></pre>
