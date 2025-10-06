@@ -30,10 +30,30 @@ class MarkdownParser {
     preprocess(markdown) {
         let processed = markdown;
 
-        // ヒントボックス記法を処理
+        // 情報ボックス記法を処理
         processed = processed.replace(
             /:::hint\s*\n([\s\S]*?)\n:::/g,
             '<div class="hint">\n<p><strong>ヒント:</strong></p>\n<p>$1</p>\n</div>'
+        );
+
+        processed = processed.replace(
+            /:::note\s*\n([\s\S]*?)\n:::/g,
+            '<div class="note">\n<p><strong>注記:</strong></p>\n<p>$1</p>\n</div>'
+        );
+
+        processed = processed.replace(
+            /:::important\s*\n([\s\S]*?)\n:::/g,
+            '<div class="important">\n<p><strong>重要:</strong></p>\n<p>$1</p>\n</div>'
+        );
+
+        processed = processed.replace(
+            /:::warning\s*\n([\s\S]*?)\n:::/g,
+            '<div class="warning">\n<p><strong>警告:</strong></p>\n<p>$1</p>\n</div>'
+        );
+
+        processed = processed.replace(
+            /:::caution\s*\n([\s\S]*?)\n:::/g,
+            '<div class="caution">\n<p><strong>注意:</strong></p>\n<p>$1</p>\n</div>'
         );
 
         // 動的変数の処理
@@ -68,6 +88,10 @@ class MarkdownParser {
         let codeBlockContent = '';
         let inList = false;
         let listType = '';
+        let inTable = false;
+        let tableRows = [];
+        let tableOptions = { autoLayout: false };
+        let inBlockquote = false;
         
         // セクション番号の追跡
         let sectionNumber = 0;
@@ -127,6 +151,79 @@ class MarkdownParser {
                 continue;
             }
 
+            // テーブルの処理
+            if (this.isTableRow(trimmedLine)) {
+                if (!inTable) {
+                    // テーブル開始
+                    inTable = true;
+                    tableRows = [];
+                    tableOptions = { autoLayout: false }; // デフォルトオプション
+                    // リストが開いている場合は閉じる
+                    if (inList) {
+                        html += `</${listType}>\n`;
+                        inList = false;
+                        listType = '';
+                    }
+                }
+                
+                // テーブルオプションの検出
+                const tableRowData = this.parseTableRow(trimmedLine);
+                if (this.detectTableOptions(tableRowData, tableOptions)) {
+                    continue; // オプション行はスキップ
+                }
+                
+                tableRows.push(tableRowData);
+                continue;
+            } else if (inTable) {
+                // テーブル終了
+                html += this.generateTable(tableRows, tableOptions);
+                inTable = false;
+                tableRows = [];
+                tableOptions = null;
+            }
+
+            // 水平線の処理
+            if (trimmedLine.match(/^[-*_]{3,}$/)) {
+                if (inList) {
+                    html += `</${listType}>\n`;
+                    inList = false;
+                    listType = '';
+                }
+                if (inBlockquote) {
+                    html += '</blockquote>\n';
+                    inBlockquote = false;
+                }
+                html += '<hr>\n';
+                continue;
+            }
+
+            // 引用ブロックの処理
+            if (trimmedLine.startsWith('>')) {
+                if (!inBlockquote) {
+                    // 引用ブロック開始
+                    inBlockquote = true;
+                    // リストが開いている場合は閉じる
+                    if (inList) {
+                        html += `</${listType}>\n`;
+                        inList = false;
+                        listType = '';
+                    }
+                    html += '<blockquote>\n';
+                }
+                const quoteContent = trimmedLine.substring(1).trim();
+                html += `<p>${this.processInlineMarkdown(quoteContent)}</p>\n`;
+                continue;
+            } else if (inBlockquote && trimmedLine === '') {
+                // 空行で引用ブロック終了
+                html += '</blockquote>\n';
+                inBlockquote = false;
+                continue;
+            } else if (inBlockquote) {
+                // 引用ブロック内の非引用行で引用ブロック終了
+                html += '</blockquote>\n';
+                inBlockquote = false;
+            }
+
             // 見出しの処理
             if (trimmedLine.match(/^#{1,6}\s/)) {
                 const match = trimmedLine.match(/^(#{1,6})\s+(.+)$/);
@@ -159,12 +256,8 @@ class MarkdownParser {
                 }
                 let text = trimmedLine.substring(2);
                 
-                // インラインコードの処理
-                text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
-                
-                // 強調の処理
-                text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-                text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+                // インラインマークダウンの処理
+                text = this.processInlineMarkdown(text);
                 
                 html += `<li>${text}</li>\n`;
                 continue;
@@ -179,12 +272,8 @@ class MarkdownParser {
                 }
                 let text = trimmedLine.substring(trimmedLine.indexOf('.') + 2);
                 
-                // インラインコードの処理
-                text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
-                
-                // 強調の処理
-                text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-                text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+                // インラインマークダウンの処理
+                text = this.processInlineMarkdown(text);
                 
                 html += `<li>${text}</li>\n`;
                 continue;
@@ -212,12 +301,8 @@ class MarkdownParser {
             // 段落の処理
             let paragraph = line;
             
-            // インラインコードの処理
-            paragraph = paragraph.replace(/`([^`]+)`/g, '<code>$1</code>');
-            
-            // 強調の処理
-            paragraph = paragraph.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-            paragraph = paragraph.replace(/\*(.+?)\*/g, '<em>$1</em>');
+            // インラインマークダウンの処理
+            paragraph = this.processInlineMarkdown(paragraph);
             
             html += `<p>${paragraph}</p>\n`;
         }
@@ -227,6 +312,117 @@ class MarkdownParser {
             html += `</${listType}>\n`;
         }
 
+        // テーブルが最後まで続いている場合の処理
+        if (inTable) {
+            html += this.generateTable(tableRows, tableOptions);
+        }
+
+        // 引用ブロックが最後まで続いている場合の処理
+        if (inBlockquote) {
+            html += '</blockquote>\n';
+        }
+
+        return html;
+    }
+
+    /**
+     * インラインマークダウンを処理
+     */
+    processInlineMarkdown(text) {
+        // 画像の処理 [alt](url "title")
+        text = text.replace(/!\[([^\]]*)\]\(([^)]+)(?:\s+"([^"]*)")?\)/g, (match, alt, url, title) => {
+            const titleAttr = title ? ` title="${title}"` : '';
+            return `<img src="${url}" alt="${alt}"${titleAttr}>`;
+        });
+
+        // リンクの処理 [text](url "title")
+        text = text.replace(/\[([^\]]+)\]\(([^)]+)(?:\s+"([^"]*)")?\)/g, (match, linkText, url, title) => {
+            const titleAttr = title ? ` title="${title}"` : '';
+            return `<a href="${url}"${titleAttr}>${linkText}</a>`;
+        });
+
+        // 自動リンクの処理 <url>
+        text = text.replace(/<([^>]+)>/g, (match, url) => {
+            if (url.match(/^https?:\/\//)) {
+                return `<a href="${url}">${url}</a>`;
+            }
+            return match;
+        });
+
+        // インラインコードの処理
+        text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+        
+        // 強調の処理
+        text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+        text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+        
+        return text;
+    }
+
+    /**
+     * テーブル行かどうかを判定
+     */
+    isTableRow(line) {
+        return line.includes('|') && !line.match(/^[-|:\s]+$/);
+    }
+
+    /**
+     * テーブル行を解析
+     */
+    parseTableRow(line) {
+        const cells = line.split('|').map(cell => cell.trim()).filter(cell => cell !== '');
+        return cells.map(cell => this.processInlineMarkdown(cell));
+    }
+
+    /**
+     * テーブルオプションを検出
+     */
+    detectTableOptions(rowData, tableOptions) {
+        if (rowData.length === 1 && rowData[0].toLowerCase().includes('auto')) {
+            // "auto" オプションを検出
+            if (rowData[0].toLowerCase().includes('auto')) {
+                tableOptions.autoLayout = true;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * テーブルHTMLを生成
+     */
+    generateTable(rows, options = {}) {
+        if (rows.length === 0) return '';
+
+        // テーブルレイアウトのオプション
+        const autoLayout = options.autoLayout || false;
+        const tableClass = autoLayout ? 'table-auto' : 'table-fixed';
+        
+        let html = `<table class="${tableClass}">\n`;
+        
+        // ヘッダー行
+        if (rows.length > 0) {
+            html += '<thead>\n<tr>\n';
+            rows[0].forEach(cell => {
+                html += `<th>${cell}</th>\n`;
+            });
+            html += '</tr>\n</thead>\n';
+        }
+
+        // ボディ行
+        if (rows.length > 1) {
+            html += '<tbody>\n';
+            for (let i = 1; i < rows.length; i++) {
+                html += '<tr>\n';
+                rows[i].forEach(cell => {
+                    html += `<td>${cell}</td>\n`;
+                });
+                html += '</tr>\n';
+            }
+            html += '</tbody>\n';
+        }
+
+        html += '</table>\n';
         return html;
     }
 
@@ -268,10 +464,30 @@ class MarkdownParser {
             }
         );
 
-        // ヒントボックスの重複<p>タグを修正
+        // 情報ボックスの重複<p>タグを修正
         html = html.replace(
             /<p><div class="hint"><\/p>\s*<p><p><strong>ヒント:<\/strong><\/p><\/p>\s*<p><p>([\s\S]*?)<\/p><\/p>\s*<p><\/div><\/p>/g,
             '<div class="hint">\n<p><strong>ヒント:</strong></p>\n<p>$1</p>\n</div>'
+        );
+
+        html = html.replace(
+            /<p><div class="note"><\/p>\s*<p><p><strong>注記:<\/strong><\/p><\/p>\s*<p><p>([\s\S]*?)<\/p><\/p>\s*<p><\/div><\/p>/g,
+            '<div class="note">\n<p><strong>注記:</strong></p>\n<p>$1</p>\n</div>'
+        );
+
+        html = html.replace(
+            /<p><div class="important"><\/p>\s*<p><p><strong>重要:<\/strong><\/p><\/p>\s*<p><p>([\s\S]*?)<\/p><\/p>\s*<p><\/div><\/p>/g,
+            '<div class="important">\n<p><strong>重要:</strong></p>\n<p>$1</p>\n</div>'
+        );
+
+        html = html.replace(
+            /<p><div class="warning"><\/p>\s*<p><p><strong>警告:<\/strong><\/p><\/p>\s*<p><p>([\s\S]*?)<\/p><\/p>\s*<p><\/div><\/p>/g,
+            '<div class="warning">\n<p><strong>警告:</strong></p>\n<p>$1</p>\n</div>'
+        );
+
+        html = html.replace(
+            /<p><div class="caution"><\/p>\s*<p><p><strong>注意:<\/strong><\/p><\/p>\s*<p><p>([\s\S]*?)<\/p><\/p>\s*<p><\/div><\/p>/g,
+            '<div class="caution">\n<p><strong>注意:</strong></p>\n<p>$1</p>\n</div>'
         );
 
         return html;

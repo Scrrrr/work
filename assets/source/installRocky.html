@@ -57,45 +57,107 @@
 <p>インストールが開始されると言語選択メニューが表示されます。左のメニューの中央付近にある[日本語]を選択し、[続行]を選択します。</p>
 
 <h3 id="1.2.2">ディスクパーティション</h3>
-<p>インストール先のディスクパーティションの設定を行います。[インストール先]を選択し、その他のストレージオプションから、[パーティションを自分で構成する]にチェックを入れ、[完了]を選択します。</p>
+<p>インストール先のディスクパーティションの設定を行います。[インストール先]を選択し、その他のストレージオプションから、[カスタム]にチェックを入れ、[完了]を選択します。</p>
 
-<p>その後、以下のような画面が表示されるため、[+]を選択し、マウントポイントに/bootを選択、割り当てる領域に500mbを入力し、[マウントポイントの追加]を選択します。</p>
+<p>その後、以下のような画面が表示されるため、[+]を選択し、マウントポイントに/bootを選択、割り当てる領域に512MBを入力し、[マウントポイントの追加]を選択します。</p>
 
-<p>再度、[+]を選択し、マウントポイントにswapを選択、割り当てる領域に2gbを入力し、[マウントポイントの追加]を選択します。さらに、[+]を選択し、マウントポイントに/を選択、割り当てる領域は空欄にし、[マウントポイントの追加]を選択します。</p>
+<p>再度、[+]を選択し、マウントポイントにswapを選択、割り当てる領域に2GBを入力し、[マウントポイントの追加]を選択します。さらに、[+]を選択し、マウントポイントに/を選択、割り当てる領域は空欄にし、[マウントポイントの追加]を選択します。</p>
 
-<p>その後、[完了]をクリックし、[変更を許可する]を選択します。</p>
+<p>その後、[完了]をクリックし、[変更の概要]ウィンドウより[変更を許可する]を選択します。</p>
 
 <h3 id="1.2.3">Kdump</h3>
 <p>Kdumpの無効化を行うために、[KDUMP]を選択し、[kdumpを有効にする]のチェックを外し、[完了]を選択します。</p>
 
 <h3 id="1.2.4">ネットワーク設定</h3>
-<p>次に、ネットワークの設定を行います。[ネットワークとホスト名]を選択し、ホスト名に<code><?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code>を入力します。</p>
+<p>次に、ネットワークの設定を行います。[ネットワークとホスト名]を選択し、ホスト名に<code>{{serverHostname}}.netsys.cs.t-kougei.ac.jp</code>を入力します。</p>
 
 <p>ホスト名入力後、[適用]をクリックします。</p>
 <p>ここで、[適用]をクリックしないと設定が反映されないため注意してください。</p>
 
 <p>さらに、[設定]を選択し、[IPv4のセッティング]をクリックし、方式を自動(DHCP)から手動に変更します。</p>
 
-<p>アドレスの[追加]を選択し、アドレスに<code><?php echo $serverIP; ?></code>、ネットマスクに255.255.255.0、ゲートウェイに<code><?php echo $gatewayIP; ?></code>を入力します。</p>
+<p>アドレスの[追加]を選択し、アドレスに<code>{{serverIP}}</code>、ネットマスクに255.255.255.0、ゲートウェイに<code>{{gatewayIP}}</code>を入力します。</p>
 
-<p>DNSサーバに<code><?php echo $gatewayIP; ?></code>、ドメインを検索にnetsys.cs.t-kougei.ac.jp,cs.t-kougei.ac.jp,t-kougei.ac.jpを入力し、[保存]を選択します。</p>
+<p>DNSサーバに<code>{{gatewayIP}}</code>、ドメインを検索に<code>netsys.cs.t-kougei.ac.jp,cs.t-kougei.ac.jp,t-kougei.ac.jp</code>を入力し、[保存]を選択します。</p>
 
 <p>保存後、右上の[オフ]を[オン]に変更し、IPアドレスなどが表示されているか確認し、[完了]を選択します。</p>
 
 <h3 id="1.2.5">追加ソフトウェアの選択</h3>
-<p>インストールするソフトウェアの選択を行います。[ソフトウェアの選択]を選択し、[サーバー(GUI使用)]を選択します。DNSネームサーバー、メールサーバー、FTPサーバー、ファイルとストレージサーバー、ネットワークファイルシステムクライアント、互換性ライブラリー、開発ツールにチェックを入れ、[完了]を選択します。</p>
+<p>インストールするソフトウェアの選択を行います。[ソフトウェアの選択]を選択し、ベース環境は[サーバー(GUI使用)]を選択します。</p>
+<p>選択した環境用のその他のソフトウェアは以下を選択します。</p>
+<ul>
+<li>DNSネームサーバー</li>
+<li>ファイルとストレージサーバー</li>
+<li>FTPサーバー</li>
+<li>メールサーバー</li>
+<li>ネットワークファイルシステムクライアント</li>
+<li>レガシーなUNIX互換性</li>
+</ul>
+<p>開発ツールにチェックを入れ[完了]を選択します。</p>
 
-<p>ソフトウェアの選択が完了後、[インストールの開始]を選択します。rootのパスワードとユーザーの作成を行います。</p>
+<h3 id="1.2.6">rootパスワードの設定</h3>
 <p>rootのパスワードには、指定されたパスワード[netsys00]を入力し、[完了]を選択します。</p>
-<p>ユーザーの作成では、フルネームにtome、パスワードにはrootと同じパスワードし、[完了]を選択します。</p>
 
+<p>［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。</p>
+
+<h3 id="1.2.7">ユーザーの作成</h3>
+<p>ユーザーtomeを作成します。</p>
+
+<table class="table-auto">
+<thead>
+<tr>
+<th>項目名</th>
+<th>入力値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ユーザネーム</td>
+<td>tome</td>
+</tr>
+<tr>
+<td>ユーザー名</td>
+<td>tome</td>
+</tr>
+<tr>
+<td>パスワード</td>
+<td>netsys00</td>
+</tr>
+<tr>
+<td>パスワードの確認</td>
+<td>netsys00</td>
+</tr>
+</tbody>
+</table>
+
+<p>rootのパスワードと同様に［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。</p>
+
+<h3 id="1.2.8">インストールの開始</h3>
+<p>全ての設定項目が完了したら、[インストールの開始]を選択します。</p>
 <div class="hint">
 <p><strong>ヒント:</strong></p>
-<p>また、インストールには時間がかかるため、終わるまで待機してください。</p>
+<p>インストールには時間がかかるため、終わるまで待機してください。</p>
 </div>
 
-<p>上記のように［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。</p>
-<p>インストール完了後、再起動を行います。再起動後、ライセンスに同意する項目が表示されるため、それを選択し、[ライセンス規約に同意します]にチェックを入れ、[完了]を選択します。その後、[設定の完了]をクリックします。</p>
+<div class="note">
+<p><strong>注記:</strong></p>
+<p>これはノートです。</p>
+</div>
+
+<div class="warning">
+<p><strong>警告:</strong></p>
+<p>警告</p>
+</div>
+
+<div class="important">
+<p><strong>重要:</strong></p>
+<p>重要です</p>
+</div>
+
+<div class="caution">
+<p><strong>注意:</strong></p>
+<p>注意です</p>
+</div>
 
 <h1 id="2">初期設定</h1>
 
@@ -434,9 +496,9 @@ rich rules:</code></pre>
 
 <pre><code class="language-bash">firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="127.0.0.1/32" accept"</code></pre>
 
-<pre><code class="language-bash">firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="<?php echo $gatewayIP; ?>/32" accept"</code></pre>
+<pre><code class="language-bash">firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="{{gatewayIP}}/32" accept"</code></pre>
 
-<pre><code class="language-bash">firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="<?php echo $clientIP; ?>/32" accept"</code></pre>
+<pre><code class="language-bash">firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="{{clientIP}}/32" accept"</code></pre>
 
 <p>出力結果:</p>
 <pre><code>success</code></pre>
@@ -467,8 +529,8 @@ source-ports:
 icmp-blocks:
 rich rules:
 rule family="ipv4" source address="127.0.0.1/32" accept
-rule family="ipv4" source address="<?php echo $gatewayIP; ?>/32" accept
-rule family="ipv4" source address="<?php echo $clientIP; ?>/32" accept</code></pre>
+rule family="ipv4" source address="{{gatewayIP}}/32" accept
+rule family="ipv4" source address="{{clientIP}}/32" accept</code></pre>
 
 <h1 id="4">リモートアクセスの設定</h1>
 
@@ -508,10 +570,10 @@ rule family="ipv4" source address="<?php echo $clientIP; ?>/32" accept</code></p
 <pre><code class="language-bash">vi /root/.rhosts</code></pre>
 
 <p>以下を記入:</p>
-<pre><code><?php echo $gatewayIP; ?> root
-<?php echo $gatewayIP; ?> user1
-<?php echo $clientIP; ?> root
-<?php echo $clientIP; ?> check</code></pre>
+<pre><code>{{gatewayIP}} root
+{{gatewayIP}} user1
+{{clientIP}} root
+{{clientIP}} check</code></pre>
 
 <p>rootユーザでログインを可能にします。</p>
 
