@@ -38,19 +38,16 @@
 <li><a href="#5">サーバの設定</a>
 <ul>
 <li><a href="#5.1">SELinuxの無効化</a></li>
-<li><a href="#5.2">systemdユニットファイルのカスタム設定</a></li>
-<li><a href="#5.3">bashrcの設定</a></li>
-<li><a href="#5.4">yumの設定</a></li>
-<li><a href="#5.5">電源管理設定</a></li>
-<li><a href="#5.6">ユーザの設定</a></li>
-<li><a href="#5.7">ログイン画面の設定</a></li>
-<li><a href="#5.8">Firewallの設定</a></li>
+<li><a href="#5.2">yumの設定</a></li>
 </ul>
 </li>
-<li><a href="#6">リモートアクセスの設定</a>
+<li><a href="#6">メールサーバの構築</a></li>
+<li><a href="#7">WEBサーバの構築</a></li>
+<li><a href="#8">Firewallの設定</a></li>
+<li><a href="#9">リモートアクセスの設定</a>
 <ul>
-<li><a href="#6.1">rloginとrshの設定</a></li>
-<li><a href="#6.2">sshの設定</a></li>
+<li><a href="#9.1">rloginとrshの設定</a></li>
+<li><a href="#9.2">sshの設定</a></li>
 </ul>
 </li>
 </ul>
@@ -318,38 +315,9 @@
 <pre><code class="language-bash">vi /etc/selinux/config</code></pre>
 
 <p>以下を変更:</p>
-<p><!--</p>
-<pre><code>-<span class="git-remove">SELINUX=enforcing</span>
-+<span class="git-add">SELINUX=disabled</span></code></pre>
-<p>--></p>
 <pre><code>SELINUX=disabled</code></pre>
-<p><!--</p>
-<h2 id="5.2">systemdユニットファイルのカスタム設定</h2>
-
-<pre><code class="language-bash">vi /etc/systemd/system.conf</code></pre>
-
-<p>以下を変更:</p>
-<pre><code>#LogLevel=info → 先頭の#を削除しLogLevel=noticeに変更
-#DefaultTimeoutStartSec=90s → 先頭の#を削除しDefaultTimeoutStartSec=30sに変更
-#DefaultTimeoutStopSec=90s → 先頭の#を削除しDefaultTimeoutStopSec=10sに変更</code></pre>
-
-<h2 id="5.3">bashrcの設定</h2>
-<p>bashrcの設定を行います。</p>
-
-<pre><code class="language-bash">cd</code></pre>
-
-<pre><code class="language-bash">vi /root/.bashrc</code></pre>
-
-<p><code>alias mv='mv -i'</code>の下に以下を記入:</p>
-<pre><code>export PATH=$PATH:.</code></pre>
-
-<p>設定を反映させるために、.bashrcを読み込みます。</p>
-
-<pre><code class="language-bash">source /root/.bashrc</code></pre>
-<p>--></p>
-
-<h2 id="5.4">yumの設定</h2>
-<p>パッケージマネージャyumの設定を行います。</p>
+<h2 id="5.2">yumの設定</h2>
+<p>パッケージマネージャーyumの設定を行います。</p>
 
 <pre><code class="language-bash">vi /etc/yum.conf</code></pre>
 
@@ -360,74 +328,10 @@ timeout=900</code></pre>
 <p>保存して終了後アップデートを行います。</p>
 
 <pre><code class="language-bash">yum -y update --nobest</code></pre>
-<p><!--</p>
-<h2 id="5.5">電源管理設定</h2>
-<p>電源管理用のデーモンであるacpidのインストールを行います。</p>
+<h1 id="6">メールサーバの構築</h1>
+<h1 id="7">WEBサーバの構築</h1>
 
-<pre><code class="language-bash">yum -y install acpid</code></pre>
-
-<p>インストール後、acpidの起動を行います。</p>
-
-<pre><code class="language-bash">systemctl start acpid</code></pre>
-
-<h2 id="5.6">ユーザの設定</h2>
-<p>tomeユーザの削除を行います。</p>
-
-<pre><code class="language-bash">userdel -r tome</code></pre>
-
-<p>staffユーザの作成を行います。パスワード入力時に良くないパスワードと聞かれるが無視してよいです。</p>
-
-<pre><code class="language-bash">useradd -c staff -d /home/staff -u 1000 -g 100 -s /bin/tcsh staff</code></pre>
-
-<pre><code class="language-bash">passwd staff</code></pre>
-
-<p>出力結果:</p>
-<pre><code>ユーザー staff のパスワードを変更。
-新しいパスワード: rootと同じパスワード
-よくないパスワード: このパスワードは辞書チェックに失敗しました。 - 辞書の単語に基づいています
-新しいパスワードを再入力してください: rootと同じパスワード
-passwd: すべての認証トークンが正しく更新できました。</code></pre>
-
-<p>checkユーザの作成を行います。パスワード入力時に良くないパスワードと聞かれるが無視してよいです。</p>
-
-<pre><code class="language-bash">groupadd check -g 1001</code></pre>
-
-<pre><code class="language-bash">useradd -c check -d /home/check -u 1001 -g check -s /bin/tcsh check</code></pre>
-
-<pre><code class="language-bash">passwd check</code></pre>
-
-<p>出力結果:</p>
-<pre><code>ユーザー check のパスワードを変更。
-新しいパスワード: check123
-よくないパスワード: このパスワードは一部に何らかの形でユーザー名が含まれています。
-新しいパスワードを再入力してください: check123
-passwd: すべての認証トークンが正しく更新できました。</code></pre>
-
-<p>suユーザの設定を行います。</p>
-
-<pre><code class="language-bash">usermod -G wheel root</code></pre>
-
-<pre><code class="language-bash">usermod -G wheel staff</code></pre>
-
-<p>suユーザの設定ファイルの編集を行います。</p>
-
-<pre><code class="language-bash">vi /etc/pam.d/su</code></pre>
-
-<p>以下を変更:</p>
-<pre><code>#auth sufficient pam_wheel.so trust use_uid ← 先頭の#を削除</code></pre>
-
-<pre><code class="language-bash">vi /etc/login.defs</code></pre>
-
-<p>最終行に以下を追加:</p>
-<pre><code>SU_WHEEL_ONLY yes</code></pre>
-
-<h2 id="5.7">ログイン画面の設定</h2>
-<p>ログイン画面にユーザリストの非表示を行います。実行後、ログアウトを行い、確認後ログインをします。</p>
-<p>また、実行後にNo protocol specifiedと表示されることがあるが無視してよいです。</p>
-
-<pre><code class="language-bash">sudo -u gdm dbus-launch gsettings set org.gnome.login-screendisable-user-list true</code></pre>
-<p>--></p>
-<h2 id="5.8">Firewallの設定</h2>
+<h1 id="8">Firewallの設定</h1>
 <p>Firewallサービスが起動しているかの確認を行います。</p>
 
 <pre><code class="language-bash">systemctl status firewalld</code></pre>
@@ -539,9 +443,9 @@ rule family="ipv4" source address="127.0.0.1/32" accept
 rule family="ipv4" source address="{{gatewayIP}}/32" accept
 rule family="ipv4" source address="{{clientIP}}/32" accept</code></pre>
 
-<h1 id="6">リモートアクセスの設定</h1>
+<h1 id="9">リモートアクセスの設定</h1>
 
-<h2 id="6.1">rloginとrshの設定</h2>
+<h2 id="9.1">rloginとrshの設定</h2>
 <p>rloginとrshのインストールを行います。</p>
 
 <pre><code class="language-bash">yum -y install rsh rsh-server</code></pre>
@@ -591,7 +495,7 @@ rule family="ipv4" source address="{{clientIP}}/32" accept</code></pre>
 <p>以下を変更:</p>
 <pre><code>#auth require pam_securetty.so ← 先頭の#を削除</code></pre>
 
-<h2 id="6.2">sshの設定</h2>
+<h2 id="9.2">sshの設定</h2>
 <p>sshの設定を変更します。</p>
 
 <pre><code class="language-bash">vi /etc/ssh/sshd_config</code></pre>

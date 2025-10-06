@@ -179,54 +179,11 @@ vi /etc/selinux/config
 ```
 
 以下を変更:
-<!--
-```
---[[SELINUX=enforcing]]
-++[[SELINUX=disabled]]
-```
--->
 ```
 SELINUX=disabled
 ```
-<!--
-## systemdユニットファイルのカスタム設定
-
-```bash
-vi /etc/systemd/system.conf
-```
-
-以下を変更:
-```
-#LogLevel=info → 先頭の#を削除しLogLevel=noticeに変更
-#DefaultTimeoutStartSec=90s → 先頭の#を削除しDefaultTimeoutStartSec=30sに変更
-#DefaultTimeoutStopSec=90s → 先頭の#を削除しDefaultTimeoutStopSec=10sに変更
-```
-
-## bashrcの設定
-bashrcの設定を行います。
-
-```bash
-cd
-```
-
-```bash
-vi /root/.bashrc
-```
-
-`alias mv='mv -i'`の下に以下を記入:
-```
-export PATH=$PATH:.
-```
-
-設定を反映させるために、.bashrcを読み込みます。
-
-```bash
-source /root/.bashrc
-```
--->
-
 ## yumの設定
-パッケージマネージャyumの設定を行います。
+パッケージマネージャーyumの設定を行います。
 
 ```bash
 vi /etc/yum.conf
@@ -243,108 +200,11 @@ timeout=900
 ```bash
 yum -y update --nobest
 ```
-<!--
-## 電源管理設定
-電源管理用のデーモンであるacpidのインストールを行います。
+# メールサーバの構築
+# WEBサーバの構築
+# SSHの設定
 
-```bash
-yum -y install acpid
-```
-
-インストール後、acpidの起動を行います。
-
-```bash
-systemctl start acpid
-```
-
-## ユーザの設定
-tomeユーザの削除を行います。
-
-```bash
-userdel -r tome
-```
-
-staffユーザの作成を行います。パスワード入力時に良くないパスワードと聞かれるが無視してよいです。
-
-```bash
-useradd -c staff -d /home/staff -u 1000 -g 100 -s /bin/tcsh staff
-```
-
-```bash
-passwd staff
-```
-
-出力結果:
-```
-ユーザー staff のパスワードを変更。
-新しいパスワード: rootと同じパスワード
-よくないパスワード: このパスワードは辞書チェックに失敗しました。 - 辞書の単語に基づいています
-新しいパスワードを再入力してください: rootと同じパスワード
-passwd: すべての認証トークンが正しく更新できました。
-```
-
-checkユーザの作成を行います。パスワード入力時に良くないパスワードと聞かれるが無視してよいです。
-
-```bash
-groupadd check -g 1001
-```
-
-```bash
-useradd -c check -d /home/check -u 1001 -g check -s /bin/tcsh check
-```
-
-```bash
-passwd check
-```
-
-出力結果:
-```
-ユーザー check のパスワードを変更。
-新しいパスワード: check123
-よくないパスワード: このパスワードは一部に何らかの形でユーザー名が含まれています。
-新しいパスワードを再入力してください: check123
-passwd: すべての認証トークンが正しく更新できました。
-```
-
-suユーザの設定を行います。
-
-```bash
-usermod -G wheel root
-```
-
-```bash
-usermod -G wheel staff
-```
-
-suユーザの設定ファイルの編集を行います。
-
-```bash
-vi /etc/pam.d/su
-```
-
-以下を変更:
-```
-#auth sufficient pam_wheel.so trust use_uid ← 先頭の#を削除
-```
-
-```bash
-vi /etc/login.defs
-```
-
-最終行に以下を追加:
-```
-SU_WHEEL_ONLY yes
-```
-
-## ログイン画面の設定
-ログイン画面にユーザリストの非表示を行います。実行後、ログアウトを行い、確認後ログインをします。
-また、実行後にNo protocol specifiedと表示されることがあるが無視してよいです。
-
-```bash
-sudo -u gdm dbus-launch gsettings set org.gnome.login-screendisable-user-list true
-```
--->
-## Firewallの設定
+# Firewallの設定
 Firewallサービスが起動しているかの確認を行います。
 
 ```bash
