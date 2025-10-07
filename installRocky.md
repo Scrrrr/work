@@ -200,7 +200,181 @@ timeout=900
 ```bash
 yum -y update --nobest
 ```
+
+# NFSクライアント
+NFSはネットワーク上でファイルの送受信を行うためのプロトコルです。
+
+NFSクライアントはNFSサーバからファイルを取得するためのソフトです。
+
+今回はjpc1をマウントするためにルートディレクトリに`/jpc1`を作成します。
+
+## NFSのマウント
+```bash
+mkdir /jpc1
+mount -t nfs jpc1.cs.t-kougei.ac.jp /jpc1
+```
+
+## マウントの確認
+```bash
+df
+```
+
+`df`コマンドでjpc1がマウントされているか確認します。
+
+## NFSのアンマウント
+```bash
+umount /jpc1
+```
+
+`umount`コマンドでjpc1をアンマウントします。
+
 # メールサーバの構築
+
+## Postfix
+
+### Postfix のインストール
+OSのインストールで既にPostfixをインストールしていますが、チェック項目を忘れていた場合は以下のコマンドでインストールしてください。
+
+```bash
+yum -y install postfix
+```
+
+### Postfixの設定
+
+postfixの設定ファイルである`/etc/postfix/main.cf`を`vi`エディタで編集します。
+
+```bash
+vi /etc/postfix/main.cf
+```
+
+以下の設定を行います。
+
+```{file=/etc/postfix/main.cf}
+myhostname = {{serverHostname}}.netsys.cs.t-kougei.ac.jp
+mydomain = netsys.cs.t-kougei.ac.jp
+myorigin = $mydomain
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+relayhost = [smtp-a.t-kougei.ac.jp]
+mynetworks = 127.0.0.0/8
+inet_interfaces = all
+#inet_interfaces = localhost <- 先頭に#を挿入してコメントアウト
+inet_protocols = ipv4
+home_mailbox = Maildir/
+```
+
+参考:
+- `myorigin`: 外行きメールに使うドメイン
+- `mydestination`: 受信するドメイン
+- `mynetworks`: メールリレーを許可するネットワーク
+
+### postfixの設定の反映
+`systemctl`コマンドでpostfixを再起動します。
+
+```bash
+systemctl restart postfix.service
+```
+
+### メール転送の設定
+`/etc/aliases`ファイルに、 `転送元: 転送先` を指定することでメールを自動的に転送することができます。
+```bash
+sudo vi /etc/aliases
+```
+
+`/etc/aliases`ファイルに下記を記述します。
+```
+root: kitamura@st.t-kougei.ac.jp
+```
+
+`newaliases`コマンドで、`/etc/aliases`ファイルの設定を反映させます。
+```bash
+sudo newaliases
+```
+
+### メール送受信確認（ローカル）
+
+mailコマンドをインストールしてメールの送信テストをします。
+
+#### mailコマンドのインストール
+```bash
+yum -y install s-nail
+```
+
+#### mailコマンドでtomeに送信 
+`mail`コマンドでtomeに「test」というメッセージを送ります。  
+```bash
+echo "test" | mail tome
+```
+
+`/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
+```bash
+cat /home/tome/Maildir/new
+```
+
+## Dovecot（POP3）
+Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。
+
+### Dovecotのインストール
+```bash
+yum -y install dovecot-core dovecot-pop3d
+```
+
+### Dovecotの設定
+Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-ssl.conf`ファイルをviエディタで開きます。
+```bash
+vi /etc/dovecot/conf.d/10-ssl.conf
+```
+
+SSLを無効にします。
+
+```
+ssl = no
+```
+Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-auth.conf`ファイルをviエディタで開きます。
+
+```bash
+vi /etc/dovecot/conf.d/10-auth.conf
+```
+
+プレーンテキスト認証を許可します。
+
+```
+disable_plaintext_auth = no
+```
+
+Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-mail.conf`ファイルをviエディタで開きます。
+
+```bash
+vi /etc/dovecot/conf.d/10-mail.conf
+```
+
+`mail_location` を `maildir` に変更します。
+
+```
+# mail_location = mbox:~/mail:INBOX=/var/mail/%u
+mail_location = maildir:~/Maildir
+```
+
+### Dovecotの設定の反映
+`systemctl`コマンドでdovecotを再起動します。
+
+```bash
+tome@{{serverHostname}}:~$ sudo systemctl restart dovecot
+```
+
+### client1からの POP3 動作確認
+cilent1を起動して、client1から
+`telnet`コマンドを使用してメールの受信を確認します。
+
+```bash
+tome@client1:~$ telnet {{serverHostname}} 110
+user tome
+pass netsys00
+list
+retr 1
+dele 1
+quit
+```
+
 # WEBサーバの構築
 # SSHの設定
 
