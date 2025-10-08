@@ -352,8 +352,6 @@ systemctl restart dovecot
 cilent1を起動して、client1から
 `telnet`コマンドを使用してメールの受信を確認します。
 
-### Firewallの設定
-
 
 ```bash
 tome@client1:~$ telnet {{serverHostname}} 110
@@ -414,8 +412,6 @@ systemctl start httpd
 ### Firewallの設定
 client1から接続ができるようにFirewallの設定を行います。
 
-
-# SSHの設定
 
 # Firewallの設定
 Firewallサービスが起動しているかの確認を行います。
