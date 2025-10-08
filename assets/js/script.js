@@ -9,6 +9,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // 見出し要素を取得（メインコンテンツのみ）
     const headings = document.querySelectorAll('.main-content h1, .main-content h2, .main-content h3, .main-content h4');
     
+    // ハンバーガーメニューとサイドバーの要素を取得
+    const hamburger = document.getElementById('hamburger');
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    
     // PAGE TOPボタンの表示/非表示制御
     function togglePageTopButton() {
         if (window.scrollY > 300) {
@@ -73,7 +78,49 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }, 100);
     }
-    
+
+    // ハンバーガーメニューの開閉機能
+    function toggleSidebar() {
+        if (hamburger && sidebar && sidebarOverlay) {
+            const isOpen = sidebar.classList.contains('open');
+            
+            if (isOpen) {
+                // サイドバーを閉じる
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('open');
+                hamburger.classList.remove('active');
+            } else {
+                // サイドバーを開く
+                sidebar.classList.add('open');
+                sidebarOverlay.classList.add('open');
+                hamburger.classList.add('active');
+            }
+        }
+    }
+
+    // ハンバーガーメニューのクリックイベント
+    if (hamburger) {
+        hamburger.addEventListener('click', function(e) {
+            e.preventDefault();
+            toggleSidebar();
+        });
+    }
+
+    // オーバーレイのクリックイベント（サイドバーを閉じる）
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', function() {
+            toggleSidebar();
+        });
+    }
+
+    // 目次リンククリック時にサイドバーを閉じる（モバイル時）
+    tocLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('open')) {
+                toggleSidebar();
+            }
+        });
+    });
     
     // キーボードナビゲーション対応
     document.addEventListener('keydown', function(e) {
