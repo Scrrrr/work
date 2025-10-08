@@ -95,16 +95,16 @@
 <p>Kdumpの無効化を行うために、[KDUMP]を選択し、[kdumpを有効にする]のチェックを外し、[完了]を選択します。</p>
 
 <h2 id="2.4">ネットワーク設定</h2>
-<p>次に、ネットワークの設定を行います。[ネットワークとホスト名]を選択し、ホスト名に<code>{{serverHostname}}.netsys.cs.t-kougei.ac.jp</code>を入力します。</p>
+<p>次に、ネットワークの設定を行います。[ネットワークとホスト名]を選択し、ホスト名に<code><?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code>を入力します。</p>
 
 <p>ホスト名入力後、[適用]をクリックします。</p>
 <p>ここで、[適用]をクリックしないと設定が反映されないため注意してください。</p>
 
 <p>さらに、[設定]を選択し、[IPv4のセッティング]をクリックし、方式を自動(DHCP)から手動に変更します。</p>
 
-<p>アドレスの[追加]を選択し、アドレスに<code>{{serverIP}}</code>、ネットマスクに255.255.255.0、ゲートウェイに<code>{{gatewayIP}}</code>を入力します。</p>
+<p>アドレスの[追加]を選択し、アドレスに<code><?php echo $serverIP; ?></code>、ネットマスクに255.255.255.0、ゲートウェイに<code><?php echo $gatewayIP; ?></code>を入力します。</p>
 
-<p>DNSサーバに<code>{{gatewayIP}}</code>、ドメインを検索に<code>netsys.cs.t-kougei.ac.jp,cs.t-kougei.ac.jp,t-kougei.ac.jp</code>を入力し、[保存]を選択します。</p>
+<p>DNSサーバに<code><?php echo $gatewayIP; ?></code>、ドメインを検索に<code>netsys.cs.t-kougei.ac.jp,cs.t-kougei.ac.jp,t-kougei.ac.jp</code>を入力し、[保存]を選択します。</p>
 
 <p>保存後、右上の[オフ]を[オン]に変更し、IPアドレスなどが表示されているか確認し、[完了]を選択します。</p>
 
@@ -361,7 +361,7 @@ timeout=900</code></pre>
 <p>以下の設定を行います。</p>
 
 <div class="code-file-info">📁 /etc/postfix/main.cf</div>
-<pre><code>myhostname = {{serverHostname}}.netsys.cs.t-kougei.ac.jp
+<pre><code>myhostname = <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp
 mydomain = netsys.cs.t-kougei.ac.jp
 myorigin = $mydomain
 mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
@@ -458,7 +458,7 @@ home_mailbox = Maildir/</code></pre>
 <p><code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
 
 
-<pre><code class="language-bash"><span class="shell-prompt">tome@client1:~$</span> telnet {{serverHostname}} 110
+<pre><code class="language-bash">tome@client1:~$ telnet <?php echo $serverHostname; ?> 110
 user tome
 pass netsys00
 list
@@ -470,7 +470,7 @@ quit</code></pre>
 
 <h2 id="7.1">httpdのインストール</h2>
 
-<p><strong>httpdは未インストール</strong></p>
+<p>既にインストール済みですが、もしも未インストールの場合は以下のコマンドでインストールしてください。</p>
 
 <pre><code class="language-bash">yum -y install httpd</code></pre>
 
@@ -480,12 +480,12 @@ quit</code></pre>
 <p>サーバの名前とポート番号を記載します。</p>
 
 <div class="code-file-info">📁 /etc/httpd/conf/httpd.conf</div>
-<pre><code>ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp:80</code></pre>
+<pre><code>ServerName <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp:80</code></pre>
 
 <h2 id="7.3">コンテンツの設置</h2>
 <p>サーバが提供するコンテンツを<code>/var/www/html/</code>に設置します。ファイル名は<code>index.html</code>とします。</p>
 
-<pre><code>vi /var/www/html/index.html</code></pre>
+<pre><code class="language-bash">vi /var/www/html/index.html</code></pre>
 
 <div class="code-file-info">📁 /var/www/html/index.html</div>
 <pre><code>hello world</code></pre>
@@ -499,6 +499,12 @@ quit</code></pre>
 <pre><code class="language-bash">systemctl start httpd</code></pre>
 
 <h2 id="7.5">クライアントからのチェック</h2>
+
+<p>クライアントからfirefoxを起動して、以下のURLにアクセスします。</p>
+<p><a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a></p>
+
+<p>真っ白なページに「hello world」とあれば完了です。</p>
+
 
 <h3 id="7.5.16">Firewallの設定</h3>
 <p>client1から接続ができるようにFirewallの設定を行います。</p>
@@ -580,9 +586,9 @@ rich rules:</code></pre>
 
 <pre><code class="language-bash">firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="127.0.0.1/32" accept"</code></pre>
 
-<pre><code class="language-bash">firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="{{gatewayIP}}/32" accept"</code></pre>
+<pre><code class="language-bash">firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="<?php echo $gatewayIP; ?>/32" accept"</code></pre>
 
-<pre><code class="language-bash">firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="{{clientIP}}/32" accept"</code></pre>
+<pre><code class="language-bash">firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="<?php echo $clientIP; ?>/32" accept"</code></pre>
 
 <p>出力結果:</p>
 <pre><code>success</code></pre>
@@ -613,8 +619,8 @@ source-ports:
 icmp-blocks:
 rich rules:
 rule family="ipv4" source address="127.0.0.1/32" accept
-rule family="ipv4" source address="{{gatewayIP}}/32" accept
-rule family="ipv4" source address="{{clientIP}}/32" accept</code></pre>
+rule family="ipv4" source address="<?php echo $gatewayIP; ?>/32" accept
+rule family="ipv4" source address="<?php echo $clientIP; ?>/32" accept</code></pre>
 
 <h1 id="9">リモートアクセスの設定</h1>
 
@@ -654,10 +660,10 @@ rule family="ipv4" source address="{{clientIP}}/32" accept</code></pre>
 <pre><code class="language-bash">vi /root/.rhosts</code></pre>
 
 <p>以下を記入:</p>
-<pre><code>{{gatewayIP}} root
-{{gatewayIP}} user1
-{{clientIP}} root
-{{clientIP}} check</code></pre>
+<pre><code><?php echo $gatewayIP; ?> root
+<?php echo $gatewayIP; ?> user1
+<?php echo $clientIP; ?> root
+<?php echo $clientIP; ?> check</code></pre>
 
 <p>rootユーザでログインを可能にします。</p>
 

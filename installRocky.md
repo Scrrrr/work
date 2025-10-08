@@ -367,7 +367,7 @@ quit
 
 ## httpdのインストール
 
-**httpdは未インストール**
+既にインストール済みですが、もしも未インストールの場合は以下のコマンドでインストールしてください。
 
 ```bash
 yum -y install httpd
@@ -387,7 +387,7 @@ ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp:80
 ## コンテンツの設置
 サーバが提供するコンテンツを`/var/www/html/`に設置します。ファイル名は`index.html`とします。
 
-```
+```bash
 vi /var/www/html/index.html
 ```
 
@@ -408,6 +408,12 @@ systemctl start httpd
 ```
 
 ## クライアントからのチェック
+
+クライアントからfirefoxを起動して、以下のURLにアクセスします。
+[http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp](http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp)
+
+真っ白なページに「hello world」とあれば完了です。
+
 
 ### Firewallの設定
 client1から接続ができるようにFirewallの設定を行います。
