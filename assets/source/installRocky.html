@@ -57,12 +57,11 @@
 <li><a href="#7.5">クライアントからのチェック</a></li>
 </ul>
 </li>
-<li><a href="#8">SSHの設定</a></li>
-<li><a href="#9">Firewallの設定</a></li>
-<li><a href="#10">リモートアクセスの設定</a>
+<li><a href="#8">Firewallの設定</a></li>
+<li><a href="#9">リモートアクセスの設定</a>
 <ul>
-<li><a href="#10.1">rloginとrshの設定</a></li>
-<li><a href="#10.2">sshの設定</a></li>
+<li><a href="#9.1">rloginとrshの設定</a></li>
+<li><a href="#9.2">sshの設定</a></li>
 </ul>
 </li>
 </ul>
@@ -458,8 +457,6 @@ home_mailbox = Maildir/</code></pre>
 <p>cilent1を起動して、client1から</p>
 <p><code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
 
-<h3 id="6.3.16">Firewallの設定</h3>
-
 
 <pre><code class="language-bash"><span class="shell-prompt">tome@client1:~$</span> telnet {{serverHostname}} 110
 user tome
@@ -503,13 +500,11 @@ quit</code></pre>
 
 <h2 id="7.5">クライアントからのチェック</h2>
 
-<h3 id="7.5.17">Firewallの設定</h3>
+<h3 id="7.5.16">Firewallの設定</h3>
 <p>client1から接続ができるようにFirewallの設定を行います。</p>
 
 
-<h1 id="8">SSHの設定</h1>
-
-<h1 id="9">Firewallの設定</h1>
+<h1 id="8">Firewallの設定</h1>
 <p>Firewallサービスが起動しているかの確認を行います。</p>
 
 <pre><code class="language-bash">systemctl status firewalld</code></pre>
@@ -621,9 +616,9 @@ rule family="ipv4" source address="127.0.0.1/32" accept
 rule family="ipv4" source address="{{gatewayIP}}/32" accept
 rule family="ipv4" source address="{{clientIP}}/32" accept</code></pre>
 
-<h1 id="10">リモートアクセスの設定</h1>
+<h1 id="9">リモートアクセスの設定</h1>
 
-<h2 id="10.1">rloginとrshの設定</h2>
+<h2 id="9.1">rloginとrshの設定</h2>
 <p>rloginとrshのインストールを行います。</p>
 
 <pre><code class="language-bash">yum -y install rsh rsh-server</code></pre>
@@ -673,7 +668,7 @@ rule family="ipv4" source address="{{clientIP}}/32" accept</code></pre>
 <p>以下を変更:</p>
 <pre><code>#auth require pam_securetty.so ← 先頭の#を削除</code></pre>
 
-<h2 id="10.2">sshの設定</h2>
+<h2 id="9.2">sshの設定</h2>
 <p>sshの設定を変更します。</p>
 
 <pre><code class="language-bash">vi /etc/ssh/sshd_config</code></pre>
