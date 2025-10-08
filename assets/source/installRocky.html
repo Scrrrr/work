@@ -41,32 +41,28 @@
 <li><a href="#5.2">yumの設定</a></li>
 </ul>
 </li>
-<li><a href="#6">NFSクライアント</a>
+<li><a href="#6">メールサーバの構築</a>
 <ul>
-<li><a href="#6.1">NFSのマウント</a></li>
-<li><a href="#6.2">マウントの確認</a></li>
-<li><a href="#6.3">NFSのアンマウント</a></li>
+<li><a href="#6.1">Postfix</a></li>
+<li><a href="#6.2">Dovecot（POP3）</a></li>
+<li><a href="#6.3">client1からの動作確認</a></li>
 </ul>
 </li>
-<li><a href="#7">メールサーバの構築</a>
+<li><a href="#7">WEBサーバの構築</a>
 <ul>
-<li><a href="#7.1">Postfix</a></li>
-<li><a href="#7.2">Dovecot（POP3）</a></li>
+<li><a href="#7.1">httpdのインストール</a></li>
+<li><a href="#7.2">httpdの設定</a></li>
+<li><a href="#7.3">コンテンツの設置</a></li>
+<li><a href="#7.4">httpdの起動</a></li>
+<li><a href="#7.5">クライアントからのチェック</a></li>
 </ul>
 </li>
-<li><a href="#8">WEBサーバの構築</a>
+<li><a href="#8">SSHの設定</a></li>
+<li><a href="#9">Firewallの設定</a></li>
+<li><a href="#10">リモートアクセスの設定</a>
 <ul>
-<li><a href="#8.1">httpdのインストール</a></li>
-<li><a href="#8.2">httpdの設定</a></li>
-<li><a href="#8.3">httpdの起動</a></li>
-</ul>
-</li>
-<li><a href="#9">SSHの設定</a></li>
-<li><a href="#10">Firewallの設定</a></li>
-<li><a href="#11">リモートアクセスの設定</a>
-<ul>
-<li><a href="#11.1">rloginとrshの設定</a></li>
-<li><a href="#11.2">sshの設定</a></li>
+<li><a href="#10.1">rloginとrshの設定</a></li>
+<li><a href="#10.2">sshの設定</a></li>
 </ul>
 </li>
 </ul>
@@ -348,37 +344,16 @@ timeout=900</code></pre>
 
 <pre><code class="language-bash">yum -y update --nobest</code></pre>
 
-<h1 id="6">NFSクライアント</h1>
-<p>NFSはネットワーク上でファイルの送受信を行うためのプロトコルです。</p>
+<h1 id="6">メールサーバの構築</h1>
 
-<p>NFSクライアントはNFSサーバからファイルを取得するためのソフトです。</p>
+<h2 id="6.1">Postfix</h2>
 
-<p>今回はjpc1をマウントするためにルートディレクトリに<code>/jpc1</code>を作成します。</p>
-
-<h2 id="6.1">NFSのマウント</h2>
-<pre><code class="language-bash">mkdir /jpc1
-mount -t nfs jpc1.cs.t-kougei.ac.jp /jpc1</code></pre>
-
-<h2 id="6.2">マウントの確認</h2>
-<pre><code class="language-bash">df</code></pre>
-
-<p><code>df</code>コマンドでjpc1がマウントされているか確認します。</p>
-
-<h2 id="6.3">NFSのアンマウント</h2>
-<pre><code class="language-bash">umount /jpc1</code></pre>
-
-<p><code>umount</code>コマンドでjpc1をアンマウントします。</p>
-
-<h1 id="7">メールサーバの構築</h1>
-
-<h2 id="7.1">Postfix</h2>
-
-<h3 id="7.1.6">Postfix のインストール</h3>
+<h3 id="6.1.6">Postfix のインストール</h3>
 <p>OSのインストールで既にPostfixをインストールしていますが、チェック項目を忘れていた場合は以下のコマンドでインストールしてください。</p>
 
 <pre><code class="language-bash">yum -y install postfix</code></pre>
 
-<h3 id="7.1.7">Postfixの設定</h3>
+<h3 id="6.1.7">Postfixの設定</h3>
 
 <p>postfixの設定ファイルである<code>/etc/postfix/main.cf</code>を<code>vi</code>エディタで編集します。</p>
 
@@ -404,12 +379,12 @@ home_mailbox = Maildir/</code></pre>
 <li><code>mydestination</code>: 受信するドメイン</li>
 <li><code>mynetworks</code>: メールリレーを許可するネットワーク</li>
 </ul>
-<h3 id="7.1.8">postfixの設定の反映</h3>
+<h3 id="6.1.8">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
 <pre><code class="language-bash">systemctl restart postfix.service</code></pre>
 
-<h3 id="7.1.9">メール転送の設定</h3>
+<h3 id="6.1.9">メール転送の設定</h3>
 <p><code>/etc/aliases</code>ファイルに、 <code>転送元: 転送先</code> を指定することでメールを自動的に転送することができます。</p>
 <pre><code class="language-bash">sudo vi /etc/aliases</code></pre>
 
@@ -419,28 +394,38 @@ home_mailbox = Maildir/</code></pre>
 <p><code>newaliases</code>コマンドで、<code>/etc/aliases</code>ファイルの設定を反映させます。</p>
 <pre><code class="language-bash">sudo newaliases</code></pre>
 
-<h3 id="7.1.10">メール送受信確認（ローカル）</h3>
+<h3 id="6.1.10">メール送受信確認（ローカル）</h3>
 
 <p>mailコマンドをインストールしてメールの送信テストをします。</p>
 
-<h4 id="7.1.11">mailコマンドのインストール</h4>
+<h4 id="6.1.11">mailコマンドのインストール</h4>
 <pre><code class="language-bash">yum -y install s-nail</code></pre>
 
-<h4 id="7.1.12">mailコマンドでtomeに送信</h4>
+<h4 id="6.1.12">mailコマンドでtomeに送信</h4>
 <p><code>mail</code>コマンドでtomeに「test」というメッセージを送ります。  </p>
 <pre><code class="language-bash">echo "test" | mail tome</code></pre>
 
 <p><code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
 <pre><code class="language-bash">cat /home/tome/Maildir/new</code></pre>
 
-<h2 id="7.2">Dovecot（POP3）</h2>
+<h2 id="6.2">Dovecot（POP3）</h2>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
 
-<h3 id="7.2.13">Dovecotのインストール</h3>
+<h3 id="6.2.13">Dovecotのインストール</h3>
+<p>既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。</p>
 <pre><code class="language-bash">yum -y install dovecot-core dovecot-pop3d</code></pre>
 
-<h3 id="7.2.14">Dovecotの設定</h3>
+<h3 id="6.2.14">Dovecotの設定</h3>
+<p>Dovcotの設定ファイルである<code>/etc/dovecot/dovecot.conf</code>ファイルをviエディタで開きます。</p>
+<pre><code class="language-bash">vi /etc/dovecot/dovecot.conf</code></pre>
+
+<p>protocolsをpop3のみにします。  </p>
+
+<div class="code-file-info">📁 /etc/dovecot/dovecot.conf</div>
+<pre><code>protocols = pop3</code></pre>
+
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-ssl.conf</code>ファイルをviエディタで開きます。</p>
+
 <pre><code class="language-bash">vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
 
 <p>SSLを無効にします。</p>
@@ -460,17 +445,21 @@ home_mailbox = Maildir/</code></pre>
 
 <p><code>mail_location</code> を <code>maildir</code> に変更します。</p>
 
-<pre><code># mail_location = mbox:~/mail:INBOX=/var/mail/%u
-mail_location = maildir:~/Maildir</code></pre>
+<pre><code>mail_location = maildir:~/Maildir</code></pre>
 
-<h3 id="7.2.15">Dovecotの設定の反映</h3>
+<h3 id="6.2.15">Dovecotの設定の反映</h3>
 <p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
 
-<pre><code class="language-bash">tome@{{serverHostname}}:~$ sudo systemctl restart dovecot</code></pre>
+<pre><code class="language-bash">systemctl restart dovecot</code></pre>
 
-<h3 id="7.2.16">client1からの POP3 動作確認</h3>
+<p><strong>Firewallの設定が必要</strong></p>
+
+<h2 id="6.3">client1からの動作確認</h2>
 <p>cilent1を起動して、client1から</p>
 <p><code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
+
+<h3 id="6.3.16">Firewallの設定</h3>
+
 
 <pre><code class="language-bash"><span class="shell-prompt">tome@client1:~$</span> telnet {{serverHostname}} 110
 user tome
@@ -480,27 +469,47 @@ retr 1
 dele 1
 quit</code></pre>
 
-<h1 id="8">WEBサーバの構築</h1>
+<h1 id="7">WEBサーバの構築</h1>
 
-<h2 id="8.1">httpdのインストール</h2>
+<h2 id="7.1">httpdのインストール</h2>
+
+<p><strong>httpdは未インストール</strong></p>
 
 <pre><code class="language-bash">yum -y install httpd</code></pre>
 
-<h2 id="8.2">httpdの設定</h2>
+<h2 id="7.2">httpdの設定</h2>
 <pre><code class="language-bash">vi /etc/httpd/conf/httpd.conf</code></pre>
 
+<p>サーバの名前とポート番号を記載します。</p>
+
+<div class="code-file-info">📁 /etc/httpd/conf/httpd.conf</div>
 <pre><code>ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp:80</code></pre>
 
-<h2 id="8.3">httpdの起動</h2>
+<h2 id="7.3">コンテンツの設置</h2>
+<p>サーバが提供するコンテンツを<code>/var/www/html/</code>に設置します。ファイル名は<code>index.html</code>とします。</p>
+
+<pre><code>vi /var/www/html/index.html</code></pre>
+
+<div class="code-file-info">📁 /var/www/html/index.html</div>
+<pre><code>hello world</code></pre>
+
+<h2 id="7.4">httpdの起動</h2>
+
+<p><code>systemctl</code>コマンドでhttpdの自動起動とサービスの開始をします。</p>
 
 <pre><code class="language-bash">systemctl enable httpd</code></pre>
 
 <pre><code class="language-bash">systemctl start httpd</code></pre>
 
+<h2 id="7.5">クライアントからのチェック</h2>
 
-<h1 id="9">SSHの設定</h1>
+<h3 id="7.5.17">Firewallの設定</h3>
+<p>client1から接続ができるようにFirewallの設定を行います。</p>
 
-<h1 id="10">Firewallの設定</h1>
+
+<h1 id="8">SSHの設定</h1>
+
+<h1 id="9">Firewallの設定</h1>
 <p>Firewallサービスが起動しているかの確認を行います。</p>
 
 <pre><code class="language-bash">systemctl status firewalld</code></pre>
@@ -612,9 +621,9 @@ rule family="ipv4" source address="127.0.0.1/32" accept
 rule family="ipv4" source address="{{gatewayIP}}/32" accept
 rule family="ipv4" source address="{{clientIP}}/32" accept</code></pre>
 
-<h1 id="11">リモートアクセスの設定</h1>
+<h1 id="10">リモートアクセスの設定</h1>
 
-<h2 id="11.1">rloginとrshの設定</h2>
+<h2 id="10.1">rloginとrshの設定</h2>
 <p>rloginとrshのインストールを行います。</p>
 
 <pre><code class="language-bash">yum -y install rsh rsh-server</code></pre>
@@ -664,7 +673,7 @@ rule family="ipv4" source address="{{clientIP}}/32" accept</code></pre>
 <p>以下を変更:</p>
 <pre><code>#auth require pam_securetty.so ← 先頭の#を削除</code></pre>
 
-<h2 id="11.2">sshの設定</h2>
+<h2 id="10.2">sshの設定</h2>
 <p>sshの設定を変更します。</p>
 
 <pre><code class="language-bash">vi /etc/ssh/sshd_config</code></pre>

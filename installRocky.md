@@ -287,12 +287,25 @@ cat /home/tome/Maildir/new
 Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。
 
 ### Dovecotのインストール
+既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。
 ```bash
 yum -y install dovecot-core dovecot-pop3d
 ```
 
 ### Dovecotの設定
+Dovcotの設定ファイルである`/etc/dovecot/dovecot.conf`ファイルをviエディタで開きます。
+```bash
+vi /etc/dovecot/dovecot.conf
+```
+
+protocolsをpop3のみにします。  
+
+```{file=/etc/dovecot/dovecot.conf}
+protocols = pop3
+```
+
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-ssl.conf`ファイルをviエディタで開きます。
+
 ```bash
 vi /etc/dovecot/conf.d/10-ssl.conf
 ```
@@ -330,14 +343,17 @@ mail_location = maildir:~/Maildir
 `systemctl`コマンドでdovecotを再起動します。
 
 ```bash
-tome@{{serverHostname}}:~$ sudo systemctl restart dovecot
+systemctl restart dovecot
 ```
 
 **Firewallの設定が必要**
 
-### client1からの POP3 動作確認
+## client1からの動作確認
 cilent1を起動して、client1から
 `telnet`コマンドを使用してメールの受信を確認します。
+
+### Firewallの設定
+
 
 ```bash
 tome@client1:~$ telnet {{serverHostname}} 110
@@ -364,11 +380,26 @@ yum -y install httpd
 vi /etc/httpd/conf/httpd.conf
 ```
 
-```
+サーバの名前とポート番号を記載します。
+
+```{file=/etc/httpd/conf/httpd.conf}
 ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp:80
 ```
 
+## コンテンツの設置
+サーバが提供するコンテンツを`/var/www/html/`に設置します。ファイル名は`index.html`とします。
+
+```
+vi /var/www/html/index.html
+```
+
+```{file=/var/www/html/index.html}
+hello world
+```
+
 ## httpdの起動
+
+`systemctl`コマンドでhttpdの自動起動とサービスの開始をします。
 
 ```bash
 systemctl enable httpd
@@ -377,6 +408,11 @@ systemctl enable httpd
 ```bash
 systemctl start httpd
 ```
+
+## クライアントからのチェック
+
+### Firewallの設定
+client1から接続ができるようにFirewallの設定を行います。
 
 
 # SSHの設定
