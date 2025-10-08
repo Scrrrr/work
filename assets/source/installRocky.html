@@ -326,14 +326,14 @@
 <p>この設定にミスがあるとコンピュータが起動しなくなる可能性があるため注意してください。</p>
 </div>
 
-<pre><code class="language-bash">vi /etc/selinux/config</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/selinux/config</code></pre>
 
 <p>以下を変更:</p>
 <pre><code>SELINUX=disabled</code></pre>
 <h2 id="5.2">yumの設定</h2>
 <p>パッケージマネージャーyumの設定を行います。</p>
 
-<pre><code class="language-bash">vi /etc/yum.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/yum.conf</code></pre>
 
 <p><code>skip_if_unavailable=False</code>の下に以下を記入:</p>
 <pre><code>proxy=http://proxy-a.t-kougei.ac.jp:8080/
@@ -341,7 +341,7 @@ timeout=900</code></pre>
 
 <p>保存して終了後アップデートを行います。</p>
 
-<pre><code class="language-bash">yum -y update --nobest</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y update --nobest</code></pre>
 
 <h1 id="6">メールサーバの構築</h1>
 
@@ -350,13 +350,13 @@ timeout=900</code></pre>
 <h3 id="6.1.6">Postfix のインストール</h3>
 <p>OSのインストールで既にPostfixをインストールしていますが、チェック項目を忘れていた場合は以下のコマンドでインストールしてください。</p>
 
-<pre><code class="language-bash">yum -y install postfix</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install postfix</code></pre>
 
 <h3 id="6.1.7">Postfixの設定</h3>
 
 <p>postfixの設定ファイルである<code>/etc/postfix/main.cf</code>を<code>vi</code>エディタで編集します。</p>
 
-<pre><code class="language-bash">vi /etc/postfix/main.cf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/postfix/main.cf</code></pre>
 
 <p>以下の設定を行います。</p>
 
@@ -381,42 +381,42 @@ home_mailbox = Maildir/</code></pre>
 <h3 id="6.1.8">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
-<pre><code class="language-bash">systemctl restart postfix.service</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart postfix.service</code></pre>
 
 <h3 id="6.1.9">メール転送の設定</h3>
 <p><code>/etc/aliases</code>ファイルに、 <code>転送元: 転送先</code> を指定することでメールを自動的に転送することができます。</p>
-<pre><code class="language-bash">sudo vi /etc/aliases</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/aliases</code></pre>
 
 <p><code>/etc/aliases</code>ファイルに下記を記述します。</p>
 <pre><code>root: kitamura@st.t-kougei.ac.jp</code></pre>
 
 <p><code>newaliases</code>コマンドで、<code>/etc/aliases</code>ファイルの設定を反映させます。</p>
-<pre><code class="language-bash">sudo newaliases</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ newaliases</code></pre>
 
 <h3 id="6.1.10">メール送受信確認（ローカル）</h3>
 
 <p>mailコマンドをインストールしてメールの送信テストをします。</p>
 
 <h4 id="6.1.11">mailコマンドのインストール</h4>
-<pre><code class="language-bash">yum -y install s-nail</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install s-nail</code></pre>
 
 <h4 id="6.1.12">mailコマンドでtomeに送信</h4>
 <p><code>mail</code>コマンドでtomeに「test」というメッセージを送ります。  </p>
-<pre><code class="language-bash">echo "test" | mail tome</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ echo "test" | mail tome</code></pre>
 
 <p><code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
-<pre><code class="language-bash">cat /home/tome/Maildir/new</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ cat /home/tome/Maildir/new</code></pre>
 
 <h2 id="6.2">Dovecot（POP3）</h2>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
 
 <h3 id="6.2.13">Dovecotのインストール</h3>
 <p>既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。</p>
-<pre><code class="language-bash">yum -y install dovecot-core dovecot-pop3d</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install dovecot-core dovecot-pop3d</code></pre>
 
 <h3 id="6.2.14">Dovecotの設定</h3>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/dovecot.conf</code>ファイルをviエディタで開きます。</p>
-<pre><code class="language-bash">vi /etc/dovecot/dovecot.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/dovecot/dovecot.conf</code></pre>
 
 <p>protocolsをpop3のみにします。  </p>
 
@@ -425,14 +425,14 @@ home_mailbox = Maildir/</code></pre>
 
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-ssl.conf</code>ファイルをviエディタで開きます。</p>
 
-<pre><code class="language-bash">vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
 
 <p>SSLを無効にします。</p>
 
 <pre><code>ssl = no</code></pre>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-auth.conf</code>ファイルをviエディタで開きます。</p>
 
-<pre><code class="language-bash">vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
 
 <p>プレーンテキスト認証を許可します。</p>
 
@@ -440,7 +440,7 @@ home_mailbox = Maildir/</code></pre>
 
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-mail.conf</code>ファイルをviエディタで開きます。</p>
 
-<pre><code class="language-bash">vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
 
 <p><code>mail_location</code> を <code>maildir</code> に変更します。</p>
 
@@ -449,7 +449,7 @@ home_mailbox = Maildir/</code></pre>
 <h3 id="6.2.15">Dovecotの設定の反映</h3>
 <p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
 
-<pre><code class="language-bash">systemctl restart dovecot</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart dovecot</code></pre>
 
 <p><strong>Firewallの設定が必要</strong></p>
 
@@ -472,10 +472,10 @@ quit</code></pre>
 
 <p>既にインストール済みですが、もしも未インストールの場合は以下のコマンドでインストールしてください。</p>
 
-<pre><code class="language-bash">yum -y install httpd</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install httpd</code></pre>
 
 <h2 id="7.2">httpdの設定</h2>
-<pre><code class="language-bash">vi /etc/httpd/conf/httpd.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/httpd/conf/httpd.conf</code></pre>
 
 <p>サーバの名前とポート番号を記載します。</p>
 
@@ -485,7 +485,7 @@ quit</code></pre>
 <h2 id="7.3">コンテンツの設置</h2>
 <p>サーバが提供するコンテンツを<code>/var/www/html/</code>に設置します。ファイル名は<code>index.html</code>とします。</p>
 
-<pre><code class="language-bash">vi /var/www/html/index.html</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /var/www/html/index.html</code></pre>
 
 <div class="code-file-info">📁 /var/www/html/index.html</div>
 <pre><code>hello world</code></pre>
@@ -494,9 +494,9 @@ quit</code></pre>
 
 <p><code>systemctl</code>コマンドでhttpdの自動起動とサービスの開始をします。</p>
 
-<pre><code class="language-bash">systemctl enable httpd</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl enable httpd</code></pre>
 
-<pre><code class="language-bash">systemctl start httpd</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl start httpd</code></pre>
 
 <h2 id="7.5">クライアントからのチェック</h2>
 
@@ -513,7 +513,7 @@ quit</code></pre>
 <h1 id="8">Firewallの設定</h1>
 <p>Firewallサービスが起動しているかの確認を行います。</p>
 
-<pre><code class="language-bash">systemctl status firewalld</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl status firewalld</code></pre>
 
 <p>出力結果:</p>
 <pre><code>● firewalld.service - firewalld - dynamic firewall daemon
@@ -524,13 +524,13 @@ Docs: man:firewalld(1)</code></pre>
 <p>Activeの項目がactive (running)となっている場合はサービスが起動しているため、OKです。</p>
 <p>inactiveとなっている場合は起動していないため、以下のコマンドを実行します。</p>
 
-<pre><code class="language-bash">systemctl start firewalld</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl start firewalld</code></pre>
 
 <p>再度確認を行い、activeとなっていればOKです。</p>
 
 <p>Firewallの設定確認を行います。</p>
 
-<pre><code class="language-bash">firewall-cmd --list-all</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --list-all</code></pre>
 
 <p>出力結果:</p>
 <pre><code>public (active)
@@ -549,23 +549,23 @@ rich rules:</code></pre>
 
 <p>必要のないdhcpv6-clientとsshの削除を行います。</p>
 
-<pre><code class="language-bash">firewall-cmd --permanent --remove-service=dhcpv6-client</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --permanent --remove-service=dhcpv6-client</code></pre>
 
-<pre><code class="language-bash">firewall-cmd --permanent --remove-service=ssh</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --permanent --remove-service=ssh</code></pre>
 
 <p>出力結果:</p>
 <pre><code>success</code></pre>
 
 <p>設定の反映を行います。</p>
 
-<pre><code class="language-bash">firewall-cmd --reload</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --reload</code></pre>
 
 <p>出力結果:</p>
 <pre><code>success</code></pre>
 
 <p>再度確認を行い、servicesの項目に消えていればOKです。</p>
 
-<pre><code class="language-bash">firewall-cmd --list-all</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --list-all</code></pre>
 
 <p>出力結果:</p>
 <pre><code>public (active)
@@ -584,25 +584,25 @@ rich rules:</code></pre>
 
 <p>Firewallの特定のIPアドレスからのアクセス許可を行います。</p>
 
-<pre><code class="language-bash">firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="127.0.0.1/32" accept"</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="127.0.0.1/32" accept"</code></pre>
 
-<pre><code class="language-bash">firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="<?php echo $gatewayIP; ?>/32" accept"</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="<?php echo $gatewayIP; ?>/32" accept"</code></pre>
 
-<pre><code class="language-bash">firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="<?php echo $clientIP; ?>/32" accept"</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="<?php echo $clientIP; ?>/32" accept"</code></pre>
 
 <p>出力結果:</p>
 <pre><code>success</code></pre>
 
 <p>設定の反映を行います。</p>
 
-<pre><code class="language-bash">firewall-cmd --reload</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --reload</code></pre>
 
 <p>出力結果:</p>
 <pre><code>success</code></pre>
 
 <p>再度確認を行い、rich rules:の項目に追加したIPアドレスが表示されていればOKです。</p>
 
-<pre><code class="language-bash">firewall-cmd --list-all</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --list-all</code></pre>
 
 <p>出力結果:</p>
 <pre><code>public (active)
@@ -627,37 +627,37 @@ rule family="ipv4" source address="<?php echo $clientIP; ?>/32" accept</code></p
 <h2 id="9.1">rloginとrshの設定</h2>
 <p>rloginとrshのインストールを行います。</p>
 
-<pre><code class="language-bash">yum -y install rsh rsh-server</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install rsh rsh-server</code></pre>
 
 <p>インストール後、設定を行います。</p>
 
-<pre><code class="language-bash">vi /usr/lib/systemd/system/rsh.socket</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /usr/lib/systemd/system/rsh.socket</code></pre>
 
 <p>以下を変更:</p>
 <pre><code>ListenStream=514 → ListenStream=0.0.0.0:514に変更</code></pre>
 
-<pre><code class="language-bash">vi /usr/lib/systemd/system/rlogin.socket</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /usr/lib/systemd/system/rlogin.socket</code></pre>
 
 <p>以下を変更:</p>
 <pre><code>ListenStream=513 → ListenStream=0.0.0.0:513に変更</code></pre>
 
 <p>設定の反映を行います。</p>
 
-<pre><code class="language-bash">systemctl daemon-reload</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl daemon-reload</code></pre>
 
 <p>rloginとrshの起動と自動起動設定を行います。</p>
 
-<pre><code class="language-bash">systemctl start rsh</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl start rsh</code></pre>
 
-<pre><code class="language-bash">systemctl start rlogin</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl start rlogin</code></pre>
 
-<pre><code class="language-bash">systemctl enable rsh</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl enable rsh</code></pre>
 
-<pre><code class="language-bash">systemctl enable rlogin</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl enable rlogin</code></pre>
 
 <p>パスワード無しでログインを許可します。</p>
 
-<pre><code class="language-bash">vi /root/.rhosts</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /root/.rhosts</code></pre>
 
 <p>以下を記入:</p>
 <pre><code><?php echo $gatewayIP; ?> root
@@ -667,9 +667,9 @@ rule family="ipv4" source address="<?php echo $clientIP; ?>/32" accept</code></p
 
 <p>rootユーザでログインを可能にします。</p>
 
-<pre><code class="language-bash">vi /etc/pam.d/rsh</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/pam.d/rsh</code></pre>
 
-<pre><code class="language-bash">vi /etc/pam.d/rlogin</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/pam.d/rlogin</code></pre>
 
 <p>以下を変更:</p>
 <pre><code>#auth require pam_securetty.so ← 先頭の#を削除</code></pre>
@@ -677,7 +677,7 @@ rule family="ipv4" source address="<?php echo $clientIP; ?>/32" accept</code></p
 <h2 id="9.2">sshの設定</h2>
 <p>sshの設定を変更します。</p>
 
-<pre><code class="language-bash">vi /etc/ssh/sshd_config</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/ssh/sshd_config</code></pre>
 
 <p>以下を変更:</p>
 <pre><code>#PermitRootLogin Yes → 先頭の#を削除し，PermitRootLogin Noに変更
@@ -685,7 +685,7 @@ rule family="ipv4" source address="<?php echo $clientIP; ?>/32" accept</code></p
 
 <p>設定の反映を行います。</p>
 
-<pre><code class="language-bash">systemctl restart sshd</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart sshd</code></pre>
 
 <p>以上でOSのインストールと設定は完了となります。</p>
 

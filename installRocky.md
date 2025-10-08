@@ -175,7 +175,7 @@ SELinuxの無効化を行います。
 :::
 
 ```bash
-vi /etc/selinux/config
+root@{{serverHostname}}:~$ vi /etc/selinux/config
 ```
 
 以下を変更:
@@ -186,7 +186,7 @@ SELINUX=disabled
 パッケージマネージャーyumの設定を行います。
 
 ```bash
-vi /etc/yum.conf
+root@{{serverHostname}}:~$ vi /etc/yum.conf
 ```
 
 `skip_if_unavailable=False`の下に以下を記入:
@@ -198,7 +198,7 @@ timeout=900
 保存して終了後アップデートを行います。
 
 ```bash
-yum -y update --nobest
+root@{{serverHostname}}:~$ yum -y update --nobest
 ```
 
 # メールサーバの構築
@@ -209,7 +209,7 @@ yum -y update --nobest
 OSのインストールで既にPostfixをインストールしていますが、チェック項目を忘れていた場合は以下のコマンドでインストールしてください。
 
 ```bash
-yum -y install postfix
+root@{{serverHostname}}:~$ yum -y install postfix
 ```
 
 ### Postfixの設定
@@ -217,7 +217,7 @@ yum -y install postfix
 postfixの設定ファイルである`/etc/postfix/main.cf`を`vi`エディタで編集します。
 
 ```bash
-vi /etc/postfix/main.cf
+root@{{serverHostname}}:~$ vi /etc/postfix/main.cf
 ```
 
 以下の設定を行います。
@@ -244,13 +244,13 @@ home_mailbox = Maildir/
 `systemctl`コマンドでpostfixを再起動します。
 
 ```bash
-systemctl restart postfix.service
+root@{{serverHostname}}:~$ systemctl restart postfix.service
 ```
 
 ### メール転送の設定
 `/etc/aliases`ファイルに、 `転送元: 転送先` を指定することでメールを自動的に転送することができます。
 ```bash
-sudo vi /etc/aliases
+root@{{serverHostname}}:~$ vi /etc/aliases
 ```
 
 `/etc/aliases`ファイルに下記を記述します。
@@ -260,7 +260,7 @@ root: kitamura@st.t-kougei.ac.jp
 
 `newaliases`コマンドで、`/etc/aliases`ファイルの設定を反映させます。
 ```bash
-sudo newaliases
+root@{{serverHostname}}:~$ newaliases
 ```
 
 ### メール送受信確認（ローカル）
@@ -269,18 +269,18 @@ mailコマンドをインストールしてメールの送信テストをしま�
 
 #### mailコマンドのインストール
 ```bash
-yum -y install s-nail
+root@{{serverHostname}}:~$ yum -y install s-nail
 ```
 
 #### mailコマンドでtomeに送信 
 `mail`コマンドでtomeに「test」というメッセージを送ります。  
 ```bash
-echo "test" | mail tome
+root@{{serverHostname}}:~$ echo "test" | mail tome
 ```
 
 `/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
 ```bash
-cat /home/tome/Maildir/new
+root@{{serverHostname}}:~$ cat /home/tome/Maildir/new
 ```
 
 ## Dovecot（POP3）
@@ -289,13 +289,13 @@ Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオー�
 ### Dovecotのインストール
 既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。
 ```bash
-yum -y install dovecot-core dovecot-pop3d
+root@{{serverHostname}}:~$ yum -y install dovecot-core dovecot-pop3d
 ```
 
 ### Dovecotの設定
 Dovcotの設定ファイルである`/etc/dovecot/dovecot.conf`ファイルをviエディタで開きます。
 ```bash
-vi /etc/dovecot/dovecot.conf
+root@{{serverHostname}}:~$ vi /etc/dovecot/dovecot.conf
 ```
 
 protocolsをpop3のみにします。  
@@ -307,7 +307,7 @@ protocols = pop3
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-ssl.conf`ファイルをviエディタで開きます。
 
 ```bash
-vi /etc/dovecot/conf.d/10-ssl.conf
+root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-ssl.conf
 ```
 
 SSLを無効にします。
@@ -318,7 +318,7 @@ ssl = no
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-auth.conf`ファイルをviエディタで開きます。
 
 ```bash
-vi /etc/dovecot/conf.d/10-auth.conf
+root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-auth.conf
 ```
 
 プレーンテキスト認証を許可します。
@@ -330,7 +330,7 @@ disable_plaintext_auth = no
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-mail.conf`ファイルをviエディタで開きます。
 
 ```bash
-vi /etc/dovecot/conf.d/10-mail.conf
+root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-mail.conf
 ```
 
 `mail_location` を `maildir` に変更します。
@@ -343,7 +343,7 @@ mail_location = maildir:~/Maildir
 `systemctl`コマンドでdovecotを再起動します。
 
 ```bash
-systemctl restart dovecot
+root@{{serverHostname}}:~$ systemctl restart dovecot
 ```
 
 **Firewallの設定が必要**
@@ -370,12 +370,12 @@ quit
 既にインストール済みですが、もしも未インストールの場合は以下のコマンドでインストールしてください。
 
 ```bash
-yum -y install httpd
+root@{{serverHostname}}:~$ yum -y install httpd
 ```
 
 ## httpdの設定
 ```bash
-vi /etc/httpd/conf/httpd.conf
+root@{{serverHostname}}:~$ vi /etc/httpd/conf/httpd.conf
 ```
 
 サーバの名前とポート番号を記載します。
@@ -388,7 +388,7 @@ ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp:80
 サーバが提供するコンテンツを`/var/www/html/`に設置します。ファイル名は`index.html`とします。
 
 ```bash
-vi /var/www/html/index.html
+root@{{serverHostname}}:~$ vi /var/www/html/index.html
 ```
 
 ```{file=/var/www/html/index.html}
@@ -400,11 +400,11 @@ hello world
 `systemctl`コマンドでhttpdの自動起動とサービスの開始をします。
 
 ```bash
-systemctl enable httpd
+root@{{serverHostname}}:~$ systemctl enable httpd
 ```
 
 ```bash
-systemctl start httpd
+root@{{serverHostname}}:~$ systemctl start httpd
 ```
 
 ## クライアントからのチェック
@@ -423,7 +423,7 @@ client1から接続ができるようにFirewallの設定を行います。
 Firewallサービスが起動しているかの確認を行います。
 
 ```bash
-systemctl status firewalld
+root@{{serverHostname}}:~$ systemctl status firewalld
 ```
 
 出力結果:
@@ -438,7 +438,7 @@ Activeの項目がactive (running)となっている場合はサービスが起�
 inactiveとなっている場合は起動していないため、以下のコマンドを実行します。
 
 ```bash
-systemctl start firewalld
+root@{{serverHostname}}:~$ systemctl start firewalld
 ```
 
 再度確認を行い、activeとなっていればOKです。
@@ -446,7 +446,7 @@ systemctl start firewalld
 Firewallの設定確認を行います。
 
 ```bash
-firewall-cmd --list-all
+root@{{serverHostname}}:~$ firewall-cmd --list-all
 ```
 
 出力結果:
@@ -469,11 +469,11 @@ rich rules:
 必要のないdhcpv6-clientとsshの削除を行います。
 
 ```bash
-firewall-cmd --permanent --remove-service=dhcpv6-client
+root@{{serverHostname}}:~$ firewall-cmd --permanent --remove-service=dhcpv6-client
 ```
 
 ```bash
-firewall-cmd --permanent --remove-service=ssh
+root@{{serverHostname}}:~$ firewall-cmd --permanent --remove-service=ssh
 ```
 
 出力結果:
@@ -484,7 +484,7 @@ success
 設定の反映を行います。
 
 ```bash
-firewall-cmd --reload
+root@{{serverHostname}}:~$ firewall-cmd --reload
 ```
 
 出力結果:
@@ -495,7 +495,7 @@ success
 再度確認を行い、servicesの項目に消えていればOKです。
 
 ```bash
-firewall-cmd --list-all
+root@{{serverHostname}}:~$ firewall-cmd --list-all
 ```
 
 出力結果:
@@ -518,15 +518,15 @@ rich rules:
 Firewallの特定のIPアドレスからのアクセス許可を行います。
 
 ```bash
-firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="127.0.0.1/32" accept"
+root@{{serverHostname}}:~$ firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="127.0.0.1/32" accept"
 ```
 
 ```bash
-firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="{{gatewayIP}}/32" accept"
+root@{{serverHostname}}:~$ firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="{{gatewayIP}}/32" accept"
 ```
 
 ```bash
-firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="{{clientIP}}/32" accept"
+root@{{serverHostname}}:~$ firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="{{clientIP}}/32" accept"
 ```
 
 出力結果:
@@ -537,7 +537,7 @@ success
 設定の反映を行います。
 
 ```bash
-firewall-cmd --reload
+root@{{serverHostname}}:~$ firewall-cmd --reload
 ```
 
 出力結果:
@@ -548,7 +548,7 @@ success
 再度確認を行い、rich rules:の項目に追加したIPアドレスが表示されていればOKです。
 
 ```bash
-firewall-cmd --list-all
+root@{{serverHostname}}:~$ firewall-cmd --list-all
 ```
 
 出力結果:
@@ -577,13 +577,13 @@ rule family="ipv4" source address="{{clientIP}}/32" accept
 rloginとrshのインストールを行います。
 
 ```bash
-yum -y install rsh rsh-server
+root@{{serverHostname}}:~$ yum -y install rsh rsh-server
 ```
 
 インストール後、設定を行います。
 
 ```bash
-vi /usr/lib/systemd/system/rsh.socket
+root@{{serverHostname}}:~$ vi /usr/lib/systemd/system/rsh.socket
 ```
 
 以下を変更:
@@ -592,7 +592,7 @@ ListenStream=514 → ListenStream=0.0.0.0:514に変更
 ```
 
 ```bash
-vi /usr/lib/systemd/system/rlogin.socket
+root@{{serverHostname}}:~$ vi /usr/lib/systemd/system/rlogin.socket
 ```
 
 以下を変更:
@@ -603,31 +603,31 @@ ListenStream=513 → ListenStream=0.0.0.0:513に変更
 設定の反映を行います。
 
 ```bash
-systemctl daemon-reload
+root@{{serverHostname}}:~$ systemctl daemon-reload
 ```
 
 rloginとrshの起動と自動起動設定を行います。
 
 ```bash
-systemctl start rsh
+root@{{serverHostname}}:~$ systemctl start rsh
 ```
 
 ```bash
-systemctl start rlogin
+root@{{serverHostname}}:~$ systemctl start rlogin
 ```
 
 ```bash
-systemctl enable rsh
+root@{{serverHostname}}:~$ systemctl enable rsh
 ```
 
 ```bash
-systemctl enable rlogin
+root@{{serverHostname}}:~$ systemctl enable rlogin
 ```
 
 パスワード無しでログインを許可します。
 
 ```bash
-vi /root/.rhosts
+root@{{serverHostname}}:~$ vi /root/.rhosts
 ```
 
 以下を記入:
@@ -641,11 +641,11 @@ vi /root/.rhosts
 rootユーザでログインを可能にします。
 
 ```bash
-vi /etc/pam.d/rsh
+root@{{serverHostname}}:~$ vi /etc/pam.d/rsh
 ```
 
 ```bash
-vi /etc/pam.d/rlogin
+root@{{serverHostname}}:~$ vi /etc/pam.d/rlogin
 ```
 
 以下を変更:
@@ -657,7 +657,7 @@ vi /etc/pam.d/rlogin
 sshの設定を変更します。
 
 ```bash
-vi /etc/ssh/sshd_config
+root@{{serverHostname}}:~$ vi /etc/ssh/sshd_config
 ```
 
 以下を変更:
@@ -669,7 +669,7 @@ vi /etc/ssh/sshd_config
 設定の反映を行います。
 
 ```bash
-systemctl restart sshd
+root@{{serverHostname}}:~$ systemctl restart sshd
 ```
 
 以上でOSのインストールと設定は完了となります。
