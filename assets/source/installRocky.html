@@ -3,65 +3,60 @@
         <nav class="sidebar">
             <h3>目次</h3>
             <ul class="toc">
-<li><a href="#1">RockyLinuxについて</a>
+<li><a href="#1">RockyLinuxのインストール</a>
 <ul>
-<li><a href="#1.1">序章</a></li>
+<li><a href="#1.1">言語選択</a></li>
+<li><a href="#1.2">ディスクパーティション</a></li>
+<li><a href="#1.3">Kdump</a></li>
+<li><a href="#1.4">ネットワーク設定</a></li>
+<li><a href="#1.5">NTPの設定</a></li>
+<li><a href="#1.6">追加ソフトウェアの選択</a></li>
+<li><a href="#1.7">rootパスワードの設定</a></li>
+<li><a href="#1.8">ユーザーの作成</a></li>
+<li><a href="#1.9">インストールの開始</a></li>
 </ul>
 </li>
-<li><a href="#2">RockyLinuxのインストール</a>
+<li><a href="#2">初期設定</a>
 <ul>
-<li><a href="#2.1">言語選択</a></li>
-<li><a href="#2.2">ディスクパーティション</a></li>
-<li><a href="#2.3">Kdump</a></li>
-<li><a href="#2.4">ネットワーク設定</a></li>
-<li><a href="#2.5">NTPの設定</a></li>
-<li><a href="#2.6">追加ソフトウェアの選択</a></li>
-<li><a href="#2.7">rootパスワードの設定</a></li>
-<li><a href="#2.8">ユーザーの作成</a></li>
-<li><a href="#2.9">インストールの開始</a></li>
+<li><a href="#2.1">ログイン</a></li>
+<li><a href="#2.2">デスクトップアイコンの設定</a></li>
+<li><a href="#2.3">Firefoxの設定</a></li>
 </ul>
 </li>
-<li><a href="#3">初期設定</a>
+<li><a href="#3">コンピュータの設定</a>
 <ul>
-<li><a href="#3.1">ログイン</a></li>
-<li><a href="#3.2">デスクトップアイコンの設定</a></li>
-<li><a href="#3.3">Firefoxの設定</a></li>
+<li><a href="#3.1">入力方式の設定</a></li>
+<li><a href="#3.2">ネットワークの設定</a></li>
+<li><a href="#3.3">電源の設定</a></li>
 </ul>
 </li>
-<li><a href="#4">コンピュータの設定</a>
+<li><a href="#4">サーバの設定</a>
 <ul>
-<li><a href="#4.1">入力方式の設定</a></li>
-<li><a href="#4.2">ネットワークの設定</a></li>
-<li><a href="#4.3">電源の設定</a></li>
+<li><a href="#4.1">SELinuxの無効化</a></li>
+<li><a href="#4.2">yumの設定</a></li>
 </ul>
 </li>
-<li><a href="#5">サーバの設定</a>
+<li><a href="#5">メールサーバの構築</a>
 <ul>
-<li><a href="#5.1">SELinuxの無効化</a></li>
-<li><a href="#5.2">yumの設定</a></li>
+<li><a href="#5.1">Postfix</a></li>
+<li><a href="#5.2">Dovecot（POP3）</a></li>
+<li><a href="#5.3">client1からの動作確認</a></li>
 </ul>
 </li>
-<li><a href="#6">メールサーバの構築</a>
+<li><a href="#6">WEBサーバの構築</a>
 <ul>
-<li><a href="#6.1">Postfix</a></li>
-<li><a href="#6.2">Dovecot（POP3）</a></li>
-<li><a href="#6.3">client1からの動作確認</a></li>
+<li><a href="#6.1">httpdのインストール</a></li>
+<li><a href="#6.2">httpdの設定</a></li>
+<li><a href="#6.3">コンテンツの設置</a></li>
+<li><a href="#6.4">httpdの起動</a></li>
+<li><a href="#6.5">クライアントからのチェック</a></li>
 </ul>
 </li>
-<li><a href="#7">WEBサーバの構築</a>
+<li><a href="#7">Firewallの設定</a></li>
+<li><a href="#8">リモートアクセスの設定</a>
 <ul>
-<li><a href="#7.1">httpdのインストール</a></li>
-<li><a href="#7.2">httpdの設定</a></li>
-<li><a href="#7.3">コンテンツの設置</a></li>
-<li><a href="#7.4">httpdの起動</a></li>
-<li><a href="#7.5">クライアントからのチェック</a></li>
-</ul>
-</li>
-<li><a href="#8">Firewallの設定</a></li>
-<li><a href="#9">リモートアクセスの設定</a>
-<ul>
-<li><a href="#9.1">rloginとrshの設定</a></li>
-<li><a href="#9.2">sshの設定</a></li>
+<li><a href="#8.1">rloginとrshの設定</a></li>
+<li><a href="#8.2">sshの設定</a></li>
 </ul>
 </li>
 </ul>
@@ -69,48 +64,37 @@
 
         <!-- メインコンテンツ -->
         <main class="main-content">
-            <h1 id="1">RockyLinuxについて</h1>
-
+            <h1 id="1">RockyLinuxのインストール</h1>
 <p>RockyLinuxは、Red Hat EnterpriseLinux(RHEL)のダウンストリーム版であるCentOSの開発が中止され、CentOS創設者であるGregory Kurtzer氏がプロジェクトを立ち上げたLinuxディストリビューションです。開発はRockyLinux Projectで行われており、2021年から正式なリリースが行われています。</p>
 
-<h2 id="1.1">序章</h2>
+<p>今回インストールするバージョンはRocky Linux 9.5です。  </p>
 
-<p>OSのインストール練習として、RockyLinuxのインストールを行います。</p>
-
-<h1 id="2">RockyLinuxのインストール</h1>
-
-<h2 id="2.1">言語選択</h2>
+<h2 id="1.1">言語選択</h2>
 <p>インストールが開始されると言語選択メニューが表示されます。左のメニューの中央付近にある[日本語]を選択し、[続行]を選択します。</p>
 
-<h2 id="2.2">ディスクパーティション</h2>
-<p>インストール先のディスクパーティションの設定を行います。[インストール先]を選択し、その他のストレージオプションから、[カスタム]にチェックを入れ、[完了]を選択します。</p>
+<h2 id="1.2">ディスクパーティション</h2>
+<p>インストール先のディスクパーティションの設定を行います。[インストール先]を選択し、ハードディスクの画像にチェックがあることを確認して[完了]をクリックします。</p>
 
-<p>その後、以下のような画面が表示されるため、[+]を選択し、マウントポイントに/bootを選択、割り当てる領域に512MBを入力し、[マウントポイントの追加]を選択します。</p>
-
-<p>再度、[+]を選択し、マウントポイントにswapを選択、割り当てる領域に2GBを入力し、[マウントポイントの追加]を選択します。さらに、[+]を選択し、マウントポイントに/を選択、割り当てる領域は空欄にし、[マウントポイントの追加]を選択します。</p>
-
-<p>その後、[完了]をクリックし、[変更の概要]ウィンドウより[変更を許可する]を選択します。</p>
-
-<h2 id="2.3">Kdump</h2>
+<h2 id="1.3">Kdump</h2>
 <p>Kdumpの無効化を行うために、[KDUMP]を選択し、[kdumpを有効にする]のチェックを外し、[完了]を選択します。</p>
 
-<h2 id="2.4">ネットワーク設定</h2>
+<h2 id="1.4">ネットワーク設定</h2>
 <p>次に、ネットワークの設定を行います。[ネットワークとホスト名]を選択し、ホスト名に<code><?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code>を入力します。</p>
 
 <p>ホスト名入力後、[適用]をクリックします。</p>
 <p>ここで、[適用]をクリックしないと設定が反映されないため注意してください。</p>
 
-<p>さらに、[設定]を選択し、[IPv4のセッティング]をクリックし、方式を自動(DHCP)から手動に変更します。</p>
+<p>さらに、[設定]を選択し、[IPv4のセッティング]をクリックし、方式を<strong>自動(DHCP)</strong>から<strong>手動</strong>に変更します。</p>
 
-<p>アドレスの[追加]を選択し、アドレスに<code><?php echo $serverIP; ?></code>、ネットマスクに255.255.255.0、ゲートウェイに<code><?php echo $gatewayIP; ?></code>を入力します。</p>
+<p>アドレスの[追加]を選択し、アドレスに<code><?php echo $serverIP; ?></code>、ネットマスクに<code>255.255.255.0</code>、ゲートウェイに<code><?php echo $gatewayIP; ?></code>を入力します。</p>
 
 <p>DNSサーバに<code><?php echo $gatewayIP; ?></code>、ドメインを検索に<code>netsys.cs.t-kougei.ac.jp,cs.t-kougei.ac.jp,t-kougei.ac.jp</code>を入力し、[保存]を選択します。</p>
 
 <p>保存後、右上の[オフ]を[オン]に変更し、IPアドレスなどが表示されているか確認し、[完了]を選択します。</p>
 
-<h2 id="2.5">NTPの設定</h2>
+<h2 id="1.5">NTPの設定</h2>
 
-<h2 id="2.6">追加ソフトウェアの選択</h2>
+<h2 id="1.6">追加ソフトウェアの選択</h2>
 <p>インストールするソフトウェアの選択を行います。[ソフトウェアの選択]を選択し、ベース環境は[サーバー(GUI使用)]を選択します。</p>
 <p>選択した環境用のその他のソフトウェアは以下を選択します。</p>
 <ul>
@@ -123,12 +107,15 @@
 </ul>
 <p>開発ツールにチェックを入れ[完了]を選択します。</p>
 
-<h2 id="2.7">rootパスワードの設定</h2>
+<h2 id="1.7">rootパスワードの設定</h2>
 <p>rootのパスワードには、指定されたパスワード[netsys00]を入力し、[完了]を選択します。</p>
 
+<div class="caution">
+<p><strong>注意:</strong></p>
 <p>［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。</p>
+</div>
 
-<h2 id="2.8">ユーザーの作成</h2>
+<h2 id="1.8">ユーザーの作成</h2>
 <p>ユーザーtomeを作成します。</p>
 
 <table class="table-auto">
@@ -158,9 +145,12 @@
 </tbody>
 </table>
 
+<div class="caution">
+<p><strong>注意:</strong></p>
 <p>rootのパスワードと同様に［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。</p>
+</div>
 
-<h2 id="2.9">インストールの開始</h2>
+<h2 id="1.9">インストールの開始</h2>
 <p>全ての設定項目が完了したら、[インストールの開始]を選択します。</p>
 <div class="note">
 <p><strong>注記:</strong></p>
@@ -170,9 +160,9 @@
 <p>インストールが完了したら、[システムの再起動]を選択して、サーバを再起動します。</p>
 <p>サーバが停止したら、SCTSメニューより、[インストールサーバの起動]->[RockyLinux]でサーバを起動します。</p>
 
-<h1 id="3">初期設定</h1>
+<h1 id="2">初期設定</h1>
 
-<h2 id="3.1">ログイン</h2>
+<h2 id="2.1">ログイン</h2>
 <p>ライセンスに同意後、ログイン画面が表示されるため、ログインを行います。rootでログインを行うため、[アカウントが見つかりませんか？]を選択しrootでログインします。</p>
 
 <p>ユーザ名の入力後、右下にある歯車のマークをクリックし、GNOMEクラシックを選択します。</p>
@@ -197,7 +187,7 @@
 </tbody>
 </table>
 
-<h2 id="3.2">デスクトップアイコンの設定</h2>
+<h2 id="2.2">デスクトップアイコンの設定</h2>
 <p>デフォルト設定だとデスクトップアイコンの表示が大きいため、小さくします。  </p>
 <p>右上の<code>[アプリケーション]</code>-><code>[ファイル]</code>を選択します。</p>
 
@@ -215,15 +205,15 @@
 <p>デスクトップに配置した、firefoxと端末のファイルをそれぞれ、右クリックし、[起動を許可する]を選択します。</p>
 <p>正常であれば、アイコンが正しく表示されるようになります。</p>
 
-<h2 id="3.3">Firefoxの設定</h2>
+<h2 id="2.3">Firefoxの設定</h2>
 <p>firefoxを起動して右上の[三本線]をクリックし、[設定]を選択します。</p>
 
-<h3 id="3.3.1">カスタムホームページの設定</h3>
+<h3 id="2.3.1">カスタムホームページの設定</h3>
 
 <p>[ホーム]->[ホームページ]よりカスタムURLを設定します。  </p>
 <p>[ホームページと新しいウィンドウ]に<code>http://www.cs.t-kougei.ac.jp/netsys</code>を記入します。</p>
 
-<h3 id="3.3.2">プロキシの設定</h3>
+<h3 id="2.3.2">プロキシの設定</h3>
 
 <p>ネットワークプロキシ設定を行います。設定画面の<code>[一般]</code>から設定画面の一番下にある<code>[接続設定]</code>を選択します。</p>
 <p><code>[手動でプロキシを設定する]</code>のボタンを選択し、以下の項目を入力します。。</p>
@@ -249,26 +239,26 @@
 
 <p>次に、<code>[プロキシなしで接続]</code>に<code>*.t-kougei.ac.jp</code>を記入し、[OK]をクリックします。</p>
 
-<h3 id="3.3.3">設定確認</h3>
+<h3 id="2.3.3">設定確認</h3>
 <p>ホームボタン、または新規タブで、ネットワークシステム研究室のホームページが表示されれば正しく設定されています。  </p>
 <p>Firefoxはもう必要ないため、×ボタンで閉じます。</p>
 
-<h1 id="4">コンピュータの設定</h1>
+<h1 id="3">コンピュータの設定</h1>
 
-<h2 id="4.1">入力方式の設定</h2>
+<h2 id="3.1">入力方式の設定</h2>
 <p>入力方式の設定を行います。  </p>
 <p>右上の<code>[アプリケーション]->[ユーティリティ]->設定</code>を選択して、設定画面を起動します。</p>
 <p>左の項目欄から<code>[keyboard]</code>を選択し、<code>[入力ソース]</code>項目より<code>[日本語]</code>下にある<code>[＋]</code>マークを選択します。次に、<code>[入力ソースの追加]</code>メニューから<code>[日本語]</code>を選択し、<code>[日本語(Anthy)]</code>を追加します。</p>
 
 <p>右上日付の隣のトレイバーにある<code>[ja]</code>をクリックし、<code>[日本語(Anthy)]</code>を選択します。</p>
 
-<h2 id="4.2">ネットワークの設定</h2>
+<h2 id="3.2">ネットワークの設定</h2>
 <p>設定より<code>[ネットワーク]</code>を選択します。</p>
 
-<h3 id="4.2.4">IPv6の無効化</h3>
+<h3 id="3.2.4">IPv6の無効化</h3>
 <p>[有線]の[歯車マーク]をクリックし、[IPv6]項目を選択し、<code>IPv6メゾット</code>を<code>無効</code>にして適用します。</p>
 
-<h3 id="4.2.5">プロキシの設定</h3>
+<h3 id="3.2.5">プロキシの設定</h3>
 <p>ネットワークプロキシの[歯車マーク]をクリックし、[手動]を選択し以下を記入します。</p>
 
 <table class="table-fixed">
@@ -310,15 +300,15 @@
 
 <p>入力が完了したら×で閉じます。</p>
 
-<h2 id="4.3">電源の設定</h2>
+<h2 id="3.3">電源の設定</h2>
 <p>設定より[電源]を選択し、Screen Blankを[Never]に変更します。</p>
 
 <p>すべての設定項目を終えたら、設定画面を×で閉じます。  </p>
 
-<h1 id="5">サーバの設定</h1>
+<h1 id="4">サーバの設定</h1>
 <p>サーバとしての設定を行うために、デスクトップから[端末]を起動します。</p>
 
-<h2 id="5.1">SELinuxの無効化</h2>
+<h2 id="4.1">SELinuxの無効化</h2>
 <p>SELinuxの無効化を行います。</p>
 
 <div class="warning">
@@ -330,7 +320,7 @@
 
 <p>以下を変更:</p>
 <pre><code>SELINUX=disabled</code></pre>
-<h2 id="5.2">yumの設定</h2>
+<h2 id="4.2">yumの設定</h2>
 <p>パッケージマネージャーyumの設定を行います。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/yum.conf</code></pre>
@@ -343,16 +333,16 @@ timeout=900</code></pre>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y update --nobest</code></pre>
 
-<h1 id="6">メールサーバの構築</h1>
+<h1 id="5">メールサーバの構築</h1>
 
-<h2 id="6.1">Postfix</h2>
+<h2 id="5.1">Postfix</h2>
 
-<h3 id="6.1.6">Postfix のインストール</h3>
+<h3 id="5.1.6">Postfix のインストール</h3>
 <p>OSのインストールで既にPostfixをインストールしていますが、チェック項目を忘れていた場合は以下のコマンドでインストールしてください。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install postfix</code></pre>
 
-<h3 id="6.1.7">Postfixの設定</h3>
+<h3 id="5.1.7">Postfixの設定</h3>
 
 <p>postfixの設定ファイルである<code>/etc/postfix/main.cf</code>を<code>vi</code>エディタで編集します。</p>
 
@@ -378,12 +368,12 @@ home_mailbox = Maildir/</code></pre>
 <li><code>mydestination</code>: 受信するドメイン</li>
 <li><code>mynetworks</code>: メールリレーを許可するネットワーク</li>
 </ul>
-<h3 id="6.1.8">postfixの設定の反映</h3>
+<h3 id="5.1.8">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart postfix.service</code></pre>
 
-<h3 id="6.1.9">メール転送の設定</h3>
+<h3 id="5.1.9">メール転送の設定</h3>
 <p><code>/etc/aliases</code>ファイルに、 <code>転送元: 転送先</code> を指定することでメールを自動的に転送することができます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/aliases</code></pre>
 
@@ -393,28 +383,28 @@ home_mailbox = Maildir/</code></pre>
 <p><code>newaliases</code>コマンドで、<code>/etc/aliases</code>ファイルの設定を反映させます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ newaliases</code></pre>
 
-<h3 id="6.1.10">メール送受信確認（ローカル）</h3>
+<h3 id="5.1.10">メール送受信確認（ローカル）</h3>
 
 <p>mailコマンドをインストールしてメールの送信テストをします。</p>
 
-<h4 id="6.1.11">mailコマンドのインストール</h4>
+<h4 id="5.1.11">mailコマンドのインストール</h4>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install s-nail</code></pre>
 
-<h4 id="6.1.12">mailコマンドでtomeに送信</h4>
+<h4 id="5.1.12">mailコマンドでtomeに送信</h4>
 <p><code>mail</code>コマンドでtomeに「test」というメッセージを送ります。  </p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ echo "test" | mail tome</code></pre>
 
 <p><code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ cat /home/tome/Maildir/new</code></pre>
 
-<h2 id="6.2">Dovecot（POP3）</h2>
+<h2 id="5.2">Dovecot（POP3）</h2>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
 
-<h3 id="6.2.13">Dovecotのインストール</h3>
+<h3 id="5.2.13">Dovecotのインストール</h3>
 <p>既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install dovecot-core dovecot-pop3d</code></pre>
 
-<h3 id="6.2.14">Dovecotの設定</h3>
+<h3 id="5.2.14">Dovecotの設定</h3>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/dovecot.conf</code>ファイルをviエディタで開きます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/dovecot/dovecot.conf</code></pre>
 
@@ -446,14 +436,14 @@ home_mailbox = Maildir/</code></pre>
 
 <pre><code>mail_location = maildir:~/Maildir</code></pre>
 
-<h3 id="6.2.15">Dovecotの設定の反映</h3>
+<h3 id="5.2.15">Dovecotの設定の反映</h3>
 <p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart dovecot</code></pre>
 
 <p><strong>Firewallの設定が必要</strong></p>
 
-<h2 id="6.3">client1からの動作確認</h2>
+<h2 id="5.3">client1からの動作確認</h2>
 <p>cilent1を起動して、client1から</p>
 <p><code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
 
@@ -466,15 +456,15 @@ retr 1
 dele 1
 quit</code></pre>
 
-<h1 id="7">WEBサーバの構築</h1>
+<h1 id="6">WEBサーバの構築</h1>
 
-<h2 id="7.1">httpdのインストール</h2>
+<h2 id="6.1">httpdのインストール</h2>
 
 <p>既にインストール済みですが、もしも未インストールの場合は以下のコマンドでインストールしてください。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install httpd</code></pre>
 
-<h2 id="7.2">httpdの設定</h2>
+<h2 id="6.2">httpdの設定</h2>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/httpd/conf/httpd.conf</code></pre>
 
 <p>サーバの名前とポート番号を記載します。</p>
@@ -482,7 +472,7 @@ quit</code></pre>
 <div class="code-file-info">📁 /etc/httpd/conf/httpd.conf</div>
 <pre><code>ServerName <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp:80</code></pre>
 
-<h2 id="7.3">コンテンツの設置</h2>
+<h2 id="6.3">コンテンツの設置</h2>
 <p>サーバが提供するコンテンツを<code>/var/www/html/</code>に設置します。ファイル名は<code>index.html</code>とします。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /var/www/html/index.html</code></pre>
@@ -490,7 +480,7 @@ quit</code></pre>
 <div class="code-file-info">📁 /var/www/html/index.html</div>
 <pre><code>hello world</code></pre>
 
-<h2 id="7.4">httpdの起動</h2>
+<h2 id="6.4">httpdの起動</h2>
 
 <p><code>systemctl</code>コマンドでhttpdの自動起動とサービスの開始をします。</p>
 
@@ -498,7 +488,7 @@ quit</code></pre>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl start httpd</code></pre>
 
-<h2 id="7.5">クライアントからのチェック</h2>
+<h2 id="6.5">クライアントからのチェック</h2>
 
 <p>クライアントからfirefoxを起動して、以下のURLにアクセスします。</p>
 <p><a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a></p>
@@ -506,11 +496,11 @@ quit</code></pre>
 <p>真っ白なページに「hello world」とあれば完了です。</p>
 
 
-<h3 id="7.5.16">Firewallの設定</h3>
+<h3 id="6.5.16">Firewallの設定</h3>
 <p>client1から接続ができるようにFirewallの設定を行います。</p>
 
 
-<h1 id="8">Firewallの設定</h1>
+<h1 id="7">Firewallの設定</h1>
 <p>Firewallサービスが起動しているかの確認を行います。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl status firewalld</code></pre>
@@ -622,9 +612,9 @@ rule family="ipv4" source address="127.0.0.1/32" accept
 rule family="ipv4" source address="<?php echo $gatewayIP; ?>/32" accept
 rule family="ipv4" source address="<?php echo $clientIP; ?>/32" accept</code></pre>
 
-<h1 id="9">リモートアクセスの設定</h1>
+<h1 id="8">リモートアクセスの設定</h1>
 
-<h2 id="9.1">rloginとrshの設定</h2>
+<h2 id="8.1">rloginとrshの設定</h2>
 <p>rloginとrshのインストールを行います。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install rsh rsh-server</code></pre>
@@ -674,7 +664,7 @@ rule family="ipv4" source address="<?php echo $clientIP; ?>/32" accept</code></p
 <p>以下を変更:</p>
 <pre><code>#auth require pam_securetty.so ← 先頭の#を削除</code></pre>
 
-<h2 id="9.2">sshの設定</h2>
+<h2 id="8.2">sshの設定</h2>
 <p>sshの設定を変更します。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/ssh/sshd_config</code></pre>
