@@ -74,21 +74,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 100);
     }
     
-    // 目次の折りたたみ機能（オプション）
-    const tocItems = document.querySelectorAll('.toc > li');
-    tocItems.forEach(item => {
-        const subList = item.querySelector('ul');
-        if (subList) {
-            const mainLink = item.querySelector(':scope > a');
-            if (mainLink) {
-                mainLink.style.cursor = 'pointer';
-                mainLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    subList.style.display = subList.style.display === 'none' ? 'block' : 'none';
-                });
-            }
-        }
-    });
     
     // キーボードナビゲーション対応
     document.addEventListener('keydown', function(e) {
