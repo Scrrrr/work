@@ -201,33 +201,6 @@ timeout=900
 yum -y update --nobest
 ```
 
-# NFSクライアント
-NFSはネットワーク上でファイルの送受信を行うためのプロトコルです。
-
-NFSクライアントはNFSサーバからファイルを取得するためのソフトです。
-
-今回はjpc1をマウントするためにルートディレクトリに`/jpc1`を作成します。
-
-## NFSのマウント
-```bash
-mkdir /jpc1
-mount -t nfs jpc1.cs.t-kougei.ac.jp /jpc1
-```
-
-## マウントの確認
-```bash
-df
-```
-
-`df`コマンドでjpc1がマウントされているか確認します。
-
-## NFSのアンマウント
-```bash
-umount /jpc1
-```
-
-`umount`コマンドでjpc1をアンマウントします。
-
 # メールサーバの構築
 
 ## Postfix
@@ -350,7 +323,6 @@ vi /etc/dovecot/conf.d/10-mail.conf
 `mail_location` を `maildir` に変更します。
 
 ```
-# mail_location = mbox:~/mail:INBOX=/var/mail/%u
 mail_location = maildir:~/Maildir
 ```
 
@@ -360,6 +332,8 @@ mail_location = maildir:~/Maildir
 ```bash
 tome@{{serverHostname}}:~$ sudo systemctl restart dovecot
 ```
+
+**Firewallの設定が必要**
 
 ### client1からの POP3 動作確認
 cilent1を起動して、client1から
@@ -376,6 +350,35 @@ quit
 ```
 
 # WEBサーバの構築
+
+## httpdのインストール
+
+**httpdは未インストール**
+
+```bash
+yum -y install httpd
+```
+
+## httpdの設定
+```bash
+vi /etc/httpd/conf/httpd.conf
+```
+
+```
+ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp:80
+```
+
+## httpdの起動
+
+```bash
+systemctl enable httpd
+```
+
+```bash
+systemctl start httpd
+```
+
+
 # SSHの設定
 
 # Firewallの設定

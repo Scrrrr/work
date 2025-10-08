@@ -54,7 +54,13 @@
 <li><a href="#7.2">Dovecot（POP3）</a></li>
 </ul>
 </li>
-<li><a href="#8">WEBサーバの構築</a></li>
+<li><a href="#8">WEBサーバの構築</a>
+<ul>
+<li><a href="#8.1">httpdのインストール</a></li>
+<li><a href="#8.2">httpdの設定</a></li>
+<li><a href="#8.3">httpdの起動</a></li>
+</ul>
+</li>
 <li><a href="#9">SSHの設定</a></li>
 <li><a href="#10">Firewallの設定</a></li>
 <li><a href="#11">リモートアクセスの設定</a>
@@ -431,18 +437,18 @@ home_mailbox = Maildir/</code></pre>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
 
 <h3 id="7.2.13">Dovecotのインストール</h3>
-<pre><code class="language-bash">tome@{{serverHostname}}:~$ sudo apt -y install dovecot-core dovecot-pop3d</code></pre>
+<pre><code class="language-bash">yum -y install dovecot-core dovecot-pop3d</code></pre>
 
 <h3 id="7.2.14">Dovecotの設定</h3>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-ssl.conf</code>ファイルをviエディタで開きます。</p>
-<pre><code class="language-bash">tome@{{serverHostname}}:~$ sudo vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
+<pre><code class="language-bash">vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
 
 <p>SSLを無効にします。</p>
 
 <pre><code>ssl = no</code></pre>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-auth.conf</code>ファイルをviエディタで開きます。</p>
 
-<pre><code class="language-bash">tome@{{serverHostname}}:~$ sudo vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
+<pre><code class="language-bash">vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
 
 <p>プレーンテキスト認証を許可します。</p>
 
@@ -450,7 +456,7 @@ home_mailbox = Maildir/</code></pre>
 
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-mail.conf</code>ファイルをviエディタで開きます。</p>
 
-<pre><code class="language-bash">tome@{{serverHostname}}:~$ sudo vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
+<pre><code class="language-bash">vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
 
 <p><code>mail_location</code> を <code>maildir</code> に変更します。</p>
 
@@ -475,6 +481,23 @@ dele 1
 quit</code></pre>
 
 <h1 id="8">WEBサーバの構築</h1>
+
+<h2 id="8.1">httpdのインストール</h2>
+
+<pre><code class="language-bash">yum -y install httpd</code></pre>
+
+<h2 id="8.2">httpdの設定</h2>
+<pre><code class="language-bash">vi /etc/httpd/conf/httpd.conf</code></pre>
+
+<pre><code>ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp:80</code></pre>
+
+<h2 id="8.3">httpdの起動</h2>
+
+<pre><code class="language-bash">systemctl enable httpd</code></pre>
+
+<pre><code class="language-bash">systemctl start httpd</code></pre>
+
+
 <h1 id="9">SSHの設定</h1>
 
 <h1 id="10">Firewallの設定</h1>
