@@ -622,6 +622,16 @@ class MarkdownParser {
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
+    <!-- ハンバーガーメニュー -->
+    <button id="hamburger" class="hamburger" aria-label="メニューを開く">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- オーバーレイ -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
     <div class="container">
         <!-- サイドバー（目次） -->
         <nav class="sidebar">
@@ -652,18 +662,28 @@ class MarkdownParser {
         const content = this.parse(markdown);
         const toc = this.generateTOC(content);
 
-        return `<div class="container">
-        <!-- サイドバー（目次） -->
-        <nav class="sidebar">
-            <h3>目次</h3>
-            ${toc}
-        </nav>
+        return `<!-- ハンバーガーメニュー -->
+        <button id="hamburger" class="hamburger" aria-label="メニューを開く">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
 
-        <!-- メインコンテンツ -->
-        <main class="main-content">
-            ${content}
-        </main>
-    </div>`;
+        <!-- オーバーレイ -->
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+        <div class="container">
+            <!-- サイドバー（目次） -->
+            <nav class="sidebar">
+                <h3>目次</h3>
+                ${toc}
+            </nav>
+
+            <!-- メインコンテンツ -->
+            <main class="main-content">
+                ${content}
+            </main>
+        </div>`;
     }
 }
 
