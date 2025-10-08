@@ -5,9 +5,9 @@ const path = require('path');
 function parseArgs() {
     const args = process.argv.slice(2);
     const options = {
-        input: 'installUbuntu.md',
-        output: 'installUbuntu.html',
-        title: 'Ubuntuのインストール',
+        input: null,
+        output: null,
+        title: 'マニュアル',
         outputSet: false
     };
 
