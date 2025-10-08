@@ -100,6 +100,15 @@ try {
 // MarkdownParserのインスタンスを作成
 const parser = new MarkdownParser();
 
+// 動的変数を登録
+parser.variables = {
+    serverHostname: 'serverHostname',
+    serverIP: 'serverIP',
+    clientIP: 'clientIP',
+    gatewayIP: 'gatewayIP',
+    username: 'username'
+};
+
 // HTMLを生成（インクルード用）
 const html = parser.generateIncludeHTML(markdownContent);
 
