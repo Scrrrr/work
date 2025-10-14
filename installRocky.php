@@ -36,6 +36,7 @@ $user = $_GET['username'];
 
    // よく使用される変数を個別に設定（installUbuntu.phpと同じ変数名）
    $clientIP = $ip["client1"];
+   $clientHostname = $ser["client1"];
    $serverHostname = $ser["tr200"];
    $serverIP = $ip["tr200"];
    $gatewayIP = "10.10.$no.254";

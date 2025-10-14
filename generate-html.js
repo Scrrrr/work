@@ -103,6 +103,7 @@ const parser = new MarkdownParser();
 // 動的変数を登録
 parser.variables = {
     serverHostname: 'serverHostname',
+    clientHostname: 'clientHostname',
     serverIP: 'serverIP',
     clientIP: 'clientIP',
     gatewayIP: 'gatewayIP',

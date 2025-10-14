@@ -413,21 +413,53 @@ root@{{serverHostname}}:~$ apt install apache2
 root@{{serverHostname}}:~$ vi /etc/apache2/apache2.conf
 ```
 
-サーバの名前とポート番号を記載します。
+サーバの名前を記載します。
+コメントアウトされている`ServerName`ディレクティブの下にコメントアウトを外した内容を`{{serverHostname}}.netsys.cs.t-kougei.ac.jp`を追記します。
 
-```{file=/etc/httpd/conf/httpd.conf}
-ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp:80
+```{file=/etc/apache2/site-available/000-default.conf}
+#ServerName www.example.com
+ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp
 ```
 
 ## コンテンツの設置
-サーバが提供するコンテンツを`/var/www/html/`に設置します。ファイル名は`index.html`とします。
+サーバが提供するコンテンツを`/var/www/html/`に設置します。既に`index.html`は存在しているので、内容を削除して新たに内容を書きます。
 
 ```bash
 root@{{serverHostname}}:~$ vi /var/www/html/index.html
 ```
 
+:::hint
+viでは`:%d`で文字の全削除することができる。
+:::
+
 ```{file=/var/www/html/index.html}
-hello world
+howdy?
 ```
 
+##サーバでの確認
+実際にhowdy?が表示されるか確認します。
+
+左下のアプリケーションをクリックして検索バーから`Firefox`と入力して提示されたアプリケーションを起動します。
+
+ナビゲーションバーに`http://u2-tr201.netsys.cs.t-kougei.ac.jp`を入力してアクセスします。
+
+真っ白な背景にhowdy?と表示されていれば成功です。
+
+## ファイヤーウォールの設定
+ufwコマンドでファイヤーウォールを設定します。
+```bash
+root@{{serverHostname}}:~# ufw allow http
+```
+:::note
+もしPostfixでufwをアクティブにしていない場合、以下のコマンドでアクティブにします。
+```bash
+root@{{serverHostname}}:~# ufw enable
+```
+:::
+
 ### クライアントからの確認
+{{clientHostname}}から{{serverHostname}}にアクセスして
+
+```bash
+root@{{serverHostname}}:~# vi /var/www/html/index.html
+```

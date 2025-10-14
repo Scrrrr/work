@@ -48,6 +48,7 @@
 <li><a href="#4.1">apache2のインストール</a></li>
 <li><a href="#4.2">apache2の設定</a></li>
 <li><a href="#4.3">コンテンツの設置</a></li>
+<li><a href="#4.4">ファイヤーウォールの設定</a></li>
 </ul>
 </li>
 </ul>
@@ -517,20 +518,48 @@ quit</code></pre>
 <h2 id="4.2">apache2の設定</h2>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/apache2/apache2.conf</code></pre>
 
-<p>サーバの名前とポート番号を記載します。</p>
+<p>サーバの名前を記載します。</p>
+<p>コメントアウトされている<code>ServerName</code>ディレクティブの下にコメントアウトを外した内容を<code><?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code>を追記します。</p>
 
-<div class="code-file-info">📁 /etc/httpd/conf/httpd.conf</div>
-<pre><code>ServerName <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp:80</code></pre>
+<div class="code-file-info">📁 /etc/apache2/site-available/000-default.conf</div>
+<pre><code>#ServerName www.example.com
+ServerName <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
 
 <h2 id="4.3">コンテンツの設置</h2>
-<p>サーバが提供するコンテンツを<code>/var/www/html/</code>に設置します。ファイル名は<code>index.html</code>とします。</p>
+<p>サーバが提供するコンテンツを<code>/var/www/html/</code>に設置します。既に<code>index.html</code>は存在しているので、内容を削除して新たに内容を書きます。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /var/www/html/index.html</code></pre>
 
-<div class="code-file-info">📁 /var/www/html/index.html</div>
-<pre><code>hello world</code></pre>
+<div class="hint">
+<p><strong>ヒント:</strong></p>
+<p>viでは<code>:%d</code>で文字の全削除することができる。</p>
+</div>
 
-<h3 id="4.3.21">クライアントからの確認</h3>
+<div class="code-file-info">📁 /var/www/html/index.html</div>
+<pre><code>howdy?</code></pre>
+
+<p>##サーバでの確認</p>
+<p>実際にhowdy?が表示されるか確認します。</p>
+
+<p>左下のアプリケーションをクリックして検索バーから<code>Firefox</code>と入力して提示されたアプリケーションを起動します。</p>
+
+<p>ナビゲーションバーに<code>http://u2-tr201.netsys.cs.t-kougei.ac.jp</code>を入力してアクセスします。</p>
+
+<p>真っ白な背景にhowdy?と表示されていれば成功です。</p>
+
+<h2 id="4.4">ファイヤーウォールの設定</h2>
+<p>ufwコマンドでファイヤーウォールを設定します。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw allow http</code></pre>
+<p><div class="note"></p>
+<p><p><strong>注記:</strong></p></p>
+<p><p>もしPostfixでufwをアクティブにしていない場合、以下のコマンドでアクティブにします。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw enable</code></pre>
+<p></div></p>
+
+<h3 id="4.4.21">クライアントからの確認</h3>
+<p><?php echo $clientHostname; ?>から<?php echo $serverHostname; ?>にアクセスして</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /var/www/html/index.html</code></pre>
 
             </main>
         </div>
