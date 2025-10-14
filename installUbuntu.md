@@ -32,13 +32,14 @@ UbuntuはLinuxディストリビューションの中でもサーバ向け、デ
 世界地図で日本にピンが刺されてあり、下の入力欄に「Tokyo」とあったら[続ける]を選択します。
 
 ## あなたの情報を入力してください
-```{shell}
-あなたの名前：tome  
-コンピュータの名前：{{serverHostname}}  
-ユーザ名の入力：tome  
-パスワードの入力：netsys00
-パスワードの確認：netsys00
-```
+表示された項目を以下の表から設定してください。
+|auto|
+|項目|入力値|
+|あなたの名前|tome  |
+|コンピュータの名前|{{serverHostname}}  |
+|ユーザ名の入力|tome  |
+|パスワードの入力|netsys00|
+|パスワードの確認|netsys00|
 [ログイン時にパスワードを要求する]にチェックを付けて[続ける]を選択します。
 
 
@@ -48,39 +49,71 @@ UbuntuはLinuxディストリビューションの中でもサーバ向け、デ
 
 インストールが完了すると[インストールが完了しました]というポップアップと共に、再起動を促されます。
 
-[今すぐ再起動する]を選択すると、Ubuntuのロゴとロードマークが表示されながら「Please remove the installation medium, then press ENTER:(インストールメディアを取り出し、ENTER キーを押してください。)」と表示されます。指示通り、Enterを押すとマシンが完全に停止します。
+[今すぐ再起動する]を選択して再起動を行います。
+
+:::note
+Ubuntuのロゴとロードマークが表示されながら「Please remove the installation medium, then press ENTER:(インストールメディアを取り出し、ENTER キーを押してください。)」と表示されます。指示通り、Enterを押すとマシンが完全に停止します。
+:::
 
 SCTSのメニューより、「インストールサーバの起動」からUbuntuを選択して再び起動してください。
 
-# Ubuntuサーバの設定
+# 基本設定
 
-## 基本設定
+## ログイン
+起動が完了すると、ログイン画面が表示されます。
 
-### vi の設定
-`Ctrl+Alt+T`でターミナルを開きます。
+中央のアイコン[tome]をクリックして、設定したパスワード[netsys00]を入力してEnterを押してログインします。
 
-ホームディレクトリで `~/.vimrc` を作成して互換モードを無効化します。
+## 初期セットアップウィンドウ
+初めてログインをすると、Livepathchセキュリティのセットアップが表示されます。
+左の[次へ]をクリックしてください。
+・Livepatchセキュリティ
+・Ubuntuの改善
+　はい、システム情報をCanonicalに送信します。
+・プライバシー位置情報(default:off)
+・準備が完了しました→(完了)
 
-```bash
-tome@{{serverHostname}}:~$ vi ~/.vimrc
-```
+## ネットワークの設定
+右上の電源アイコンをクリックして、表示された項目欄から[設定]を選択します。
+ネットワークの設定が表示されるので、[有線]の項目の歯車マークをクリックします。
+項目欄から[IPv4]を選択して以下の設定を行います。
+|auto|
+|項目|入力値|
+|IPv4メゾット|手動|
+|アドレス|{{serverIP}}|
+|ネットマスク|24|
+|ゲートウェイ|{{gatewayIP}}
+|DNS|{{gatewayIP}}
 
-以下を追記します。
-```{file=~/.vimrc}
-set nocompatible
-```
+次に項目欄から[IPv6]を選択して以下の設定を行います。
+|auto|
+|項目|入力値|
+|IPv6メゾット|無効|
+
+:::note
+間違えてIPアドレスを指定しまった場合
+再度、歯車マークをクリックし、[詳細]より右下の[接続プロファイルを削除]を選択。
+削除後、[有線]のプラスマークを選択して、改めて設定しなおします。
+:::
+
+### Proxyの設定
+
+設定→ネットワークより、**ネットワークプロキシ**を選択して、無効から**手動**に変更して、以下の項目を入力します。
+| 項目名           | 入力値                   | ポート|
+| HTTPプロキシ     | proxy-a.t-kougei.ac.jp   | 8080  |
+| HTTPSプロキシ    | proxy-a.t-kougei.ac.jp   | 8080  |
+| FTPプロキシ      | proxy-a.t-kougei.ac.jp   | 8080  |
+| Socksホスト      | proxy-a.t-kougei.ac.jp   | 8080  |
+| 次のホストを無視する    | *.t-kougei.ac.jp  | -     |
+
+## 端末の起動
+左下端の[アプリケーション]アイコンをクリックして項目の中から[端末]をクリックします。または[検索キーワード入力]から[Terminal]と入力して[端末]をクリックしします。
 
 :::hint
-viは「i」でインサートモード。「Esc」を押して通常モードに戻る。
-「:w」で保存「:q」で終了、「:wq」で保存して終了。
-:::  
+`Ctrl+Alt+T`でもターミナルが開けます
+:::
 
-### 省電力設定（デスクトップ環境）
-右上のスピーカーアイコン → 設定 → 電源管理 から、以下を設定します。
-- 画面のブランク: しない
-
-## root に関する設定
-### root パスワードの設定
+## root パスワードの設定
 端末を開き、root のパスワードを設定します。
 
 ```bash
@@ -89,105 +122,94 @@ tomeのパスワード:
 新しいパスワード:(tomeと同じ)
 新しいパスワードを再入力してください:(tomeと同じ)
 ```
-※パスワードの入力中は文字が何も表示されません。
+:::caution
+パスワードの入力中は文字が何も表示されません。
+キーボードで入力したら、Enterを押してください。
+:::
 
-### PAMの設定
-続いて `su`コマンドが使用できるユーザを制御します。
-
+## rootユーザにログイン
+現在はtomeにログインしていますが、今後、rootで作業するために、rootにログインを行います。
 ```bash
-tome@{{serverHostname}}:~$ sudo vi /etc/pam.d/su
+tome@{{serverHostname}}:~$ su -
+パスワード:
+root@{{serverHostname}}:~#
 ```
+root権限ではシェルの記号が`$`から`#`に表記が変わります。
+root権限ではシステムの全ての権限を保持しているので、慎重に操作してください。
 
-15行目付近にある以下のコメントを外し、末尾に `group=adm` を付けます。
-
-```
-auth required pam_wheel.so +[[group=adm]]
-```
-
-:::hint
-vimは通常モードで
-「h」で左に移動、「j」で下に移動、「k」で上に移動、「l」で右に移動
-:::  
-
-## ネットワーク設定（root 権限で実施）
-
-### IPアドレスの設定（nmtui）
-`nmtui`コマンドを用いてIPアドレスを手動で設定します。
-
-```bash
-sudo nmtui
-```
-
-- 接続の編集 → 対象インターフェースを選択 → 編集
-- IPv4 の設定: 手作業
-- アドレス: `{{serverIP}}/24`
-- ゲートウェイ: `{{gatewayIP}}`
-- DNS サーバー: `{{gatewayIP}}`
-- 検索ドメイン: `netsys.cs.t-kougei.ac.jp cs.t-kougei.ac.jp t-kougei.ac.jp`
-
-設定後、OK → 戻る → 終了。
-
-### ホスト名の設定
+## ホスト名の設定
 
 `hostnamectl`コマンドを使用してホスト名を変更します。
 
 ```bash
-tome@{{serverHostname}}:~$ hostnamectl set-hostname {{serverHostname}}.netsys.cs.t-kougei.ac.jp [Enter]
+root@{{serverHostname}}:~$ hostnamectl set-hostname {{serverHostname}}.netsys.cs.t-kougei.ac.jp [Enter]
 ```
 
-### 設定確認とネットワーク再起動
-
-IPアドレスが適切にenp10のinetに割り当てられているか確認します。
+### ホスト名の設定の確認
 ```bash
-tome@{{serverHostname}}:~$ ip a
+root@{{serverHostname}}:~$ cat /etc/hostname [Enter]
 ```
+これでホスト名が正しく表示された、ホスト名の設定は完了です。
 
-もしも割り当てられていなかったらNetworkManagerを再起動します。
+## 各ツール別のプロキシ設定
 
-```bash
-tome@{{serverHostname}}:~$ sudo systemctl restart NetworkManager
-```
-
-### APTのプロキシ設定
-APTパッケージマネージャーが大学内のプロキシサーバを経由できるように設定を行います。
+### bashのプロキシ設定
+新たに`/etc/profile.d/proxy.sh`ファイルを作成してプロキシ設定を記述します。
 
 ```bash
-tome@{{serverHostname}}:~$ sudo vi /etc/apt/apt.conf
+root@{{serverHostname}}:~$ vi /etc/profile.d/proxy.sh
 ```
 
-以下を設定します。
+:::hint
+viエディタは通常モードで「h」で左に移動、「j」で下に移動、「k」で上に移動、「l」で右に移動。  
+「i」で入力モードに切り替える。「Esc」を押して通常モードに戻る。
+通常モードで「:w」で保存「:q」で終了、「:wq」で保存して終了。
+:::  
+
+```
+HTTP_PROXY=http://proxy-a.t-kougei.ac.jp:8080
+HTTPS_PROXY=http://proxy-a.t-kougei.ac.jp:8080
+
+http_proxy=http://proxy-a.t-kougei.ac.jp:8080
+https_proxy=http://proxy-a.t-kougei.ac.jp:8080
+```
+
+sourceコマンドで作成した設定ファイルを読み込ませます。
+
+```bash
+root@{{serverHostname}}:~$ source /etc/profile.d/proxy.sh
+```
+### aptのプロキシ設定
+```bash
+root@{{serverHostname}}:~$ vi /etc/apt/apt.conf
+```
+
+以下を記述します。
 
 ```
 Acquire::http::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 ```
 
-## 便利ツールの追加
-ネットワークの利用状況を確認する
-`netstat`コマンドなどを使用するために `net-tools` を導入します。
-
+### パッケージの更新とインストール
 ```bash
-tome@{{serverHostname}}:~$ sudo apt -y install net-tools
+root@{{serverHostname}}:~$ apt update
 ```
+先頭にステータスが表示されます。**取得**と表示されていれば
+既存のリポジトリからパッケージの更新がされていることを意味します。
+**取得**の文字が確認できたら成功です。
 
-# NFS クライアント
+:::note
+パッケージの更新後に、「ソフトウェアの更新」というポップアップがされる時があります。**「後で通知する」**を選択して、消しましょう。
+:::
 
-NFSはネットワーク上でファイルの送受信を行うためのプロトコルです。  
-NFSクライアントはNFSサーバからファイルを取得するためのソフトです。
-
-## NFSのインストール
+パッケージのインストールをします。
 ```bash
-tome@{{serverHostname}}:~$ sudo apt -y install nfs-common
+root@{{serverHostname}}:~$ apt install
 ```
-## NFSマウントの例
-初めにマウントポイントを作成します。  
-`mount`コマンドの`-t`オプションでnfsであることを明記します。  
-使用後は`umount`コマンドでアンマウントを行います。
-```bash
-tome@{{serverHostname}}:~$ sudo mkdir -p /jpc1
-tome@{{serverHostname}}:~$ sudo mount -t nfs 172.21.14.1:/home1/unix/install /jpc1
-tome@{{serverHostname}}:~$ sudo umount /jpc1
-```
+:::note
+インストールは時間がかかるので気長に待ちましょう
+:::
 
 # Mail サーバ
 
@@ -346,107 +368,36 @@ dele 1
 quit
 ```
 
-# ファイアウォールの設定（UFW）
+# WEBサーバの構築
 
-25 番ポート（IPv4）を許可:
-```bash
-sudo ufw allow proto tcp to 0.0.0.0/0 port 25
+## apache2のインストール
+
+aptコマンドでapache2をインストールします。
+
+```
+root@{{serverHostname}}:~$ apt install apache2
 ```
 
-特定のIPアドレスを許可:
+## apache2の設定
 ```bash
-sudo ufw allow proto tcp from {{clientIP}}
+root@{{serverHostname}}:~$ vi /etc/apache2/apache2.conf
 ```
 
-状態確認とルール削除:
-```bash
-sudo ufw status numbered
-sudo ufw delete <番号>
+サーバの名前とポート番号を記載します。
+
+```{file=/etc/httpd/conf/httpd.conf}
+ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp:80
 ```
 
-有効化/無効化:
-```bash
-sudo ufw enable
-sudo ufw disable
-```
-
-起動/停止は `systemctl` でも制御可能です。
-
-
-# ログインサーバ（SSH）
-SSHは離れたコンピュータをセキュアに遠隔操作することが出来ます。
-
-## インストールと起動確認
-```bash
-tome@{{serverHostname}}:~$ sudo apt -y install openssh-server
-```
+## コンテンツの設置
+サーバが提供するコンテンツを`/var/www/html/`に設置します。ファイル名は`index.html`とします。
 
 ```bash
-tome@{{serverHostname}}:~$ sudo systemctl status sshd
+root@{{serverHostname}}:~$ vi /var/www/html/index.html
 ```
 
-## rootログインの許可（必要な場合のみ）
-
-```bash
-sudo vi /etc/ssh/sshd_config
+```{file=/var/www/html/index.html}
+hello world
 ```
 
-以下を追加/変更します。
-
-```
-PermitRootLogin yes
-```
-
-反映:
-
-```bash
-sudo systemctl restart ssh
-```
-
-接続例:
-
-```bash
-# サーバからクライアントへ  
-ssh -l root {{clientIP}}  
-# クライアントからサーバへ  
-ssh -l root {{serverIP}}  
-```
-
-## telnet サーバ
-
-```bash
-sudo apt -y install telnetd
-telnet {{serverHostname}}
-```
-
-## rsh サーバ
-
-```bash
-sudo apt -y install rsh-client rsh-server
-```
-
-パスワードなし接続の例（検証用途）:
-
-```bash
-# サーバ側（{{serverHostname}}）
-sudo sh -c 'echo "root {{clientIP}}" > /root/.rhosts'
-sudo vi /root/.rhosts
-```
-
-以下を記入
-```
-root {{clientIP}}
-```
-クライアントからサーバへ接続
-
-```bash
-# クライアント側（client1）
-sudo sh -c 'echo "root {{serverIP}}" > /root/.rhosts'
-```
-
-# 参考
-（参考）suができるユーザの設定
-（参考）# usermod -aG adm ユーザ名
-
-
-
+### クライアントからの確認
