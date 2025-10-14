@@ -39,6 +39,7 @@ $user = $_GET['username'];
    
    // よく使用される変数を個別に設定
    $clientIP = $serverIPs["client1"];
+   $clientHostname = $serverHostnames["client1"];
    $serverHostname = $serverHostnames["tr201"];
    $serverIP = $serverIPs["tr201"];
    $gatewayIP = "10.10.{$userNumber}.254";
