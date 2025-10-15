@@ -36,7 +36,8 @@
 <li><a href="#3.1">ログイン</a></li>
 <li><a href="#3.2">端末の起動</a></li>
 <li><a href="#3.3">SELinuxの無効化</a></li>
-<li><a href="#3.4">各ツール別のプロキシ設定</a></li>
+<li><a href="#3.4">電源の設定</a></li>
+<li><a href="#3.5">各ツール別のプロキシ設定</a></li>
 </ul>
 </li>
 <li><a href="#4">メールサーバの構築</a>
@@ -268,11 +269,12 @@
 <p>また、通常モードで<code>/<探したい文字></code>で文字検索ができる。検索を辞める時は<strong><Esc></strong>キーを押す。</p></p>
 <p></div>  </p>
 
-<h2 id="3.4">各ツール別のプロキシ設定</h2>
+<h2 id="3.4">電源の設定</h2>
+<p>デフォルトの設定では5分起きにロックされてしまうので、設定で無効にします。</p>
 
-<h3 id="3.4.1">NetworkMangaerのプロキシ設定</h3>
-<p>右上の電源アイコンをクリックして[設定]を選択します。</p>
-<p>設定画面が起動したら、項目ネットワークの中から</p>
+<h2 id="3.5">各ツール別のプロキシ設定</h2>
+
+<h3 id="3.5.1">NetworkMangaerのプロキシ設定</h3>
 <p><strong>ネットワークプロキシ</strong>を見つけ、[歯車マーク]をクリックします。  </p>
 <p>[無効]から[手動]を変更し、次の項目に以下の入力値を入力していきます。</p>
 
@@ -317,7 +319,7 @@
 <p>設定メニューも×で閉じます。</p>
 
 
-<h3 id="3.4.2">bashのプロキシ設定</h3>
+<h3 id="3.5.2">bashのプロキシ設定</h3>
 <p>再び端末に戻って設定を行います。  </p>
 <p>新たに<code>/etc/profile.d/proxy.sh</code>ファイルを作成してプロキシ設定を記述します。</p>
 
@@ -340,7 +342,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ source /etc/profile.d/proxy.sh</code></pre>
 
-<h3 id="3.4.3">yumのプロキシ設定</h3>
+<h3 id="3.5.3">yumのプロキシ設定</h3>
 <p>パッケージマネージャーyumの設定を行います。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/yum.conf</code></pre>
@@ -353,6 +355,8 @@ timeout=900</code></pre>
 <p>保存して終了後アップデートを行います。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y update --nobest</code></pre>
+
+<p>問題なくアップデートが行われれば、プロキシの設定は完了です。</p>
 
 <h1 id="4">メールサーバの構築</h1>
 
@@ -372,6 +376,7 @@ timeout=900</code></pre>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/postfix/main.cf</code></pre>
 
 <p>以下の設定を行います。</p>
+<p>赤色は削除する場所で、緑色は追記する行です。</p>
 
 <div class="code-file-info">📁 /etc/postfix/main.cf</div>
 <pre><code>myhostname = <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp
@@ -385,6 +390,53 @@ inet_interfaces = all
 inet_protocols = ipv4
 home_mailbox = Maildir/</code></pre>
 
+<div class="code-file-info">📁 /etc/postfix/main.cf</div>
+<pre><code>#myhostname = host.domain.tld
+#myhostname = virtual.domain.tld
+<span class="git-add">myhostname = <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</span>
+
+#mydomain = domain.tld
+<span class="git-add">mydomain = netsys.cs.t-kougei.ac.jp</span>
+
+#myorigin = $myhostname
+#myorigin = $mydomain
+<span class="git-add">myorigin = $mydomain</span>
+
+<span class="git-remove">mydestination = $myhostname, localhost.$mydomain, localhost</span>
+<span class="git-add">#mydestination = $myhostname, localhost.$mydomain, localhost</span>
+#mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+#mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain,
+        mail.$mydomain, www.$mydomain, ftp.$mydomain
+<span class="git-add">mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain</span>
+
+#relayhost = $mydomain
+#relayhost = [gateway.my.domain]
+#relayhost = [mailserver.isp.tld]
+#relayhost = uucphost
+#relayhost = [an.ip.add.ress]
+<span class="git-add">relayhost = [smtp-a.t-kougei.ac.jp</span>]
+
+#mynetworks = 168.100.189.0/28, 127.0.0.0/8
+#mynetworks = $config_directory/mynetworks
+#mynetworks = hash:/etc/postfix/network_table
+<span class="git-add">mynetworks = 127.0.0.0/8</span>
+
+#inet_interfaces = all
+#inet_interfaces = $myhostname
+#inet_interfaces = $myhostname,localhost
+<span class="git-remove">inet_interfaces = localhost</span>
+<span class="git-add">#inet_interfaces = localhost</span>
+<span class="git-add">inet_interfaces = all</span>
+
+# Enable IPv4, and IPv6 if supported
+<span class="git-remove">inte_protocols = all</span>
+<span class="git-add">#inte_protocols = all</span>
+<span class="git-add">inte_protocols = ipv4</span>
+
+#home_mailbox = Mailbox
+#home_mailbox = Maildir/
+<span class="git-add">home_mailbox = Maildir/</span></code></pre>
+
 <p><div class="note"></p>
 <p><p><strong>注記:</strong></p></p>
 <p><p><code>myorigin</code>: 外行きメールに使うドメイン</p>
@@ -397,29 +449,21 @@ home_mailbox = Maildir/</code></pre>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart postfix.service</code></pre>
 
-<h3 id="4.1.6">メール転送の設定</h3>
-<p><code>/etc/aliases</code>ファイルに、 <code>転送元: 転送先</code> を指定することでメールを自動的に転送することができます。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/aliases</code></pre>
-
-<p><code>/etc/aliases</code>ファイルに下記を記述します。</p>
-<pre><code>root: kitamura@st.t-kougei.ac.jp</code></pre>
-
-<p><code>newaliases</code>コマンドで、<code>/etc/aliases</code>ファイルの設定を反映させます。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ newaliases</code></pre>
-
-<h3 id="4.1.7">メール送受信確認（ローカル）</h3>
+<h3 id="4.1.6">サーバからメール送受信確認</h3>
 
 <p>mailコマンドをインストールしてメールの送信テストをします。</p>
 
-<h4 id="4.1.8">mailコマンドのインストール</h4>
+<h4 id="4.1.7">mailコマンドのインストール</h4>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install s-nail</code></pre>
 
-<h4 id="4.1.9">mailコマンドでtomeに送信</h4>
+<h4 id="4.1.8">mailコマンドでtomeに送信</h4>
 <p><code>mail</code>コマンドでtomeに「test」というメッセージを送ります。  </p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ echo "test" | mail tome</code></pre>
 
 <p><code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ cat /home/tome/Maildir/new</code></pre>
+
+<h3 id="4.1.9">ファイアウォールの設定</h3>
 
 <h2 id="4.2">Dovecot（POP3）</h2>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>

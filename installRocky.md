@@ -139,11 +139,12 @@ viエディタは通常モードで「h」で左に移動、「j」で下に移�
 また、通常モードで`/<探したい文字>`で文字検索ができる。検索を辞める時は**<Esc>**キーを押す。
 :::  
 
+## 電源の設定
+デフォルトの設定では5分起きにロックされてしまうので、設定で無効にします。
+
 ## 各ツール別のプロキシ設定
 
 ### NetworkMangaerのプロキシ設定
-右上の電源アイコンをクリックして[設定]を選択します。
-設定画面が起動したら、項目ネットワークの中から
 **ネットワークプロキシ**を見つけ、[歯車マーク]をクリックします。  
 [無効]から[手動]を変更し、次の項目に以下の入力値を入力していきます。
 
@@ -206,6 +207,8 @@ timeout=900
 root@{{serverHostname}}:~$ yum -y update --nobest
 ```
 
+問題なくアップデートが行われれば、プロキシの設定は完了です。
+
 # メールサーバの構築
 
 ## Postfix
@@ -227,6 +230,7 @@ root@{{serverHostname}}:~$ vi /etc/postfix/main.cf
 ```
 
 以下の設定を行います。
+赤色は削除する場所で、緑色は追記する行です。
 
 ```{file=/etc/postfix/main.cf}
 myhostname = {{serverHostname}}.netsys.cs.t-kougei.ac.jp
@@ -239,6 +243,54 @@ inet_interfaces = all
 #inet_interfaces = localhost <- 先頭に#を挿入してコメントアウト
 inet_protocols = ipv4
 home_mailbox = Maildir/
+```
+
+```{file=/etc/postfix/main.cf}
+#myhostname = host.domain.tld
+#myhostname = virtual.domain.tld
++[[myhostname = {{serverHostname}}.netsys.cs.t-kougei.ac.jp]]
+
+#mydomain = domain.tld
++[[mydomain = netsys.cs.t-kougei.ac.jp]]
+
+#myorigin = $myhostname
+#myorigin = $mydomain
++[[myorigin = $mydomain]]
+
+-[[mydestination = $myhostname, localhost.$mydomain, localhost]]
++[[#mydestination = $myhostname, localhost.$mydomain, localhost]]
+#mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+#mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain,
+        mail.$mydomain, www.$mydomain, ftp.$mydomain
++[[mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain]]
+
+#relayhost = $mydomain
+#relayhost = [gateway.my.domain]
+#relayhost = [mailserver.isp.tld]
+#relayhost = uucphost
+#relayhost = [an.ip.add.ress]
++[[relayhost = [smtp-a.t-kougei.ac.jp]]]
+
+#mynetworks = 168.100.189.0/28, 127.0.0.0/8
+#mynetworks = $config_directory/mynetworks
+#mynetworks = hash:/etc/postfix/network_table
++[[mynetworks = 127.0.0.0/8]]
+
+#inet_interfaces = all
+#inet_interfaces = $myhostname
+#inet_interfaces = $myhostname,localhost
+-[[inet_interfaces = localhost]]
++[[#inet_interfaces = localhost]]
++[[inet_interfaces = all]]
+
+# Enable IPv4, and IPv6 if supported
+-[[inte_protocols = all]]
++[[#inte_protocols = all]]
++[[inte_protocols = ipv4]]
+
+#home_mailbox = Mailbox
+#home_mailbox = Maildir/
++[[home_mailbox = Maildir/]]
 ```
 
 :::note
@@ -254,23 +306,7 @@ home_mailbox = Maildir/
 root@{{serverHostname}}:~$ systemctl restart postfix.service
 ```
 
-### メール転送の設定
-`/etc/aliases`ファイルに、 `転送元: 転送先` を指定することでメールを自動的に転送することができます。
-```bash
-root@{{serverHostname}}:~$ vi /etc/aliases
-```
-
-`/etc/aliases`ファイルに下記を記述します。
-```
-root: kitamura@st.t-kougei.ac.jp
-```
-
-`newaliases`コマンドで、`/etc/aliases`ファイルの設定を反映させます。
-```bash
-root@{{serverHostname}}:~$ newaliases
-```
-
-### メール送受信確認（ローカル）
+### サーバからメール送受信確認
 
 mailコマンドをインストールしてメールの送信テストをします。
 
@@ -289,6 +325,8 @@ root@{{serverHostname}}:~$ echo "test" | mail tome
 ```bash
 root@{{serverHostname}}:~$ cat /home/tome/Maildir/new
 ```
+
+### ファイアウォールの設定
 
 ## Dovecot（POP3）
 Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。

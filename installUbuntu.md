@@ -277,7 +277,7 @@ home_mailbox = Maildir/
 root@{{serverHostname}}:~$ systemctl restart postfix.service
 ```
 
-### サーバでのメール送受信確認
+### サーバからメール送受信確認
 
 mailコマンドをインストールしてメールの送信テストをします。
 
