@@ -1,9 +1,6 @@
 # Ubuntuのインストール
 UbuntuはLinuxディストリビューションの中でもサーバ向け、デスクトップ向け共に人気の高いディストリビューションです。これからUbuntuをコンピュータにインストールしてメール、ウェブ、ファイル共有、リモートログイン機能を持ったサーバを構築していきます。
-今回インストールするバージョンはUbuntu 24.04.2 - Desktopです。
-
-## インストールする前に
-このマニュアルは設定内容と基本説明のみで構成されています。 そのため、コマンドの操作などは実際に調べて設定してもらいます。 コマンドの調べ方は「[コマンドの名前] 操作方法」または「[コマンドの名前] 使い方」で検索してブログ記事やオンラインマニュアルから探してください。
+今回インストールするバージョンはUbuntu 22.04.2 - Desktopです。
 
 ## ブートローダーの起動
 黒い画面が現れたら`「Try or Install Ubuntu」`に矢印キーでカーソルを合わせて[Enter]
@@ -67,11 +64,13 @@ SCTSのメニューより、「インストールサーバの起動」からUbun
 ## 初期セットアップウィンドウ
 初めてログインをすると、Livepathchセキュリティのセットアップが表示されます。
 左の[次へ]をクリックしてください。
-・Livepatchセキュリティ
-・Ubuntuの改善
-　はい、システム情報をCanonicalに送信します。
-・プライバシー位置情報(default:off)
-・準備が完了しました→(完了)
+```markdown
+Livepatchセキュリティ -> 
+Ubuntuの改善 ->
+システム情報をCanonicalに送信します。 ->
+プライバシー位置情報(default:off) ->
+準備が完了しました -> (完了)
+```
 
 ## 端末の起動
 左下端の[アプリケーション]アイコンをクリックして項目の中から[端末]をクリックします。または[検索キーワード入力]から[Terminal]と入力して[端末]をクリックしします。
@@ -233,9 +232,10 @@ root@{{serverHostname}}:~$ apt install
 # Mail サーバ
 
 Mailサーバはメールの送受信を行うためのサーバです。  
+メールの送信には**Postfix**が、受信には**Davcot**が使用されます。  
 
 ## Postfix
-メールの送信には**Postfix**が、受信には**Davcot**が使用されます。  
+Postfixは、オープンソースのメール転送エージェント(MTA: Mail Transfer Agent)で、電子メールの送信・配送を担当するサーバソフトウェアです。
 
 ### Postfix のインストール
 
@@ -412,7 +412,7 @@ tome@{{serverHostname}}:~$ sudo vi /etc/dovecot/conf.d/10-mail.conf
 tome@{{serverHostname}}:~$ sudo systemctl restart dovecot
 ```
 
-### {{clientHostname}}からの POP3 動作確認
+### {{clientHostname}}からMailサーバの確認
 {{clientHostname}}を起動して、Clientから`telnet`コマンドを使用してメールの受信を確認します。
 
 ```bash
@@ -515,18 +515,23 @@ root@{{serverHostname}}:~# ufw enable
 
 ### ファイヤーウォールの設定項目の確認
 ```bash
-root@{{serverHostname}}:~# ufw status numbered 
+
+root@{{serverHostname}}:~# ufw status
 状態: アクティブ
 
-     To                         Action      From
-     --                         ------      ----
-[ 1] 80/tcp                     ALLOW IN    Anywhere                  
-[ 2] 80/tcp (v6)                ALLOW IN    Anywhere (v6) 
+To                         Action      From
+--                         ------      ----
+25/tcp                     ALLOW       Anywhere                  
+110/tcp                    ALLOW       Anywhere                  
+80/tcp                     ALLOW       Anywhere                  
+25/tcp (v6)                ALLOW       Anywhere (v6)             
+110/tcp (v6)               ALLOW       Anywhere (v6) 
+80/tcp (v6)                ALLOW       Anywhere (v6) 
 ```
 
-Toが80。ActionがALLOW IN。FromがAnywhereに設定されていれば完了です。
+`80/tcp`が追加されていればファイアウォールの設定は完了です。
 
-### クライアントからの確認
+## クライアントからWebサーバの確認
 {{clientHostname}}を起動して、WEBサーバにアクセスできるか確認します。  
 
 {{clientHostname}}を起動したらFirefoxから[http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp](http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp)にアクセスしてます。
