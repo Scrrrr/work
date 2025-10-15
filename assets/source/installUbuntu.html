@@ -40,7 +40,9 @@
 <li><a href="#3">Mail サーバ</a>
 <ul>
 <li><a href="#3.1">Postfix</a></li>
-<li><a href="#3.2">Dovecot（POP3）</a></li>
+<li><a href="#3.2">ファイヤーウォールの設定</a></li>
+<li><a href="#3.3">ファイヤーウォールの設定項目の確認</a></li>
+<li><a href="#3.4">Dovecot（POP3）</a></li>
 </ul>
 </li>
 <li><a href="#4">WEBサーバの構築</a>
@@ -358,24 +360,25 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 
 <h3 id="3.1.8">Postfix のインストール</h3>
 
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install postfix</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt -y install postfix</code></pre>
 
-<p>インストーラで「インターネットサイト」を選択し、ホスト名を確認します。</p>
+<p>インストール中に[パッケージの設定]が表示されます。</p>
+<p>完了を押し、「インターネットサイト」を選択し、設定してたホスト名が記述されているか確認して<了解>を選択します。</p>
+<div class="hint">
+<p><strong>ヒント:</strong></p>
+<p>TUI(Terminal User Interface)での操作は主に<Tab>,十字キー,<Enter>で操作できます。</p>
+</div>
 
 <h3 id="3.1.9">postfixの設定</h3>
 <p>postfixの設定ファイルである<code>/etc/postfix/main.cf</code>を<code>vi</code>エディタで編集します。</p>
 
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/postfix/main.cf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/postfix/main.cf</code></pre>
 
 <p>以下の設定を行います。</p>
 
-<pre><code>myhostname = <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp
-mydomain = netsys.cs.t-kougei.ac.jp
-myorigin = $mydomain
-mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
-relayhost = [smtp-a.t-kougei.ac.jp]
+<div class="code-file-info">📁 /etc/postfix/main.cf</div>
+<pre><code>relayhost = [smtp-a.t-kougei.ac.jp]
 mynetworks = 127.0.0.0/8
-inet_interfaces = all
 inet_protocols = ipv4
 home_mailbox = Maildir/</code></pre>
 
@@ -388,45 +391,78 @@ home_mailbox = Maildir/</code></pre>
 <h3 id="3.1.10">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo systemctl restart postfix.service</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart postfix.service</code></pre>
 
-<h3 id="3.1.11">メール転送の設定</h3>
-<p><code>/etc/aliases</code>ファイルに、 <code>転送元: 転送先</code> を指定することでメールを自動的に転送することができます。</p>
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/aliases</code></pre>
-
-<p><code>/etc/aliases</code>ファイルに下記を記述します。</p>
-<pre><code>root: kitamura@st.t-kougei.ac.jp</code></pre>
-
-<p><code>newaliases</code>コマンドで、<code>/etc/aliases</code>ファイルの設定を反映させます。</p>
-<pre><code class="language-bash">sudo newaliases</code></pre>
-
-<h3 id="3.1.12">メール送受信確認（ローカル）</h3>
+<h3 id="3.1.11">サーバでのメール送受信確認</h3>
 
 <p>mailコマンドをインストールしてメールの送信テストをします。</p>
 
-<h4 id="3.1.13">mailコマンドのインストール</h4>
+<h4 id="3.1.12">mailコマンドのインストール</h4>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install mailutils</code></pre>
 
-<h4 id="3.1.14">mailコマンドでtomeに送信</h4>
+<h4 id="3.1.13">mailコマンドでtomeに送信</h4>
 <p><code>mail</code>コマンドでtomeに「Test」というメッセージを送ります。  </p>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ echo "test" | mail tome</code></pre>
 
 <p><code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「Test」とあれば、成功です。</p>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ ls /home/tome/Maildir/new</code></pre>
 
-<h4 id="3.1.15">SMTP レベルでの確認（任意）:</h4>
+<h2 id="3.2">ファイヤーウォールの設定</h2>
+<p>ufwコマンドでファイヤーウォールを設定します。</p>
 
-<p><code>telnet</code>コマンドでSMTPが起動しているか確認します。</p>
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ telnet localhost 25
-> quit</code></pre>
+<h3 id="3.2.14">ufwの有効化</h3>
+<p>はじめに、ufwをアクティブに変更します。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw enable
+ファイアウォールはアクティブかつシステムの起動時に有効化されます。</code></pre>
 
-<h2 id="3.2">Dovecot（POP3）</h2>
+<p>ufwがアクティブな状態になっているか確認します。</p>
+<p>状態がアクティブであれば完了です。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw status
+状態: アクティブ</code></pre>
+
+<h3 id="3.2.15">許可するプロトコルの追加</h3>
+<p>外部からの接続を許可するプロトコルを指定します。今回していするプロトコルはsmtpとpop3です。以下のようにして許可をします。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw allow smtp
+ルールを追加しました
+ルールを追加しました(v6)</code></pre>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw allow pop3
+ルールを追加しました
+ルールを追加しました(v6)</code></pre>
+
+<h2 id="3.3">ファイヤーウォールの設定項目の確認</h2>
+<p><code>status</code>オプションで現在のファイアウォールの設定を確認します。</p>
+<p>項目Toの<code>25</code>,<code>110</code>のACTION項目が<code>ALLOW</code>であり、なおかつFromの項目が<code>Anywhere</code>であれば成功です。</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw status
+状態: アクティブ
+
+To                         Action      From
+--                         ------      ----
+25/tcp                     ALLOW       Anywhere                  
+110/tcp                    ALLOW       Anywhere                  
+25/tcp (v6)                ALLOW       Anywhere (v6)             
+110/tcp (v6)               ALLOW       Anywhere (v6)</code></pre>
+
+<h3 id="3.3.16">クライアントからの確認</h3>
+<p><?php echo $clientHostname; ?>を起動して、SMTPサーバにアクセスできるか確認します。  </p>
+
+<pre><code class="language-bash">[root@<?php echo $clientHostname; ?> ~]# telnet {{userverHostname}} 25
+Trying <?php echo $serverIP; ?>...
+Connected to <?php echo $serverHostname; ?>.
+Escape character is '^]'.
+220 <?php echo $serverHostname; ?>.cs.t-kougei.ac.jp ESMTP Postfix (Ubuntu)</code></pre>
+
+<p>一番下の行より、<code>220 <?php echo $serverHostname; ?>.cs.t-kougei.ac.jp ESMTP Postfix (Ubuntu)</code>とあります。  </p>
+<p>サーバからのSMTPの応答があれば成功です。</p>
+
+<h2 id="3.4">Dovecot（POP3）</h2>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
 
-<h3 id="3.2.16">Dovecotのインストール</h3>
+<h3 id="3.4.17">Dovecotのインストール</h3>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install dovecot-core dovecot-pop3d</code></pre>
 
-<h3 id="3.2.17">Dovecotの設定</h3>
+<h3 id="3.4.18">Dovecotの設定</h3>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-ssl.conf</code>ファイルをviエディタで開きます。</p>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
 
@@ -437,9 +473,10 @@ home_mailbox = Maildir/</code></pre>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
 
-<p>プレーンテキスト認証を許可します。</p>
+<p>コメントアウトを外してプレーンテキスト認証を許可します。</p>
 
-<pre><code>disable_plaintext_auth = no</code></pre>
+<pre><code>#disable_plaintext_auth = yes
+disable_plaintext_auth = no</code></pre>
 
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-mail.conf</code>ファイルをviエディタで開きます。</p>
 
@@ -447,25 +484,47 @@ home_mailbox = Maildir/</code></pre>
 
 <p><code>mail_location</code> を <code>maildir</code> に変更します。</p>
 
-<pre><code># mail_location = mbox:~/mail:INBOX=/var/mail/%u
-mail_location = maildir:~/Maildir</code></pre>
+<pre><code><span class="git-remove">mail_locatoin = mbox:~/mail:IBBOX=/var/mail/%u</span>
+<span class="git-add">#mail_locatoin = mbox:~/mail:IBBOX=/var/mail/%u</span>
+<span class="git-add">mail_location = maildir:~/Maildir</span></code></pre>
 
-<h3 id="3.2.18">Dovecotの設定の反映</h3>
+<h3 id="3.4.19">Dovecotの設定の反映</h3>
 <p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo systemctl restart dovecot</code></pre>
 
-<h3 id="3.2.19">client1からの POP3 動作確認</h3>
-<p>cilent1を起動して、client1から</p>
-<p><code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
+<h3 id="3.4.20"><?php echo $clientHostname; ?>からの POP3 動作確認</h3>
+<p><?php echo $clientHostname; ?>を起動して、Clientから<code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
 
 <pre><code class="language-bash">tome@client1:~$ telnet <?php echo $serverHostname; ?> 110
-user tome
+Trying <?php echo $serverIP; ?>...
+Connected to <?php echo $serverHostname; ?>.
+Escape character is '^]'.
+<span class="git-add">+OK Dovecto (Ubuntu) ready.</span></code></pre>
+<p><code>+OK Dovecto (Ubuntu) ready.</code>という情報から、Dovecotに接続できたことが確認できました。</p>
+
+<h3 id="3.4.21">メールの内容を確認する</h3>
+<p>telnetでDovecotコマンドを入力します。</p>
+<p>まず、<code>USER</code>と<code>PASS</code>でログインを行います。</p>
+<pre><code>user tome
++OK
 pass netsys00
-list
-retr 1
-dele 1
-quit</code></pre>
++OK Logged in.</code></pre>
+<p><code>+OK Logged in.</code>が表示されればログインされます。</p>
+
+<pre><code class="language-bash">list
++OK 1 message:
+1 516</code></pre>
+
+<p><code>+OK 1 message:</code>から1件のメールがあることが確認できます。</p>
+<p><code>1 516</code>はメール番号とメールのサイズをバイトで表しています。</p>
+
+<pre><code class="language-bash">retr 1
++OK 516 octets
+Return-Path: root@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp
+X-Original-TO: tome
+<略></code></pre>
+
 
 <h1 id="4">WEBサーバの構築</h1>
 
@@ -516,7 +575,7 @@ ServerName <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw enable</code></pre>
 <p></div></p>
 
-<h3 id="4.5.20">ファイヤーウォールの設定項目の確認</h3>
+<h3 id="4.5.22">ファイヤーウォールの設定項目の確認</h3>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw status numbered 
 状態: アクティブ
 
@@ -527,7 +586,7 @@ ServerName <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
 
 <p>Toが80。ActionがALLOW IN。FromがAnywhereに設定されていれば完了です。</p>
 
-<h3 id="4.5.21">クライアントからの確認</h3>
+<h3 id="4.5.23">クライアントからの確認</h3>
 <p><?php echo $clientHostname; ?>を起動して、WEBサーバにアクセスできるか確認します。  </p>
 
 <p><?php echo $clientHostname; ?>を起動したらFirefoxから<a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a>にアクセスしてます。</p>

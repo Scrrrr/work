@@ -240,28 +240,27 @@ Mailサーバはメールの送受信を行うためのサーバです。
 ### Postfix のインストール
 
 ```bash
-tome@{{serverHostname}}:~$ sudo apt -y install postfix
+root@{{serverHostname}}:~# apt -y install postfix
 ```
 
-インストーラで「インターネットサイト」を選択し、ホスト名を確認します。
+インストール中に[パッケージの設定]が表示されます。
+完了を押し、「インターネットサイト」を選択し、設定してたホスト名が記述されているか確認して<了解>を選択します。
+:::hint
+TUI(Terminal User Interface)での操作は主に<Tab>,十字キー,<Enter>で操作できます。
+:::
 
 ### postfixの設定
 postfixの設定ファイルである`/etc/postfix/main.cf`を`vi`エディタで編集します。
 
 ```bash
-tome@{{serverHostname}}:~$ sudo vi /etc/postfix/main.cf
+root@{{serverHostname}}:~$ vi /etc/postfix/main.cf
 ```
 
 以下の設定を行います。
 
-```
-myhostname = {{serverHostname}}.netsys.cs.t-kougei.ac.jp
-mydomain = netsys.cs.t-kougei.ac.jp
-myorigin = $mydomain
-mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+```{file=/etc/postfix/main.cf}
 relayhost = [smtp-a.t-kougei.ac.jp]
 mynetworks = 127.0.0.0/8
-inet_interfaces = all
 inet_protocols = ipv4
 home_mailbox = Maildir/
 ```
@@ -275,26 +274,10 @@ home_mailbox = Maildir/
 `systemctl`コマンドでpostfixを再起動します。
 
 ```bash
-tome@{{serverHostname}}:~$ sudo systemctl restart postfix.service
+root@{{serverHostname}}:~$ systemctl restart postfix.service
 ```
 
-### メール転送の設定
-`/etc/aliases`ファイルに、 `転送元: 転送先` を指定することでメールを自動的に転送することができます。
-```bash
-tome@{{serverHostname}}:~$ sudo vi /etc/aliases
-```
-
-`/etc/aliases`ファイルに下記を記述します。
-```
-root: kitamura@st.t-kougei.ac.jp
-```
-
-`newaliases`コマンドで、`/etc/aliases`ファイルの設定を反映させます。
-```bash
-sudo newaliases
-```
-
-### メール送受信確認（ローカル）
+### サーバでのメール送受信確認
 
 mailコマンドをインストールしてメールの送信テストをします。
 
@@ -314,13 +297,67 @@ tome@{{serverHostname}}:~$ echo "test" | mail tome
 tome@{{serverHostname}}:~$ ls /home/tome/Maildir/new
 ```
 
-#### SMTP レベルでの確認（任意）:  
+## ファイヤーウォールの設定
+ufwコマンドでファイヤーウォールを設定します。
 
-`telnet`コマンドでSMTPが起動しているか確認します。
+### ufwの有効化
+はじめに、ufwをアクティブに変更します。
 ```bash
-tome@{{serverHostname}}:~$ telnet localhost 25
-> quit
+root@{{serverHostname}}:~# ufw enable
+ファイアウォールはアクティブかつシステムの起動時に有効化されます。
 ```
+
+ufwがアクティブな状態になっているか確認します。
+状態がアクティブであれば完了です。
+```bash
+root@{{serverHostname}}:~# ufw status
+状態: アクティブ
+```
+
+### 許可するプロトコルの追加
+外部からの接続を許可するプロトコルを指定します。今回していするプロトコルはsmtpとpop3です。以下のようにして許可をします。
+```bash
+root@{{serverHostname}}:~# ufw allow smtp
+ルールを追加しました
+ルールを追加しました(v6)
+```
+
+```bash
+root@{{serverHostname}}:~# ufw allow pop3
+ルールを追加しました
+ルールを追加しました(v6)
+```
+
+## ファイヤーウォールの設定項目の確認
+`status`オプションで現在のファイアウォールの設定を確認します。
+項目Toの`25`,`110`のACTION項目が`ALLOW`であり、なおかつFromの項目が`Anywhere`であれば成功です。
+
+```bash
+
+root@{{serverHostname}}:~# ufw status
+状態: アクティブ
+
+To                         Action      From
+--                         ------      ----
+25/tcp                     ALLOW       Anywhere                  
+110/tcp                    ALLOW       Anywhere                  
+25/tcp (v6)                ALLOW       Anywhere (v6)             
+110/tcp (v6)               ALLOW       Anywhere (v6) 
+```
+
+### クライアントからの確認
+{{clientHostname}}を起動して、SMTPサーバにアクセスできるか確認します。  
+
+```bash
+[root@{{clientHostname}} ~]# telnet {{userverHostname}} 25
+Trying {{serverIP}}...
+Connected to {{serverHostname}}.
+Escape character is '^]'.
+220 {{serverHostname}}.cs.t-kougei.ac.jp ESMTP Postfix (Ubuntu)
+```
+
+一番下の行より、`220 {{serverHostname}}.cs.t-kougei.ac.jp ESMTP Postfix (Ubuntu)`とあります。  
+サーバからのSMTPの応答があれば成功です。
 
 ## Dovecot（POP3）
 Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。
@@ -347,9 +384,10 @@ Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-auth.conf`ファイ�
 tome@{{serverHostname}}:~$ sudo vi /etc/dovecot/conf.d/10-auth.conf
 ```
 
-プレーンテキスト認証を許可します。
+コメントアウトを外してプレーンテキスト認証を許可します。
 
 ```
+#disable_plaintext_auth = yes
 disable_plaintext_auth = no
 ```
 
@@ -361,9 +399,10 @@ tome@{{serverHostname}}:~$ sudo vi /etc/dovecot/conf.d/10-mail.conf
 
 `mail_location` を `maildir` に変更します。
 
-```
-# mail_location = mbox:~/mail:INBOX=/var/mail/%u
-mail_location = maildir:~/Maildir
+```markdown
+-[[mail_locatoin = mbox:~/mail:IBBOX=/var/mail/%u]]
++[[#mail_locatoin = mbox:~/mail:IBBOX=/var/mail/%u]]
++[[mail_location = maildir:~/Maildir]]
 ```
 
 ### Dovecotの設定の反映
@@ -373,19 +412,47 @@ mail_location = maildir:~/Maildir
 tome@{{serverHostname}}:~$ sudo systemctl restart dovecot
 ```
 
-### client1からの POP3 動作確認
-cilent1を起動して、client1から
-`telnet`コマンドを使用してメールの受信を確認します。
+### {{clientHostname}}からの POP3 動作確認
+{{clientHostname}}を起動して、Clientから`telnet`コマンドを使用してメールの受信を確認します。
 
 ```bash
 tome@client1:~$ telnet {{serverHostname}} 110
-user tome
-pass netsys00
-list
-retr 1
-dele 1
-quit
+Trying {{serverIP}}...
+Connected to {{serverHostname}}.
+Escape character is '^]'.
++[[+OK Dovecto (Ubuntu) ready.]]
 ```
+`+OK Dovecto (Ubuntu) ready.`という情報から、Dovecotに接続できたことが確認できました。
+
+### メールの内容を確認する
+telnetでDovecotコマンドを入力します。
+まず、`USER`と`PASS`でログインを行います。
+```
+user tome
++OK
+pass netsys00
++OK Logged in.
+```
+`+OK Logged in.`が表示されればログインされます。
+
+```bash
+list
++OK 1 message:
+1 516
+```
+
+`+OK 1 message:`から1件のメールがあることが確認できます。
+`1 516`はメール番号とメールのサイズをバイトで表しています。
+
+```bash
+retr 1
++OK 516 octets
+Return-Path: root@{{serverHostname}}.netsys.cs.t-kougei.ac.jp
+X-Original-TO: tome
+<略>
+```
+
+送信したメールが表示されればメールサーバの構築は完了です。
 
 # WEBサーバの構築
 
