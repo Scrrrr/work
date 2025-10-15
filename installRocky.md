@@ -99,7 +99,7 @@ rootのパスワードと同様に［このパスワードは辞書チェック�
 インストールが完了したら、[システムの再起動]を選択して、サーバを再起動します。
 サーバが停止したら、SCTSメニューより、[インストールサーバの起動]->[RockyLinux]でサーバを起動します。
 
-# 初期設定
+# 基本設定
 
 ## ログイン
 ライセンスに同意後、ログイン画面が表示されるため、ログインを行います。rootでログインを行うため、[アカウントが見つかりませんか？]を選択しrootでログインします。
@@ -109,20 +109,9 @@ rootのパスワードと同様に［このパスワードは辞書チェック�
 | ユーザネーム     | root     | 
 | パスワード       | netsys00 | 
 
-### プロキシの設定
-ネットワークプロキシの[歯車マーク]をクリックし、[手動]を選択し以下を記入します。
-
-| 項目名           | 入力値                   | ポート|
-| HTTPプロキシ     | proxy-a.t-kougei.ac.jp   | 8080  |
-| HTTPSプロキシ    | proxy-a.t-kougei.ac.jp   | 8080  |
-| FTPプロキシ      | proxy-a.t-kougei.ac.jp   | 8080  |
-| Socksホスト      | proxy-a.t-kougei.ac.jp   | 8080  |
-| 次のホストを無視する    | *.t-kougei.ac.jp  | -     |
-
-入力が完了したら×で閉じます。
-
-# サーバの設定
-サーバとしての設定を行うために、デスクトップから[端末]を起動します。
+## 端末の起動
+左上の[アクティビティ]をクリック、または<Win>キーを押します。
+中央下に表示されているアイコンにカーソルを合わせるとアプリケーション名が表示されるので、そこから[端末]を探します。もしくは、<win>キーを押した後に、[Terminal]と検索して提示された[端末]というソフトを起動します。
 
 ## SELinuxの無効化
 SELinuxの無効化を行います。
@@ -137,18 +126,77 @@ root@{{serverHostname}}:~$ vi /etc/selinux/config
 
 以下を変更:
 ```
-SELINUX=disabled
+-[[SELINUX=enforcing]]
++[[#SELINUX=enforcing]]
++[[SELINUX=disabled]]
 ```
-## yumの設定
+
+:::hint
+viエディタは通常モードで「h」で左に移動、「j」で下に移動、「k」で上に移動、「l」で右に移動。  
+「i」で入力モードに切り替える。「Esc」を押して通常モードに戻る。
+通常モードで「:w」で保存「:q」で終了、「:wq」で保存して終了。
+
+また、通常モードで`/<探したい文字>`で文字検索ができる。検索を辞める時は**<Esc>**キーを押す。
+:::  
+
+## 各ツール別のプロキシ設定
+
+### NetworkMangaerのプロキシ設定
+右上の電源アイコンをクリックして[設定]を選択します。
+設定画面が起動したら、項目ネットワークの中から
+**ネットワークプロキシ**を見つけ、[歯車マーク]をクリックします。  
+[無効]から[手動]を変更し、次の項目に以下の入力値を入力していきます。
+
+| 項目名           | 入力値                   | ポート|
+| HTTPプロキシ     | proxy-a.t-kougei.ac.jp   | 8080  |
+| HTTPSプロキシ    | proxy-a.t-kougei.ac.jp   | 8080  |
+| FTPプロキシ      | proxy-a.t-kougei.ac.jp   | 8080  |
+| Socksホスト      | proxy-a.t-kougei.ac.jp   | 8080  |
+| 次のホストを無視する    | *.t-kougei.ac.jp  | -     |
+
+入力が完了したら×で閉じます。
+設定メニューも×で閉じます。
+
+
+### bashのプロキシ設定
+再び端末に戻って設定を行います。  
+新たに`/etc/profile.d/proxy.sh`ファイルを作成してプロキシ設定を記述します。
+
+```bash
+root@{{serverHostname}}:~$ vi /etc/profile.d/proxy.sh
+```
+
+:::hint
+viエディタは通常モードで「h」で左に移動、「j」で下に移動、「k」で上に移動、「l」で右に移動。  
+「i」で入力モードに切り替える。「Esc」を押して通常モードに戻る。
+通常モードで「:w」で保存「:q」で終了、「:wq」で保存して終了。
+:::  
+
+```
+HTTP_PROXY=http://proxy-a.t-kougei.ac.jp:8080
+HTTPS_PROXY=http://proxy-a.t-kougei.ac.jp:8080
+
+http_proxy=http://proxy-a.t-kougei.ac.jp:8080
+https_proxy=http://proxy-a.t-kougei.ac.jp:8080
+```
+
+sourceコマンドで作成した設定ファイルを読み込ませます。
+
+```bash
+root@{{serverHostname}}:~$ source /etc/profile.d/proxy.sh
+```
+
+### yumのプロキシ設定
 パッケージマネージャーyumの設定を行います。
 
 ```bash
 root@{{serverHostname}}:~$ vi /etc/yum.conf
 ```
 
-`skip_if_unavailable=False`の下に以下を記入:
+`skip_if_unavailable=False`の下に以下を記入します。
+
 ```
-proxy=http://proxy-a.t-kougei.ac.jp:8080/
+proxy=http://proxy-a.t-kougei.ac.jp:8080
 timeout=900
 ```
 
@@ -162,12 +210,13 @@ root@{{serverHostname}}:~$ yum -y update --nobest
 
 ## Postfix
 
-### Postfix のインストール
+:::note
 OSのインストールで既にPostfixをインストールしていますが、チェック項目を忘れていた場合は以下のコマンドでインストールしてください。
 
 ```bash
 root@{{serverHostname}}:~$ yum -y install postfix
 ```
+:::
 
 ### Postfixの設定
 
@@ -192,10 +241,11 @@ inet_protocols = ipv4
 home_mailbox = Maildir/
 ```
 
-参考:
-- `myorigin`: 外行きメールに使うドメイン
-- `mydestination`: 受信するドメイン
-- `mynetworks`: メールリレーを許可するネットワーク
+:::note
+`myorigin`: 外行きメールに使うドメイン
+`mydestination`: 受信するドメイン
+`mynetworks`: メールリレーを許可するネットワーク
+:::
 
 ### postfixの設定の反映
 `systemctl`コマンドでpostfixを再起動します。
