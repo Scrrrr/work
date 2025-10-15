@@ -1,8 +1,18 @@
-<div class="container">
-        <!-- サイドバー（目次） -->
-        <nav class="sidebar">
-            <h3>目次</h3>
-            <ul class="toc">
+<!-- ハンバーガーメニュー -->
+        <button id="hamburger" class="hamburger" aria-label="メニューを開く">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <!-- オーバーレイ -->
+        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+        <div class="container">
+            <!-- サイドバー（目次） -->
+            <nav class="sidebar">
+                <h3>目次</h3>
+                <ul class="toc">
 <li><a href="#1">RockyLinuxについて</a>
 <ul>
 <li><a href="#1.1">序章</a></li>
@@ -11,7 +21,7 @@
 <li><a href="#2">RockyLinuxのインストール</a>
 <ul>
 <li><a href="#2.1">言語選択</a></li>
-<li><a href="#2.2">ディスクパーティション</a></li>
+<li><a href="#2.2">インストール先</a></li>
 <li><a href="#2.3">Kdump</a></li>
 <li><a href="#2.4">ネットワーク設定</a></li>
 <li><a href="#2.5">NTPの設定</a></li>
@@ -65,11 +75,11 @@
 </ul>
 </li>
 </ul>
-        </nav>
+            </nav>
 
-        <!-- メインコンテンツ -->
-        <main class="main-content">
-            <h1 id="1">RockyLinuxについて</h1>
+            <!-- メインコンテンツ -->
+            <main class="main-content">
+                <h1 id="1">RockyLinuxについて</h1>
 
 <p>RockyLinuxは、Red Hat EnterpriseLinux(RHEL)のダウンストリーム版であるCentOSの開発が中止され、CentOS創設者であるGregory Kurtzer氏がプロジェクトを立ち上げたLinuxディストリビューションです。開発はRockyLinux Projectで行われており、2021年から正式なリリースが行われています。</p>
 
@@ -82,31 +92,69 @@
 <h2 id="2.1">言語選択</h2>
 <p>インストールが開始されると言語選択メニューが表示されます。左のメニューの中央付近にある[日本語]を選択し、[続行]を選択します。</p>
 
-<h2 id="2.2">ディスクパーティション</h2>
-<p>インストール先のディスクパーティションの設定を行います。[インストール先]を選択し、その他のストレージオプションから、[カスタム]にチェックを入れ、[完了]を選択します。</p>
+<h2 id="2.2">インストール先</h2>
+<p>システムのインストール先を決定します。</p>
+<p>[インストール先]を選択すると自動でインストール先が決定されるので、左上の青いボタンの[完了]をクリックします。</p>
 
-<p>その後、以下のような画面が表示されるため、[+]を選択し、マウントポイントに/bootを選択、割り当てる領域に512MBを入力し、[マウントポイントの追加]を選択します。</p>
-
-<p>再度、[+]を選択し、マウントポイントにswapを選択、割り当てる領域に2GBを入力し、[マウントポイントの追加]を選択します。さらに、[+]を選択し、マウントポイントに/を選択、割り当てる領域は空欄にし、[マウントポイントの追加]を選択します。</p>
-
-<p>その後、[完了]をクリックし、[変更の概要]ウィンドウより[変更を許可する]を選択します。</p>
+<div class="note">
+<p><strong>注記:</strong></p>
+<p>システムの[インストール先]のアイコンに注意が表示されていたのが消えていればＯＫです。</p>
+</div>
 
 <h2 id="2.3">Kdump</h2>
-<p>Kdumpの無効化を行うために、[KDUMP]を選択し、[kdumpを有効にする]のチェックを外し、[完了]を選択します。</p>
+<p>Kdumpの無効化を行うために、[KDUMP]を選択し、[kdumpを有効にする]のチェックボックスを外し、[完了]を選択します。</p>
 
 <h2 id="2.4">ネットワーク設定</h2>
 <p>次に、ネットワークの設定を行います。[ネットワークとホスト名]を選択し、ホスト名に<code><?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code>を入力します。</p>
 
 <p>ホスト名入力後、[適用]をクリックします。</p>
-<p>ここで、[適用]をクリックしないと設定が反映されないため注意してください。</p>
+<div class="caution">
+<p><strong>注意:</strong></p>
+<p>[適用]をクリックしないと設定が反映されないため注意してください。</p>
+</div>
 
-<p>さらに、[設定]を選択し、[IPv4のセッティング]をクリックし、方式を自動(DHCP)から手動に変更します。</p>
+<p>さらに、[設定]を選択し、[IPv4の設定]をクリックし、方式を<strong>自動(DHCP)</strong>から<strong>手動</strong>に変更します。</p>
 
-<p>アドレスの[追加]を選択し、アドレスに<code><?php echo $serverIP; ?></code>、ネットマスクに255.255.255.0、ゲートウェイに<code><?php echo $gatewayIP; ?></code>を入力します。</p>
+<p>アドレスの[追加]を選択し、以下の項目に値を入力していきます。</p>
 
-<p>DNSサーバに<code><?php echo $gatewayIP; ?></code>、ドメインを検索に<code>netsys.cs.t-kougei.ac.jp,cs.t-kougei.ac.jp,t-kougei.ac.jp</code>を入力し、[保存]を選択します。</p>
+<table class="table-fixed">
+<thead>
+<tr>
+<th>項目名</th>
+<th>入力値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>アドレス</td>
+<td><?php echo $serverIP; ?></td>
+</tr>
+<tr>
+<td>ネットマスク</td>
+<td>24</td>
+</tr>
+<tr>
+<td>ゲートウェイ</td>
+<td><?php echo $gatewayIP; ?></td>
+</tr>
+<tr>
+<td>DNSサーバー</td>
+<td><?php echo $serverIP; ?></td>
+</tr>
+<tr>
+<td>ドメインを検索</td>
+<td>netsys.cs.t-kougei.ac.jp, cs.t-kougei.ac.jp, t-kougei.ac.jp</td>
+</tr>
+</tbody>
+</table>
 
-<p>保存後、右上の[オフ]を[オン]に変更し、IPアドレスなどが表示されているか確認し、[完了]を選択します。</p>
+<p>入力が完了したら[保存]を押して閉じます。</p>
+
+<p>入力後、右上のトグルボタンをクリックして有効に切り替えます。</p>
+
+<p>Ethernetが「接続済みです」と表示されていればネットワークの接続は完了です。</p>
+
+<p>左上の[完了]を押します。</p>
 
 <h2 id="2.5">NTPの設定</h2>
 
@@ -690,5 +738,5 @@ rule family="ipv4" source address="<?php echo $clientIP; ?>/32" accept</code></p
 <p>以上でOSのインストールと設定は完了となります。</p>
 
 
-        </main>
-    </div>
+            </main>
+        </div>
