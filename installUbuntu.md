@@ -73,17 +73,6 @@ SCTSのメニューより、「インストールサーバの起動」からUbun
 ・プライバシー位置情報(default:off)
 ・準備が完了しました→(完了)
 
-
-### Proxyの設定
-
-設定→ネットワークより、**ネットワークプロキシ**を選択して、無効から**手動**に変更して、以下の項目を入力します。
-| 項目名           | 入力値                   | ポート|
-| HTTPプロキシ     | proxy-a.t-kougei.ac.jp   | 8080  |
-| HTTPSプロキシ    | proxy-a.t-kougei.ac.jp   | 8080  |
-| FTPプロキシ      | proxy-a.t-kougei.ac.jp   | 8080  |
-| Socksホスト      | proxy-a.t-kougei.ac.jp   | 8080  |
-| 次のホストを無視する    | *.t-kougei.ac.jp  | -     |
-
 ## 端末の起動
 左下端の[アプリケーション]アイコンをクリックして項目の中から[端末]をクリックします。または[検索キーワード入力]から[Terminal]と入力して[端末]をクリックしします。
 
@@ -436,14 +425,14 @@ viでは`:%d`で文字の全削除することができる。
 howdy?
 ```
 
-##サーバでの確認
+## サーバでの確認
 実際にhowdy?が表示されるか確認します。
 
 左下のアプリケーションをクリックして検索バーから`Firefox`と入力して提示されたアプリケーションを起動します。
 
-ナビゲーションバーに`http://u2-tr201.netsys.cs.t-kougei.ac.jp`を入力してアクセスします。
+ナビゲーションバーに[http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp](http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp)を入力してアクセスします。
 
-真っ白な背景にhowdy?と表示されていれば成功です。
+真っ白な背景にhowdy?と表示されていればサーバからの確認は成功です。
 
 ## ファイヤーウォールの設定
 ufwコマンドでファイヤーウォールを設定します。
@@ -457,9 +446,22 @@ root@{{serverHostname}}:~# ufw enable
 ```
 :::
 
-### クライアントからの確認
-{{clientHostname}}から{{serverHostname}}にアクセスして
-
+### ファイヤーウォールの設定項目の確認
 ```bash
-root@{{serverHostname}}:~# vi /var/www/html/index.html
+root@{{serverHostname}}:~# ufw status numbered 
+状態: アクティブ
+
+     To                         Action      From
+     --                         ------      ----
+[ 1] 80/tcp                     ALLOW IN    Anywhere                  
+[ 2] 80/tcp (v6)                ALLOW IN    Anywhere (v6) 
 ```
+
+Toが80。ActionがALLOW IN。FromがAnywhereに設定されていれば完了です。
+
+### クライアントからの確認
+{{clientHostname}}を起動して、WEBサーバにアクセスできるか確認します。  
+
+{{clientHostname}}を起動したらFirefoxから[http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp](http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp)にアクセスしてます。
+
+サーバでの確認と同様に真っ白な背景にhowdy?と表示されていればクライアントからの確認は成功です。
