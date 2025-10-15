@@ -48,7 +48,8 @@
 <li><a href="#4.1">apache2のインストール</a></li>
 <li><a href="#4.2">apache2の設定</a></li>
 <li><a href="#4.3">コンテンツの設置</a></li>
-<li><a href="#4.4">ファイヤーウォールの設定</a></li>
+<li><a href="#4.4">サーバでの確認</a></li>
+<li><a href="#4.5">ファイヤーウォールの設定</a></li>
 </ul>
 </li>
 </ul>
@@ -155,47 +156,6 @@
 <p>・プライバシー位置情報(default:off)</p>
 <p>・準備が完了しました→(完了)</p>
 
-
-<h3 id="2.2.1">Proxyの設定</h3>
-
-<p>設定→ネットワークより、<strong>ネットワークプロキシ</strong>を選択して、無効から<strong>手動</strong>に変更して、以下の項目を入力します。</p>
-<table class="table-fixed">
-<thead>
-<tr>
-<th>項目名</th>
-<th>入力値</th>
-<th>ポート</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>HTTPプロキシ</td>
-<td>proxy-a.t-kougei.ac.jp</td>
-<td>8080</td>
-</tr>
-<tr>
-<td>HTTPSプロキシ</td>
-<td>proxy-a.t-kougei.ac.jp</td>
-<td>8080</td>
-</tr>
-<tr>
-<td>FTPプロキシ</td>
-<td>proxy-a.t-kougei.ac.jp</td>
-<td>8080</td>
-</tr>
-<tr>
-<td>Socksホスト</td>
-<td>proxy-a.t-kougei.ac.jp</td>
-<td>8080</td>
-</tr>
-<tr>
-<td>次のホストを無視する</td>
-<td>*.t-kougei.ac.jp</td>
-<td>-</td>
-</tr>
-</tbody>
-</table>
-
 <h2 id="2.3">端末の起動</h2>
 <p>左下端の[アプリケーション]アイコンをクリックして項目の中から[端末]をクリックします。または[検索キーワード入力]から[Terminal]と入力して[端末]をクリックしします。</p>
 
@@ -276,7 +236,7 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 <p>すべての設定が終わったら、一番下の<code><strong><ＯＫ></strong></code>を選択して、[Enter]を押します。</p>
 <p><code><strong><戻る></strong></code>を押して、一番最初に戻ります。</p>
 
-<h3 id="2.6.2">ホスト名の設定</h3>
+<h3 id="2.6.1">ホスト名の設定</h3>
 <p><code>nmtui</code>の一番最初のオプション選択メニューから<code>システムのホスト名を設定する</code>を選択します。</p>
 <p>ホスト名を<code><?php echo $serverHostname; ?></code>を<code><?php echo $serverHostname; ?>.cs.t-kougei.ac.jp</code>に変更して<code><strong><ＯＫ></strong></code>を[Enter]します。</p>
 
@@ -284,20 +244,20 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 
 <p>すべての設定が完了したら一番最初のオプション選択メニューの最後にあ<code><strong><ＯＫ></strong></code>を[Enter]します。</p>
 
-<h3 id="2.6.3">ネットワークの設定の確認</h3>
+<h3 id="2.6.2">ネットワークの設定の確認</h3>
 <p>ipコマンドを使用して正しくネットワークに接続できているか確認します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ip a [Enter]</code></pre>
 
 <p>ネットワークデバイス、<code>enp1s0</code>の<code>inet</code>が<code><?php echo $serverIP; ?>/24</code>とあれば正しく設定されています。</p>
 <p>また、enp1s0にipv6の項目がなければ、ipv6を無効に設定できています。</p>
 
-<h3 id="2.6.4">ホスト名の設定の確認</h3>
+<h3 id="2.6.3">ホスト名の設定の確認</h3>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ cat /etc/hostname [Enter]</code></pre>
 <p>これでホスト名が正しく表示された、ホスト名の設定は完了です。</p>
 
 <h2 id="2.7">各ツール別のプロキシ設定</h2>
 
-<h3 id="2.7.5">NetworkMangaerのプロキシ設定</h3>
+<h3 id="2.7.4">NetworkMangaerのプロキシ設定</h3>
 <p>右上の電源アイコンをクリックして、表示された項目欄から[設定]を選択します。</p>
 <p>ネットワークの設定項目のうち<code>ネットワークプロキシ</code>をの歯車マークをクリックします。</p>
 <p><strong>無効</strong>から<strong>手動</strong>に変更して、以下の項目を入力します。</p>
@@ -341,7 +301,7 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 <p>入力が完了したら×で閉じます。</p>
 <p>設定ウィンドウも×で閉じます。</p>
 
-<h3 id="2.7.6">bashのプロキシ設定</h3>
+<h3 id="2.7.5">bashのプロキシ設定</h3>
 <p>再び端末に戻って設定を行います。  </p>
 <p>新たに<code>/etc/profile.d/proxy.sh</code>ファイルを作成してプロキシ設定を記述します。</p>
 
@@ -363,7 +323,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 <p>sourceコマンドで作成した設定ファイルを読み込ませます。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ source /etc/profile.d/proxy.sh</code></pre>
-<h3 id="2.7.7">aptのプロキシ設定</h3>
+<h3 id="2.7.6">aptのプロキシ設定</h3>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/apt/apt.conf</code></pre>
 
 <p>以下を記述します。</p>
@@ -371,7 +331,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 <pre><code>Acquire::http::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 
-<h3 id="2.7.8">パッケージの更新とインストール</h3>
+<h3 id="2.7.7">パッケージの更新とインストール</h3>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ apt update</code></pre>
 <p>先頭にステータスが表示されます。<strong>取得</strong>と表示されていれば</p>
 <p>既存のリポジトリからパッケージの更新がされていることを意味します。</p>
@@ -396,13 +356,13 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 <h2 id="3.1">Postfix</h2>
 <p>メールの送信には<strong>Postfix</strong>が、受信には<strong>Davcot</strong>が使用されます。  </p>
 
-<h3 id="3.1.9">Postfix のインストール</h3>
+<h3 id="3.1.8">Postfix のインストール</h3>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install postfix</code></pre>
 
 <p>インストーラで「インターネットサイト」を選択し、ホスト名を確認します。</p>
 
-<h3 id="3.1.10">postfixの設定</h3>
+<h3 id="3.1.9">postfixの設定</h3>
 <p>postfixの設定ファイルである<code>/etc/postfix/main.cf</code>を<code>vi</code>エディタで編集します。</p>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/postfix/main.cf</code></pre>
@@ -425,12 +385,12 @@ home_mailbox = Maildir/</code></pre>
 <li><code>mydestination</code>: 受信するドメイン</li>
 <li><code>mynetworks</code>: メールリレーを許可するネットワーク</li>
 </ul>
-<h3 id="3.1.11">postfixの設定の反映</h3>
+<h3 id="3.1.10">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo systemctl restart postfix.service</code></pre>
 
-<h3 id="3.1.12">メール転送の設定</h3>
+<h3 id="3.1.11">メール転送の設定</h3>
 <p><code>/etc/aliases</code>ファイルに、 <code>転送元: 転送先</code> を指定することでメールを自動的に転送することができます。</p>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/aliases</code></pre>
 
@@ -440,21 +400,21 @@ home_mailbox = Maildir/</code></pre>
 <p><code>newaliases</code>コマンドで、<code>/etc/aliases</code>ファイルの設定を反映させます。</p>
 <pre><code class="language-bash">sudo newaliases</code></pre>
 
-<h3 id="3.1.13">メール送受信確認（ローカル）</h3>
+<h3 id="3.1.12">メール送受信確認（ローカル）</h3>
 
 <p>mailコマンドをインストールしてメールの送信テストをします。</p>
 
-<h4 id="3.1.14">mailコマンドのインストール</h4>
+<h4 id="3.1.13">mailコマンドのインストール</h4>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install mailutils</code></pre>
 
-<h4 id="3.1.15">mailコマンドでtomeに送信</h4>
+<h4 id="3.1.14">mailコマンドでtomeに送信</h4>
 <p><code>mail</code>コマンドでtomeに「Test」というメッセージを送ります。  </p>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ echo "test" | mail tome</code></pre>
 
 <p><code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「Test」とあれば、成功です。</p>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ ls /home/tome/Maildir/new</code></pre>
 
-<h4 id="3.1.16">SMTP レベルでの確認（任意）:</h4>
+<h4 id="3.1.15">SMTP レベルでの確認（任意）:</h4>
 
 <p><code>telnet</code>コマンドでSMTPが起動しているか確認します。</p>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ telnet localhost 25
@@ -463,10 +423,10 @@ home_mailbox = Maildir/</code></pre>
 <h2 id="3.2">Dovecot（POP3）</h2>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
 
-<h3 id="3.2.17">Dovecotのインストール</h3>
+<h3 id="3.2.16">Dovecotのインストール</h3>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install dovecot-core dovecot-pop3d</code></pre>
 
-<h3 id="3.2.18">Dovecotの設定</h3>
+<h3 id="3.2.17">Dovecotの設定</h3>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-ssl.conf</code>ファイルをviエディタで開きます。</p>
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
 
@@ -490,12 +450,12 @@ home_mailbox = Maildir/</code></pre>
 <pre><code># mail_location = mbox:~/mail:INBOX=/var/mail/%u
 mail_location = maildir:~/Maildir</code></pre>
 
-<h3 id="3.2.19">Dovecotの設定の反映</h3>
+<h3 id="3.2.18">Dovecotの設定の反映</h3>
 <p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo systemctl restart dovecot</code></pre>
 
-<h3 id="3.2.20">client1からの POP3 動作確認</h3>
+<h3 id="3.2.19">client1からの POP3 動作確認</h3>
 <p>cilent1を起動して、client1から</p>
 <p><code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
 
@@ -538,16 +498,16 @@ ServerName <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
 <div class="code-file-info">📁 /var/www/html/index.html</div>
 <pre><code>howdy?</code></pre>
 
-<p>##サーバでの確認</p>
+<h2 id="4.4">サーバでの確認</h2>
 <p>実際にhowdy?が表示されるか確認します。</p>
 
 <p>左下のアプリケーションをクリックして検索バーから<code>Firefox</code>と入力して提示されたアプリケーションを起動します。</p>
 
-<p>ナビゲーションバーに<code>http://u2-tr201.netsys.cs.t-kougei.ac.jp</code>を入力してアクセスします。</p>
+<p>ナビゲーションバーに<a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a>を入力してアクセスします。</p>
 
-<p>真っ白な背景にhowdy?と表示されていれば成功です。</p>
+<p>真っ白な背景にhowdy?と表示されていればサーバからの確認は成功です。</p>
 
-<h2 id="4.4">ファイヤーウォールの設定</h2>
+<h2 id="4.5">ファイヤーウォールの設定</h2>
 <p>ufwコマンドでファイヤーウォールを設定します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw allow http</code></pre>
 <p><div class="note"></p>
@@ -556,10 +516,23 @@ ServerName <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw enable</code></pre>
 <p></div></p>
 
-<h3 id="4.4.21">クライアントからの確認</h3>
-<p><?php echo $clientHostname; ?>から<?php echo $serverHostname; ?>にアクセスして</p>
+<h3 id="4.5.20">ファイヤーウォールの設定項目の確認</h3>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw status numbered 
+状態: アクティブ
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /var/www/html/index.html</code></pre>
+     To                         Action      From
+     --                         ------      ----
+[ 1] 80/tcp                     ALLOW IN    Anywhere                  
+[ 2] 80/tcp (v6)                ALLOW IN    Anywhere (v6)</code></pre>
+
+<p>Toが80。ActionがALLOW IN。FromがAnywhereに設定されていれば完了です。</p>
+
+<h3 id="4.5.21">クライアントからの確認</h3>
+<p><?php echo $clientHostname; ?>を起動して、WEBサーバにアクセスできるか確認します。  </p>
+
+<p><?php echo $clientHostname; ?>を起動したらFirefoxから<a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a>にアクセスしてます。</p>
+
+<p>サーバでの確認と同様に真っ白な背景にhowdy?と表示されていればクライアントからの確認は成功です。</p>
 
             </main>
         </div>
