@@ -40,7 +40,7 @@
 <li><a href="#3.1">Postfix</a></li>
 <li><a href="#3.2">Dovecot（POP3）</a></li>
 <li><a href="#3.3">ファイアウォールの設定</a></li>
-<li><a href="#3.4">Clientからの動作確認</a></li>
+<li><a href="#3.4">クライアントからの動作確認</a></li>
 </ul>
 </li>
 <li><a href="#4">WEBサーバの構築</a>
@@ -244,9 +244,9 @@
 <span class="git-add">#SELINUX=enforcing</span>
 <span class="git-add">SELINUX=disabled</span></code></pre>
 
-<div class="hint">
-<p><strong>ヒント:</strong></p>
-<p>viエディタは通常モードで「h」で左に移動、「j」で下に移動、「k」で上に移動、「l」で右に移動。  </p>
+<p><div class="hint"></p>
+<p><p><strong>ヒント:</strong></p></p>
+<p><p>viエディタは通常モードで「h」で左に移動、「j」で下に移動、「k」で上に移動、「l」で右に移動。  </p>
 <p>「i」で入力モードに切り替える。「Esc」を押して通常モードに戻る。</p>
 <p>通常モードで「:w」で保存「:q」で終了、「:wq」で保存して終了。</p>
 
@@ -256,11 +256,13 @@
 <h2 id="2.4">電源の設定</h2>
 <p>デフォルトの設定では5分起きにロックされてしまうので、設定で無効にします。</p>
 
+<p>右上の電源アイコンをクリックして、表示された項目欄から<strong>[設定]</strong>をクリックして、設定メニューを起動します。</p>
+<p>設定メニューのサイドバー中部にある<strong>[電源]</strong>を見つけクリックし、設定項目の<strong>[Screen Blank]</strong>を<code>5分</code>から<code>Naver</code>に変更します。</p>
+
 <h2 id="2.5">各ツール別のプロキシ設定</h2>
 
 <h3 id="2.5.1">NetworkMangaerのプロキシ設定</h3>
-<p>右上の電源アイコンをクリックして、表示された項目欄から<strong>[設定]</strong>を選択します。</p>
-<p>ネットワークの設定項目の中から<strong>ネットワークプロキシ</strong>を見つけ、<strong>歯車マーク</strong>をクリックします。  </p>
+<p>設定メニューのサイドバー上部にある<strong>[ネットワーク]</strong>を見つけクリックし、設定項目の<strong>ネットワークプロキシ</strong>を見つけ、<strong>歯車マーク</strong>をクリックします。  </p>
 <p><strong>[無効]</strong>から<strong>[手動]</strong>を変更し、次の項目に以下の入力値を入力していきます。</p>
 
 <table class="table-fixed">
@@ -317,6 +319,7 @@
 <p>通常モードで「:w」で保存「:q」で終了、「:wq」で保存して終了。</p></p>
 <p></div>  </p>
 
+<div class="code-file-info">📁 /etc/profile.d/proxy.sh</div>
 <pre><code>HTTP_PROXY=http://proxy-a.t-kougei.ac.jp:8080
 HTTPS_PROXY=http://proxy-a.t-kougei.ac.jp:8080
 
@@ -334,8 +337,11 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 
 <p><code>skip_if_unavailable=False</code>の下に以下を記入します。</p>
 
-<pre><code>proxy=http://proxy-a.t-kougei.ac.jp:8080
-timeout=900</code></pre>
+<pre><code>…
+best=True
+skip_if_unavailable=False
+<span class="git-add">proxy=http://proxy-a.t-kougei.ac.jp:8080</span>
+<span class="git-add">timeout=900</span></code></pre>
 
 <p>保存して終了後アップデートを行います。</p>
 
@@ -345,7 +351,11 @@ timeout=900</code></pre>
 
 <h1 id="3">メールサーバの構築</h1>
 
+<p>メールサーバはメールの送受信を行うためのサーバです。  </p>
+<p>メールの送信には<strong>Postfix</strong>が、受信には<strong>Davcot</strong>が使用されます。  </p>
+
 <h2 id="3.1">Postfix</h2>
+<p>Postfixは、オープンソースのメール転送エージェント(MTA: Mail Transfer Agent)で、電子メールの送信・配送を担当するサーバソフトウェアです。</p>
 
 <p><div class="note"></p>
 <p><p><strong>注記:</strong></p></p>
@@ -411,13 +421,6 @@ timeout=900</code></pre>
 #home_mailbox = Maildir/
 <span class="git-add">home_mailbox = Maildir/</span></code></pre>
 
-<p><div class="note"></p>
-<p><p><strong>注記:</strong></p></p>
-<p><p><code>myorigin</code>: 外行きメールに使うドメイン</p>
-<p><code>mydestination</code>: 受信するドメイン</p>
-<p><code>mynetworks</code>: メールリレーを許可するネットワーク</p>
-</div>
-
 <h3 id="3.1.5">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
@@ -428,7 +431,7 @@ timeout=900</code></pre>
 
 <h3 id="3.1.6">サーバからメール送受信確認</h3>
 
-<p>mailコマンドをインストールしてメールの送信テストをします。</p>
+<p><code>mail</code>コマンドをインストールしてメールの送信テストをします。</p>
 
 <h4 id="3.1.7">mailコマンドのインストール</h4>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install s-nail</code></pre>
@@ -530,7 +533,7 @@ success</code></pre>
 <p>[services]の項目欄に<code>pop3</code>と<code>smtop</code>があればファイアウォールの設定は完了です。</p>
 
 
-<h2 id="3.4">Clientからの動作確認</h2>
+<h2 id="3.4">クライアントからの動作確認</h2>
 <p><?php echo $clientHostname; ?>を起動して、Clientから<code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
 
 <pre><code class="language-bash">tome@client1:~$ telnet <?php echo $serverHostname; ?> 110
@@ -539,6 +542,18 @@ Connected to <?php echo $serverHostname; ?>.
 Escape character is '^]'.
 <span class="git-add">+OK Dovecto ready.</span></code></pre>
 <p><code>+OK Dovecto ready.</code>という情報から、Dovecotに接続できたことが確認できました。</p>
+
+<p><div class="hint"></p>
+<p><p><strong>ヒント:</strong></p></p>
+<p><p>telnetから抜けるには<code>quit</code>を入力して抜ける。</p>
+<pre><code class="language-bash">[root@<?php echo $clientHostname; ?> ~]# telnet <?php echo $serverHostname; ?> 25
+…
++OK Dovecot ready.
+quit
++OK Logging out
+Connection closed by foreign host.</code></pre>
+<p></div></p>
+
 
 <h3 id="3.4.15">メールの内容を確認する</h3>
 <p>telnetでDovecotコマンドを入力します。</p>

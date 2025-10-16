@@ -36,7 +36,7 @@
 <li><a href="#2.7">各ツール別のプロキシ設定</a></li>
 </ul>
 </li>
-<li><a href="#3">Mail サーバ</a>
+<li><a href="#3">メールサーバの構築</a>
 <ul>
 <li><a href="#3.1">Postfix</a></li>
 <li><a href="#3.2">ファイアウォールの設定</a></li>
@@ -239,7 +239,7 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 <p>すべての設定が完了したら一番最初のオプション選択メニューの最後にあ<code><strong><ＯＫ></strong></code>を[Enter]します。</p>
 
 <h3 id="2.6.2">ネットワークの設定の確認</h3>
-<p>ipコマンドを使用して正しくネットワークに接続できているか確認します。</p>
+<p><code>ip</code>コマンドを使用して正しくネットワークに接続できているか確認します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ip a</code></pre>
 
 <p>ネットワークデバイス、<code>enp1s0</code>の<code>inet</code>が<code><?php echo $serverIP; ?>/24</code>とあれば正しく設定されています。</p>
@@ -314,7 +314,7 @@ HTTPS_PROXY=http://proxy-a.t-kougei.ac.jp:8080
 http_proxy=http://proxy-a.t-kougei.ac.jp:8080
 https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 
-<p>sourceコマンドで作成した設定ファイルを読み込ませます。</p>
+<p><code>source</code>コマンドで作成した設定ファイルを読み込ませます。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ source /etc/profile.d/proxy.sh</code></pre>
 <h3 id="2.7.6">aptのプロキシ設定</h3>
@@ -343,9 +343,9 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 <p><p>アップグレードには時間がかかるので気長に待ちましょう</p>
 </div>
 
-<h1 id="3">Mail サーバ</h1>
+<h1 id="3">メールサーバの構築</h1>
 
-<p>Mailサーバはメールの送受信を行うためのサーバです。  </p>
+<p>メールサーバはメールの送受信を行うためのサーバです。  </p>
 <p>メールの送信には<strong>Postfix</strong>が、受信には<strong>Davcot</strong>が使用されます。  </p>
 
 <h2 id="3.1">Postfix</h2>
@@ -375,12 +375,6 @@ mynetworks = 127.0.0.0/8
 inet_protocols = ipv4
 home_mailbox = Maildir/</code></pre>
 
-<p>参考:</p>
-<ul>
-<li><code>myorigin</code>: 外行きメールに使うドメイン</li>
-<li><code>mydestination</code>: 受信するドメイン</li>
-<li><code>mynetworks</code>: メールリレーを許可するネットワーク</li>
-</ul>
 <h3 id="3.1.10">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
@@ -388,7 +382,7 @@ home_mailbox = Maildir/</code></pre>
 
 <h3 id="3.1.11">サーバからメール送受信確認</h3>
 
-<p>mailコマンドをインストールしてメールの送信テストをします。</p>
+<p><code>mail</code>コマンドをインストールしてメールの送信テストをします。</p>
 
 <h4 id="3.1.12">mailコマンドのインストール</h4>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ apt install -y mailutils</code></pre>
@@ -425,7 +419,7 @@ home_mailbox = Maildir/</code></pre>
 
 <h2 id="3.3">ファイアウォールの設定項目の確認</h2>
 <p><code>status</code>オプションで現在のファイアウォールの設定を確認します。</p>
-<p>項目Toの<code>25</code>,<code>110</code>のACTION項目が<code>ALLOW</code>であり、なおかつFromの項目が<code>Anywhere</code>であれば成功です。</p>
+<p>項目Toの<code>25</code>,<code>110</code>のAction項目が<code>ALLOW</code>であり、なおかつFromの項目が<code>Anywhere</code>であれば成功です。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw status
 状態: アクティブ
@@ -448,6 +442,17 @@ Escape character is '^]'.
 
 <p>一番下の行より、<code>220 <?php echo $serverHostname; ?>.cs.t-kougei.ac.jp ESMTP Postfix (Ubuntu)</code>があります。</p>
 <p>確認できたら、Postfixの構築は完了です。</p>
+
+<div class="hint">
+<p><strong>ヒント:</strong></p>
+<p>telnetから抜けるには<code>quit</code>を入力して抜ける。</p>
+<pre><code class="language-bash">…
+220 <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp ESMTP Postfix
+quit
+221 2.0.0 Bye
+Connection closed by foreign host.</code></pre>
+<p></div></p>
+
 
 <h2 id="3.4">Dovecot（POP3）</h2>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
@@ -486,7 +491,7 @@ Escape character is '^]'.
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart dovecot</code></pre>
 
-<h3 id="3.4.20"><?php echo $clientHostname; ?>からMailサーバの確認</h3>
+<h3 id="3.4.20">クライアントからの動作確認</h3>
 <p><?php echo $clientHostname; ?>を起動して、Clientから<code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
 
 <pre><code class="language-bash">root@client1:~$ telnet <?php echo $serverHostname; ?> 110
@@ -495,6 +500,7 @@ Connected to <?php echo $serverHostname; ?>.
 Escape character is '^]'.
 <span class="git-add">+OK Dovecto (Ubuntu) ready.</span></code></pre>
 <p><code>+OK Dovecto (Ubuntu) ready.</code>という情報から、Dovecotに接続できたことが確認できました。</p>
+
 
 <h3 id="3.4.21">メールの内容を確認する</h3>
 <p>telnetでDovecotコマンドを入力します。</p>
@@ -524,7 +530,7 @@ X-Original-TO: tome
 
 <h2 id="4.1">Apache2のインストール</h2>
 
-<p>aptコマンドでapache2をインストールします。</p>
+<p><code>apt</code>コマンドでapache2をインストールします。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ apt install -y apache2</code></pre>
 
@@ -543,9 +549,9 @@ X-Original-TO: tome
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /var/www/html/index.html</code></pre>
 
-<div class="hint">
-<p><strong>ヒント:</strong></p>
-<p>viでは<code>:%d</code>で文字の全削除することができる。</p>
+<p><div class="hint"></p>
+<p><p><strong>ヒント:</strong></p></p>
+<p><p>viでは<code>:%d</code>で文字の全削除することができる。</p>
 </div>
 
 <div class="code-file-info">📁 /var/www/html/index.html</div>
@@ -561,7 +567,7 @@ X-Original-TO: tome
 <p>真っ白な背景にhowdy?と表示されていればサーバからの確認は成功です。</p>
 
 <h2 id="4.5">ファイアウォールの設定</h2>
-<p>ufwコマンドでファイアウォールを設定します。</p>
+<p><code>ufw</code>コマンドでファイアウォールを設定します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw allow http</code></pre>
 <p><div class="note"></p>
 <p><p><strong>注記:</strong></p></p>
