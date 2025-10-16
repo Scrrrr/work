@@ -134,11 +134,13 @@ viエディタは通常モードで「h」で左に移動、「j」で下に移�
 ## 電源の設定
 デフォルトの設定では5分起きにロックされてしまうので、設定で無効にします。
 
+右上の電源アイコンをクリックして、表示された項目欄から**[設定]**をクリックして、設定メニューを起動します。
+設定メニューのサイドバー中部にある**[電源]**を見つけクリックし、設定項目の**[Screen Blank]**を`5分`から`Naver`に変更します。
+
 ## 各ツール別のプロキシ設定
 
 ### NetworkMangaerのプロキシ設定
-右上の電源アイコンをクリックして、表示された項目欄から**[設定]**を選択します。
-ネットワークの設定項目の中から**ネットワークプロキシ**を見つけ、**歯車マーク**をクリックします。  
+設定メニューのサイドバー上部にある**[ネットワーク]**を見つけクリックし、設定項目の**ネットワークプロキシ**を見つけ、**歯車マーク**をクリックします。  
 **[無効]**から**[手動]**を変更し、次の項目に以下の入力値を入力していきます。
 
 | 項目名           | 入力値                   | ポート|
@@ -166,7 +168,7 @@ viエディタは通常モードで「h」で左に移動、「j」で下に移�
 通常モードで「:w」で保存「:q」で終了、「:wq」で保存して終了。
 :::  
 
-```
+```{file=/etc/profile.d/proxy.sh}
 HTTP_PROXY=http://proxy-a.t-kougei.ac.jp:8080
 HTTPS_PROXY=http://proxy-a.t-kougei.ac.jp:8080
 
@@ -190,8 +192,11 @@ root@{{serverHostname}}:~$ vi /etc/yum.conf
 `skip_if_unavailable=False`の下に以下を記入します。
 
 ```
-proxy=http://proxy-a.t-kougei.ac.jp:8080
-timeout=900
+…
+best=True
+skip_if_unavailable=False
++[[proxy=http://proxy-a.t-kougei.ac.jp:8080]]
++[[timeout=900]]
 ```
 
 保存して終了後アップデートを行います。
@@ -204,7 +209,11 @@ root@{{serverHostname}}:~$ yum -y update --nobest
 
 # メールサーバの構築
 
+メールサーバはメールの送受信を行うためのサーバです。  
+メールの送信には**Postfix**が、受信には**Davcot**が使用されます。  
+
 ## Postfix
+Postfixは、オープンソースのメール転送エージェント(MTA: Mail Transfer Agent)で、電子メールの送信・配送を担当するサーバソフトウェアです。
 
 :::note
 OSのインストールで既にPostfixをインストールしていますが、チェック項目を忘れていた場合は以下のコマンドでインストールしてください。
@@ -274,12 +283,6 @@ root@{{serverHostname}}:~$ vi /etc/postfix/main.cf
 +[[home_mailbox = Maildir/]]
 ```
 
-:::note
-`myorigin`: 外行きメールに使うドメイン
-`mydestination`: 受信するドメイン
-`mynetworks`: メールリレーを許可するネットワーク
-:::
-
 ### postfixの設定の反映
 `systemctl`コマンドでpostfixを再起動します。
 
@@ -294,7 +297,7 @@ root@{{serverHostname}}:~$ systemctl enable postfix
 
 ### サーバからメール送受信確認
 
-mailコマンドをインストールしてメールの送信テストをします。
+`mail`コマンドをインストールしてメールの送信テストをします。
 
 #### mailコマンドのインストール
 ```bash
@@ -430,7 +433,7 @@ services: cockpit dhcpv6-client +[[pop3 smtp]] ssh
 [services]の項目欄に`pop3`と`smtop`があればファイアウォールの設定は完了です。
 
 
-## Clientからの動作確認
+## クライアントからの動作確認
 {{clientHostname}}を起動して、Clientから`telnet`コマンドを使用してメールの受信を確認します。
 
 ```bash
@@ -441,6 +444,19 @@ Escape character is '^]'.
 +[[+OK Dovecto ready.]]
 ```
 `+OK Dovecto ready.`という情報から、Dovecotに接続できたことが確認できました。
+
+:::hint
+telnetから抜けるには`quit`を入力して抜ける。
+```bash
+[root@{{clientHostname}} ~]# telnet {{serverHostname}} 25
+…
++OK Dovecot ready.
+quit
++OK Logging out
+Connection closed by foreign host.
+```
+:::
+
 
 ### メールの内容を確認する
 telnetでDovecotコマンドを入力します。

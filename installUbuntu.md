@@ -133,7 +133,7 @@ nmtuiでは基本、十字キーとEnterキーで操作します。
 すべての設定が完了したら一番最初のオプション選択メニューの最後にあ`**<ＯＫ>**`を[Enter]します。
 
 ### ネットワークの設定の確認
-ipコマンドを使用して正しくネットワークに接続できているか確認します。
+`ip`コマンドを使用して正しくネットワークに接続できているか確認します。
 ```bash
 root@{{serverHostname}}:~# ip a
 ```
@@ -177,7 +177,7 @@ viエディタは通常モードで「h」で左に移動、「j」で下に移�
 通常モードで「:w」で保存「:q」で終了、「:wq」で保存して終了。
 :::  
 
-```
+```{file=/etc/profile.d/proxy.sh}
 HTTP_PROXY=http://proxy-a.t-kougei.ac.jp:8080
 HTTPS_PROXY=http://proxy-a.t-kougei.ac.jp:8080
 
@@ -185,7 +185,7 @@ http_proxy=http://proxy-a.t-kougei.ac.jp:8080
 https_proxy=http://proxy-a.t-kougei.ac.jp:8080
 ```
 
-sourceコマンドで作成した設定ファイルを読み込ませます。
+`source`コマンドで作成した設定ファイルを読み込ませます。
 
 ```bash
 root@{{serverHostname}}:~$ source /etc/profile.d/proxy.sh
@@ -222,9 +222,9 @@ root@{{serverHostname}}:~$ apt upgrade
 アップグレードには時間がかかるので気長に待ちましょう
 :::
 
-# Mail サーバ
+# メールサーバの構築
 
-Mailサーバはメールの送受信を行うためのサーバです。  
+メールサーバはメールの送受信を行うためのサーバです。  
 メールの送信には**Postfix**が、受信には**Davcot**が使用されます。  
 
 ## Postfix
@@ -258,11 +258,6 @@ inet_protocols = ipv4
 home_mailbox = Maildir/
 ```
 
-参考:
-- `myorigin`: 外行きメールに使うドメイン
-- `mydestination`: 受信するドメイン
-- `mynetworks`: メールリレーを許可するネットワーク
-
 ### postfixの設定の反映
 `systemctl`コマンドでpostfixを再起動します。
 
@@ -272,7 +267,7 @@ root@{{serverHostname}}:~$ systemctl restart postfix.service
 
 ### サーバからメール送受信確認
 
-mailコマンドをインストールしてメールの送信テストをします。
+`mail`コマンドをインストールしてメールの送信テストをします。
 
 #### mailコマンドのインストール
 ```bash
@@ -323,7 +318,7 @@ root@{{serverHostname}}:~# ufw allow pop3
 
 ## ファイアウォールの設定項目の確認
 `status`オプションで現在のファイアウォールの設定を確認します。
-項目Toの`25`,`110`のACTION項目が`ALLOW`であり、なおかつFromの項目が`Anywhere`であれば成功です。
+項目Toの`25`,`110`のAction項目が`ALLOW`であり、なおかつFromの項目が`Anywhere`であれば成功です。
 
 ```bash
 
@@ -351,6 +346,18 @@ Escape character is '^]'.
 
 一番下の行より、`220 {{serverHostname}}.cs.t-kougei.ac.jp ESMTP Postfix (Ubuntu)`があります。
 確認できたら、Postfixの構築は完了です。
+
+:::hint
+telnetから抜けるには`quit`を入力して抜ける。
+```bash
+…
+220 {{serverHostname}}.netsys.cs.t-kougei.ac.jp ESMTP Postfix
+quit
+221 2.0.0 Bye
+Connection closed by foreign host.
+```
+:::
+
 
 ## Dovecot（POP3）
 Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。
@@ -405,7 +412,7 @@ root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-mail.conf
 root@{{serverHostname}}:~$ systemctl restart dovecot
 ```
 
-### {{clientHostname}}からMailサーバの確認
+### クライアントからの動作確認
 {{clientHostname}}を起動して、Clientから`telnet`コマンドを使用してメールの受信を確認します。
 
 ```bash
@@ -416,6 +423,7 @@ Escape character is '^]'.
 +[[+OK Dovecto (Ubuntu) ready.]]
 ```
 `+OK Dovecto (Ubuntu) ready.`という情報から、Dovecotに接続できたことが確認できました。
+
 
 ### メールの内容を確認する
 telnetでDovecotコマンドを入力します。
@@ -451,7 +459,7 @@ X-Original-TO: tome
 
 ## Apache2のインストール
 
-aptコマンドでapache2をインストールします。
+`apt`コマンドでapache2をインストールします。
 
 ```bash
 root@{{serverHostname}}:~$ apt install -y apache2
@@ -495,7 +503,7 @@ howdy?
 真っ白な背景にhowdy?と表示されていればサーバからの確認は成功です。
 
 ## ファイアウォールの設定
-ufwコマンドでファイアウォールを設定します。
+`ufw`コマンドでファイアウォールを設定します。
 ```bash
 root@{{serverHostname}}:~# ufw allow http
 ```
