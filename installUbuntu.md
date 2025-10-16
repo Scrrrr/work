@@ -76,7 +76,7 @@ SCTSのメニューより、「インストールサーバの起動」からUbun
 端末を開き、root のパスワードを設定します。
 
 ```bash
-tome@{{serverHostname}}:~$ sudo passwd root [Enter]
+tome@{{serverHostname}}:~$ sudo passwd root
 tomeのパスワード:
 新しいパスワード:(tomeと同じ)
 新しいパスワードを再入力してください:(tomeと同じ)
@@ -135,7 +135,7 @@ nmtuiでは基本、十字キーとEnterキーで操作します。
 ### ネットワークの設定の確認
 ipコマンドを使用して正しくネットワークに接続できているか確認します。
 ```bash
-root@{{serverHostname}}:~# ip a [Enter]
+root@{{serverHostname}}:~# ip a
 ```
 
 ネットワークデバイス、`enp1s0`の`inet`が`{{serverIP}}/24`とあれば正しく設定されています。
@@ -143,7 +143,7 @@ root@{{serverHostname}}:~# ip a [Enter]
 
 ### ホスト名の設定の確認
 ```bash
-root@{{serverHostname}}:~$ cat /etc/hostname [Enter]
+root@{{serverHostname}}:~$ cat /etc/hostname
 ```
 これでホスト名が正しく表示された、ホスト名の設定は完了です。
 
@@ -216,10 +216,10 @@ root@{{serverHostname}}:~$ apt update
 
 パッケージのインストールをします。
 ```bash
-root@{{serverHostname}}:~$ apt install
+root@{{serverHostname}}:~$ apt upgrade
 ```
 :::note
-インストールは時間がかかるので気長に待ちましょう
+アップグレードには時間がかかるので気長に待ちましょう
 :::
 
 # Mail サーバ
@@ -233,7 +233,7 @@ Postfixは、オープンソースのメール転送エージェント(MTA: Mail
 ### Postfix のインストール
 
 ```bash
-root@{{serverHostname}}:~# apt -y install postfix
+root@{{serverHostname}}:~# apt install -y postfix
 ```
 
 インストール中に[パッケージの設定]が表示されます。
@@ -276,18 +276,18 @@ mailコマンドをインストールしてメールの送信テストをしま�
 
 #### mailコマンドのインストール
 ```bash
-tome@{{serverHostname}}:~$ sudo apt -y install mailutils
+root@{{serverHostname}}:~$ apt install -y mailutils
 ```
 
 #### mailコマンドでtomeに送信 
 `mail`コマンドでtomeに「Test」というメッセージを送ります。  
 ```bash
-tome@{{serverHostname}}:~$ echo "test" | mail tome
+root@{{serverHostname}}:~$ echo "test" | mail tome
 ```
 
 `/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「Test」とあれば、成功です。
 ```bash
-tome@{{serverHostname}}:~$ ls /home/tome/Maildir/new
+root@{{serverHostname}}:~$ ls /home/tome/Maildir/new
 ```
 
 ## ファイアウォールの設定
@@ -357,13 +357,13 @@ Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオー�
 
 ### Dovecotのインストール
 ```bash
-tome@{{serverHostname}}:~$ sudo apt -y install dovecot-core dovecot-pop3d
+root@{{serverHostname}}:~$ apt install -y dovecot-core dovecot-pop3d
 ```
 
 ### Dovecotの設定
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-ssl.conf`ファイルをviエディタで開きます。
 ```bash
-tome@{{serverHostname}}:~$ sudo vi /etc/dovecot/conf.d/10-ssl.conf
+root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-ssl.conf
 ```
 
 SSLを無効にします。
@@ -374,7 +374,7 @@ ssl = no
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-auth.conf`ファイルをviエディタで開きます。
 
 ```bash
-tome@{{serverHostname}}:~$ sudo vi /etc/dovecot/conf.d/10-auth.conf
+root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-auth.conf
 ```
 
 コメントアウトを外してプレーンテキスト認証を許可します。
@@ -387,7 +387,7 @@ disable_plaintext_auth = no
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-mail.conf`ファイルをviエディタで開きます。
 
 ```bash
-tome@{{serverHostname}}:~$ sudo vi /etc/dovecot/conf.d/10-mail.conf
+root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-mail.conf
 ```
 
 `mail_location` を `maildir` に変更します。
@@ -402,14 +402,14 @@ tome@{{serverHostname}}:~$ sudo vi /etc/dovecot/conf.d/10-mail.conf
 `systemctl`コマンドでdovecotを再起動します。
 
 ```bash
-tome@{{serverHostname}}:~$ sudo systemctl restart dovecot
+root@{{serverHostname}}:~$ systemctl restart dovecot
 ```
 
 ### {{clientHostname}}からMailサーバの確認
 {{clientHostname}}を起動して、Clientから`telnet`コマンドを使用してメールの受信を確認します。
 
 ```bash
-tome@client1:~$ telnet {{serverHostname}} 110
+root@client1:~$ telnet {{serverHostname}} 110
 Trying {{serverIP}}...
 Connected to {{serverHostname}}.
 Escape character is '^]'.
@@ -453,8 +453,8 @@ X-Original-TO: tome
 
 aptコマンドでapache2をインストールします。
 
-```
-root@{{serverHostname}}:~$ apt install apache2
+```bash
+root@{{serverHostname}}:~$ apt install -y apache2
 ```
 
 ## Apache2の設定
