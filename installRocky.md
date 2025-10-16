@@ -72,7 +72,7 @@ rootのパスワードには、[netsys00]を入力し、同じく確認でも同
 
 入力が完了したら左上の[完了]をクリックします。
 
-:::cation
+:::caution
 ［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。
 :::
 
@@ -86,7 +86,7 @@ rootのパスワードには、[netsys00]を入力し、同じく確認でも同
 | パスワード       | netsys00 | 
 | パスワードの確認 | netsys00 |
 
-:::cation
+:::caution
 rootのパスワードと同様に［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。
 :::
 
@@ -145,8 +145,9 @@ viエディタは通常モードで「h」で左に移動、「j」で下に移�
 ## 各ツール別のプロキシ設定
 
 ### NetworkMangaerのプロキシ設定
-**ネットワークプロキシ**を見つけ、[歯車マーク]をクリックします。  
-[無効]から[手動]を変更し、次の項目に以下の入力値を入力していきます。
+右上の電源アイコンをクリックして、表示された項目欄から**[設定]**を選択します。
+ネットワークの設定項目の中から**ネットワークプロキシ**を見つけ、**歯車マーク**をクリックします。  
+**[無効]**から**[手動]**を変更し、次の項目に以下の入力値を入力していきます。
 
 | 項目名           | 入力値                   | ポート|
 | HTTPプロキシ     | proxy-a.t-kougei.ac.jp   | 8080  |
@@ -181,7 +182,7 @@ http_proxy=http://proxy-a.t-kougei.ac.jp:8080
 https_proxy=http://proxy-a.t-kougei.ac.jp:8080
 ```
 
-sourceコマンドで作成した設定ファイルを読み込ませます。
+`source`コマンドで作成した設定ファイルを読み込ませます。
 
 ```bash
 root@{{serverHostname}}:~$ source /etc/profile.d/proxy.sh
@@ -231,19 +232,7 @@ root@{{serverHostname}}:~$ vi /etc/postfix/main.cf
 
 以下の設定を行います。
 赤色は削除する場所で、緑色は追記する行です。
-
-```{file=/etc/postfix/main.cf}
-myhostname = {{serverHostname}}.netsys.cs.t-kougei.ac.jp
-mydomain = netsys.cs.t-kougei.ac.jp
-myorigin = $mydomain
-mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
-relayhost = [smtp-a.t-kougei.ac.jp]
-mynetworks = 127.0.0.0/8
-inet_interfaces = all
-#inet_interfaces = localhost <- 先頭に#を挿入してコメントアウト
-inet_protocols = ipv4
-home_mailbox = Maildir/
-```
+無地は周辺の設定項目を表しています。
 
 ```{file=/etc/postfix/main.cf}
 #myhostname = host.domain.tld
@@ -334,11 +323,12 @@ root@{{serverHostname}}:~$ cat /home/tome/Maildir/new
 ## Dovecot（POP3）
 Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。
 
-### Dovecotのインストール
+:::note
 既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。
 ```bash
 root@{{serverHostname}}:~$ yum -y install dovecot-core dovecot-pop3d
 ```
+:::
 
 ### Dovecotの設定
 Dovcotの設定ファイルである`/etc/dovecot/dovecot.conf`ファイルをviエディタで開きます。
@@ -360,7 +350,7 @@ root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-ssl.conf
 
 SSLを無効にします。
 
-```
+```{file=/etc/dovecot/conf.d/10-ssl.conf}
 ssl = no
 ```
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-auth.conf`ファイルをviエディタで開きます。
@@ -371,21 +361,21 @@ root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-auth.conf
 
 プレーンテキスト認証を許可します。
 
-```
+```{file=/etc/dovecot/conf.d/10-auth.conf}
 -[[disable_plaintext_auth = yes]]
 +[[disable_plaintext_auth = no]]
 ```
 
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-mail.conf`ファイルをviエディタで開きます。
 
-```bash
+```shell
 root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-mail.conf
 ```
 
-`mail_location` を `maildir` に変更します。
+`mail_locaution` を `maildir` に変更します。
 
-```
-mail_location = maildir:~/Maildir
+```{file=/etc/dovecot/conf.d/10-mail.conf}
+mail_locaution = maildir:~/Maildir
 ```
 
 ### Dovecotの設定の反映
@@ -395,8 +385,8 @@ mail_location = maildir:~/Maildir
 root@{{serverHostname}}:~$ systemctl restart dovecot
 ```
 
-## ファイヤーウォールの設定
-`firewall-cmd`コマンドでファイヤーウォールを設定します。
+## ファイアウォールの設定
+`firewall-cmd`コマンドでファイアウォールを設定します。
 
 ### firewall-cmdの起動確認
 初めに、firewall-cmdが起動しているかどうか確認します。
@@ -522,17 +512,14 @@ root@{{serverHostname}}:~$ vi /var/www/html/index.html
 hello world
 ```
 
-## httpdの起動
+## サーバでの動作確認
+実際にhello worldが表示されるか確認します。
 
-`systemctl`コマンドでhttpdの自動起動とサービスの開始をします。
+左下のアプリケーションをクリックして検索バーから`Firefox`と入力して提示されたアプリケーションを起動します。
 
-```bash
-root@{{serverHostname}}:~$ systemctl enable httpd
-```
+ナビゲーションバーに[http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp](http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp)を入力してアクセスします。
 
-```bash
-root@{{serverHostname}}:~$ systemctl start httpd
-```
+真っ白な背景にhello worldと表示されていればサーバからの確認は成功です。
 
 ## ファイアウォールの設定
 `firewall-cmd`コマンドでファイアウォールを設定します。
@@ -564,7 +551,7 @@ services: cockpit dhcpv6-client +[[http]] pop3 smtp ssh
 ```
 [services]の項目欄に`http`があればファイアウォールの設定は完了です。
 
-## Clientからの動作確認
+## クライアントからの動作確認
 {{clientHostname}}を起動してfirefoxから、以下のURLにアクセスします。
 [http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp](http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp)
 

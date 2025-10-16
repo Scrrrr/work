@@ -297,8 +297,8 @@ tome@{{serverHostname}}:~$ echo "test" | mail tome
 tome@{{serverHostname}}:~$ ls /home/tome/Maildir/new
 ```
 
-## ファイヤーウォールの設定
-ufwコマンドでファイヤーウォールを設定します。
+## ファイアウォールの設定
+ufwコマンドでファイアウォールを設定します。
 
 ### ufwの有効化
 はじめに、ufwをアクティブに変更します。
@@ -328,7 +328,7 @@ root@{{serverHostname}}:~# ufw allow pop3
 ルールを追加しました(v6)
 ```
 
-## ファイヤーウォールの設定項目の確認
+## ファイアウォールの設定項目の確認
 `status`オプションで現在のファイアウォールの設定を確認します。
 項目Toの`25`,`110`のACTION項目が`ALLOW`であり、なおかつFromの項目が`Anywhere`であれば成功です。
 
@@ -456,7 +456,7 @@ X-Original-TO: tome
 
 # WEBサーバの構築
 
-## apache2のインストール
+## Apache2のインストール
 
 aptコマンドでapache2をインストールします。
 
@@ -464,7 +464,7 @@ aptコマンドでapache2をインストールします。
 root@{{serverHostname}}:~$ apt install apache2
 ```
 
-## apache2の設定
+## Apache2の設定
 ```bash
 root@{{serverHostname}}:~$ vi /etc/apache2/apache2.conf
 ```
@@ -492,7 +492,7 @@ viでは`:%d`で文字の全削除することができる。
 howdy?
 ```
 
-## サーバでの確認
+## サーバでの動作確認
 実際にhowdy?が表示されるか確認します。
 
 左下のアプリケーションをクリックして検索バーから`Firefox`と入力して提示されたアプリケーションを起動します。
@@ -501,8 +501,8 @@ howdy?
 
 真っ白な背景にhowdy?と表示されていればサーバからの確認は成功です。
 
-## ファイヤーウォールの設定
-ufwコマンドでファイヤーウォールを設定します。
+## ファイアウォールの設定
+ufwコマンドでファイアウォールを設定します。
 ```bash
 root@{{serverHostname}}:~# ufw allow http
 ```
@@ -513,7 +513,7 @@ root@{{serverHostname}}:~# ufw enable
 ```
 :::
 
-### ファイヤーウォールの設定項目の確認
+### ファイアウォールの設定項目の確認
 ```bash
 
 root@{{serverHostname}}:~# ufw status
@@ -531,7 +531,7 @@ To                         Action      From
 
 `80/tcp`が追加されていればファイアウォールの設定は完了です。
 
-## クライアントからWebサーバの確認
+## クライアントからの動作確認
 {{clientHostname}}を起動して、WEBサーバにアクセスできるか確認します。  
 
 {{clientHostname}}を起動したらFirefoxから[http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp](http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp)にアクセスしてます。
