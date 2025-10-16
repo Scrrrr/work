@@ -148,12 +148,7 @@
 
 <h2 id="2.2">初期セットアップウィンドウ</h2>
 <p>初めてログインをすると、Livepathchセキュリティのセットアップが表示されます。</p>
-<p>左の[次へ]をクリックしてください。</p>
-<pre><code>Livepatchセキュリティ -> 
-Ubuntuの改善 ->
-システム情報をCanonicalに送信します。 ->
-プライバシー位置情報(default:off) ->
-準備が完了しました -> (完了)</code></pre>
+<p>左の[次へ]をクリックして[完了]を押してください。</p>
 
 <h2 id="2.3">端末の起動</h2>
 <p>左下端の[アプリケーション]アイコンをクリックして項目の中から[端末]をクリックします。または[検索キーワード入力]から[Terminal]と入力して[端末]をクリックしします。</p>
@@ -166,7 +161,7 @@ Ubuntuの改善 ->
 <h2 id="2.4">root パスワードの設定</h2>
 <p>端末を開き、root のパスワードを設定します。</p>
 
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo passwd root [Enter]
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo passwd root
 tomeのパスワード:
 新しいパスワード:(tomeと同じ)
 新しいパスワードを再入力してください:(tomeと同じ)</code></pre>
@@ -245,13 +240,13 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 
 <h3 id="2.6.2">ネットワークの設定の確認</h3>
 <p>ipコマンドを使用して正しくネットワークに接続できているか確認します。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ip a [Enter]</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ip a</code></pre>
 
 <p>ネットワークデバイス、<code>enp1s0</code>の<code>inet</code>が<code><?php echo $serverIP; ?>/24</code>とあれば正しく設定されています。</p>
 <p>また、enp1s0にipv6の項目がなければ、ipv6を無効に設定できています。</p>
 
 <h3 id="2.6.3">ホスト名の設定の確認</h3>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ cat /etc/hostname [Enter]</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ cat /etc/hostname</code></pre>
 <p>これでホスト名が正しく表示された、ホスト名の設定は完了です。</p>
 
 <h2 id="2.7">各ツール別のプロキシ設定</h2>
@@ -342,10 +337,10 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 </div>
 
 <p>パッケージのインストールをします。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ apt install</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ apt upgrade</code></pre>
 <p><div class="note"></p>
 <p><p><strong>注記:</strong></p></p>
-<p><p>インストールは時間がかかるので気長に待ちましょう</p>
+<p><p>アップグレードには時間がかかるので気長に待ちましょう</p>
 </div>
 
 <h1 id="3">Mail サーバ</h1>
@@ -358,7 +353,7 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 
 <h3 id="3.1.8">Postfix のインストール</h3>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt -y install postfix</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt install -y postfix</code></pre>
 
 <p>インストール中に[パッケージの設定]が表示されます。</p>
 <p>完了を押し、「インターネットサイト」を選択し、設定してたホスト名が記述されているか確認して<了解>を選択します。</p>
@@ -396,14 +391,14 @@ home_mailbox = Maildir/</code></pre>
 <p>mailコマンドをインストールしてメールの送信テストをします。</p>
 
 <h4 id="3.1.12">mailコマンドのインストール</h4>
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install mailutils</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ apt install -y mailutils</code></pre>
 
 <h4 id="3.1.13">mailコマンドでtomeに送信</h4>
 <p><code>mail</code>コマンドでtomeに「Test」というメッセージを送ります。  </p>
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ echo "test" | mail tome</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ echo "test" | mail tome</code></pre>
 
 <p><code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「Test」とあれば、成功です。</p>
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ ls /home/tome/Maildir/new</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ ls /home/tome/Maildir/new</code></pre>
 
 <h2 id="3.2">ファイアウォールの設定</h2>
 <p>ufwコマンドでファイアウォールを設定します。</p>
@@ -458,18 +453,18 @@ Escape character is '^]'.
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
 
 <h3 id="3.4.17">Dovecotのインストール</h3>
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo apt -y install dovecot-core dovecot-pop3d</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ apt install -y dovecot-core dovecot-pop3d</code></pre>
 
 <h3 id="3.4.18">Dovecotの設定</h3>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-ssl.conf</code>ファイルをviエディタで開きます。</p>
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
 
 <p>SSLを無効にします。</p>
 
 <pre><code>ssl = no</code></pre>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-auth.conf</code>ファイルをviエディタで開きます。</p>
 
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
 
 <p>コメントアウトを外してプレーンテキスト認証を許可します。</p>
 
@@ -478,7 +473,7 @@ disable_plaintext_auth = no</code></pre>
 
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-mail.conf</code>ファイルをviエディタで開きます。</p>
 
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
 
 <p><code>mail_location</code> を <code>maildir</code> に変更します。</p>
 
@@ -489,12 +484,12 @@ disable_plaintext_auth = no</code></pre>
 <h3 id="3.4.19">Dovecotの設定の反映</h3>
 <p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
 
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo systemctl restart dovecot</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart dovecot</code></pre>
 
 <h3 id="3.4.20"><?php echo $clientHostname; ?>からMailサーバの確認</h3>
 <p><?php echo $clientHostname; ?>を起動して、Clientから<code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
 
-<pre><code class="language-bash">tome@client1:~$ telnet <?php echo $serverHostname; ?> 110
+<pre><code class="language-bash">root@client1:~$ telnet <?php echo $serverHostname; ?> 110
 Trying <?php echo $serverIP; ?>...
 Connected to <?php echo $serverHostname; ?>.
 Escape character is '^]'.
@@ -531,7 +526,7 @@ X-Original-TO: tome
 
 <p>aptコマンドでapache2をインストールします。</p>
 
-<pre><code>root@<?php echo $serverHostname; ?>:~$ apt install apache2</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ apt install -y apache2</code></pre>
 
 <h2 id="4.2">Apache2の設定</h2>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/apache2/apache2.conf</code></pre>
