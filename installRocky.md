@@ -303,7 +303,12 @@ home_mailbox = Maildir/
 `systemctl`コマンドでpostfixを再起動します。
 
 ```bash
-root@{{serverHostname}}:~$ systemctl restart postfix.service
+root@{{serverHostname}}:~$ systemctl restart postfix
+```
+
+また、サーバの再起動後にサービスを自動起動するように設定します。
+```bash
+root@{{serverHostname}}:~$ systemctl enable postfix
 ```
 
 ### サーバからメール送受信確認
@@ -325,8 +330,6 @@ root@{{serverHostname}}:~$ echo "test" | mail tome
 ```bash
 root@{{serverHostname}}:~$ cat /home/tome/Maildir/new
 ```
-
-### ファイアウォールの設定
 
 ## Dovecot（POP3）
 Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。
@@ -369,7 +372,8 @@ root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-auth.conf
 プレーンテキスト認証を許可します。
 
 ```
-disable_plaintext_auth = no
+-[[disable_plaintext_auth = yes]]
++[[disable_plaintext_auth = no]]
 ```
 
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-mail.conf`ファイルをviエディタで開きます。
@@ -391,22 +395,100 @@ mail_location = maildir:~/Maildir
 root@{{serverHostname}}:~$ systemctl restart dovecot
 ```
 
-**Firewallの設定が必要**
+## ファイヤーウォールの設定
+`firewall-cmd`コマンドでファイヤーウォールを設定します。
 
-## client1からの動作確認
-cilent1を起動して、client1から
-`telnet`コマンドを使用してメールの受信を確認します。
+### firewall-cmdの起動確認
+初めに、firewall-cmdが起動しているかどうか確認します。
+```bash
+root@{{serverHostname}}:~$ firewall-cmd --state
+runnning
+```
 
+`runnning`と表示されれば起動しています。
+
+:::hint
+もし起動していな場合以下の方法で起動します。
+```bash
+root@{{serverHostname}}:~$ systemctl start firewalld
+```
+また、自動起動を有効にします。
+```bash
+root@{{serverHostname}}:~$ systemctl enable firewalld
+```
+:::
+
+### 許可するサービスの追加
+外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpとpop3です。以下のようにして許可をします。
+```bash
+root@{{serverHostname}}:~$ firewall-cmd --permanent --add-service=smtp
+success
+root@{{serverHostname}}:~$ firewall-cmd --permanent --add-service=pop3
+success
+```
+
+コマンドの実行後に`success`が表示されれば、追加に成功しています。
+
+### 許可したサービスの設定を反映させる
+追加した設定を以下のコマンドで反映させます。
+```bash
+root@{{serverHostname}}:~$ firewall-cmd --reload
+success
+```
+
+### 設定の確認
+以下のコマンドで設定した内容を確認できます。
+```bash
+root@{{serverHostname}}:~$ firewall-cmd --list-all
+```
+
+```
+services: cockpit dhcpv6-client +[[pop3 smtp]] ssh
+```
+[services]の項目欄に`pop3`と`smtop`があればファイアウォールの設定は完了です。
+
+
+## Clientからの動作確認
+{{clientHostname}}を起動して、Clientから`telnet`コマンドを使用してメールの受信を確認します。
 
 ```bash
 tome@client1:~$ telnet {{serverHostname}} 110
-user tome
-pass netsys00
-list
-retr 1
-dele 1
-quit
+Trying {{serverIP}}...
+Connected to {{serverHostname}}.
+Escape character is '^]'.
++[[+OK Dovecto ready.]]
 ```
+`+OK Dovecto ready.`という情報から、Dovecotに接続できたことが確認できました。
+
+### メールの内容を確認する
+telnetでDovecotコマンドを入力します。
+まず、`USER`と`PASS`でログインを行います。
+```
+user tome
++OK
+pass netsys00
++OK Logged in.
+```
+`+OK Logged in.`が表示されればログインされます。
+
+```bash
+list
++OK 1 message:
+1 516
+```
+
+`+OK 1 message:`から1件のメールがあることが確認できます。
+`1 516`はメール番号とメールのサイズをバイトで表しています。
+
+```bash
+retr 1
++OK 516 octets
+Return-Path: root@{{serverHostname}}.netsys.cs.t-kougei.ac.jp
+X-Original-TO: tome
+<略>
+```
+
+送信したメールが表示されればメールサーバの構築は完了です。
 
 # WEBサーバの構築
 
@@ -452,269 +534,40 @@ root@{{serverHostname}}:~$ systemctl enable httpd
 root@{{serverHostname}}:~$ systemctl start httpd
 ```
 
-## クライアントからのチェック
+## ファイアウォールの設定
+`firewall-cmd`コマンドでファイアウォールを設定します。
 
-クライアントからfirefoxを起動して、以下のURLにアクセスします。
+### 許可するサービスの追加
+外部からの接続を許可するサービスを指定します。今回追加するサービスはhttpです。以下のようにして許可をします。
+```bash
+root@{{serverHostname}}:~$ firewall-cmd --permanent --add-service=http
+success
+```
+
+コマンドの実行後に`success`が表示されれば、追加に成功しています。
+
+### 許可したサービスの設定を反映させる
+追加した設定を以下のコマンドで反映させます。
+```bash
+root@{{serverHostname}}:~$ firewall-cmd --reload
+success
+```
+
+### 設定の確認
+以下のコマンドで設定した内容を確認できます。
+```bash
+root@{{serverHostname}}:~$ firewall-cmd --list-all
+```
+
+```
+services: cockpit dhcpv6-client +[[http]] pop3 smtp ssh
+```
+[services]の項目欄に`http`があればファイアウォールの設定は完了です。
+
+## Clientからの動作確認
+{{clientHostname}}を起動してfirefoxから、以下のURLにアクセスします。
 [http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp](http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp)
 
 真っ白なページに「hello world」とあれば完了です。
-
-
-### Firewallの設定
-client1から接続ができるようにFirewallの設定を行います。
-
-
-# Firewallの設定
-Firewallサービスが起動しているかの確認を行います。
-
-```bash
-root@{{serverHostname}}:~$ systemctl status firewalld
-```
-
-出力結果:
-```
-● firewalld.service - firewalld - dynamic firewall daemon
-Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendorpreset: enabled)
-Active: active (running) since 水 2021-04-14 10:09:28 JST; 4h 52min ago
-Docs: man:firewalld(1)
-```
-
-Activeの項目がactive (running)となっている場合はサービスが起動しているため、OKです。
-inactiveとなっている場合は起動していないため、以下のコマンドを実行します。
-
-```bash
-root@{{serverHostname}}:~$ systemctl start firewalld
-```
-
-再度確認を行い、activeとなっていればOKです。
-
-Firewallの設定確認を行います。
-
-```bash
-root@{{serverHostname}}:~$ firewall-cmd --list-all
-```
-
-出力結果:
-```
-public (active)
-target: default
-icmp-block-inversion: no
-interfaces: ens3
-sources:
-services: dhcpv6-client ssh
-ports:
-protocols:
-masquerade: no
-forward-ports:
-source-ports:
-icmp-blocks:
-rich rules:
-```
-
-必要のないdhcpv6-clientとsshの削除を行います。
-
-```bash
-root@{{serverHostname}}:~$ firewall-cmd --permanent --remove-service=dhcpv6-client
-```
-
-```bash
-root@{{serverHostname}}:~$ firewall-cmd --permanent --remove-service=ssh
-```
-
-出力結果:
-```
-success
-```
-
-設定の反映を行います。
-
-```bash
-root@{{serverHostname}}:~$ firewall-cmd --reload
-```
-
-出力結果:
-```
-success
-```
-
-再度確認を行い、servicesの項目に消えていればOKです。
-
-```bash
-root@{{serverHostname}}:~$ firewall-cmd --list-all
-```
-
-出力結果:
-```
-public (active)
-target: default
-icmp-block-inversion: no
-interfaces: ens3
-sources:
-services:
-ports:
-protocols:
-masquerade: no
-forward-ports:
-source-ports:
-icmp-blocks:
-rich rules:
-```
-
-Firewallの特定のIPアドレスからのアクセス許可を行います。
-
-```bash
-root@{{serverHostname}}:~$ firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="127.0.0.1/32" accept"
-```
-
-```bash
-root@{{serverHostname}}:~$ firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="{{gatewayIP}}/32" accept"
-```
-
-```bash
-root@{{serverHostname}}:~$ firewall-cmd --permanent --add-rich-rule="rule family="ipv4" source address="{{clientIP}}/32" accept"
-```
-
-出力結果:
-```
-success
-```
-
-設定の反映を行います。
-
-```bash
-root@{{serverHostname}}:~$ firewall-cmd --reload
-```
-
-出力結果:
-```
-success
-```
-
-再度確認を行い、rich rules:の項目に追加したIPアドレスが表示されていればOKです。
-
-```bash
-root@{{serverHostname}}:~$ firewall-cmd --list-all
-```
-
-出力結果:
-```
-public (active)
-target: default
-icmp-block-inversion: no
-interfaces: ens3
-sources:
-services:
-ports:
-protocols:
-masquerade: no
-forward-ports:
-source-ports:
-icmp-blocks:
-rich rules:
-rule family="ipv4" source address="127.0.0.1/32" accept
-rule family="ipv4" source address="{{gatewayIP}}/32" accept
-rule family="ipv4" source address="{{clientIP}}/32" accept
-```
-
-# リモートアクセスの設定
-
-## rloginとrshの設定
-rloginとrshのインストールを行います。
-
-```bash
-root@{{serverHostname}}:~$ yum -y install rsh rsh-server
-```
-
-インストール後、設定を行います。
-
-```bash
-root@{{serverHostname}}:~$ vi /usr/lib/systemd/system/rsh.socket
-```
-
-以下を変更:
-```
-ListenStream=514 → ListenStream=0.0.0.0:514に変更
-```
-
-```bash
-root@{{serverHostname}}:~$ vi /usr/lib/systemd/system/rlogin.socket
-```
-
-以下を変更:
-```
-ListenStream=513 → ListenStream=0.0.0.0:513に変更
-```
-
-設定の反映を行います。
-
-```bash
-root@{{serverHostname}}:~$ systemctl daemon-reload
-```
-
-rloginとrshの起動と自動起動設定を行います。
-
-```bash
-root@{{serverHostname}}:~$ systemctl start rsh
-```
-
-```bash
-root@{{serverHostname}}:~$ systemctl start rlogin
-```
-
-```bash
-root@{{serverHostname}}:~$ systemctl enable rsh
-```
-
-```bash
-root@{{serverHostname}}:~$ systemctl enable rlogin
-```
-
-パスワード無しでログインを許可します。
-
-```bash
-root@{{serverHostname}}:~$ vi /root/.rhosts
-```
-
-以下を記入:
-```
-{{gatewayIP}} root
-{{gatewayIP}} user1
-{{clientIP}} root
-{{clientIP}} check
-```
-
-rootユーザでログインを可能にします。
-
-```bash
-root@{{serverHostname}}:~$ vi /etc/pam.d/rsh
-```
-
-```bash
-root@{{serverHostname}}:~$ vi /etc/pam.d/rlogin
-```
-
-以下を変更:
-```
-#auth require pam_securetty.so ← 先頭の#を削除
-```
-
-## sshの設定
-sshの設定を変更します。
-
-```bash
-root@{{serverHostname}}:~$ vi /etc/ssh/sshd_config
-```
-
-以下を変更:
-```
-#PermitRootLogin Yes → 先頭の#を削除し，PermitRootLogin Noに変更
-#PermitEmptyPasswords No ← 先頭の#を削除する
-```
-
-設定の反映を行います。
-
-```bash
-root@{{serverHostname}}:~$ systemctl restart sshd
-```
 
 以上でOSのインストールと設定は完了となります。
