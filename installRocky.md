@@ -191,7 +191,7 @@ root@{{serverHostname}}:~$ vi /etc/yum.conf
 
 `skip_if_unavailable=False`の下に以下を記入します。
 
-```
+```{file=/etc/yum.conf}
 …
 best=True
 skip_if_unavailable=False
@@ -461,7 +461,7 @@ Connection closed by foreign host.
 ### メールの内容を確認する
 telnetでDovecotコマンドを入力します。
 まず、`USER`と`PASS`でログインを行います。
-```
+```bash
 user tome
 +OK
 pass netsys00
@@ -490,13 +490,13 @@ X-Original-TO: tome
 
 # WEBサーバの構築
 
-## httpdのインストール
-
-既にインストール済みですが、もしも未インストールの場合は以下のコマンドでインストールしてください。
+:::note
+既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。
 
 ```bash
 root@{{serverHostname}}:~$ yum -y install httpd
 ```
+:::
 
 ## httpdの設定
 ```bash

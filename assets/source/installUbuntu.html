@@ -308,6 +308,7 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 <p>通常モードで「:w」で保存「:q」で終了、「:wq」で保存して終了。</p></p>
 <p></div>  </p>
 
+<div class="code-file-info">📁 /etc/profile.d/proxy.sh</div>
 <pre><code>HTTP_PROXY=http://proxy-a.t-kougei.ac.jp:8080
 HTTPS_PROXY=http://proxy-a.t-kougei.ac.jp:8080
 
@@ -322,6 +323,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 
 <p>以下を記述します。</p>
 
+<div class="code-file-info">📁 /etc/apt/apt.conf</div>
 <pre><code>Acquire::http::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 

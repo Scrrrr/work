@@ -45,12 +45,11 @@
 </li>
 <li><a href="#4">WEBサーバの構築</a>
 <ul>
-<li><a href="#4.1">httpdのインストール</a></li>
-<li><a href="#4.2">httpdの設定</a></li>
-<li><a href="#4.3">コンテンツの設置</a></li>
-<li><a href="#4.4">サーバでの動作確認</a></li>
-<li><a href="#4.5">ファイアウォールの設定</a></li>
-<li><a href="#4.6">クライアントからの動作確認</a></li>
+<li><a href="#4.1">httpdの設定</a></li>
+<li><a href="#4.2">コンテンツの設置</a></li>
+<li><a href="#4.3">サーバでの動作確認</a></li>
+<li><a href="#4.4">ファイアウォールの設定</a></li>
+<li><a href="#4.5">クライアントからの動作確認</a></li>
 </ul>
 </li>
 </ul>
@@ -337,6 +336,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 
 <p><code>skip_if_unavailable=False</code>の下に以下を記入します。</p>
 
+<div class="code-file-info">📁 /etc/yum.conf</div>
 <pre><code>…
 best=True
 skip_if_unavailable=False
@@ -558,7 +558,7 @@ Connection closed by foreign host.</code></pre>
 <h3 id="3.4.15">メールの内容を確認する</h3>
 <p>telnetでDovecotコマンドを入力します。</p>
 <p>まず、<code>USER</code>と<code>PASS</code>でログインを行います。</p>
-<pre><code>user tome
+<pre><code class="language-bash">user tome
 +OK
 pass netsys00
 +OK Logged in.</code></pre>
@@ -581,13 +581,14 @@ X-Original-TO: tome
 
 <h1 id="4">WEBサーバの構築</h1>
 
-<h2 id="4.1">httpdのインストール</h2>
-
-<p>既にインストール済みですが、もしも未インストールの場合は以下のコマンドでインストールしてください。</p>
+<p><div class="note"></p>
+<p><p><strong>注記:</strong></p></p>
+<p><p>既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install httpd</code></pre>
+<p></div></p>
 
-<h2 id="4.2">httpdの設定</h2>
+<h2 id="4.1">httpdの設定</h2>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/httpd/conf/httpd.conf</code></pre>
 
 <p>サーバの名前とポート番号を記載します。</p>
@@ -595,7 +596,7 @@ X-Original-TO: tome
 <div class="code-file-info">📁 /etc/httpd/conf/httpd.conf</div>
 <pre><code>ServerName <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp:80</code></pre>
 
-<h2 id="4.3">コンテンツの設置</h2>
+<h2 id="4.2">コンテンツの設置</h2>
 <p>サーバが提供するコンテンツを<code>/var/www/html/</code>に設置します。ファイル名は<code>index.html</code>とします。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /var/www/html/index.html</code></pre>
@@ -603,7 +604,7 @@ X-Original-TO: tome
 <div class="code-file-info">📁 /var/www/html/index.html</div>
 <pre><code>hello world</code></pre>
 
-<h2 id="4.4">サーバでの動作確認</h2>
+<h2 id="4.3">サーバでの動作確認</h2>
 <p>実際にhello worldが表示されるか確認します。</p>
 
 <p>左下のアプリケーションをクリックして検索バーから<code>Firefox</code>と入力して提示されたアプリケーションを起動します。</p>
@@ -612,29 +613,29 @@ X-Original-TO: tome
 
 <p>真っ白な背景にhello worldと表示されていればサーバからの確認は成功です。</p>
 
-<h2 id="4.5">ファイアウォールの設定</h2>
+<h2 id="4.4">ファイアウォールの設定</h2>
 <p><code>firewall-cmd</code>コマンドでファイアウォールを設定します。</p>
 
-<h3 id="4.5.16">許可するサービスの追加</h3>
+<h3 id="4.4.16">許可するサービスの追加</h3>
 <p>外部からの接続を許可するサービスを指定します。今回追加するサービスはhttpです。以下のようにして許可をします。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --permanent --add-service=http
 success</code></pre>
 
 <p>コマンドの実行後に<code>success</code>が表示されれば、追加に成功しています。</p>
 
-<h3 id="4.5.17">許可したサービスの設定を反映させる</h3>
+<h3 id="4.4.17">許可したサービスの設定を反映させる</h3>
 <p>追加した設定を以下のコマンドで反映させます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --reload
 success</code></pre>
 
-<h3 id="4.5.18">設定の確認</h3>
+<h3 id="4.4.18">設定の確認</h3>
 <p>以下のコマンドで設定した内容を確認できます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --list-all</code></pre>
 
 <pre><code>services: cockpit dhcpv6-client <span class="git-add">http</span> pop3 smtp ssh</code></pre>
 <p>[services]の項目欄に<code>http</code>があればファイアウォールの設定は完了です。</p>
 
-<h2 id="4.6">クライアントからの動作確認</h2>
+<h2 id="4.5">クライアントからの動作確認</h2>
 <p><?php echo $clientHostname; ?>を起動してfirefoxから、以下のURLにアクセスします。</p>
 <p><a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a></p>
 
