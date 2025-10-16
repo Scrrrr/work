@@ -39,7 +39,6 @@ UbuntuはLinuxディストリビューションの中でもサーバ向け、デ
 |パスワードの確認|netsys00|
 [ログイン時にパスワードを要求する]にチェックを付けて[続ける]を選択します。
 
-
 ## インストールの開始
 インストールの準備が完了すると、インストールが開始されます。
 インストールにしばらくかかります。
@@ -96,6 +95,52 @@ root@{{serverHostname}}:~#
 root権限ではシェルの記号が`$`から`#`に表記が変わります。
 root権限ではシステムの全ての権限を保持しているので、慎重に操作してください。
 
+## NTPの設定
+デフォルトではヨーロッパのNTPサーバに接続されているため、学内に設置された`ntp-a.t-kougei.ac.jp`に接続するように設定します。
+
+### 設定ファイルディレクトリの作成
+NTPプロトコルはSystemdが管理しています。`timesyncd.conf.d`を作成するとで、設定ファイルを設置できるようにします。
+```bash
+root@{{serverHostname}}:~# mkdir -p /etc/systemd/timesyncd.conf.d/
+```
+
+### 設定ファイルの作成
+viで新たにNTPの設定ファイル`ntp-kougei.conf`を作成します。
+```bash
+root@{{serverHostname}}:~# vi /etc/systemd/timesyncd.conf.d/ntp-kougei.conf
+```
+
+```{file=/etc/systemd/timesyncd.conf.d/ntp-kougei.conf}
+[Time]
+NTP=ntp-a.t-kougei.ac.jp
+```
+
+### systemd-timesyncdの再起動
+`systemdctl`コマンドで`systemd-timesyncd`を再起動します。
+```bash
+root@{{serverHostname}}:~# systemctl restart systemd-timesyncd
+```
+
+### NTPの接続確認
+`timedatectl`コマンドで大学のNTPサーバに接続しているか確認します。
+```bash
+root@{{serverHostname}}:~# timedatectl timesync-status
+       Server: 192.168.16.188 (ntp-a.t-kougei.ac.jp)
+Poll interval: 1min 4s (min: 32s; max 34min 8s)
+         Leap: normal
+      Version: 4
+      Stratum: 2
+    Reference: 96640107
+    Precision: 1us (-26)
+Root distance: 2.700ms (max: 5s)
+       Offset: +26.200ms
+        Delay: 336us
+       Jitter: 0
+ Packet count: 1
+    Frequency: +191.938ppm
+```
+[Server]の項目行に`ntp-a.t-kougei.ac.jp`が記述されていれば完了です。
+
 ## ネットワークの設定
 nmtuiを起動してネットワークの設定を行います。
 ```bash
@@ -103,9 +148,9 @@ root@{{serverHostname}}:~# nmtui
 ```
 
 `接続の編集`->`編集`でネットワークの設定ファイルの編集を行います。
-```hint
-nmtuiでは基本、十字キーとEnterキーで操作します。
-```
+:::hint
+TUI(Terminal User Interface)での操作は主に`Tabキー`,`矢印キー`,`Enterキー`で操作します。
+:::
 
 **IPv4の設定**の`**自動**`を[Enter]して`**手作業**`に変更します。
 右の`**<表示する>**`にカーソルを合わせて[Enter]を押します。
@@ -136,6 +181,12 @@ nmtuiでは基本、十字キーとEnterキーで操作します。
 `ip`コマンドを使用して正しくネットワークに接続できているか確認します。
 ```bash
 root@{{serverHostname}}:~# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+…
+2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 52:54:00:62:e8:57 brd ff:ff:ff:ff:ff:ff
+    inet {{serverIP}}/24 brd 10.10.1.255 scope global noprefixroute enp1s0
+       valid_lft forever preferred_lft forever
 ```
 
 ネットワークデバイス、`enp1s0`の`inet`が`{{serverIP}}/24`とあれば正しく設定されています。
@@ -238,9 +289,6 @@ root@{{serverHostname}}:~# apt install -y postfix
 
 インストール中に[パッケージの設定]が表示されます。
 完了を押し、「インターネットサイト」を選択し、設定してたホスト名が記述されているか確認して<了解>を選択します。
-:::hint
-TUI(Terminal User Interface)での操作は主に`Tabキー`,`矢印キー`,`Enterキー`で操作できます。
-:::
 
 ### postfixの設定
 postfixの設定ファイルである`/etc/postfix/main.cf`を`vi`エディタで編集します。
