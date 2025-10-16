@@ -214,7 +214,7 @@ root@{{serverHostname}}:~$ apt update
 パッケージの更新後に、「ソフトウェアの更新」というポップアップがされる時があります。**「後で通知する」**を選択して、消しましょう。
 :::
 
-パッケージのインストールをします。
+パッケージのアップグレードをします。
 ```bash
 root@{{serverHostname}}:~$ apt upgrade
 ```
@@ -239,7 +239,7 @@ root@{{serverHostname}}:~# apt install -y postfix
 インストール中に[パッケージの設定]が表示されます。
 完了を押し、「インターネットサイト」を選択し、設定してたホスト名が記述されているか確認して<了解>を選択します。
 :::hint
-TUI(Terminal User Interface)での操作は主に<Tab>,十字キー,<Enter>で操作できます。
+TUI(Terminal User Interface)での操作は主に`Tabキー`,`矢印キー`,`Enterキー`で操作できます。
 :::
 
 ### postfixの設定
@@ -280,18 +280,18 @@ root@{{serverHostname}}:~$ apt install -y mailutils
 ```
 
 #### mailコマンドでtomeに送信 
-`mail`コマンドでtomeに「Test」というメッセージを送ります。  
+`mail`コマンドでtomeに「test」というメッセージを送ります。  
 ```bash
 root@{{serverHostname}}:~$ echo "test" | mail tome
 ```
 
-`/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「Test」とあれば、成功です。
+`/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
 ```bash
 root@{{serverHostname}}:~$ ls /home/tome/Maildir/new
 ```
 
 ## ファイアウォールの設定
-ufwコマンドでファイアウォールを設定します。
+`ufw`コマンドでファイアウォールを設定します。
 
 ### ufwの有効化
 はじめに、ufwをアクティブに変更します。
@@ -301,11 +301,11 @@ root@{{serverHostname}}:~# ufw enable
 ```
 
 ufwがアクティブな状態になっているか確認します。
-状態がアクティブであれば完了です。
 ```bash
 root@{{serverHostname}}:~# ufw status
 状態: アクティブ
 ```
+状態がアクティブであれば完了です。
 
 ### 許可するサービスの追加
 外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpとpop3です。以下のようにして許可をします。
@@ -342,15 +342,15 @@ To                         Action      From
 {{clientHostname}}を起動して、SMTPサーバにアクセスできるか確認します。  
 
 ```bash
-[root@{{clientHostname}} ~]# telnet {{userverHostname}} 25
+[root@{{clientHostname}} ~]# telnet {{serverHostname}} 25
 Trying {{serverIP}}...
 Connected to {{serverHostname}}.
 Escape character is '^]'.
 220 {{serverHostname}}.cs.t-kougei.ac.jp ESMTP Postfix (Ubuntu)
 ```
 
-一番下の行より、`220 {{serverHostname}}.cs.t-kougei.ac.jp ESMTP Postfix (Ubuntu)`とあります。  
-サーバからのSMTPの応答があれば成功です。
+一番下の行より、`220 {{serverHostname}}.cs.t-kougei.ac.jp ESMTP Postfix (Ubuntu)`があります。
+確認できたら、Postfixの構築は完了です。
 
 ## Dovecot（POP3）
 Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。
@@ -381,7 +381,7 @@ root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-auth.conf
 
 ```
 #disable_plaintext_auth = yes
-disable_plaintext_auth = no
++[[disable_plaintext_auth = no]]
 ```
 
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-mail.conf`ファイルをviエディタで開きます。
@@ -467,7 +467,7 @@ root@{{serverHostname}}:~$ vi /etc/apache2/apache2.conf
 
 ```{file=/etc/apache2/site-available/000-default.conf}
 #ServerName www.example.com
-ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp
++[[ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp]]
 ```
 
 ## コンテンツの設置
