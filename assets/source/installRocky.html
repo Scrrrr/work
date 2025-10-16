@@ -13,49 +13,44 @@
             <nav class="sidebar">
                 <h3>目次</h3>
                 <ul class="toc">
-<li><a href="#1">RockyLinuxについて</a>
+<li><a href="#1">RockyLinuxのインストール</a>
 <ul>
-<li><a href="#1.1">序章</a></li>
+<li><a href="#1.1">言語選択</a></li>
+<li><a href="#1.2">インストール先</a></li>
+<li><a href="#1.3">Kdump</a></li>
+<li><a href="#1.4">ネットワーク設定</a></li>
+<li><a href="#1.5">時刻と日付の設定</a></li>
+<li><a href="#1.6">追加ソフトウェアの選択</a></li>
+<li><a href="#1.7">rootパスワードの設定</a></li>
+<li><a href="#1.8">ユーザーの作成</a></li>
+<li><a href="#1.9">インストールの開始</a></li>
 </ul>
 </li>
-<li><a href="#2">RockyLinuxのインストール</a>
+<li><a href="#2">基本設定</a>
 <ul>
-<li><a href="#2.1">言語選択</a></li>
-<li><a href="#2.2">インストール先</a></li>
-<li><a href="#2.3">Kdump</a></li>
-<li><a href="#2.4">ネットワーク設定</a></li>
-<li><a href="#2.5">時刻と日付の設定</a></li>
-<li><a href="#2.6">追加ソフトウェアの選択</a></li>
-<li><a href="#2.7">rootパスワードの設定</a></li>
-<li><a href="#2.8">ユーザーの作成</a></li>
-<li><a href="#2.9">インストールの開始</a></li>
+<li><a href="#2.1">ログイン</a></li>
+<li><a href="#2.2">端末の起動</a></li>
+<li><a href="#2.3">SELinuxの無効化</a></li>
+<li><a href="#2.4">電源の設定</a></li>
+<li><a href="#2.5">各ツール別のプロキシ設定</a></li>
 </ul>
 </li>
-<li><a href="#3">基本設定</a>
+<li><a href="#3">メールサーバの構築</a>
 <ul>
-<li><a href="#3.1">ログイン</a></li>
-<li><a href="#3.2">端末の起動</a></li>
-<li><a href="#3.3">SELinuxの無効化</a></li>
-<li><a href="#3.4">電源の設定</a></li>
-<li><a href="#3.5">各ツール別のプロキシ設定</a></li>
+<li><a href="#3.1">Postfix</a></li>
+<li><a href="#3.2">Dovecot（POP3）</a></li>
+<li><a href="#3.3">ファイアウォールの設定</a></li>
+<li><a href="#3.4">Clientからの動作確認</a></li>
 </ul>
 </li>
-<li><a href="#4">メールサーバの構築</a>
+<li><a href="#4">WEBサーバの構築</a>
 <ul>
-<li><a href="#4.1">Postfix</a></li>
-<li><a href="#4.2">Dovecot（POP3）</a></li>
-<li><a href="#4.3">ファイアウォールの設定</a></li>
-<li><a href="#4.4">Clientからの動作確認</a></li>
-</ul>
-</li>
-<li><a href="#5">WEBサーバの構築</a>
-<ul>
-<li><a href="#5.1">httpdのインストール</a></li>
-<li><a href="#5.2">httpdの設定</a></li>
-<li><a href="#5.3">コンテンツの設置</a></li>
-<li><a href="#5.4">サーバでの動作確認</a></li>
-<li><a href="#5.5">ファイアウォールの設定</a></li>
-<li><a href="#5.6">クライアントからの動作確認</a></li>
+<li><a href="#4.1">httpdのインストール</a></li>
+<li><a href="#4.2">httpdの設定</a></li>
+<li><a href="#4.3">コンテンツの設置</a></li>
+<li><a href="#4.4">サーバでの動作確認</a></li>
+<li><a href="#4.5">ファイアウォールの設定</a></li>
+<li><a href="#4.6">クライアントからの動作確認</a></li>
 </ul>
 </li>
 </ul>
@@ -63,20 +58,12 @@
 
             <!-- メインコンテンツ -->
             <main class="main-content">
-                <h1 id="1">RockyLinuxについて</h1>
+                <h1 id="1">RockyLinuxのインストール</h1>
 
-<p>RockyLinuxは、Red Hat EnterpriseLinux(RHEL)のダウンストリーム版であるCentOSの開発が中止され、CentOS創設者であるGregory Kurtzer氏がプロジェクトを立ち上げたLinuxディストリビューションです。開発はRockyLinux Projectで行われており、2021年から正式なリリースが行われています。</p>
-
-<h2 id="1.1">序章</h2>
-
-<p>OSのインストール練習として、RockyLinuxのインストールを行います。</p>
-
-<h1 id="2">RockyLinuxのインストール</h1>
-
-<h2 id="2.1">言語選択</h2>
+<h2 id="1.1">言語選択</h2>
 <p>インストールが開始されると言語選択メニューが表示されます。左のメニューの中央付近にある[日本語]を選択し、[続行]を選択します。</p>
 
-<h2 id="2.2">インストール先</h2>
+<h2 id="1.2">インストール先</h2>
 <p>システムのインストール先を決定します。</p>
 <p>[インストール先]を選択すると自動でインストール先が決定されるので、左上の青いボタンの[完了]をクリックします。</p>
 
@@ -85,10 +72,10 @@
 <p>システムの[インストール先]のアイコンに注意が表示されていたのが消えていればＯＫです。</p>
 </div>
 
-<h2 id="2.3">Kdump</h2>
+<h2 id="1.3">Kdump</h2>
 <p>Kdumpの無効化を行うために、[KDUMP]を選択し、[kdumpを有効にする]のチェックボックスを外し、[完了]を選択します。</p>
 
-<h2 id="2.4">ネットワーク設定</h2>
+<h2 id="1.4">ネットワーク設定</h2>
 <p>次に、ネットワークの設定を行います。[ネットワークとホスト名]を選択し、ホスト名に<code><?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code>を入力します。</p>
 
 <p>ホスト名入力後、[適用]をクリックします。</p>
@@ -140,7 +127,7 @@
 
 <p>左上の[完了]を押します。</p>
 
-<h2 id="2.5">時刻と日付の設定</h2>
+<h2 id="1.5">時刻と日付の設定</h2>
 <p>地域設定から[時刻と日付]を選択します。</p>
 <p>左上の歯車マークをクリックして[使用するNTPサーバの追加]に<code>ntp-a.t-kougei.ac.jp</code>を入力して[＋]ボタンを押します。</p>
 
@@ -148,7 +135,7 @@
 
 <p>OKで閉じて、左上の[完了]ボタンを押します。</p>
 
-<h2 id="2.6">追加ソフトウェアの選択</h2>
+<h2 id="1.6">追加ソフトウェアの選択</h2>
 <p>インストールするソフトウェアの選択を行います。[ソフトウェアの選択]を選択し、ベース環境は[サーバー(GUI使用)]を選択します。</p>
 <p>選択した環境用のその他のソフトウェアは以下を選択します。</p>
 <ul>
@@ -157,7 +144,7 @@
 </ul>
 <p>選択が完了したら、左上の[完了]をクリックします。</p>
 
-<h2 id="2.7">rootパスワードの設定</h2>
+<h2 id="1.7">rootパスワードの設定</h2>
 <p>[ユーザーの設定]の[rootパスワード]をクリックします。</p>
 
 <p>rootのパスワードには、[netsys00]を入力し、同じく確認でも同じパスワードを入力してください。</p>
@@ -169,7 +156,7 @@
 <p>［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。</p>
 </div>
 
-<h2 id="2.8">ユーザーの作成</h2>
+<h2 id="1.8">ユーザーの作成</h2>
 <p>ユーザーtomeを作成します。</p>
 
 <table class="table-auto">
@@ -204,7 +191,7 @@
 <p>rootのパスワードと同様に［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。</p>
 </div>
 
-<h2 id="2.9">インストールの開始</h2>
+<h2 id="1.9">インストールの開始</h2>
 <p>全ての設定項目が完了したら、[インストールの開始]を選択します。</p>
 <div class="note">
 <p><strong>注記:</strong></p>
@@ -214,9 +201,9 @@
 <p>インストールが完了したら、[システムの再起動]を選択して、サーバを再起動します。</p>
 <p>サーバが停止したら、SCTSメニューより、[インストールサーバの起動]->[RockyLinux]でサーバを起動します。</p>
 
-<h1 id="3">基本設定</h1>
+<h1 id="2">基本設定</h1>
 
-<h2 id="3.1">ログイン</h2>
+<h2 id="2.1">ログイン</h2>
 <p>ライセンスに同意後、ログイン画面が表示されるため、ログインを行います。rootでログインを行うため、[アカウントが見つかりませんか？]を選択しrootでログインします。</p>
 
 <table class="table-auto">
@@ -238,11 +225,11 @@
 </tbody>
 </table>
 
-<h2 id="3.2">端末の起動</h2>
+<h2 id="2.2">端末の起動</h2>
 <p>左上の[アクティビティ]をクリック、または<Win>キーを押します。</p>
 <p>中央下に表示されているアイコンにカーソルを合わせるとアプリケーション名が表示されるので、そこから[端末]を探します。もしくは、<win>キーを押した後に、[Terminal]と検索して提示された[端末]というソフトを起動します。</p>
 
-<h2 id="3.3">SELinuxの無効化</h2>
+<h2 id="2.3">SELinuxの無効化</h2>
 <p>SELinuxの無効化を行います。</p>
 
 <div class="warning">
@@ -266,12 +253,12 @@
 <p>また、通常モードで<code>/<探したい文字></code>で文字検索ができる。検索を辞める時は<strong><Esc></strong>キーを押す。</p></p>
 <p></div>  </p>
 
-<h2 id="3.4">電源の設定</h2>
+<h2 id="2.4">電源の設定</h2>
 <p>デフォルトの設定では5分起きにロックされてしまうので、設定で無効にします。</p>
 
-<h2 id="3.5">各ツール別のプロキシ設定</h2>
+<h2 id="2.5">各ツール別のプロキシ設定</h2>
 
-<h3 id="3.5.1">NetworkMangaerのプロキシ設定</h3>
+<h3 id="2.5.1">NetworkMangaerのプロキシ設定</h3>
 <p>右上の電源アイコンをクリックして、表示された項目欄から<strong>[設定]</strong>を選択します。</p>
 <p>ネットワークの設定項目の中から<strong>ネットワークプロキシ</strong>を見つけ、<strong>歯車マーク</strong>をクリックします。  </p>
 <p><strong>[無効]</strong>から<strong>[手動]</strong>を変更し、次の項目に以下の入力値を入力していきます。</p>
@@ -317,7 +304,7 @@
 <p>設定メニューも×で閉じます。</p>
 
 
-<h3 id="3.5.2">bashのプロキシ設定</h3>
+<h3 id="2.5.2">bashのプロキシ設定</h3>
 <p>再び端末に戻って設定を行います。  </p>
 <p>新たに<code>/etc/profile.d/proxy.sh</code>ファイルを作成してプロキシ設定を記述します。</p>
 
@@ -340,7 +327,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ source /etc/profile.d/proxy.sh</code></pre>
 
-<h3 id="3.5.3">yumのプロキシ設定</h3>
+<h3 id="2.5.3">yumのプロキシ設定</h3>
 <p>パッケージマネージャーyumの設定を行います。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/yum.conf</code></pre>
@@ -356,9 +343,9 @@ timeout=900</code></pre>
 
 <p>問題なくアップデートが行われれば、プロキシの設定は完了です。</p>
 
-<h1 id="4">メールサーバの構築</h1>
+<h1 id="3">メールサーバの構築</h1>
 
-<h2 id="4.1">Postfix</h2>
+<h2 id="3.1">Postfix</h2>
 
 <p><div class="note"></p>
 <p><p><strong>注記:</strong></p></p>
@@ -367,7 +354,7 @@ timeout=900</code></pre>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install postfix</code></pre>
 <p></div></p>
 
-<h3 id="4.1.4">Postfixの設定</h3>
+<h3 id="3.1.4">Postfixの設定</h3>
 
 <p>postfixの設定ファイルである<code>/etc/postfix/main.cf</code>を<code>vi</code>エディタで編集します。</p>
 
@@ -431,7 +418,7 @@ timeout=900</code></pre>
 <p><code>mynetworks</code>: メールリレーを許可するネットワーク</p>
 </div>
 
-<h3 id="4.1.5">postfixの設定の反映</h3>
+<h3 id="3.1.5">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart postfix</code></pre>
@@ -439,21 +426,21 @@ timeout=900</code></pre>
 <p>また、サーバの再起動後にサービスを自動起動するように設定します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl enable postfix</code></pre>
 
-<h3 id="4.1.6">サーバからメール送受信確認</h3>
+<h3 id="3.1.6">サーバからメール送受信確認</h3>
 
 <p>mailコマンドをインストールしてメールの送信テストをします。</p>
 
-<h4 id="4.1.7">mailコマンドのインストール</h4>
+<h4 id="3.1.7">mailコマンドのインストール</h4>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install s-nail</code></pre>
 
-<h4 id="4.1.8">mailコマンドでtomeに送信</h4>
+<h4 id="3.1.8">mailコマンドでtomeに送信</h4>
 <p><code>mail</code>コマンドでtomeに「test」というメッセージを送ります。  </p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ echo "test" | mail tome</code></pre>
 
 <p><code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ cat /home/tome/Maildir/new</code></pre>
 
-<h2 id="4.2">Dovecot（POP3）</h2>
+<h2 id="3.2">Dovecot（POP3）</h2>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
 
 <p><div class="note"></p>
@@ -462,7 +449,7 @@ timeout=900</code></pre>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install dovecot-core dovecot-pop3d</code></pre>
 <p></div></p>
 
-<h3 id="4.2.9">Dovecotの設定</h3>
+<h3 id="3.2.9">Dovecotの設定</h3>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/dovecot.conf</code>ファイルをviエディタで開きます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/dovecot/dovecot.conf</code></pre>
 
@@ -498,15 +485,15 @@ timeout=900</code></pre>
 <div class="code-file-info">📁 /etc/dovecot/conf.d/10-mail.conf</div>
 <pre><code>mail_locaution = maildir:~/Maildir</code></pre>
 
-<h3 id="4.2.10">Dovecotの設定の反映</h3>
+<h3 id="3.2.10">Dovecotの設定の反映</h3>
 <p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart dovecot</code></pre>
 
-<h2 id="4.3">ファイアウォールの設定</h2>
+<h2 id="3.3">ファイアウォールの設定</h2>
 <p><code>firewall-cmd</code>コマンドでファイアウォールを設定します。</p>
 
-<h3 id="4.3.11">firewall-cmdの起動確認</h3>
+<h3 id="3.3.11">firewall-cmdの起動確認</h3>
 <p>初めに、firewall-cmdが起動しているかどうか確認します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --state
 runnning</code></pre>
@@ -521,7 +508,7 @@ runnning</code></pre>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl enable firewalld</code></pre>
 <p></div></p>
 
-<h3 id="4.3.12">許可するサービスの追加</h3>
+<h3 id="3.3.12">許可するサービスの追加</h3>
 <p>外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpとpop3です。以下のようにして許可をします。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --permanent --add-service=smtp
 success
@@ -530,12 +517,12 @@ success</code></pre>
 
 <p>コマンドの実行後に<code>success</code>が表示されれば、追加に成功しています。</p>
 
-<h3 id="4.3.13">許可したサービスの設定を反映させる</h3>
+<h3 id="3.3.13">許可したサービスの設定を反映させる</h3>
 <p>追加した設定を以下のコマンドで反映させます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --reload
 success</code></pre>
 
-<h3 id="4.3.14">設定の確認</h3>
+<h3 id="3.3.14">設定の確認</h3>
 <p>以下のコマンドで設定した内容を確認できます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --list-all</code></pre>
 
@@ -543,7 +530,7 @@ success</code></pre>
 <p>[services]の項目欄に<code>pop3</code>と<code>smtop</code>があればファイアウォールの設定は完了です。</p>
 
 
-<h2 id="4.4">Clientからの動作確認</h2>
+<h2 id="3.4">Clientからの動作確認</h2>
 <p><?php echo $clientHostname; ?>を起動して、Clientから<code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
 
 <pre><code class="language-bash">tome@client1:~$ telnet <?php echo $serverHostname; ?> 110
@@ -553,7 +540,7 @@ Escape character is '^]'.
 <span class="git-add">+OK Dovecto ready.</span></code></pre>
 <p><code>+OK Dovecto ready.</code>という情報から、Dovecotに接続できたことが確認できました。</p>
 
-<h3 id="4.4.15">メールの内容を確認する</h3>
+<h3 id="3.4.15">メールの内容を確認する</h3>
 <p>telnetでDovecotコマンドを入力します。</p>
 <p>まず、<code>USER</code>と<code>PASS</code>でログインを行います。</p>
 <pre><code>user tome
@@ -577,15 +564,15 @@ X-Original-TO: tome
 
 <p>送信したメールが表示されればメールサーバの構築は完了です。</p>
 
-<h1 id="5">WEBサーバの構築</h1>
+<h1 id="4">WEBサーバの構築</h1>
 
-<h2 id="5.1">httpdのインストール</h2>
+<h2 id="4.1">httpdのインストール</h2>
 
 <p>既にインストール済みですが、もしも未インストールの場合は以下のコマンドでインストールしてください。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install httpd</code></pre>
 
-<h2 id="5.2">httpdの設定</h2>
+<h2 id="4.2">httpdの設定</h2>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/httpd/conf/httpd.conf</code></pre>
 
 <p>サーバの名前とポート番号を記載します。</p>
@@ -593,7 +580,7 @@ X-Original-TO: tome
 <div class="code-file-info">📁 /etc/httpd/conf/httpd.conf</div>
 <pre><code>ServerName <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp:80</code></pre>
 
-<h2 id="5.3">コンテンツの設置</h2>
+<h2 id="4.3">コンテンツの設置</h2>
 <p>サーバが提供するコンテンツを<code>/var/www/html/</code>に設置します。ファイル名は<code>index.html</code>とします。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /var/www/html/index.html</code></pre>
@@ -601,7 +588,7 @@ X-Original-TO: tome
 <div class="code-file-info">📁 /var/www/html/index.html</div>
 <pre><code>hello world</code></pre>
 
-<h2 id="5.4">サーバでの動作確認</h2>
+<h2 id="4.4">サーバでの動作確認</h2>
 <p>実際にhello worldが表示されるか確認します。</p>
 
 <p>左下のアプリケーションをクリックして検索バーから<code>Firefox</code>と入力して提示されたアプリケーションを起動します。</p>
@@ -610,29 +597,29 @@ X-Original-TO: tome
 
 <p>真っ白な背景にhello worldと表示されていればサーバからの確認は成功です。</p>
 
-<h2 id="5.5">ファイアウォールの設定</h2>
+<h2 id="4.5">ファイアウォールの設定</h2>
 <p><code>firewall-cmd</code>コマンドでファイアウォールを設定します。</p>
 
-<h3 id="5.5.16">許可するサービスの追加</h3>
+<h3 id="4.5.16">許可するサービスの追加</h3>
 <p>外部からの接続を許可するサービスを指定します。今回追加するサービスはhttpです。以下のようにして許可をします。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --permanent --add-service=http
 success</code></pre>
 
 <p>コマンドの実行後に<code>success</code>が表示されれば、追加に成功しています。</p>
 
-<h3 id="5.5.17">許可したサービスの設定を反映させる</h3>
+<h3 id="4.5.17">許可したサービスの設定を反映させる</h3>
 <p>追加した設定を以下のコマンドで反映させます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --reload
 success</code></pre>
 
-<h3 id="5.5.18">設定の確認</h3>
+<h3 id="4.5.18">設定の確認</h3>
 <p>以下のコマンドで設定した内容を確認できます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --list-all</code></pre>
 
 <pre><code>services: cockpit dhcpv6-client <span class="git-add">http</span> pop3 smtp ssh</code></pre>
 <p>[services]の項目欄に<code>http</code>があればファイアウォールの設定は完了です。</p>
 
-<h2 id="5.6">クライアントからの動作確認</h2>
+<h2 id="4.6">クライアントからの動作確認</h2>
 <p><?php echo $clientHostname; ?>を起動してfirefoxから、以下のURLにアクセスします。</p>
 <p><a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a></p>
 

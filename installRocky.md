@@ -1,11 +1,3 @@
-# RockyLinuxについて
-
-RockyLinuxは、Red Hat EnterpriseLinux(RHEL)のダウンストリーム版であるCentOSの開発が中止され、CentOS創設者であるGregory Kurtzer氏がプロジェクトを立ち上げたLinuxディストリビューションです。開発はRockyLinux Projectで行われており、2021年から正式なリリースが行われています。
-
-## 序章
-
-OSのインストール練習として、RockyLinuxのインストールを行います。
-
 # RockyLinuxのインストール
 
 ## 言語選択
