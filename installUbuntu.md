@@ -197,7 +197,7 @@ root@{{serverHostname}}:~$ vi /etc/apt/apt.conf
 
 以下を記述します。
 
-```
+```{file=/etc/apt/apt.conf}
 Acquire::http::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 ```
