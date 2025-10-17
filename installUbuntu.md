@@ -333,78 +333,6 @@ root@{{serverHostname}}:~$ echo "test" | mail tome
 root@{{serverHostname}}:~$ ls /home/tome/Maildir/new
 ```
 
-## ファイアウォールの設定
-`ufw`コマンドでファイアウォールを設定します。
-
-### ufwの有効化
-はじめに、ufwをアクティブに変更します。
-```bash
-root@{{serverHostname}}:~# ufw enable
-ファイアウォールはアクティブかつシステムの起動時に有効化されます。
-```
-
-ufwがアクティブな状態になっているか確認します。
-```bash
-root@{{serverHostname}}:~# ufw status
-状態: アクティブ
-```
-状態がアクティブであれば完了です。
-
-### 許可するサービスの追加
-外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpとpop3です。以下のようにして許可をします。
-```bash
-root@{{serverHostname}}:~# ufw allow smtp
-ルールを追加しました
-ルールを追加しました(v6)
-```
-
-```bash
-root@{{serverHostname}}:~# ufw allow pop3
-ルールを追加しました
-ルールを追加しました(v6)
-```
-
-## ファイアウォールの設定項目の確認
-`status`オプションで現在のファイアウォールの設定を確認します。
-項目Toの`25`,`110`のAction項目が`ALLOW`であり、なおかつFromの項目が`Anywhere`であれば成功です。
-
-```bash
-
-root@{{serverHostname}}:~# ufw status
-状態: アクティブ
-
-To                         Action      From
---                         ------      ----
-25/tcp                     ALLOW       Anywhere                  
-110/tcp                    ALLOW       Anywhere                  
-25/tcp (v6)                ALLOW       Anywhere (v6)             
-110/tcp (v6)               ALLOW       Anywhere (v6) 
-```
-
-### クライアントからの確認
-{{clientHostname}}を起動して、SMTPサーバにアクセスできるか確認します。  
-
-```bash
-[root@{{clientHostname}} ~]# telnet {{serverHostname}} 25
-Trying {{serverIP}}...
-Connected to {{serverHostname}}.
-Escape character is '^]'.
-220 {{serverHostname}}.cs.t-kougei.ac.jp ESMTP Postfix (Ubuntu)
-```
-
-一番下の行より、`220 {{serverHostname}}.cs.t-kougei.ac.jp ESMTP Postfix (Ubuntu)`があります。
-確認できたら、Postfixの構築は完了です。
-
-:::hint
-telnetから抜けるには`quit`を入力して抜ける。
-```bash
-…
-220 {{serverHostname}}.netsys.cs.t-kougei.ac.jp ESMTP Postfix
-quit
-221 2.0.0 Bye
-Connection closed by foreign host.
-```
-:::
 
 
 ## Dovecot（POP3）
@@ -460,7 +388,57 @@ root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-mail.conf
 root@{{serverHostname}}:~$ systemctl restart dovecot
 ```
 
-### クライアントからの動作確認
+## ファイアウォールの設定
+`ufw`コマンドでファイアウォールを設定します。
+
+### ufwの有効化
+はじめに、ufwをアクティブに変更します。
+```bash
+root@{{serverHostname}}:~# ufw enable
+ファイアウォールはアクティブかつシステムの起動時に有効化されます。
+```
+
+ufwがアクティブな状態になっているか確認します。
+```bash
+root@{{serverHostname}}:~# ufw status
+状態: アクティブ
+```
+状態がアクティブであれば完了です。
+
+### 許可するサービスの追加
+外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpとpop3です。以下のようにして許可をします。
+```bash
+root@{{serverHostname}}:~# ufw allow smtp
+ルールを追加しました
+ルールを追加しました(v6)
+```
+
+```bash
+root@{{serverHostname}}:~# ufw allow pop3
+ルールを追加しました
+ルールを追加しました(v6)
+```
+
+### ファイアウォールの設定項目の確認
+`status`オプションで現在のファイアウォールの設定を確認します。
+項目Toの`25`,`110`のAction項目が`ALLOW`であり、なおかつFromの項目が`Anywhere`であれば成功です。
+
+```bash
+
+root@{{serverHostname}}:~# ufw status
+状態: アクティブ
+
+To                         Action      From
+--                         ------      ----
+25/tcp                     ALLOW       Anywhere                  
+110/tcp                    ALLOW       Anywhere                  
+25/tcp (v6)                ALLOW       Anywhere (v6)             
+110/tcp (v6)               ALLOW       Anywhere (v6) 
+```
+
+
+
+## クライアントからの動作確認
 {{clientHostname}}を起動して、Clientから`telnet`コマンドを使用してメールの受信を確認します。
 
 ```bash
@@ -500,6 +478,17 @@ Return-Path: root@{{serverHostname}}.netsys.cs.t-kougei.ac.jp
 X-Original-TO: tome
 <略>
 ```
+
+:::hint
+telnetから抜けるには`quit`を入力して抜ける。
+```bash
+…
++OK Dovecto (Ubuntu) ready.
+quit
+221 2.0.0 Bye
+Connection closed by foreign host.
+```
+:::
 
 送信したメールが表示されればメールサーバの構築は完了です。
 
