@@ -214,7 +214,7 @@ root@{{serverHostname}}:~$ cat /etc/hostname
 入力が完了したら×で閉じます。
 設定ウィンドウも×で閉じます。
 
-### bashのプロキシ設定
+### Bashのプロキシ設定
 再び端末に戻って設定を行います。  
 新たに`/etc/profile.d/proxy.sh`ファイルを作成してプロキシ設定を記述します。
 

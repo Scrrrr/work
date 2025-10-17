@@ -193,6 +193,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // Prism.jsの初期化
     function initializePrism() {
         if (window.Prism) {
+            // シェルプロンプト用のカスタムハイライト
+            Prism.hooks.add('before-highlight', function(env) {
+                if (env.language === 'bash') {
+                    // シェルプロンプトを一時的に置換して、コメントとして認識されないようにする
+                    env.code = env.code.replace(
+                        /^(\s*)([^#\s]+@[^#\s]+[:\~][^#]*)#(\s*)/gm,
+                        '$1$2__PROMPT_SYMBOL__$3'
+                    );
+                }
+            });
+            
+            Prism.hooks.add('after-highlight', function(env) {
+                if (env.language === 'bash') {
+                    // プロンプト記号を元に戻してスタイルを適用
+                    env.element.innerHTML = env.element.innerHTML.replace(
+                        /__PROMPT_SYMBOL__/g,
+                        '<span class="token prompt-symbol">#</span>'
+                    );
+                    
+                    // シェルプロンプト全体にスタイルを適用
+                    env.element.innerHTML = env.element.innerHTML.replace(
+                        /(\s*)([^#\s]+@[^#\s]+[:\~][^#]*<span class="token prompt-symbol">#<\/span>)\s*/g,
+                        '$1<span class="token prompt">$2</span> '
+                    );
+                }
+            });
+            
             Prism.highlightAll();
         } else {
             setTimeout(initializePrism, 100);

@@ -201,6 +201,19 @@ pre code[class*="language-"] {
     font-family: 'Courier New', Courier, monospace !important;
 }
 
+/* シェルプロンプト用のスタイル */
+.token.prompt {
+    color: #000000 !important;
+}
+
+.token.prompt-symbol {
+    color: #000000 !important;
+}
+
+.token.prompt .token.punctuation {
+    color: #000000 !important;
+}
+
 /* 既存の独自ハイライト用スタイル（使用しない場合は削除可能） */
 pre code .token { white-space: pre-wrap; }
 pre code .token-prompt { color: #6c757d; font-weight: 600; }
