@@ -532,11 +532,11 @@ Connection closed by foreign host.
 
 ### メールの内容を確認する
 telnetでDovecotコマンドを入力します。
-まず、`USER`と`PASS`でログインを行います。
+始めに、`USER`と`PASS`を指定してログインを行います。
 ```bash
-user tome
+USER tome
 +OK
-pass netsys00
+PASS netsys00
 +OK Logged in.
 ```
 `+OK Logged in.`が表示されればログインされます。
@@ -547,7 +547,7 @@ list
 1 516
 ```
 
-`+OK 1 message:`から1件のメールがあることが確認できます。
+`+OK 1 message:`というメッセージから1件のメールがあることが確認できます。
 `1 516`はメール番号とメールのサイズをバイトで表しています。
 
 ```bash
