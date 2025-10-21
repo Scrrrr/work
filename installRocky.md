@@ -264,7 +264,7 @@ root@{{serverHostname}}:~$ vi /etc/postfix/main.cf
 #mynetworks = 168.100.189.0/28, 127.0.0.0/8
 #mynetworks = $config_directory/mynetworks
 #mynetworks = hash:/etc/postfix/network_table
-+[[mynetworks = 127.0.0.0/8]]
++[[mynetworks = 10.10.0.0/16]]
 
 #inet_interfaces = all
 #inet_interfaces = $myhostname
@@ -295,7 +295,7 @@ root@{{serverHostname}}:~$ systemctl restart postfix
 root@{{serverHostname}}:~$ systemctl enable postfix
 ```
 
-## クライアントからメール送信確認
+## クライアントからのメール送信確認
 
 ### クライアントの起動とログイン
 
@@ -328,6 +328,15 @@ root@{{clientHostname}}:~$ echo "test" | mail tome@{{serverHostname}}.netsys.cs.
 ```bash
 root@{{serverHostname}}:~$ cat /home/tome/Maildir/new
 ```
+
+### 外部ネットワークへのメール送信確認
+サーバ外にメールが届くかテストを行います。
+クライアントから自分の大学用のメールアドレスにメールを送信してメールが届くか確認します。
+```bash
+root@{{clientHostname}}:~$ echo "test" | mail <学籍番号>@st.t-kougei.ac.jp
+```
+
+自分の大学用のメールボックスにrootから「test」というメッセージが来ていたら成功です。
 
 ## Dovecot（POP3）
 Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。

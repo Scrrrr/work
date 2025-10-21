@@ -301,7 +301,7 @@ root@{{serverHostname}}:~$ vi /etc/postfix/main.cf
 
 ```{file=/etc/postfix/main.cf}
 relayhost = [smtp-a.t-kougei.ac.jp]
-mynetworks = 127.0.0.0/8
+mynetworks = 10.10.0.0/16
 inet_protocols = ipv4
 home_mailbox = Maildir/
 ```
