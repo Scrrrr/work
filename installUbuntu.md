@@ -75,7 +75,7 @@ SCTSのメニューより、「インストールサーバの起動」からUbun
 端末を開き、root のパスワードを設定します。
 
 ```bash
-tome@{{serverHostname}}:~# sudo passwd root
+tome@{{serverHostname}}:~$ sudo passwd root
 tomeのパスワード:
 新しいパスワード:(tomeと同じ)
 新しいパスワードを再入力してください:(tomeと同じ)
@@ -88,7 +88,7 @@ tomeのパスワード:
 ## rootユーザにログイン
 現在はtomeにログインしていますが、今後、rootで作業するために、rootにログインを行います。
 ```bash
-tome@{{serverHostname}}:~# su -
+tome@{{serverHostname}}:~$ su -
 パスワード:
 root@{{serverHostname}}:~#
 ```
@@ -239,11 +239,11 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080
 `source`コマンドで作成した設定ファイルを読み込ませます。
 
 ```bash
-root@{{serverHostname}}:~# source /etc/profile.d/proxy.sh
+root@{{serverHostname}}:~$ source /etc/profile.d/proxy.sh
 ```
 ### aptのプロキシ設定
 ```bash
-root@{{serverHostname}}:~# vi /etc/apt/apt.conf
+root@{{serverHostname}}:~$ vi /etc/apt/apt.conf
 ```
 
 以下を記述します。
@@ -255,7 +255,7 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 
 ### パッケージの更新とインストール
 ```bash
-root@{{serverHostname}}:~# apt update
+root@{{serverHostname}}:~$ apt update
 ```
 先頭にステータスが表示されます。**取得**と表示されていれば
 既存のリポジトリからパッケージの更新がされていることを意味します。
@@ -267,7 +267,7 @@ root@{{serverHostname}}:~# apt update
 
 パッケージのアップグレードをします。
 ```bash
-root@{{serverHostname}}:~# apt upgrade
+root@{{serverHostname}}:~$ apt upgrade
 ```
 :::note
 アップグレードには時間がかかるので気長に待ちましょう
@@ -294,7 +294,7 @@ root@{{serverHostname}}:~# apt install -y postfix
 postfixの設定ファイルである`/etc/postfix/main.cf`を`vi`エディタで編集します。
 
 ```bash
-root@{{serverHostname}}:~# vi /etc/postfix/main.cf
+root@{{serverHostname}}:~$ vi /etc/postfix/main.cf
 ```
 
 以下の設定を行います。
@@ -310,7 +310,7 @@ home_mailbox = Maildir/
 `systemctl`コマンドでpostfixを再起動します。
 
 ```bash
-root@{{serverHostname}}:~# systemctl restart postfix.service
+root@{{serverHostname}}:~$ systemctl restart postfix.service
 ```
 
 ## ファイアウォールの設定
@@ -366,7 +366,7 @@ SSCTSメニューから、**[仮想コンピュータの操作]**をクリック
 ### クライアントのrelayhostを指定。
 クライアントのPostfixのメール配送先を構築したサーバに変更します。
 ```bash
-root@{{clientHostname}}:~# vi /etc/postfix/main.cf
+root@{{clientHostname}}:~$ vi /etc/postfix/main.cf
 ```
 
 main.cfにある既存の`relayhost`ディレクティブを全てコメントアウトし、新しく構築したサーバを追加します。
@@ -379,7 +379,7 @@ relayhost = [{{serverHostname}}.netsys.cs.t-kougei.ac.jp]
 ### mailコマンドでtomeに送信 
 ターミナルを起動して、`mail`コマンドでtomeに「test」というメッセージを送ります。  
 ```bash
-root@{{clientHostname}}:~# echo "test" | mail tome@{{serverHostname}}.netsys.cs.t-kougei.ac.jp
+root@{{clientHostname}}:~$ echo "test" | mail tome@{{serverHostname}}.netsys.cs.t-kougei.ac.jp
 ```
 
 サーバの`/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
@@ -482,7 +482,7 @@ To                         Action      From
 {{clientHostname}}を起動して、Clientから`telnet`コマンドを使用してメールの受信を確認します。
 
 ```bash
-root@client1:~# telnet {{serverHostname}} 110
+root@client1:~$ telnet {{serverHostname}} 110
 Trying {{serverIP}}...
 Connected to {{serverHostname}}.
 Escape character is '^]'.

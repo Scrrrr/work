@@ -509,7 +509,7 @@ services: cockpit dhcpv6-client +[[pop3]] ssh
 Client1を起動して、クライアントから`telnet`コマンドを使用してメールの受信を確認します。
 
 ```bash
-root@client1:~# telnet {{serverHostname}} 110
+root@client1:~$ telnet {{serverHostname}} 110
 Trying {{serverIP}}...
 Connected to {{serverHostname}}.
 Escape character is '^]'.
