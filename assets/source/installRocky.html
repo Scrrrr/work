@@ -38,9 +38,10 @@
 <li><a href="#3">メールサーバの構築</a>
 <ul>
 <li><a href="#3.1">Postfix</a></li>
-<li><a href="#3.2">Dovecot（POP3）</a></li>
-<li><a href="#3.3">ファイアウォールの設定</a></li>
-<li><a href="#3.4">クライアントからの動作確認</a></li>
+<li><a href="#3.2">クライアントからのメール送信確認</a></li>
+<li><a href="#3.3">Dovecot（POP3）</a></li>
+<li><a href="#3.4">ファイアウォールの設定</a></li>
+<li><a href="#3.5">クライアントからの動作確認</a></li>
 </ul>
 </li>
 <li><a href="#4">WEBサーバの構築</a>
@@ -403,7 +404,7 @@ skip_if_unavailable=False
 #mynetworks = 168.100.189.0/28, 127.0.0.0/8
 #mynetworks = $config_directory/mynetworks
 #mynetworks = hash:/etc/postfix/network_table
-<span class="git-add">mynetworks = 127.0.0.0/8</span>
+<span class="git-add">mynetworks = 10.10.0.0/16</span>
 
 #inet_interfaces = all
 #inet_interfaces = $myhostname
@@ -429,21 +430,39 @@ skip_if_unavailable=False
 <p>また、サーバの再起動後にサービスを自動起動するように設定します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl enable postfix</code></pre>
 
-<h3 id="3.1.6">サーバからメール送受信確認</h3>
+<h2 id="3.2">クライアントからのメール送信確認</h2>
 
-<p><code>mail</code>コマンドをインストールしてメールの送信テストをします。</p>
+<h3 id="3.2.6">クライアントの起動とログイン</h3>
 
-<h4 id="3.1.7">mailコマンドのインストール</h4>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install s-nail</code></pre>
+<p>クライアントを起動して<code>mail</code>コマンドをインストールしてメールの送信テストをします。</p>
 
-<h4 id="3.1.8">mailコマンドでtomeに送信</h4>
-<p><code>mail</code>コマンドでtomeに「test」というメッセージを送ります。  </p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ echo "test" | mail tome</code></pre>
+<p>SSCTSメニューから、<strong>[仮想コンピュータの操作]</strong>をクリック。<strong>[Client]</strong>の<strong>[制御]</strong>をクリックし、<strong>[起動]</strong>をクリックしてクライアントを起動します。</p>
 
-<p><code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
+<p>ユーザ名は<code>root</code>。パスワードは<code>netsys00</code>でログインします。</p>
+
+<h3 id="3.2.7">クライアントのrelayhostを指定。</h3>
+<p>クライアントのPostfixのメール配送先を構築したサーバに変更します。</p>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~$ vi /etc/postfix/main.cf</code></pre>
+
+<p>main.cfにある既存の<code>relayhost</code>ディレクティブをコメントアウトし、新しく構築したサーバを追加します。</p>
+
+<div class="code-file-info">📁 /etc/postfix/main.cf</div>
+<pre><code>#relayhost = [smtp-a.t-kougei.ac.jp]
+relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pre>
+
+<h3 id="3.2.8">mailコマンドでtomeに送信</h3>
+<p>ターミナルを起動して、<code>mail</code>コマンドでtomeに「test」というメッセージを送ります。  </p>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~$ echo "test" | mail tome@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
+
+<p>サーバの<code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ cat /home/tome/Maildir/new</code></pre>
 
-<h2 id="3.2">Dovecot（POP3）</h2>
+<h3 id="3.2.9">外部ネットワークへのメール送信確認</h3>
+<p>サーバ外にメールが届くかテストを行います。</p>
+<p>クライアントから自分の大学用のメールアドレスにメールを送信してメールが届くか確認します。</p>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~$ echo "test" | mail <学籍番号>@st.t-kougei.ac.jp</code></pre>
+
+<h2 id="3.3">Dovecot（POP3）</h2>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
 
 <p><div class="note"></p>
@@ -452,7 +471,7 @@ skip_if_unavailable=False
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install dovecot-core dovecot-pop3d</code></pre>
 <p></div></p>
 
-<h3 id="3.2.9">Dovecotの設定</h3>
+<h3 id="3.3.10">Dovecotの設定</h3>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/dovecot.conf</code>ファイルをviエディタで開きます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/dovecot/dovecot.conf</code></pre>
 
@@ -488,15 +507,15 @@ skip_if_unavailable=False
 <div class="code-file-info">📁 /etc/dovecot/conf.d/10-mail.conf</div>
 <pre><code>mail_locaution = maildir:~/Maildir</code></pre>
 
-<h3 id="3.2.10">Dovecotの設定の反映</h3>
+<h3 id="3.3.11">Dovecotの設定の反映</h3>
 <p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart dovecot</code></pre>
 
-<h2 id="3.3">ファイアウォールの設定</h2>
+<h2 id="3.4">ファイアウォールの設定</h2>
 <p><code>firewall-cmd</code>コマンドでファイアウォールを設定します。</p>
 
-<h3 id="3.3.11">firewall-cmdの起動確認</h3>
+<h3 id="3.4.12">firewall-cmdの起動確認</h3>
 <p>初めに、firewall-cmdが起動しているかどうか確認します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --state
 runnning</code></pre>
@@ -511,7 +530,7 @@ runnning</code></pre>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl enable firewalld</code></pre>
 <p></div></p>
 
-<h3 id="3.3.12">許可するサービスの追加</h3>
+<h3 id="3.4.13">許可するサービスの追加</h3>
 <p>外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpとpop3です。以下のようにして許可をします。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --permanent --add-service=smtp
 success
@@ -520,12 +539,12 @@ success</code></pre>
 
 <p>コマンドの実行後に<code>success</code>が表示されれば、追加に成功しています。</p>
 
-<h3 id="3.3.13">許可したサービスの設定を反映させる</h3>
+<h3 id="3.4.14">許可したサービスの設定を反映させる</h3>
 <p>追加した設定を以下のコマンドで反映させます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --reload
 success</code></pre>
 
-<h3 id="3.3.14">設定の確認</h3>
+<h3 id="3.4.15">設定の確認</h3>
 <p>以下のコマンドで設定した内容を確認できます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --list-all</code></pre>
 
@@ -533,7 +552,7 @@ success</code></pre>
 <p>[services]の項目欄に<code>pop3</code>と<code>smtop</code>があればファイアウォールの設定は完了です。</p>
 
 
-<h2 id="3.4">クライアントからの動作確認</h2>
+<h2 id="3.5">クライアントからの動作確認</h2>
 <p><?php echo $clientHostname; ?>を起動して、Clientから<code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
 
 <pre><code class="language-bash">tome@client1:~$ telnet <?php echo $serverHostname; ?> 110
@@ -555,7 +574,7 @@ Connection closed by foreign host.</code></pre>
 <p></div></p>
 
 
-<h3 id="3.4.15">メールの内容を確認する</h3>
+<h3 id="3.5.16">メールの内容を確認する</h3>
 <p>telnetでDovecotコマンドを入力します。</p>
 <p>まず、<code>USER</code>と<code>PASS</code>でログインを行います。</p>
 <pre><code class="language-bash">user tome
@@ -616,19 +635,19 @@ X-Original-TO: tome
 <h2 id="4.4">ファイアウォールの設定</h2>
 <p><code>firewall-cmd</code>コマンドでファイアウォールを設定します。</p>
 
-<h3 id="4.4.16">許可するサービスの追加</h3>
+<h3 id="4.4.17">許可するサービスの追加</h3>
 <p>外部からの接続を許可するサービスを指定します。今回追加するサービスはhttpです。以下のようにして許可をします。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --permanent --add-service=http
 success</code></pre>
 
 <p>コマンドの実行後に<code>success</code>が表示されれば、追加に成功しています。</p>
 
-<h3 id="4.4.17">許可したサービスの設定を反映させる</h3>
+<h3 id="4.4.18">許可したサービスの設定を反映させる</h3>
 <p>追加した設定を以下のコマンドで反映させます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --reload
 success</code></pre>
 
-<h3 id="4.4.18">設定の確認</h3>
+<h3 id="4.4.19">設定の確認</h3>
 <p>以下のコマンドで設定した内容を確認できます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --list-all</code></pre>
 
