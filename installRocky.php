@@ -29,8 +29,8 @@ $user = $_GET['username'];
    } else {
       $no = exec("echo $user | cut -c 5-");
       foreach ($servers as $server) {
-         $ser[$server] = "u${no}-$server";
-         $ip[$server] = exec("nslookup u${no}-$server | grep Address: | tail -n 1 | awk '{print $2}'");
+         $ser[$server] = "u{$no}-$server";
+         $ip[$server] = exec("nslookup u{$no}-$server | grep Address: | tail -n 1 | awk '{print $2}'");
       }
    }
 
