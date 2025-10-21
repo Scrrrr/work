@@ -313,7 +313,47 @@ home_mailbox = Maildir/
 root@{{serverHostname}}:~$ systemctl restart postfix.service
 ```
 
-## クライアントからのメール送信確認
+## ファイアウォールの設定
+`ufw`コマンドでファイアウォールを設定します。
+
+### ufwの有効化
+はじめに、ufwをアクティブに変更します。
+```bash
+root@{{serverHostname}}:~# ufw enable
+ファイアウォールはアクティブかつシステムの起動時に有効化されます。
+```
+
+ufwがアクティブな状態になっているか確認します。
+```bash
+root@{{serverHostname}}:~# ufw status
+状態: アクティブ
+```
+状態がアクティブであれば完了です。
+
+### 許可するサービスの追加
+外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpとpop3です。以下のようにして許可をします。
+```bash
+root@{{serverHostname}}:~# ufw allow smtp
+ルールを追加しました
+ルールを追加しました(v6)
+```
+
+### ファイアウォールの設定項目の確認
+`status`オプションで現在のファイアウォールの設定を確認します。
+項目Toの`25`のAction項目が`ALLOW`であり、なおかつFromの項目が`Anywhere`であれば成功です。
+
+```bash
+
+root@{{serverHostname}}:~# ufw status
+状態: アクティブ
+
+To                         Action      From
+--                         ------      ----
+25/tcp                     ALLOW       Anywhere                  
+25/tcp (v6)                ALLOW       Anywhere (v6)             
+```
+
+## クライアントからの動作確認
 
 ### クライアントの起動とログイン
 
@@ -413,28 +453,8 @@ root@{{serverHostname}}:~$ systemctl restart dovecot
 ## ファイアウォールの設定
 `ufw`コマンドでファイアウォールを設定します。
 
-### ufwの有効化
-はじめに、ufwをアクティブに変更します。
-```bash
-root@{{serverHostname}}:~# ufw enable
-ファイアウォールはアクティブかつシステムの起動時に有効化されます。
-```
-
-ufwがアクティブな状態になっているか確認します。
-```bash
-root@{{serverHostname}}:~# ufw status
-状態: アクティブ
-```
-状態がアクティブであれば完了です。
-
 ### 許可するサービスの追加
-外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpとpop3です。以下のようにして許可をします。
-```bash
-root@{{serverHostname}}:~# ufw allow smtp
-ルールを追加しました
-ルールを追加しました(v6)
-```
-
+外部からの接続を許可するサービスを指定します。今回追加するサービスはpop3です。以下のようにして許可をします。
 ```bash
 root@{{serverHostname}}:~# ufw allow pop3
 ルールを追加しました
@@ -443,7 +463,7 @@ root@{{serverHostname}}:~# ufw allow pop3
 
 ### ファイアウォールの設定項目の確認
 `status`オプションで現在のファイアウォールの設定を確認します。
-項目Toの`25`,`110`のAction項目が`ALLOW`であり、なおかつFromの項目が`Anywhere`であれば成功です。
+項目Toの`110`のAction項目が`ALLOW`であり、なおかつFromの項目が`Anywhere`であれば成功です。
 
 ```bash
 
@@ -457,8 +477,6 @@ To                         Action      From
 25/tcp (v6)                ALLOW       Anywhere (v6)             
 110/tcp (v6)               ALLOW       Anywhere (v6) 
 ```
-
-
 
 ## クライアントからの動作確認
 {{clientHostname}}を起動して、Clientから`telnet`コマンドを使用してメールの受信を確認します。

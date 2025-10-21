@@ -295,7 +295,58 @@ root@{{serverHostname}}:~$ systemctl restart postfix
 root@{{serverHostname}}:~$ systemctl enable postfix
 ```
 
-## クライアントからのメール送信確認
+## ファイアウォールの設定
+`firewall-cmd`コマンドでファイアウォールを設定します。
+
+### firewall-cmdの起動確認
+初めに、firewall-cmdが起動しているかどうか確認します。
+```bash
+root@{{serverHostname}}:~$ firewall-cmd --state
+runnning
+```
+
+`runnning`と表示されれば起動しています。
+
+:::hint
+もし起動していな場合以下の方法で起動します。
+```bash
+root@{{serverHostname}}:~$ systemctl start firewalld
+```
+また、自動起動を有効にします。
+```bash
+root@{{serverHostname}}:~$ systemctl enable firewalld
+```
+:::
+
+### 許可するサービスの追加
+外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpです。以下のようにして許可をします。
+```bash
+root@{{serverHostname}}:~$ firewall-cmd --permanent --add-service=smtp
+success
+success
+```
+
+コマンドの実行後に`success`が表示されれば、追加に成功しています。
+
+### 許可したサービスの設定を反映させる
+追加した設定を以下のコマンドで反映させます。
+```bash
+root@{{serverHostname}}:~$ firewall-cmd --reload
+success
+```
+
+### 設定の確認
+以下のコマンドで設定した内容を確認できます。
+```bash
+root@{{serverHostname}}:~$ firewall-cmd --list-all
+```
+
+```
+services: cockpit dhcpv6-client +[[smtp]] ssh
+```
+[services]の項目欄に`smtp`があればファイアウォールの設定は完了です。
+
+## クライアントからの動作確認
 
 ### クライアントの起動とログイン
 
@@ -427,10 +478,8 @@ root@{{serverHostname}}:~$ systemctl enable firewalld
 :::
 
 ### 許可するサービスの追加
-外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpとpop3です。以下のようにして許可をします。
+外部からの接続を許可するサービスを指定します。今回追加するサービスはpop3です。以下のようにして許可をします。
 ```bash
-root@{{serverHostname}}:~$ firewall-cmd --permanent --add-service=smtp
-success
 root@{{serverHostname}}:~$ firewall-cmd --permanent --add-service=pop3
 success
 ```
@@ -451,13 +500,13 @@ root@{{serverHostname}}:~$ firewall-cmd --list-all
 ```
 
 ```
-services: cockpit dhcpv6-client +[[pop3 smtp]] ssh
+services: cockpit dhcpv6-client +[[pop3]] ssh
 ```
-[services]の項目欄に`pop3`と`smtop`があればファイアウォールの設定は完了です。
+[services]の項目欄に`pop3`があればファイアウォールの設定は完了です。
 
 
 ## クライアントからの動作確認
-{{clientHostname}}を起動して、Clientから`telnet`コマンドを使用してメールの受信を確認します。
+Client1を起動して、クライアントから`telnet`コマンドを使用してメールの受信を確認します。
 
 ```bash
 tome@client1:~$ telnet {{serverHostname}} 110
