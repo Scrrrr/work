@@ -295,22 +295,36 @@ root@{{serverHostname}}:~$ systemctl restart postfix
 root@{{serverHostname}}:~$ systemctl enable postfix
 ```
 
-### サーバからメール送受信確認
+## クライアントからメール送信確認
 
-`mail`コマンドをインストールしてメールの送信テストをします。
+### クライアントの起動とログイン
 
-#### mailコマンドのインストール
+クライアントを起動して`mail`コマンドをインストールしてメールの送信テストをします。
+
+SSCTSメニューから、**[仮想コンピュータの操作]**をクリック。**[Client]**の**[制御]**をクリックし、**[起動]**をクリックしてクライアントを起動します。
+
+ユーザ名は`root`。パスワードは`netsys00`でログインします。
+
+### クライアントのrelayhostを指定。
+クライアントのPostfixのメール配送先を構築したサーバに変更します。
 ```bash
-root@{{serverHostname}}:~$ yum -y install s-nail
+root@{{clientHostname}}:~$ vi /etc/postfix/main.cf
 ```
 
-#### mailコマンドでtomeに送信 
-`mail`コマンドでtomeに「test」というメッセージを送ります。  
-```bash
-root@{{serverHostname}}:~$ echo "test" | mail tome
+main.cfにある既存の`relayhost`ディレクティブをコメントアウトし、新しく構築したサーバを追加します。
+
+```{file=/etc/postfix/main.cf}
+#relayhost = [smtp-a.t-kougei.ac.jp]
+relayhost = [{{serverHostname}}.netsys.cs.t-kougei.ac.jp]
 ```
 
-`/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
+### mailコマンドでtomeに送信 
+ターミナルを起動して、`mail`コマンドでtomeに「test」というメッセージを送ります。  
+```bash
+root@{{clientHostname}}:~$ echo "test" | mail tome@{{serverHostname}}.netsys.cs.t-kougei.ac.jp
+```
+
+サーバの`/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
 ```bash
 root@{{serverHostname}}:~$ cat /home/tome/Maildir/new
 ```
