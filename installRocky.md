@@ -311,7 +311,7 @@ SSCTSメニューから、**[仮想コンピュータの操作]**をクリック
 root@{{clientHostname}}:~$ vi /etc/postfix/main.cf
 ```
 
-main.cfにある既存の`relayhost`ディレクティブをコメントアウトし、新しく構築したサーバを追加します。
+main.cfにある既存の`relayhost`ディレクティブを全てコメントアウトし、新しく構築したサーバを追加します。
 
 ```{file=/etc/postfix/main.cf}
 #relayhost = [smtp-a.t-kougei.ac.jp]
