@@ -175,7 +175,7 @@ tomeのパスワード:
 
 <h2 id="2.5">rootユーザにログイン</h2>
 <p>現在はtomeにログインしていますが、今後、rootで作業するために、rootにログインを行います。</p>
-<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ su -
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~# su -
 パスワード:
 root@<?php echo $serverHostname; ?>:~#</code></pre>
 <p>root権限ではシェルの記号が<code>$</code>から<code>#</code>に表記が変わります。</p>
@@ -365,9 +365,9 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 
 <p><code>source</code>コマンドで作成した設定ファイルを読み込ませます。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ source /etc/profile.d/proxy.sh</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# source /etc/profile.d/proxy.sh</code></pre>
 <h3 id="2.8.10">aptのプロキシ設定</h3>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/apt/apt.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/apt/apt.conf</code></pre>
 
 <p>以下を記述します。</p>
 
@@ -376,7 +376,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 
 <h3 id="2.8.11">パッケージの更新とインストール</h3>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ apt update</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt update</code></pre>
 <p>先頭にステータスが表示されます。<strong>取得</strong>と表示されていれば</p>
 <p>既存のリポジトリからパッケージの更新がされていることを意味します。</p>
 <p><strong>取得</strong>の文字が確認できたら成功です。</p>
@@ -387,7 +387,7 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 </div>
 
 <p>パッケージのアップグレードをします。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ apt upgrade</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt upgrade</code></pre>
 <p><div class="note"></p>
 <p><p><strong>注記:</strong></p></p>
 <p><p>アップグレードには時間がかかるので気長に待ちましょう</p>
@@ -411,7 +411,7 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 <h3 id="3.1.13">postfixの設定</h3>
 <p>postfixの設定ファイルである<code>/etc/postfix/main.cf</code>を<code>vi</code>エディタで編集します。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/postfix/main.cf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/postfix/main.cf</code></pre>
 
 <p>以下の設定を行います。</p>
 
@@ -424,7 +424,7 @@ home_mailbox = Maildir/</code></pre>
 <h3 id="3.1.14">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart postfix.service</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart postfix.service</code></pre>
 
 <h2 id="3.2">ファイアウォールの設定</h2>
 <p><code>ufw</code>コマンドでファイアウォールを設定します。</p>
@@ -469,7 +469,7 @@ To                         Action      From
 
 <h3 id="3.3.19">クライアントのrelayhostを指定。</h3>
 <p>クライアントのPostfixのメール配送先を構築したサーバに変更します。</p>
-<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~$ vi /etc/postfix/main.cf</code></pre>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# vi /etc/postfix/main.cf</code></pre>
 
 <p>main.cfにある既存の<code>relayhost</code>ディレクティブを全てコメントアウトし、新しく構築したサーバを追加します。</p>
 
@@ -479,7 +479,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 
 <h3 id="3.3.20">mailコマンドでtomeに送信</h3>
 <p>ターミナルを起動して、<code>mail</code>コマンドでtomeに「test」というメッセージを送ります。  </p>
-<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~$ echo "test" | mail tome@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# echo "test" | mail tome@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
 
 <p>サーバの<code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# cat /home/tome/Maildir/new</code></pre>
