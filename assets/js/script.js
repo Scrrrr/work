@@ -122,27 +122,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // キーボードナビゲーション対応
-    document.addEventListener('keydown', function(e) {
-        // Ctrl + Home でページトップ
-        if (e.ctrlKey && e.key === 'Home') {
-            e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-        
-        // Ctrl + End でページボトム
-        if (e.ctrlKey && e.key === 'End') {
-            e.preventDefault();
-            window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: 'smooth'
-            });
-        }
-    });
-    
     // 見出しのアンカーリンク機能（クリックでURLにハッシュを追加）
     headings.forEach(heading => {
         heading.style.cursor = 'pointer';
