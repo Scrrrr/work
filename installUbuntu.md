@@ -313,26 +313,48 @@ home_mailbox = Maildir/
 root@{{serverHostname}}:~$ systemctl restart postfix.service
 ```
 
-### サーバからメール送受信確認
+## クライアントからのメール送信確認
 
-`mail`コマンドをインストールしてメールの送信テストをします。
+### クライアントの起動とログイン
 
-#### mailコマンドのインストール
+クライアントを起動して`mail`コマンドをインストールしてメールの送信テストをします。
+
+SSCTSメニューから、**[仮想コンピュータの操作]**をクリック。**[Client]**の**[制御]**をクリックし、**[起動]**をクリックしてクライアントを起動します。
+
+ユーザ名は`root`。パスワードは`netsys00`でログインします。
+
+### クライアントのrelayhostを指定。
+クライアントのPostfixのメール配送先を構築したサーバに変更します。
 ```bash
-root@{{serverHostname}}:~$ apt install -y mailutils
+root@{{clientHostname}}:~$ vi /etc/postfix/main.cf
 ```
 
-#### mailコマンドでtomeに送信 
-`mail`コマンドでtomeに「test」というメッセージを送ります。  
-```bash
-root@{{serverHostname}}:~$ echo "test" | mail tome
+main.cfにある既存の`relayhost`ディレクティブを全てコメントアウトし、新しく構築したサーバを追加します。
+
+```{file=/etc/postfix/main.cf}
+#relayhost = [smtp-a.t-kougei.ac.jp]
+relayhost = [{{serverHostname}}.netsys.cs.t-kougei.ac.jp]
 ```
 
-`/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
+### mailコマンドでtomeに送信 
+ターミナルを起動して、`mail`コマンドでtomeに「test」というメッセージを送ります。  
 ```bash
-root@{{serverHostname}}:~$ ls /home/tome/Maildir/new
+root@{{clientHostname}}:~$ echo "test" | mail tome@{{serverHostname}}.netsys.cs.t-kougei.ac.jp
 ```
 
+サーバの`/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
+```bash
+root@{{serverHostname}}:~$ cat /home/tome/Maildir/new
+```
+
+### 外部ネットワークへのメール送信確認
+サーバ外にメールが届くかテストを行います。
+クライアントから自分の大学用のメールアドレスにメールを送信してメールが届くか確認します。
+```bash
+root@{{clientHostname}}:~$ echo "test" | mail <学籍番号>@st.t-kougei.ac.jp
+```
+
+自分の大学用のメールボックスにrootから「test」というメッセージが来ていたら成功です。
 
 
 ## Dovecot（POP3）
