@@ -75,7 +75,7 @@ SCTSのメニューより、「インストールサーバの起動」からUbun
 端末を開き、root のパスワードを設定します。
 
 ```bash
-tome@{{serverHostname}}:~$ sudo passwd root
+tome@{{serverHostname}}:~# sudo passwd root
 tomeのパスワード:
 新しいパスワード:(tomeと同じ)
 新しいパスワードを再入力してください:(tomeと同じ)
@@ -88,7 +88,7 @@ tomeのパスワード:
 ## rootユーザにログイン
 現在はtomeにログインしていますが、今後、rootで作業するために、rootにログインを行います。
 ```bash
-tome@{{serverHostname}}:~$ su -
+tome@{{serverHostname}}:~# su -
 パスワード:
 root@{{serverHostname}}:~#
 ```
@@ -194,7 +194,7 @@ root@{{serverHostname}}:~# ip a
 
 ### ホスト名の設定の確認
 ```bash
-root@{{serverHostname}}:~$ cat /etc/hostname
+root@{{serverHostname}}:~# cat /etc/hostname
 ```
 これでホスト名が正しく表示された、ホスト名の設定は完了です。
 
@@ -219,7 +219,7 @@ root@{{serverHostname}}:~$ cat /etc/hostname
 新たに`/etc/profile.d/proxy.sh`ファイルを作成してプロキシ設定を記述します。
 
 ```bash
-root@{{serverHostname}}:~$ vi /etc/profile.d/proxy.sh
+root@{{serverHostname}}:~# vi /etc/profile.d/proxy.sh
 ```
 
 :::hint
@@ -239,11 +239,11 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080
 `source`コマンドで作成した設定ファイルを読み込ませます。
 
 ```bash
-root@{{serverHostname}}:~$ source /etc/profile.d/proxy.sh
+root@{{serverHostname}}:~# source /etc/profile.d/proxy.sh
 ```
 ### aptのプロキシ設定
 ```bash
-root@{{serverHostname}}:~$ vi /etc/apt/apt.conf
+root@{{serverHostname}}:~# vi /etc/apt/apt.conf
 ```
 
 以下を記述します。
@@ -255,7 +255,7 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 
 ### パッケージの更新とインストール
 ```bash
-root@{{serverHostname}}:~$ apt update
+root@{{serverHostname}}:~# apt update
 ```
 先頭にステータスが表示されます。**取得**と表示されていれば
 既存のリポジトリからパッケージの更新がされていることを意味します。
@@ -267,7 +267,7 @@ root@{{serverHostname}}:~$ apt update
 
 パッケージのアップグレードをします。
 ```bash
-root@{{serverHostname}}:~$ apt upgrade
+root@{{serverHostname}}:~# apt upgrade
 ```
 :::note
 アップグレードには時間がかかるので気長に待ちましょう
@@ -294,7 +294,7 @@ root@{{serverHostname}}:~# apt install -y postfix
 postfixの設定ファイルである`/etc/postfix/main.cf`を`vi`エディタで編集します。
 
 ```bash
-root@{{serverHostname}}:~$ vi /etc/postfix/main.cf
+root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 ```
 
 以下の設定を行います。
@@ -310,7 +310,7 @@ home_mailbox = Maildir/
 `systemctl`コマンドでpostfixを再起動します。
 
 ```bash
-root@{{serverHostname}}:~$ systemctl restart postfix.service
+root@{{serverHostname}}:~# systemctl restart postfix.service
 ```
 
 ## ファイアウォールの設定
@@ -366,7 +366,7 @@ SSCTSメニューから、**[仮想コンピュータの操作]**をクリック
 ### クライアントのrelayhostを指定。
 クライアントのPostfixのメール配送先を構築したサーバに変更します。
 ```bash
-root@{{clientHostname}}:~$ vi /etc/postfix/main.cf
+root@{{clientHostname}}:~# vi /etc/postfix/main.cf
 ```
 
 main.cfにある既存の`relayhost`ディレクティブを全てコメントアウトし、新しく構築したサーバを追加します。
@@ -379,19 +379,19 @@ relayhost = [{{serverHostname}}.netsys.cs.t-kougei.ac.jp]
 ### mailコマンドでtomeに送信 
 ターミナルを起動して、`mail`コマンドでtomeに「test」というメッセージを送ります。  
 ```bash
-root@{{clientHostname}}:~$ echo "test" | mail tome@{{serverHostname}}.netsys.cs.t-kougei.ac.jp
+root@{{clientHostname}}:~# echo "test" | mail tome@{{serverHostname}}.netsys.cs.t-kougei.ac.jp
 ```
 
 サーバの`/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
 ```bash
-root@{{serverHostname}}:~$ cat /home/tome/Maildir/new
+root@{{serverHostname}}:~# cat /home/tome/Maildir/new
 ```
 
 ### 外部ネットワークへのメール送信確認
 サーバ外にメールが届くかテストを行います。
 クライアントから自分の大学用のメールアドレスにメールを送信してメールが届くか確認します。
 ```bash
-root@{{clientHostname}}:~$ echo "test" | mail <学籍番号>@st.t-kougei.ac.jp
+root@{{clientHostname}}:~# echo "test" | mail <学籍番号>@st.t-kougei.ac.jp
 ```
 
 自分の大学用のメールボックスにrootから「test」というメッセージが来ていたら成功です。
@@ -402,13 +402,13 @@ Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオー�
 
 ### Dovecotのインストール
 ```bash
-root@{{serverHostname}}:~$ apt install -y dovecot-core dovecot-pop3d
+root@{{serverHostname}}:~# apt install -y dovecot-core dovecot-pop3d
 ```
 
 ### Dovecotの設定
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-ssl.conf`ファイルをviエディタで開きます。
 ```bash
-root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-ssl.conf
+root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-ssl.conf
 ```
 
 SSLを無効にします。
@@ -419,7 +419,7 @@ ssl = no
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-auth.conf`ファイルをviエディタで開きます。
 
 ```bash
-root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-auth.conf
+root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-auth.conf
 ```
 
 コメントアウトを外してプレーンテキスト認証を許可します。
@@ -432,7 +432,7 @@ root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-auth.conf
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-mail.conf`ファイルをviエディタで開きます。
 
 ```bash
-root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-mail.conf
+root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-mail.conf
 ```
 
 `mail_location` を `maildir` に変更します。
@@ -447,7 +447,7 @@ root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-mail.conf
 `systemctl`コマンドでdovecotを再起動します。
 
 ```bash
-root@{{serverHostname}}:~$ systemctl restart dovecot
+root@{{serverHostname}}:~# systemctl restart dovecot
 ```
 
 ## ファイアウォールの設定
@@ -482,7 +482,7 @@ To                         Action      From
 {{clientHostname}}を起動して、Clientから`telnet`コマンドを使用してメールの受信を確認します。
 
 ```bash
-root@client1:~$ telnet {{serverHostname}} 110
+root@client1:~# telnet {{serverHostname}} 110
 Trying {{serverIP}}...
 Connected to {{serverHostname}}.
 Escape character is '^]'.
@@ -539,12 +539,12 @@ Connection closed by foreign host.
 `apt`コマンドでapache2をインストールします。
 
 ```bash
-root@{{serverHostname}}:~$ apt install -y apache2
+root@{{serverHostname}}:~# apt install -y apache2
 ```
 
 ## Apache2の設定
 ```bash
-root@{{serverHostname}}:~$ vi /etc/apache2/apache2.conf
+root@{{serverHostname}}:~# vi /etc/apache2/apache2.conf
 ```
 
 サーバの名前を記載します。
@@ -559,7 +559,7 @@ root@{{serverHostname}}:~$ vi /etc/apache2/apache2.conf
 サーバが提供するコンテンツを`/var/www/html/`に設置します。既に`index.html`は存在しているので、内容を削除して新たに内容を書きます。
 
 ```bash
-root@{{serverHostname}}:~$ vi /var/www/html/index.html
+root@{{serverHostname}}:~# vi /var/www/html/index.html
 ```
 
 :::hint

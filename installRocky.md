@@ -113,7 +113,7 @@ SELinuxの無効化を行います。
 :::
 
 ```bash
-root@{{serverHostname}}:~$ vi /etc/selinux/config
+root@{{serverHostname}}:~# vi /etc/selinux/config
 ```
 
 以下を変更:
@@ -159,7 +159,7 @@ viエディタは通常モードで「h」で左に移動、「j」で下に移�
 新たに`/etc/profile.d/proxy.sh`ファイルを作成してプロキシ設定を記述します。
 
 ```bash
-root@{{serverHostname}}:~$ vi /etc/profile.d/proxy.sh
+root@{{serverHostname}}:~# vi /etc/profile.d/proxy.sh
 ```
 
 :::hint
@@ -179,14 +179,14 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080
 `source`コマンドで作成した設定ファイルを読み込ませます。
 
 ```bash
-root@{{serverHostname}}:~$ source /etc/profile.d/proxy.sh
+root@{{serverHostname}}:~# source /etc/profile.d/proxy.sh
 ```
 
 ### yumのプロキシ設定
 パッケージマネージャーyumの設定を行います。
 
 ```bash
-root@{{serverHostname}}:~$ vi /etc/yum.conf
+root@{{serverHostname}}:~# vi /etc/yum.conf
 ```
 
 `skip_if_unavailable=False`の下に以下を記入します。
@@ -202,7 +202,7 @@ skip_if_unavailable=False
 保存して終了後アップデートを行います。
 
 ```bash
-root@{{serverHostname}}:~$ yum -y update --nobest
+root@{{serverHostname}}:~# yum -y update --nobest
 ```
 
 問題なくアップデートが行われれば、プロキシの設定は完了です。
@@ -219,7 +219,7 @@ Postfixは、オープンソースのメール転送エージェント(MTA: Mail
 OSのインストールで既にPostfixをインストールしていますが、チェック項目を忘れていた場合は以下のコマンドでインストールしてください。
 
 ```bash
-root@{{serverHostname}}:~$ yum -y install postfix
+root@{{serverHostname}}:~# yum -y install postfix
 ```
 :::
 
@@ -228,7 +228,7 @@ root@{{serverHostname}}:~$ yum -y install postfix
 postfixの設定ファイルである`/etc/postfix/main.cf`を`vi`エディタで編集します。
 
 ```bash
-root@{{serverHostname}}:~$ vi /etc/postfix/main.cf
+root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 ```
 
 以下の設定を行います。
@@ -287,12 +287,12 @@ root@{{serverHostname}}:~$ vi /etc/postfix/main.cf
 `systemctl`コマンドでpostfixを再起動します。
 
 ```bash
-root@{{serverHostname}}:~$ systemctl restart postfix
+root@{{serverHostname}}:~# systemctl restart postfix
 ```
 
 また、サーバの再起動後にサービスを自動起動するように設定します。
 ```bash
-root@{{serverHostname}}:~$ systemctl enable postfix
+root@{{serverHostname}}:~# systemctl enable postfix
 ```
 
 ## ファイアウォールの設定
@@ -301,7 +301,7 @@ root@{{serverHostname}}:~$ systemctl enable postfix
 ### firewall-cmdの起動確認
 初めに、firewall-cmdが起動しているかどうか確認します。
 ```bash
-root@{{serverHostname}}:~$ firewall-cmd --state
+root@{{serverHostname}}:~# firewall-cmd --state
 runnning
 ```
 
@@ -310,18 +310,18 @@ runnning
 :::hint
 もし起動していな場合以下の方法で起動します。
 ```bash
-root@{{serverHostname}}:~$ systemctl start firewalld
+root@{{serverHostname}}:~# systemctl start firewalld
 ```
 また、自動起動を有効にします。
 ```bash
-root@{{serverHostname}}:~$ systemctl enable firewalld
+root@{{serverHostname}}:~# systemctl enable firewalld
 ```
 :::
 
 ### 許可するサービスの追加
 外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpです。以下のようにして許可をします。
 ```bash
-root@{{serverHostname}}:~$ firewall-cmd --permanent --add-service=smtp
+root@{{serverHostname}}:~# firewall-cmd --permanent --add-service=smtp
 success
 success
 ```
@@ -331,14 +331,14 @@ success
 ### 許可したサービスの設定を反映させる
 追加した設定を以下のコマンドで反映させます。
 ```bash
-root@{{serverHostname}}:~$ firewall-cmd --reload
+root@{{serverHostname}}:~# firewall-cmd --reload
 success
 ```
 
 ### 設定の確認
 以下のコマンドで設定した内容を確認できます。
 ```bash
-root@{{serverHostname}}:~$ firewall-cmd --list-all
+root@{{serverHostname}}:~# firewall-cmd --list-all
 ```
 
 ```
@@ -359,7 +359,7 @@ SSCTSメニューから、**[仮想コンピュータの操作]**をクリック
 ### クライアントのrelayhostを指定。
 クライアントのPostfixのメール配送先を構築したサーバに変更します。
 ```bash
-root@{{clientHostname}}:~$ vi /etc/postfix/main.cf
+root@{{clientHostname}}:~# vi /etc/postfix/main.cf
 ```
 
 main.cfにある既存の`relayhost`ディレクティブを全てコメントアウトし、新しく構築したサーバを追加します。
@@ -372,19 +372,19 @@ relayhost = [{{serverHostname}}.netsys.cs.t-kougei.ac.jp]
 ### mailコマンドでtomeに送信 
 ターミナルを起動して、`mail`コマンドでtomeに「test」というメッセージを送ります。  
 ```bash
-root@{{clientHostname}}:~$ echo "test" | mail tome@{{serverHostname}}.netsys.cs.t-kougei.ac.jp
+root@{{clientHostname}}:~# echo "test" | mail tome@{{serverHostname}}.netsys.cs.t-kougei.ac.jp
 ```
 
 サーバの`/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
 ```bash
-root@{{serverHostname}}:~$ cat /home/tome/Maildir/new
+root@{{serverHostname}}:~# cat /home/tome/Maildir/new
 ```
 
 ### 外部ネットワークへのメール送信確認
 サーバ外にメールが届くかテストを行います。
 クライアントから自分の大学用のメールアドレスにメールを送信してメールが届くか確認します。
 ```bash
-root@{{clientHostname}}:~$ echo "test" | mail <学籍番号>@st.t-kougei.ac.jp
+root@{{clientHostname}}:~# echo "test" | mail <学籍番号>@st.t-kougei.ac.jp
 ```
 
 自分の大学用のメールボックスにrootから「test」というメッセージが来ていたら成功です。
@@ -395,14 +395,14 @@ Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオー�
 :::note
 既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。
 ```bash
-root@{{serverHostname}}:~$ yum -y install dovecot-core dovecot-pop3d
+root@{{serverHostname}}:~# yum -y install dovecot-core dovecot-pop3d
 ```
 :::
 
 ### Dovecotの設定
 Dovcotの設定ファイルである`/etc/dovecot/dovecot.conf`ファイルをviエディタで開きます。
 ```bash
-root@{{serverHostname}}:~$ vi /etc/dovecot/dovecot.conf
+root@{{serverHostname}}:~# vi /etc/dovecot/dovecot.conf
 ```
 
 protocolsをpop3のみにします。  
@@ -414,7 +414,7 @@ protocols = pop3
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-ssl.conf`ファイルをviエディタで開きます。
 
 ```bash
-root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-ssl.conf
+root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-ssl.conf
 ```
 
 SSLを無効にします。
@@ -425,7 +425,7 @@ ssl = no
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-auth.conf`ファイルをviエディタで開きます。
 
 ```bash
-root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-auth.conf
+root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-auth.conf
 ```
 
 プレーンテキスト認証を許可します。
@@ -438,7 +438,7 @@ root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-auth.conf
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-mail.conf`ファイルをviエディタで開きます。
 
 ```shell
-root@{{serverHostname}}:~$ vi /etc/dovecot/conf.d/10-mail.conf
+root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-mail.conf
 ```
 
 `mail_locaution` を `maildir` に変更します。
@@ -451,7 +451,7 @@ mail_locaution = maildir:~/Maildir
 `systemctl`コマンドでdovecotを再起動します。
 
 ```bash
-root@{{serverHostname}}:~$ systemctl restart dovecot
+root@{{serverHostname}}:~# systemctl restart dovecot
 ```
 
 ## ファイアウォールの設定
@@ -460,7 +460,7 @@ root@{{serverHostname}}:~$ systemctl restart dovecot
 ### firewall-cmdの起動確認
 初めに、firewall-cmdが起動しているかどうか確認します。
 ```bash
-root@{{serverHostname}}:~$ firewall-cmd --state
+root@{{serverHostname}}:~# firewall-cmd --state
 runnning
 ```
 
@@ -469,18 +469,18 @@ runnning
 :::hint
 もし起動していな場合以下の方法で起動します。
 ```bash
-root@{{serverHostname}}:~$ systemctl start firewalld
+root@{{serverHostname}}:~# systemctl start firewalld
 ```
 また、自動起動を有効にします。
 ```bash
-root@{{serverHostname}}:~$ systemctl enable firewalld
+root@{{serverHostname}}:~# systemctl enable firewalld
 ```
 :::
 
 ### 許可するサービスの追加
 外部からの接続を許可するサービスを指定します。今回追加するサービスはpop3です。以下のようにして許可をします。
 ```bash
-root@{{serverHostname}}:~$ firewall-cmd --permanent --add-service=pop3
+root@{{serverHostname}}:~# firewall-cmd --permanent --add-service=pop3
 success
 ```
 
@@ -489,14 +489,14 @@ success
 ### 許可したサービスの設定を反映させる
 追加した設定を以下のコマンドで反映させます。
 ```bash
-root@{{serverHostname}}:~$ firewall-cmd --reload
+root@{{serverHostname}}:~# firewall-cmd --reload
 success
 ```
 
 ### 設定の確認
 以下のコマンドで設定した内容を確認できます。
 ```bash
-root@{{serverHostname}}:~$ firewall-cmd --list-all
+root@{{serverHostname}}:~# firewall-cmd --list-all
 ```
 
 ```
@@ -509,7 +509,7 @@ services: cockpit dhcpv6-client +[[pop3]] ssh
 Client1を起動して、クライアントから`telnet`コマンドを使用してメールの受信を確認します。
 
 ```bash
-tome@client1:~$ telnet {{serverHostname}} 110
+root@client1:~# telnet {{serverHostname}} 110
 Trying {{serverIP}}...
 Connected to {{serverHostname}}.
 Escape character is '^]'.
@@ -566,13 +566,13 @@ X-Original-TO: tome
 既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。
 
 ```bash
-root@{{serverHostname}}:~$ yum -y install httpd
+root@{{serverHostname}}:~# yum -y install httpd
 ```
 :::
 
 ## httpdの設定
 ```bash
-root@{{serverHostname}}:~$ vi /etc/httpd/conf/httpd.conf
+root@{{serverHostname}}:~# vi /etc/httpd/conf/httpd.conf
 ```
 
 サーバの名前とポート番号を記載します。
@@ -585,7 +585,7 @@ ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp:80
 サーバが提供するコンテンツを`/var/www/html/`に設置します。ファイル名は`index.html`とします。
 
 ```bash
-root@{{serverHostname}}:~$ vi /var/www/html/index.html
+root@{{serverHostname}}:~# vi /var/www/html/index.html
 ```
 
 ```{file=/var/www/html/index.html}
@@ -607,7 +607,7 @@ hello world
 ### 許可するサービスの追加
 外部からの接続を許可するサービスを指定します。今回追加するサービスはhttpです。以下のようにして許可をします。
 ```bash
-root@{{serverHostname}}:~$ firewall-cmd --permanent --add-service=http
+root@{{serverHostname}}:~# firewall-cmd --permanent --add-service=http
 success
 ```
 
@@ -616,14 +616,14 @@ success
 ### 許可したサービスの設定を反映させる
 追加した設定を以下のコマンドで反映させます。
 ```bash
-root@{{serverHostname}}:~$ firewall-cmd --reload
+root@{{serverHostname}}:~# firewall-cmd --reload
 success
 ```
 
 ### 設定の確認
 以下のコマンドで設定した内容を確認できます。
 ```bash
-root@{{serverHostname}}:~$ firewall-cmd --list-all
+root@{{serverHostname}}:~# firewall-cmd --list-all
 ```
 
 ```
