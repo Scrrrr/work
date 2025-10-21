@@ -238,7 +238,7 @@
 <p>この設定にミスがあるとコンピュータが起動しなくなる可能性があるため注意してください。</p>
 </div>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/selinux/config</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/selinux/config</code></pre>
 
 <p>以下を変更:</p>
 <pre><code><span class="git-remove">SELINUX=enforcing</span>
@@ -311,7 +311,7 @@
 <p>再び端末に戻って設定を行います。  </p>
 <p>新たに<code>/etc/profile.d/proxy.sh</code>ファイルを作成してプロキシ設定を記述します。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/profile.d/proxy.sh</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/profile.d/proxy.sh</code></pre>
 
 <p><div class="hint"></p>
 <p><p><strong>ヒント:</strong></p></p>
@@ -329,12 +329,12 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 
 <p><code>source</code>コマンドで作成した設定ファイルを読み込ませます。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ source /etc/profile.d/proxy.sh</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# source /etc/profile.d/proxy.sh</code></pre>
 
 <h3 id="2.5.3">yumのプロキシ設定</h3>
 <p>パッケージマネージャーyumの設定を行います。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/yum.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/yum.conf</code></pre>
 
 <p><code>skip_if_unavailable=False</code>の下に以下を記入します。</p>
 
@@ -347,7 +347,7 @@ skip_if_unavailable=False
 
 <p>保存して終了後アップデートを行います。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y update --nobest</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y update --nobest</code></pre>
 
 <p>問題なくアップデートが行われれば、プロキシの設定は完了です。</p>
 
@@ -363,14 +363,14 @@ skip_if_unavailable=False
 <p><p><strong>注記:</strong></p></p>
 <p><p>OSのインストールで既にPostfixをインストールしていますが、チェック項目を忘れていた場合は以下のコマンドでインストールしてください。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install postfix</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y install postfix</code></pre>
 <p></div></p>
 
 <h3 id="3.1.4">Postfixの設定</h3>
 
 <p>postfixの設定ファイルである<code>/etc/postfix/main.cf</code>を<code>vi</code>エディタで編集します。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/postfix/main.cf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/postfix/main.cf</code></pre>
 
 <p>以下の設定を行います。</p>
 <p>赤色は削除する場所で、緑色は追記する行です。</p>
@@ -426,17 +426,17 @@ skip_if_unavailable=False
 <h3 id="3.1.5">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart postfix</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart postfix</code></pre>
 
 <p>また、サーバの再起動後にサービスを自動起動するように設定します。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl enable postfix</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable postfix</code></pre>
 
 <h2 id="3.2">ファイアウォールの設定</h2>
 <p><code>firewall-cmd</code>コマンドでファイアウォールを設定します。</p>
 
 <h3 id="3.2.6">firewall-cmdの起動確認</h3>
 <p>初めに、firewall-cmdが起動しているかどうか確認します。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --state
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --state
 runnning</code></pre>
 
 <p><code>runnning</code>と表示されれば起動しています。</p>
@@ -444,14 +444,14 @@ runnning</code></pre>
 <p><div class="hint"></p>
 <p><p><strong>ヒント:</strong></p></p>
 <p><p>もし起動していな場合以下の方法で起動します。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl start firewalld</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl start firewalld</code></pre>
 <p>また、自動起動を有効にします。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl enable firewalld</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable firewalld</code></pre>
 <p></div></p>
 
 <h3 id="3.2.7">許可するサービスの追加</h3>
 <p>外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpです。以下のようにして許可をします。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --permanent --add-service=smtp
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --permanent --add-service=smtp
 success
 success</code></pre>
 
@@ -459,12 +459,12 @@ success</code></pre>
 
 <h3 id="3.2.8">許可したサービスの設定を反映させる</h3>
 <p>追加した設定を以下のコマンドで反映させます。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --reload
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --reload
 success</code></pre>
 
 <h3 id="3.2.9">設定の確認</h3>
 <p>以下のコマンドで設定した内容を確認できます。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --list-all</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --list-all</code></pre>
 
 <pre><code>services: cockpit dhcpv6-client <span class="git-add">smtp</span> ssh</code></pre>
 <p>[services]の項目欄に<code>smtp</code>があればファイアウォールの設定は完了です。</p>
@@ -481,7 +481,7 @@ success</code></pre>
 
 <h3 id="3.3.11">クライアントのrelayhostを指定。</h3>
 <p>クライアントのPostfixのメール配送先を構築したサーバに変更します。</p>
-<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~$ vi /etc/postfix/main.cf</code></pre>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# vi /etc/postfix/main.cf</code></pre>
 
 <p>main.cfにある既存の<code>relayhost</code>ディレクティブを全てコメントアウトし、新しく構築したサーバを追加します。</p>
 
@@ -491,15 +491,15 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 
 <h3 id="3.3.12">mailコマンドでtomeに送信</h3>
 <p>ターミナルを起動して、<code>mail</code>コマンドでtomeに「test」というメッセージを送ります。  </p>
-<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~$ echo "test" | mail tome@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# echo "test" | mail tome@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
 
 <p>サーバの<code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ cat /home/tome/Maildir/new</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# cat /home/tome/Maildir/new</code></pre>
 
 <h3 id="3.3.13">外部ネットワークへのメール送信確認</h3>
 <p>サーバ外にメールが届くかテストを行います。</p>
 <p>クライアントから自分の大学用のメールアドレスにメールを送信してメールが届くか確認します。</p>
-<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~$ echo "test" | mail <学籍番号>@st.t-kougei.ac.jp</code></pre>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# echo "test" | mail <学籍番号>@st.t-kougei.ac.jp</code></pre>
 
 <p>自分の大学用のメールボックスにrootから「test」というメッセージが来ていたら成功です。</p>
 
@@ -509,12 +509,12 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <p><div class="note"></p>
 <p><p><strong>注記:</strong></p></p>
 <p><p>既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install dovecot-core dovecot-pop3d</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y install dovecot-core dovecot-pop3d</code></pre>
 <p></div></p>
 
 <h3 id="3.4.14">Dovecotの設定</h3>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/dovecot.conf</code>ファイルをviエディタで開きます。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/dovecot/dovecot.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/dovecot.conf</code></pre>
 
 <p>protocolsをpop3のみにします。  </p>
 
@@ -523,7 +523,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-ssl.conf</code>ファイルをviエディタで開きます。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
 
 <p>SSLを無効にします。</p>
 
@@ -531,7 +531,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <pre><code>ssl = no</code></pre>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-auth.conf</code>ファイルをviエディタで開きます。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
 
 <p>プレーンテキスト認証を許可します。</p>
 
@@ -541,7 +541,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-mail.conf</code>ファイルをviエディタで開きます。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
 
 <p><code>mail_locaution</code> を <code>maildir</code> に変更します。</p>
 
@@ -551,14 +551,14 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <h3 id="3.4.15">Dovecotの設定の反映</h3>
 <p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl restart dovecot</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart dovecot</code></pre>
 
 <h2 id="3.5">ファイアウォールの設定</h2>
 <p><code>firewall-cmd</code>コマンドでファイアウォールを設定します。</p>
 
 <h3 id="3.5.16">firewall-cmdの起動確認</h3>
 <p>初めに、firewall-cmdが起動しているかどうか確認します。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --state
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --state
 runnning</code></pre>
 
 <p><code>runnning</code>と表示されれば起動しています。</p>
@@ -566,26 +566,26 @@ runnning</code></pre>
 <p><div class="hint"></p>
 <p><p><strong>ヒント:</strong></p></p>
 <p><p>もし起動していな場合以下の方法で起動します。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl start firewalld</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl start firewalld</code></pre>
 <p>また、自動起動を有効にします。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ systemctl enable firewalld</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable firewalld</code></pre>
 <p></div></p>
 
 <h3 id="3.5.17">許可するサービスの追加</h3>
 <p>外部からの接続を許可するサービスを指定します。今回追加するサービスはpop3です。以下のようにして許可をします。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --permanent --add-service=pop3
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --permanent --add-service=pop3
 success</code></pre>
 
 <p>コマンドの実行後に<code>success</code>が表示されれば、追加に成功しています。</p>
 
 <h3 id="3.5.18">許可したサービスの設定を反映させる</h3>
 <p>追加した設定を以下のコマンドで反映させます。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --reload
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --reload
 success</code></pre>
 
 <h3 id="3.5.19">設定の確認</h3>
 <p>以下のコマンドで設定した内容を確認できます。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --list-all</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --list-all</code></pre>
 
 <pre><code>services: cockpit dhcpv6-client <span class="git-add">pop3</span> ssh</code></pre>
 <p>[services]の項目欄に<code>pop3</code>があればファイアウォールの設定は完了です。</p>
@@ -594,7 +594,7 @@ success</code></pre>
 <h2 id="3.6">クライアントからの動作確認</h2>
 <p>Client1を起動して、クライアントから<code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
 
-<pre><code class="language-bash">tome@client1:~$ telnet <?php echo $serverHostname; ?> 110
+<pre><code class="language-bash"><span class="shell-prompt">root@client1:~# telnet <?php echo $</span>serverHostname; ?> 110
 Trying <?php echo $serverIP; ?>...
 Connected to <?php echo $serverHostname; ?>.
 Escape character is '^]'.
@@ -643,11 +643,11 @@ X-Original-TO: tome
 <p><p><strong>注記:</strong></p></p>
 <p><p>既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ yum -y install httpd</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y install httpd</code></pre>
 <p></div></p>
 
 <h2 id="4.1">httpdの設定</h2>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /etc/httpd/conf/httpd.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/httpd/conf/httpd.conf</code></pre>
 
 <p>サーバの名前とポート番号を記載します。</p>
 
@@ -657,7 +657,7 @@ X-Original-TO: tome
 <h2 id="4.2">コンテンツの設置</h2>
 <p>サーバが提供するコンテンツを<code>/var/www/html/</code>に設置します。ファイル名は<code>index.html</code>とします。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ vi /var/www/html/index.html</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /var/www/html/index.html</code></pre>
 
 <div class="code-file-info">📁 /var/www/html/index.html</div>
 <pre><code>hello world</code></pre>
@@ -676,19 +676,19 @@ X-Original-TO: tome
 
 <h3 id="4.4.21">許可するサービスの追加</h3>
 <p>外部からの接続を許可するサービスを指定します。今回追加するサービスはhttpです。以下のようにして許可をします。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --permanent --add-service=http
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --permanent --add-service=http
 success</code></pre>
 
 <p>コマンドの実行後に<code>success</code>が表示されれば、追加に成功しています。</p>
 
 <h3 id="4.4.22">許可したサービスの設定を反映させる</h3>
 <p>追加した設定を以下のコマンドで反映させます。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --reload
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --reload
 success</code></pre>
 
 <h3 id="4.4.23">設定の確認</h3>
 <p>以下のコマンドで設定した内容を確認できます。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~$ firewall-cmd --list-all</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --list-all</code></pre>
 
 <pre><code>services: cockpit dhcpv6-client <span class="git-add">http</span> pop3 smtp ssh</code></pre>
 <p>[services]の項目欄に<code>http</code>があればファイアウォールの設定は完了です。</p>
