@@ -497,6 +497,37 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 
 <p>自分の大学用のメールボックスにrootから「test」というメッセージが来ていたら成功です。</p>
 
+<div class="note">
+<p><strong>注記:</strong></p>
+<p>もしも以下のコマンドを実行した結果、パラメータの値が表と合致していたらメールが届いてなくても成功です。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# 
+grep "st.t-kougei.ac.jp" /var/log/mail.log | tail -1 | egrep 'to=|relay=|status="</code></pre>
+
+<table class="table-auto">
+<thead>
+<tr>
+<th>パラメータ</th>
+<th>値</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>to</td>
+<td>大学用のメールアドレス</td>
+</tr>
+<tr>
+<td>relay</td>
+<td>smtp-a.t-kougei.ac.jp</td>
+</tr>
+<tr>
+<td>status</td>
+<td>sent</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+</div>
+
 
 <h2 id="3.4">Dovecot（POP3）</h2>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
