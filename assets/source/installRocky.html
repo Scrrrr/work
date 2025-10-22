@@ -498,7 +498,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# echo "test" | mail tome@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
 
 <p>サーバの<code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# cat /home/tome/Maildir/new</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ls /home/tome/Maildir/new</code></pre>
 
 <h3 id="3.3.13">外部ネットワークへのメール送信確認</h3>
 <p>サーバ外にメールが届くかテストを行います。</p>
