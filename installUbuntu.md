@@ -1,5 +1,5 @@
 # Ubuntuのインストール
-UbuntuはLinuxディストリビューションの中でもサーバ向け、デスクトップ向け共に人気の高いディストリビューションです。これからUbuntuをコンピュータにインストールしてメール、ウェブ、ファイル共有、リモートログイン機能を持ったサーバを構築していきます。
+UbuntuはLinuxディストリビューションの中でもサーバ向け、デスクトップ向け共に人気の高いディストリビューションです。これからUbuntuをコンピュータにインストールしてメールサーバ、ウェブサーバの機能を持ったサーバを構築していきます。
 今回インストールするバージョンはUbuntu 22.04.2 - Desktopです。
 
 ## ブートローダーの起動
@@ -7,22 +7,22 @@ UbuntuはLinuxディストリビューションの中でもサーバ向け、デ
 しばらくの時間、起動の準備が行われます。
 
 ## 言語の選択
-使用する言語を選択します。デフォルトでは[日本語]に設定されているます。
+使用する言語を選択します。デフォルトでは日本語に設定されています。
 使用する言語に併せて、左のリストを下にスクロールして、言語を選択してください。
-言語が選択出来たら[ Ubuntuをインストール ]を選択します。
+言語が選択出来たら**[ Ubuntuをインストール ]**を選択します。
 
 ## キーボードレイアウトの設定
 キーボードの配列を設定します。
 デフォルトでは日本語配列になっています。
-問題がなければ、[続ける]を選択します。
+問題がなければ、**[続ける]**を選択します。
 
 ## アップデートと他のソフトウェア
-[通常のインストール]を選択し、[続ける]を選択します。
+**[通常のインストール]**を選択し、**[続ける]**を選択します。
 
 ## インストールの種類
-[ディスクを削除してUbuntuをインストール]を選択し、[インストール]を選択します。
+**[ディスクを削除してUbuntuをインストール]**を選択し、**[インストール]**を選択します。
 
-[ディスクに変更を書き込みますか？]というウィンドウが出現します。問題がなければ、[続ける]を選択します。
+**[ディスクに変更を書き込みますか？]**というウィンドウが出現します。問題がなければ、**[続ける]**を選択します。
 
 ## どこに住んでいますか
 時刻の設定をします。  
@@ -45,7 +45,7 @@ UbuntuはLinuxディストリビューションの中でもサーバ向け、デ
 
 インストールが完了すると[インストールが完了しました]というポップアップと共に、再起動を促されます。
 
-[今すぐ再起動する]を選択して再起動を行います。
+**[今すぐ再起動する]**を選択して再起動を行います。
 
 :::note
 Ubuntuのロゴとロードマークが表示されながら「Please remove the installation medium, then press ENTER:(インストールメディアを取り出し、ENTER キーを押してください。)」と表示されます。指示通り、Enterを押すとマシンが完全に停止します。
@@ -58,7 +58,7 @@ SCTSのメニューより、「インストールサーバの起動」からUbun
 ## ログイン
 起動が完了すると、ログイン画面が表示されます。
 
-中央のアイコン[tome]をクリックして、設定したパスワード[netsys00]を入力してEnterを押してログインします。
+中央のアイコン`tome`をクリックして、設定したパスワード`netsys00`を入力してEnterを押してログインします。
 
 ## 初期セットアップウィンドウ
 初めてログインをすると、Livepathchセキュリティのセットアップが表示されます。
@@ -73,12 +73,13 @@ SCTSのメニューより、「インストールサーバの起動」からUbun
 
 ## root パスワードの設定
 端末を開き、root のパスワードを設定します。
+rootのパスワードは`netsys00`に設定します。
 
 ```bash
 tome@{{serverHostname}}:~$ sudo passwd root
 tomeのパスワード:
-新しいパスワード:(tomeと同じ)
-新しいパスワードを再入力してください:(tomeと同じ)
+新しいパスワード:
+新しいパスワードを再入力してください:
 ```
 :::caution
 パスワードの入力中は文字が何も表示されません。
@@ -94,6 +95,63 @@ root@{{serverHostname}}:~#
 ```
 root権限ではシェルの記号が`$`から`#`に表記が変わります。
 root権限ではシステムの全ての権限を保持しているので、慎重に操作してください。
+
+## ネットワークの設定
+nmtuiを起動してネットワークの設定を行います。
+```bash
+root@{{serverHostname}}:~# nmtui
+```
+
+`接続の編集`->`編集`でネットワークの設定ファイルの編集を行います。
+:::hint
+TUI(Terminal User Interface)での操作は主に`Tabキー`,`矢印キー`,`Enterキー`で操作します。
+:::
+
+**IPv4の設定**の`**自動**`を[Enter]して`**手作業**`に変更します。
+右の`**<表示する>**`にカーソルを合わせて[Enter]を押します。
+
+次の項目に以下を記入します。
+|項目名|入力値|
+|アドレス|{{serverIP}}|
+|ゲートウェイ|{{gatewayIP}}|
+|DNSサーバー|{{gatewayIP}}|
+|検索ドメイン|netsys.cs.t-kougei.ac.jp
+|検索ドメイン|cs.t-kougei.ac.jp
+|検索ドメイン|t-kougei.ac.jp
+
+次に**IPv6の設定**の`**自動**`を[Enter]して`**無効**`に変更します。
+
+すべての設定が終わったら、一番下の`**<ＯＫ>**`を選択して、[Enter]を押します。
+`**<戻る>**`を押して、一番最初に戻ります。
+
+### ホスト名の設定
+`nmtui`の一番最初のオプション選択メニューから`システムのホスト名を設定する`を選択します。
+ホスト名を`{{serverHostname}}`を`{{serverHostname}}.netsys.cs.t-kougei.ac.jp`に変更して`**<ＯＫ>**`を[Enter]します。
+
+「ホスト名を'{{serverHostname}}.cs.t-kougei.a.cjp'に設定します」と表示されたら完了です。`**<ＯＫ>**`を[Enter]します。
+
+すべての設定が完了したら一番最初のオプション選択メニューの最後にあ`**<ＯＫ>**`を[Enter]します。
+
+### ネットワークの設定の確認
+`ip`コマンドを使用して正しくネットワークに接続できているか確認します。
+```bash
+root@{{serverHostname}}:~# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+…
+2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 52:54:00:62:e8:57 brd ff:ff:ff:ff:ff:ff
+    inet {{serverIP}}/24 brd 10.10.1.255 scope global noprefixroute enp1s0
+       valid_lft forever preferred_lft forever
+```
+
+ネットワークデバイス、`enp1s0`の`inet`が`{{serverIP}}/24`とあれば正しく設定されています。
+また、enp1s0にipv6の項目がなければ、ipv6を無効に設定できています。
+
+### ホスト名の設定の確認
+```bash
+root@{{serverHostname}}:~# cat /etc/hostname
+```
+これでホスト名が正しく表示された、ホスト名の設定は完了です。
 
 ## NTPの設定
 デフォルトではヨーロッパのNTPサーバに接続されているため、学内に設置された`ntp-a.t-kougei.ac.jp`に接続するように設定します。
@@ -141,62 +199,6 @@ Root distance: 2.700ms (max: 5s)
 ```
 [Server]の項目行に`ntp-a.t-kougei.ac.jp`が記述されていれば完了です。
 
-## ネットワークの設定
-nmtuiを起動してネットワークの設定を行います。
-```bash
-root@{{serverHostname}}:~# nmtui
-```
-
-`接続の編集`->`編集`でネットワークの設定ファイルの編集を行います。
-:::hint
-TUI(Terminal User Interface)での操作は主に`Tabキー`,`矢印キー`,`Enterキー`で操作します。
-:::
-
-**IPv4の設定**の`**自動**`を[Enter]して`**手作業**`に変更します。
-右の`**<表示する>**`にカーソルを合わせて[Enter]を押します。
-
-次の項目に以下を記入します。
-|項目名|入力値|
-|アドレス|{{serverIP}}|
-|ゲートウェイ|{{gatewayIP}}|
-|DNSサーバー|{{gatewayIP}}|
-|検索ドメイン|netsys.cs.t-kougei.ac.jp
-|検索ドメイン|cs.t-kougei.ac.jp
-|検索ドメイン|t-kougei.ac.jp
-
-次に**IPv6の設定**の`**自動**`を[Enter]して`**無効**`に変更します。
-
-すべての設定が終わったら、一番下の`**<ＯＫ>**`を選択して、[Enter]を押します。
-`**<戻る>**`を押して、一番最初に戻ります。
-
-### ホスト名の設定
-`nmtui`の一番最初のオプション選択メニューから`システムのホスト名を設定する`を選択します。
-ホスト名を`{{serverHostname}}`を`{{serverHostname}}.cs.t-kougei.ac.jp`に変更して`**<ＯＫ>**`を[Enter]します。
-
-「ホスト名を'{{serverHostname}}.cs.t-kougei.a.cjp'に設定します」と表示されたら完了です。`**<ＯＫ>**`を[Enter]します。
-
-すべての設定が完了したら一番最初のオプション選択メニューの最後にあ`**<ＯＫ>**`を[Enter]します。
-
-### ネットワークの設定の確認
-`ip`コマンドを使用して正しくネットワークに接続できているか確認します。
-```bash
-root@{{serverHostname}}:~# ip a
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
-…
-2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
-    link/ether 52:54:00:62:e8:57 brd ff:ff:ff:ff:ff:ff
-    inet {{serverIP}}/24 brd 10.10.1.255 scope global noprefixroute enp1s0
-       valid_lft forever preferred_lft forever
-```
-
-ネットワークデバイス、`enp1s0`の`inet`が`{{serverIP}}/24`とあれば正しく設定されています。
-また、enp1s0にipv6の項目がなければ、ipv6を無効に設定できています。
-
-### ホスト名の設定の確認
-```bash
-root@{{serverHostname}}:~# cat /etc/hostname
-```
-これでホスト名が正しく表示された、ホスト名の設定は完了です。
 
 ## 各ツール別のプロキシ設定
 
@@ -242,13 +244,14 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080
 root@{{serverHostname}}:~# source /etc/profile.d/proxy.sh
 ```
 ### aptのプロキシ設定
+`/etc/apt/apt.conf.d`の配下に`30proxy.conf`ファイルを新たに作成します。
 ```bash
-root@{{serverHostname}}:~# vi /etc/apt/apt.conf
+root@{{serverHostname}}:~# vi /etc/apt/apt.conf.d/30proxy.conf
 ```
 
-以下を記述します。
+ファイルに以下を記述します。
 
-```{file=/etc/apt/apt.conf}
+```{file=/etc/apt/apt.conf.d/30proxy.conf}
 Acquire::http::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 ```
@@ -267,7 +270,7 @@ root@{{serverHostname}}:~# apt update
 
 パッケージのアップグレードをします。
 ```bash
-root@{{serverHostname}}:~# apt upgrade
+root@{{serverHostname}}:~# apt upgrade -y
 ```
 :::note
 アップグレードには時間がかかるので気長に待ちましょう
@@ -288,7 +291,7 @@ root@{{serverHostname}}:~# apt install -y postfix
 ```
 
 インストール中に[パッケージの設定]が表示されます。
-完了を押し、「インターネットサイト」を選択し、設定してたホスト名が記述されているか確認して<了解>を選択します。
+完了を押し、**[インターネットサイト]**を選択し、設定してたホスト名が記述されているか確認して**<了解>**を選択します。
 
 ### postfixの設定
 postfixの設定ファイルである`/etc/postfix/main.cf`を`vi`エディタで編集します。
@@ -300,10 +303,13 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 以下の設定を行います。
 
 ```{file=/etc/postfix/main.cf}
-relayhost = [smtp-a.t-kougei.ac.jp]
+relayhost = +[[[smtp-a.t-kougei.ac.jp]]]
+-[[mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128]]
++[[#mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128]]
 mynetworks = 10.10.0.0/16
-inet_protocols = ipv4
-home_mailbox = Maildir/
+-[[#inet_protocols = all]]
++[[inet_protocols = ipv4]]
++[[home_mailbox = Maildir/]]
 ```
 
 ### postfixの設定の反映
@@ -384,7 +390,7 @@ root@{{clientHostname}}:~# echo "test" | mail tome@{{serverHostname}}.netsys.cs.
 
 サーバの`/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
 ```bash
-root@{{serverHostname}}:~# cat /home/tome/Maildir/new
+root@{{serverHostname}}:~# ls /home/tome/Maildir/new/
 ```
 
 ### 外部ネットワークへのメール送信確認
@@ -412,9 +418,11 @@ root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-ssl.conf
 ```
 
 SSLを無効にします。
-
+`ssl = no`をコメントアウトし、`ssl = yes`を追記します。
 ```
-ssl = no
+-[[ssl = no]]
++[[#ssl = no]]
++[[#ssl = yes]]
 ```
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-auth.conf`ファイルをviエディタで開きます。
 
@@ -544,7 +552,7 @@ root@{{serverHostname}}:~# apt install -y apache2
 
 ## Apache2の設定
 ```bash
-root@{{serverHostname}}:~# vi /etc/apache2/apache2.conf
+root@{{serverHostname}}:~# vi /etc/apache2/site-available/000-default.conf
 ```
 
 サーバの名前を記載します。
@@ -567,17 +575,17 @@ viでは`:%d`で文字の全削除することができる。
 :::
 
 ```{file=/var/www/html/index.html}
-howdy?
+hello world
 ```
 
 ## サーバでの動作確認
-実際にhowdy?が表示されるか確認します。
+実際にhello worldが表示されるか確認します。
 
 左下のアプリケーションをクリックして検索バーから`Firefox`と入力して提示されたアプリケーションを起動します。
 
 ナビゲーションバーに[http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp](http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp)を入力してアクセスします。
 
-真っ白な背景にhowdy?と表示されていればサーバからの確認は成功です。
+真っ白な背景にhello worldと表示されていればサーバからの確認は成功です。
 
 ## ファイアウォールの設定
 `ufw`コマンドでファイアウォールを設定します。
@@ -614,4 +622,4 @@ To                         Action      From
 
 {{clientHostname}}を起動したらFirefoxから[http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp](http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp)にアクセスしてます。
 
-サーバでの確認と同様に真っ白な背景にhowdy?と表示されていればクライアントからの確認は成功です。
+サーバでの確認と同様に真っ白な背景にhello worldと表示されていればクライアントからの確認は成功です。

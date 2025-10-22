@@ -32,8 +32,8 @@
 <li><a href="#2.3">端末の起動</a></li>
 <li><a href="#2.4">root パスワードの設定</a></li>
 <li><a href="#2.5">rootユーザにログイン</a></li>
-<li><a href="#2.6">NTPの設定</a></li>
-<li><a href="#2.7">ネットワークの設定</a></li>
+<li><a href="#2.6">ネットワークの設定</a></li>
+<li><a href="#2.7">NTPの設定</a></li>
 <li><a href="#2.8">各ツール別のプロキシ設定</a></li>
 </ul>
 </li>
@@ -63,7 +63,7 @@
             <!-- メインコンテンツ -->
             <main class="main-content">
                 <h1 id="1">Ubuntuのインストール</h1>
-<p>UbuntuはLinuxディストリビューションの中でもサーバ向け、デスクトップ向け共に人気の高いディストリビューションです。これからUbuntuをコンピュータにインストールしてメール、ウェブ、ファイル共有、リモートログイン機能を持ったサーバを構築していきます。</p>
+<p>UbuntuはLinuxディストリビューションの中でもサーバ向け、デスクトップ向け共に人気の高いディストリビューションです。これからUbuntuをコンピュータにインストールしてメールサーバ、ウェブサーバの機能を持ったサーバを構築していきます。</p>
 <p>今回インストールするバージョンはUbuntu 22.04.2 - Desktopです。</p>
 
 <h2 id="1.1">ブートローダーの起動</h2>
@@ -71,22 +71,22 @@
 <p>しばらくの時間、起動の準備が行われます。</p>
 
 <h2 id="1.2">言語の選択</h2>
-<p>使用する言語を選択します。デフォルトでは[日本語]に設定されているます。</p>
+<p>使用する言語を選択します。デフォルトでは日本語に設定されています。</p>
 <p>使用する言語に併せて、左のリストを下にスクロールして、言語を選択してください。</p>
-<p>言語が選択出来たら[ Ubuntuをインストール ]を選択します。</p>
+<p>言語が選択出来たら<strong>[ Ubuntuをインストール ]</strong>を選択します。</p>
 
 <h2 id="1.3">キーボードレイアウトの設定</h2>
 <p>キーボードの配列を設定します。</p>
 <p>デフォルトでは日本語配列になっています。</p>
-<p>問題がなければ、[続ける]を選択します。</p>
+<p>問題がなければ、<strong>[続ける]</strong>を選択します。</p>
 
 <h2 id="1.4">アップデートと他のソフトウェア</h2>
-<p>[通常のインストール]を選択し、[続ける]を選択します。</p>
+<p><strong>[通常のインストール]</strong>を選択し、<strong>[続ける]</strong>を選択します。</p>
 
 <h2 id="1.5">インストールの種類</h2>
-<p>[ディスクを削除してUbuntuをインストール]を選択し、[インストール]を選択します。</p>
+<p><strong>[ディスクを削除してUbuntuをインストール]</strong>を選択し、<strong>[インストール]</strong>を選択します。</p>
 
-<p>[ディスクに変更を書き込みますか？]というウィンドウが出現します。問題がなければ、[続ける]を選択します。</p>
+<p><strong>[ディスクに変更を書き込みますか？]</strong>というウィンドウが出現します。問題がなければ、<strong>[続ける]</strong>を選択します。</p>
 
 <h2 id="1.6">どこに住んでいますか</h2>
 <p>時刻の設定をします。  </p>
@@ -132,7 +132,7 @@
 
 <p>インストールが完了すると[インストールが完了しました]というポップアップと共に、再起動を促されます。</p>
 
-<p>[今すぐ再起動する]を選択して再起動を行います。</p>
+<p><strong>[今すぐ再起動する]</strong>を選択して再起動を行います。</p>
 
 <div class="note">
 <p><strong>注記:</strong></p>
@@ -146,7 +146,7 @@
 <h2 id="2.1">ログイン</h2>
 <p>起動が完了すると、ログイン画面が表示されます。</p>
 
-<p>中央のアイコン[tome]をクリックして、設定したパスワード[netsys00]を入力してEnterを押してログインします。</p>
+<p>中央のアイコン<code>tome</code>をクリックして、設定したパスワード<code>netsys00</code>を入力してEnterを押してログインします。</p>
 
 <h2 id="2.2">初期セットアップウィンドウ</h2>
 <p>初めてログインをすると、Livepathchセキュリティのセットアップが表示されます。</p>
@@ -162,11 +162,12 @@
 
 <h2 id="2.4">root パスワードの設定</h2>
 <p>端末を開き、root のパスワードを設定します。</p>
+<p>rootのパスワードは<code>netsys00</code>に設定します。</p>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo passwd root
 tomeのパスワード:
-新しいパスワード:(tomeと同じ)
-新しいパスワードを再入力してください:(tomeと同じ)</code></pre>
+新しいパスワード:
+新しいパスワードを再入力してください:</code></pre>
 <div class="caution">
 <p><strong>注意:</strong></p>
 <p>パスワードの入力中は文字が何も表示されません。</p>
@@ -181,44 +182,7 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 <p>root権限ではシェルの記号が<code>$</code>から<code>#</code>に表記が変わります。</p>
 <p>root権限ではシステムの全ての権限を保持しているので、慎重に操作してください。</p>
 
-<h2 id="2.6">NTPの設定</h2>
-<p>デフォルトではヨーロッパのNTPサーバに接続されているため、学内に設置された<code>ntp-a.t-kougei.ac.jp</code>に接続するように設定します。</p>
-
-<h3 id="2.6.1">設定ファイルディレクトリの作成</h3>
-<p>NTPプロトコルはSystemdが管理しています。<code>timesyncd.conf.d</code>を作成するとで、設定ファイルを設置できるようにします。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# mkdir -p /etc/systemd/timesyncd.conf.d/</code></pre>
-
-<h3 id="2.6.2">設定ファイルの作成</h3>
-<p>viで新たにNTPの設定ファイル<code>ntp-kougei.conf</code>を作成します。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/systemd/timesyncd.conf.d/ntp-kougei.conf</code></pre>
-
-<div class="code-file-info">📁 /etc/systemd/timesyncd.conf.d/ntp-kougei.conf</div>
-<pre><code>[Time]
-NTP=ntp-a.t-kougei.ac.jp</code></pre>
-
-<h3 id="2.6.3">systemd-timesyncdの再起動</h3>
-<p><code>systemdctl</code>コマンドで<code>systemd-timesyncd</code>を再起動します。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart systemd-timesyncd</code></pre>
-
-<h3 id="2.6.4">NTPの接続確認</h3>
-<p><code>timedatectl</code>コマンドで大学のNTPサーバに接続しているか確認します。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# timedatectl timesync-status
-       Server: 192.168.16.188 (ntp-a.t-kougei.ac.jp)
-Poll interval: 1min 4s (min: 32s; max 34min 8s)
-         Leap: normal
-      Version: 4
-      Stratum: 2
-    Reference: 96640107
-    Precision: 1us (-26)
-Root distance: 2.700ms (max: 5s)
-       Offset: +26.200ms
-        Delay: 336us
-       Jitter: 0
- Packet count: 1
-    Frequency: +191.938ppm</code></pre>
-<p>[Server]の項目行に<code>ntp-a.t-kougei.ac.jp</code>が記述されていれば完了です。</p>
-
-<h2 id="2.7">ネットワークの設定</h2>
+<h2 id="2.6">ネットワークの設定</h2>
 <p>nmtuiを起動してネットワークの設定を行います。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# nmtui</code></pre>
 
@@ -272,15 +236,15 @@ Root distance: 2.700ms (max: 5s)
 <p>すべての設定が終わったら、一番下の<code><strong><ＯＫ></strong></code>を選択して、[Enter]を押します。</p>
 <p><code><strong><戻る></strong></code>を押して、一番最初に戻ります。</p>
 
-<h3 id="2.7.5">ホスト名の設定</h3>
+<h3 id="2.6.1">ホスト名の設定</h3>
 <p><code>nmtui</code>の一番最初のオプション選択メニューから<code>システムのホスト名を設定する</code>を選択します。</p>
-<p>ホスト名を<code><?php echo $serverHostname; ?></code>を<code><?php echo $serverHostname; ?>.cs.t-kougei.ac.jp</code>に変更して<code><strong><ＯＫ></strong></code>を[Enter]します。</p>
+<p>ホスト名を<code><?php echo $serverHostname; ?></code>を<code><?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code>に変更して<code><strong><ＯＫ></strong></code>を[Enter]します。</p>
 
 <p>「ホスト名を'<?php echo $serverHostname; ?>.cs.t-kougei.a.cjp'に設定します」と表示されたら完了です。<code><strong><ＯＫ></strong></code>を[Enter]します。</p>
 
 <p>すべての設定が完了したら一番最初のオプション選択メニューの最後にあ<code><strong><ＯＫ></strong></code>を[Enter]します。</p>
 
-<h3 id="2.7.6">ネットワークの設定の確認</h3>
+<h3 id="2.6.2">ネットワークの設定の確認</h3>
 <p><code>ip</code>コマンドを使用して正しくネットワークに接続できているか確認します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ip a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
@@ -293,9 +257,47 @@ Root distance: 2.700ms (max: 5s)
 <p>ネットワークデバイス、<code>enp1s0</code>の<code>inet</code>が<code><?php echo $serverIP; ?>/24</code>とあれば正しく設定されています。</p>
 <p>また、enp1s0にipv6の項目がなければ、ipv6を無効に設定できています。</p>
 
-<h3 id="2.7.7">ホスト名の設定の確認</h3>
+<h3 id="2.6.3">ホスト名の設定の確認</h3>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# cat /etc/hostname</code></pre>
 <p>これでホスト名が正しく表示された、ホスト名の設定は完了です。</p>
+
+<h2 id="2.7">NTPの設定</h2>
+<p>デフォルトではヨーロッパのNTPサーバに接続されているため、学内に設置された<code>ntp-a.t-kougei.ac.jp</code>に接続するように設定します。</p>
+
+<h3 id="2.7.4">設定ファイルディレクトリの作成</h3>
+<p>NTPプロトコルはSystemdが管理しています。<code>timesyncd.conf.d</code>を作成するとで、設定ファイルを設置できるようにします。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# mkdir -p /etc/systemd/timesyncd.conf.d/</code></pre>
+
+<h3 id="2.7.5">設定ファイルの作成</h3>
+<p>viで新たにNTPの設定ファイル<code>ntp-kougei.conf</code>を作成します。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/systemd/timesyncd.conf.d/ntp-kougei.conf</code></pre>
+
+<div class="code-file-info">📁 /etc/systemd/timesyncd.conf.d/ntp-kougei.conf</div>
+<pre><code>[Time]
+NTP=ntp-a.t-kougei.ac.jp</code></pre>
+
+<h3 id="2.7.6">systemd-timesyncdの再起動</h3>
+<p><code>systemdctl</code>コマンドで<code>systemd-timesyncd</code>を再起動します。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart systemd-timesyncd</code></pre>
+
+<h3 id="2.7.7">NTPの接続確認</h3>
+<p><code>timedatectl</code>コマンドで大学のNTPサーバに接続しているか確認します。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# timedatectl timesync-status
+       Server: 192.168.16.188 (ntp-a.t-kougei.ac.jp)
+Poll interval: 1min 4s (min: 32s; max 34min 8s)
+         Leap: normal
+      Version: 4
+      Stratum: 2
+    Reference: 96640107
+    Precision: 1us (-26)
+Root distance: 2.700ms (max: 5s)
+       Offset: +26.200ms
+        Delay: 336us
+       Jitter: 0
+ Packet count: 1
+    Frequency: +191.938ppm</code></pre>
+<p>[Server]の項目行に<code>ntp-a.t-kougei.ac.jp</code>が記述されていれば完了です。</p>
+
 
 <h2 id="2.8">各ツール別のプロキシ設定</h2>
 
@@ -367,11 +369,12 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# source /etc/profile.d/proxy.sh</code></pre>
 <h3 id="2.8.10">aptのプロキシ設定</h3>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/apt/apt.conf</code></pre>
+<p><code>/etc/apt/apt.conf.d</code>の配下に<code>30proxy.conf</code>ファイルを新たに作成します。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/apt/apt.conf.d/30proxy.conf</code></pre>
 
-<p>以下を記述します。</p>
+<p>ファイルに以下を記述します。</p>
 
-<div class="code-file-info">📁 /etc/apt/apt.conf</div>
+<div class="code-file-info">📁 /etc/apt/apt.conf.d/30proxy.conf</div>
 <pre><code>Acquire::http::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 
@@ -387,7 +390,7 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 </div>
 
 <p>パッケージのアップグレードをします。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt upgrade</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt upgrade -y</code></pre>
 <p><div class="note"></p>
 <p><p><strong>注記:</strong></p></p>
 <p><p>アップグレードには時間がかかるので気長に待ちましょう</p>
@@ -406,7 +409,7 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt install -y postfix</code></pre>
 
 <p>インストール中に[パッケージの設定]が表示されます。</p>
-<p>完了を押し、「インターネットサイト」を選択し、設定してたホスト名が記述されているか確認して<了解>を選択します。</p>
+<p>完了を押し、<strong>[インターネットサイト]</strong>を選択し、設定してたホスト名が記述されているか確認して<strong><了解></strong>を選択します。</p>
 
 <h3 id="3.1.13">postfixの設定</h3>
 <p>postfixの設定ファイルである<code>/etc/postfix/main.cf</code>を<code>vi</code>エディタで編集します。</p>
@@ -416,10 +419,13 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 <p>以下の設定を行います。</p>
 
 <div class="code-file-info">📁 /etc/postfix/main.cf</div>
-<pre><code>relayhost = [smtp-a.t-kougei.ac.jp]
+<pre><code>relayhost = <span class="git-add">[smtp-a.t-kougei.ac.jp</span>]
+<span class="git-remove">mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128</span>
+<span class="git-add">#mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128</span>
 mynetworks = 10.10.0.0/16
-inet_protocols = ipv4
-home_mailbox = Maildir/</code></pre>
+<span class="git-remove">#inet_protocols = all</span>
+<span class="git-add">inet_protocols = ipv4</span>
+<span class="git-add">home_mailbox = Maildir/</span></code></pre>
 
 <h3 id="3.1.14">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
@@ -482,7 +488,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# echo "test" | mail tome@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
 
 <p>サーバの<code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# cat /home/tome/Maildir/new</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ls /home/tome/Maildir/new/</code></pre>
 
 <h3 id="3.3.21">外部ネットワークへのメール送信確認</h3>
 <p>サーバ外にメールが届くかテストを行います。</p>
@@ -503,8 +509,10 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
 
 <p>SSLを無効にします。</p>
-
-<pre><code>ssl = no</code></pre>
+<p><code>ssl = no</code>をコメントアウトし、<code>ssl = yes</code>を追記します。</p>
+<pre><code><span class="git-remove">ssl = no</span>
+<span class="git-add">#ssl = no</span>
+<span class="git-add">#ssl = yes</span></code></pre>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-auth.conf</code>ファイルをviエディタで開きます。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
@@ -565,10 +573,10 @@ Escape character is '^]'.
 
 <h3 id="3.6.27">メールの内容を確認する</h3>
 <p>telnetでDovecotコマンドを入力します。</p>
-<p>まず、<code>USER</code>と<code>PASS</code>でログインを行います。</p>
-<pre><code>user tome
+<p>始めに、<code>USER</code>と<code>PASS</code>を指定してログインを行います。</p>
+<pre><code>USER tome
 +OK
-pass netsys00
+PASS netsys00
 +OK Logged in.</code></pre>
 <p><code>+OK Logged in.</code>が表示されればログインされます。</p>
 
@@ -576,7 +584,7 @@ pass netsys00
 +OK 1 message:
 1 516</code></pre>
 
-<p><code>+OK 1 message:</code>から1件のメールがあることが確認できます。</p>
+<p><code>+OK 1 message:</code>というメッセージから1件のメールがあることが確認できます。</p>
 <p><code>1 516</code>はメール番号とメールのサイズをバイトで表しています。</p>
 
 <pre><code class="language-bash">retr 1
@@ -606,7 +614,7 @@ Connection closed by foreign host.</code></pre>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt install -y apache2</code></pre>
 
 <h2 id="4.2">Apache2の設定</h2>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/apache2/apache2.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/apache2/site-available/000-default.conf</code></pre>
 
 <p>サーバの名前を記載します。</p>
 <p>コメントアウトされている<code>ServerName</code>ディレクティブの下にコメントアウトを外した内容を<code><?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code>を追記します。</p>
@@ -626,16 +634,16 @@ Connection closed by foreign host.</code></pre>
 </div>
 
 <div class="code-file-info">📁 /var/www/html/index.html</div>
-<pre><code>howdy?</code></pre>
+<pre><code>hello world</code></pre>
 
 <h2 id="4.4">サーバでの動作確認</h2>
-<p>実際にhowdy?が表示されるか確認します。</p>
+<p>実際にhello worldが表示されるか確認します。</p>
 
 <p>左下のアプリケーションをクリックして検索バーから<code>Firefox</code>と入力して提示されたアプリケーションを起動します。</p>
 
 <p>ナビゲーションバーに<a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a>を入力してアクセスします。</p>
 
-<p>真っ白な背景にhowdy?と表示されていればサーバからの確認は成功です。</p>
+<p>真っ白な背景にhello worldと表示されていればサーバからの確認は成功です。</p>
 
 <h2 id="4.5">ファイアウォールの設定</h2>
 <p><code>ufw</code>コマンドでファイアウォールを設定します。</p>
@@ -666,7 +674,7 @@ To                         Action      From
 
 <p><?php echo $clientHostname; ?>を起動したらFirefoxから<a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a>にアクセスしてます。</p>
 
-<p>サーバでの確認と同様に真っ白な背景にhowdy?と表示されていればクライアントからの確認は成功です。</p>
+<p>サーバでの確認と同様に真っ白な背景にhello worldと表示されていればクライアントからの確認は成功です。</p>
 
             </main>
         </div>
