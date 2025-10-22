@@ -15,9 +15,9 @@
 Kdumpの無効化を行うために、[KDUMP]を選択し、[kdumpを有効にする]のチェックボックスを外し、[完了]を選択します。
 
 ## ネットワーク設定
-次に、ネットワークの設定を行います。[ネットワークとホスト名]を選択し、ホスト名に`{{serverHostname}}.netsys.cs.t-kougei.ac.jp`を入力します。
+次に、ネットワークの設定を行います。[ネットワークとホスト名]を選択し、左下のホスト名のテキストボックスに`{{serverHostname}}.netsys.cs.t-kougei.ac.jp`を入力します。
 
-ホスト名入力後、[適用]をクリックします。
+ホスト名入力後、[適用]をクリックします。すると、右下に現在のホスト名が表示されます。
 :::caution
 [適用]をクリックしないと設定が反映されないため注意してください。
 :::
@@ -30,7 +30,7 @@ Kdumpの無効化を行うために、[KDUMP]を選択し、[kdumpを有効に�
 |アドレス|{{serverIP}}|
 |ネットマスク|24|
 |ゲートウェイ|{{gatewayIP}}|
-|DNSサーバー|{{serverIP}}|
+|DNSサーバー|{{gatewayIP}}|
 |ドメインを検索|netsys.cs.t-kougei.ac.jp, cs.t-kougei.ac.jp, t-kougei.ac.jp|
 
 入力が完了したら[保存]を押して閉じます。
@@ -45,7 +45,8 @@ Ethernetが「接続済みです」と表示されていればネットワーク
 地域設定から[時刻と日付]を選択します。
 左上の歯車マークをクリックして[使用するNTPサーバの追加]に`ntp-a.t-kougei.ac.jp`を入力して[＋]ボタンを押します。
 
-`ntp-a.t-kougei.ac.jp`の稼働中の項目欄にチェックがあれば完了です。
+`ntp-a.t-kougei.ac.jp`の稼働中の項目欄にチェックがあれば追加は完了です。
+`ntp-a.t-kougei.ac.jp`の項目欄の一番右の使用中のチェックを入れ、それ以外の使用中のチェックを外します。
 
 OKで閉じて、左上の[完了]ボタンを押します。
 
@@ -102,7 +103,7 @@ rootのパスワードと同様に［このパスワードは辞書チェック�
 | パスワード       | netsys00 | 
 
 ## 端末の起動
-左上の[アクティビティ]をクリック、または<Win>キーを押します。
+左上の[アクティビティ]をクリック、または`Win`キーを押します。
 中央下に表示されているアイコンにカーソルを合わせるとアプリケーション名が表示されるので、そこから[端末]を探します。もしくは、<win>キーを押した後に、[Terminal]と検索して提示された[端末]というソフトを起動します。
 
 ## SELinuxの無効化
@@ -323,7 +324,6 @@ root@{{serverHostname}}:~# systemctl enable firewalld
 ```bash
 root@{{serverHostname}}:~# firewall-cmd --permanent --add-service=smtp
 success
-success
 ```
 
 コマンドの実行後に`success`が表示されれば、追加に成功しています。
@@ -350,7 +350,7 @@ services: cockpit dhcpv6-client +[[smtp]] ssh
 
 ### クライアントの起動とログイン
 
-クライアントを起動して`mail`コマンドをインストールしてメールの送信テストをします。
+クライアントを起動して`mail`コマンドでメールの送信テストをします。
 
 SSCTSメニューから、**[仮想コンピュータの操作]**をクリック。**[Client]**の**[制御]**をクリックし、**[起動]**をクリックしてクライアントを起動します。
 
@@ -367,7 +367,13 @@ main.cfにある既存の`relayhost`ディレクティブを全てコメント�
 ```{file=/etc/postfix/main.cf}
 #relayhost = [smtp-a.t-kougei.ac.jp]
 relayhost = [{{serverHostname}}.netsys.cs.t-kougei.ac.jp]
+
+Postfixを再起動します。
+```bash
+root@{{clientHostname}}:~# systemctl restart postfix
 ```
+```
+
 
 ### mailコマンドでtomeに送信 
 ターミナルを起動して、`mail`コマンドでtomeに「test」というメッセージを送ります。  
@@ -389,6 +395,8 @@ root@{{clientHostname}}:~# echo "test" | mail <学籍番号>@st.t-kougei.ac.jp
 
 自分の大学用のメールボックスにrootから「test」というメッセージが来ていたら成功です。
 
+これでPostfixの構築は完了です。
+
 ## Dovecot（POP3）
 Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。
 
@@ -408,7 +416,8 @@ root@{{serverHostname}}:~# vi /etc/dovecot/dovecot.conf
 protocolsをpop3のみにします。  
 
 ```{file=/etc/dovecot/dovecot.conf}
-protocols = pop3
+-[[protocols = imap pop3 lmtp submission]]
++[[protocols = pop3]]
 ```
 
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-ssl.conf`ファイルをviエディタで開きます。
@@ -420,7 +429,8 @@ root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-ssl.conf
 SSLを無効にします。
 
 ```{file=/etc/dovecot/conf.d/10-ssl.conf}
-ssl = no
+-[[ssl = required]]
++[[ssl = no]]
 ```
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-auth.conf`ファイルをviエディタで開きます。
 
@@ -431,7 +441,7 @@ root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-auth.conf
 プレーンテキスト認証を許可します。
 
 ```{file=/etc/dovecot/conf.d/10-auth.conf}
--[[disable_plaintext_auth = yes]]
+#disable_plaintext_auth = yes
 +[[disable_plaintext_auth = no]]
 ```
 
@@ -444,7 +454,14 @@ root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-mail.conf
 `mail_locaution` を `maildir` に変更します。
 
 ```{file=/etc/dovecot/conf.d/10-mail.conf}
-mail_locaution = maildir:~/Maildir
+#   mail_location = maildir:~/Maildir
+#   mail_location = mbox:~/mail:INBOX=/var/mail/%u
+#   mail_location = mbox:/var/mail/%d/%1n/%n:INDEX=/var/indexes/%d/%1n/%n
+#
+# <doc/wiki/MailLocation.txt>
+#
+#mail_location = 
++[[mail_locaution = maildir:~/Maildir]]
 ```
 
 ### Dovecotの設定の反映
@@ -456,26 +473,6 @@ root@{{serverHostname}}:~# systemctl restart dovecot
 
 ## ファイアウォールの設定
 `firewall-cmd`コマンドでファイアウォールを設定します。
-
-### firewall-cmdの起動確認
-初めに、firewall-cmdが起動しているかどうか確認します。
-```bash
-root@{{serverHostname}}:~# firewall-cmd --state
-runnning
-```
-
-`runnning`と表示されれば起動しています。
-
-:::hint
-もし起動していな場合以下の方法で起動します。
-```bash
-root@{{serverHostname}}:~# systemctl start firewalld
-```
-また、自動起動を有効にします。
-```bash
-root@{{serverHostname}}:~# systemctl enable firewalld
-```
-:::
 
 ### 許可するサービスの追加
 外部からの接続を許可するサービスを指定します。今回追加するサービスはpop3です。以下のようにして許可をします。
@@ -500,7 +497,7 @@ root@{{serverHostname}}:~# firewall-cmd --list-all
 ```
 
 ```
-services: cockpit dhcpv6-client +[[pop3]] ssh
+services: cockpit dhcpv6-client +[[pop3]] smtp ssh
 ```
 [services]の項目欄に`pop3`があればファイアウォールの設定は完了です。
 
@@ -544,15 +541,15 @@ PASS netsys00
 ```bash
 list
 +OK 1 message:
-1 516
+1 792
 ```
 
 `+OK 1 message:`というメッセージから1件のメールがあることが確認できます。
-`1 516`はメール番号とメールのサイズをバイトで表しています。
+`1 792`はメール番号とメールのサイズをバイトで表しています。
 
 ```bash
 retr 1
-+OK 516 octets
++OK 792 octets
 Return-Path: root@{{serverHostname}}.netsys.cs.t-kougei.ac.jp
 X-Original-TO: tome
 <略>
@@ -578,7 +575,8 @@ root@{{serverHostname}}:~# vi /etc/httpd/conf/httpd.conf
 サーバの名前とポート番号を記載します。
 
 ```{file=/etc/httpd/conf/httpd.conf}
-ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp:80
+#ServerName www.example.com:80
++[[ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp:80]]
 ```
 
 ## コンテンツの設置
@@ -592,12 +590,29 @@ root@{{serverHostname}}:~# vi /var/www/html/index.html
 hello world
 ```
 
+### サーバの再起動
+サーバを再起動させて再起動後に自動で起動するよう設定します。
+
+```bash
+root@{{serverHostname}}:~# systemctl restart httpd
+```
+
+```bash
+root@{{serverHostname}}:~# systemctl enable httpd
+```
+
 ## サーバでの動作確認
 実際にhello worldが表示されるか確認します。
 
 左下のアプリケーションをクリックして検索バーから`Firefox`と入力して提示されたアプリケーションを起動します。
 
 ナビゲーションバーに[http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp](http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp)を入力してアクセスします。
+
+:::caution
+警告が表示されたら以下の手順でアクセスします。
+
+**[詳細へ進...]** -> **[危険性を承知の上で使用]**
+:::
 
 真っ白な背景にhello worldと表示されていればサーバからの確認は成功です。
 
