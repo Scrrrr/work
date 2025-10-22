@@ -383,7 +383,7 @@ root@{{clientHostname}}:~# echo "test" | mail tome@{{serverHostname}}.netsys.cs.
 
 サーバの`/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
 ```bash
-root@{{serverHostname}}:~# cat /home/tome/Maildir/new
+root@{{serverHostname}}:~# ls /home/tome/Maildir/new
 ```
 
 ### 外部ネットワークへのメール送信確認
