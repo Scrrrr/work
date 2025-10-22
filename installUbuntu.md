@@ -402,6 +402,21 @@ root@{{clientHostname}}:~# echo "test" | mail <学籍番号>@st.t-kougei.ac.jp
 
 自分の大学用のメールボックスにrootから「test」というメッセージが来ていたら成功です。
 
+:::note
+もしも以下のコマンドを実行した結果、パラメータの値が表と合致していたらメールが届いてなくても成功です。
+```bash
+root@{{serverHostname}}:~# 
+grep "st.t-kougei.ac.jp" /var/log/mail.log | tail -1 | egrep 'to=|relay=|status="
+```
+
+|auto|
+|パラメータ|値|
+|to|大学用のメールアドレス|
+|relay|smtp-a.t-kougei.ac.jp|
+|status|sent|
+
+:::
+
 
 ## Dovecot（POP3）
 Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。
