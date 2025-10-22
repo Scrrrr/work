@@ -434,9 +434,9 @@ class MarkdownParser {
         html = html.replace(
             /<pre><code[^>]*>([\s\S]*?)<\/code><\/pre>/g,
             (match, code) => {
-                const processedCode = code
-                    .replace(/\+\[\[([^\]]+)\]\]/g, '<span class="git-add">$1</span>')
-                    .replace(/\-\[\[([^\]]+)\]\]/g, '<span class="git-remove">$1</span>');
+                 const processedCode = code
+                     .replace(/\+\[\[(.*?)\]\]/g, '<span class="git-add">$1</span>')
+                     .replace(/\-\[\[(.*?)\]\]/g, '<span class="git-remove">$1</span>');
                 
                 return match.replace(code, processedCode);
             }
