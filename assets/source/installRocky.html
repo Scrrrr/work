@@ -487,11 +487,10 @@ success</code></pre>
 
 <div class="code-file-info">📁 /etc/postfix/main.cf</div>
 <pre><code>#relayhost = [smtp-a.t-kougei.ac.jp]
-relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]
+relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pre>
 
-Postfixを再起動します。</code></pre>
-<p>root@<?php echo $clientHostname; ?>:~# systemctl restart postfix</p>
-<pre><code></code></pre>
+<p>Postfixを再起動します。</p>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# systemctl restart postfix</code></pre>
 
 
 <h3 id="3.3.12">mailコマンドでtomeに送信</h3>
@@ -527,6 +526,7 @@ Postfixを再起動します。</code></pre>
 
 <div class="code-file-info">📁 /etc/dovecot/dovecot.conf</div>
 <pre><code><span class="git-remove">protocols = imap pop3 lmtp submission</span>
+<span class="git-add">#protocols = imap pop3 lmtp submission</span>
 <span class="git-add">protocols = pop3</span></code></pre>
 
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-ssl.conf</code>ファイルをviエディタで開きます。</p>
@@ -678,8 +678,8 @@ X-Original-TO: tome
 
 <p>ナビゲーションバーに<a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a>を入力してアクセスします。</p>
 
-<p><div class="caution"></p>
-<p><p><strong>注意:</strong></p></p>
+<p><div class="hint"></p>
+<p><p><strong>ヒント:</strong></p></p>
 <p><p>警告が表示されたら以下の手順でアクセスします。</p>
 
 <p><strong>[詳細へ進...]</strong> -> <strong>[危険性を承知の上で使用]</strong></p>

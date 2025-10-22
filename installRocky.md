@@ -367,11 +367,11 @@ main.cfにある既存の`relayhost`ディレクティブを全てコメント�
 ```{file=/etc/postfix/main.cf}
 #relayhost = [smtp-a.t-kougei.ac.jp]
 relayhost = [{{serverHostname}}.netsys.cs.t-kougei.ac.jp]
+```
 
 Postfixを再起動します。
 ```bash
 root@{{clientHostname}}:~# systemctl restart postfix
-```
 ```
 
 
@@ -417,6 +417,7 @@ protocolsをpop3のみにします。
 
 ```{file=/etc/dovecot/dovecot.conf}
 -[[protocols = imap pop3 lmtp submission]]
++[[#protocols = imap pop3 lmtp submission]]
 +[[protocols = pop3]]
 ```
 
@@ -608,7 +609,7 @@ root@{{serverHostname}}:~# systemctl enable httpd
 
 ナビゲーションバーに[http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp](http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp)を入力してアクセスします。
 
-:::caution
+:::hint
 警告が表示されたら以下の手順でアクセスします。
 
 **[詳細へ進...]** -> **[危険性を承知の上で使用]**
