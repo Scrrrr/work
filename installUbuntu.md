@@ -422,7 +422,7 @@ SSLを無効にします。
 ```
 -[[ssl = no]]
 +[[#ssl = no]]
-+[[#ssl = yes]]
++[[ssl = yes]]
 ```
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-auth.conf`ファイルをviエディタで開きます。
 
@@ -443,7 +443,7 @@ Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-mail.conf`ファイ�
 root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-mail.conf
 ```
 
-`mail_location` を `maildir` に変更します。
+`mail_location` を `maildir:~/Maildir` に変更します。
 
 ```markdown
 -[[mail_locatoin = mbox:~/mail:IBBOX=/var/mail/%u]]

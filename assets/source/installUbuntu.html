@@ -512,7 +512,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <p><code>ssl = no</code>をコメントアウトし、<code>ssl = yes</code>を追記します。</p>
 <pre><code><span class="git-remove">ssl = no</span>
 <span class="git-add">#ssl = no</span>
-<span class="git-add">#ssl = yes</span></code></pre>
+<span class="git-add">ssl = yes</span></code></pre>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-auth.conf</code>ファイルをviエディタで開きます。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
@@ -526,7 +526,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
 
-<p><code>mail_location</code> を <code>maildir</code> に変更します。</p>
+<p><code>mail_location</code> を <code>maildir:~/Maildir</code> に変更します。</p>
 
 <pre><code><span class="git-remove">mail_locatoin = mbox:~/mail:IBBOX=/var/mail/%u</span>
 <span class="git-add">#mail_locatoin = mbox:~/mail:IBBOX=/var/mail/%u</span>
