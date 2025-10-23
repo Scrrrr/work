@@ -75,6 +75,8 @@ SCTSのメニューより、「インストールサーバの起動」からUbun
 端末を開き、root のパスワードを設定します。
 rootのパスワードは`netsys00`に設定します。
 
+{question:一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？}{answer:sudo}
+
 ```bash
 tome@{{serverHostname}}:~$ sudo passwd root
 tomeのパスワード:

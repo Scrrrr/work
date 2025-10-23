@@ -1,5 +1,101 @@
 <?php
-$user = $_GET['username'];
+// ユーザー名の取得と検証
+// issetでusernameパラメータが存在しない場合はrootに設定する
+$user = isset($_GET['username']) ? $_GET['username'] : 'root';
+
+// whoamiコマンドの実行結果を取得
+$actualUser = trim(exec('whoami'));
+
+// whoamiの結果とusernameパラメータが一致しない場合はwhoamiの結果に書き換え
+if ($actualUser !== $user) {
+    $user = $actualUser;
+}
+
+// ユーザー別の状態管理ファイル
+$userStateFile = 'user_states/' . $user . '_state.json';
+
+// ユーザー状態を読み込み
+function loadUserState($userStateFile) {
+    if (file_exists($userStateFile)) {
+        $content = file_get_contents($userStateFile);
+        return json_decode($content, true) ?: array();
+    }
+    return array();
+}
+
+// ユーザー状態を保存
+function saveUserState($userStateFile, $state) {
+    $dir = dirname($userStateFile);
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
+    file_put_contents($userStateFile, json_encode($state));
+}
+
+// AJAXリクエストの処理
+if (isset($_POST['action']) && $_POST['action'] === 'check_answer') {
+    // 問題データを動的に取得
+    $questions = array();
+    
+    // installUbuntu.htmlファイルから問題データを読み込み
+    $htmlContent = file_get_contents('assets/source/installUbuntu.html');
+    
+    // PHPの配列定義を抽出
+    if (preg_match('/\$questions\s*=\s*array\s*\((.*?)\);/s', $htmlContent, $matches)) {
+        $arrayContent = $matches[1];
+        
+        // 配列の内容を解析
+        $lines = explode("\n", $arrayContent);
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if (preg_match("/'([^']+)'\s*=>\s*'([^']+)'/", $line, $questionMatches)) {
+                $questions[$questionMatches[1]] = $questionMatches[2];
+            }
+        }
+    }
+    
+    $questionId = isset($_POST['question_id']) ? $_POST['question_id'] : '';
+    $userAnswer = isset($_POST['answer']) ? $_POST['answer'] : '';
+    
+    if (isset($questions[$questionId])) {
+        $correctAnswer = $questions[$questionId];
+        $isCorrect = (strtolower($userAnswer) === strtolower($correctAnswer));
+        
+        // 正解の場合はユーザー状態を更新
+        if ($isCorrect) {
+            $userState = loadUserState($userStateFile);
+            if (!in_array($questionId, $userState)) {
+                $userState[] = $questionId;
+                saveUserState($userStateFile, $userState);
+            }
+        }
+        
+        // JSONレスポンスを返す
+        header('Content-Type: application/json');
+        echo json_encode([
+            'isCorrect' => $isCorrect,
+            'correctAnswer' => $correctAnswer
+        ]);
+        exit;
+    } else {
+        // 問題が見つからない場合のエラーレスポンス
+        header('Content-Type: application/json');
+        echo json_encode([
+            'isCorrect' => false,
+            'correctAnswer' => '',
+            'error' => 'Question not found'
+        ]);
+        exit;
+    }
+}
+
+// ユーザー状態取得のAPIエンドポイント
+if (isset($_POST['action']) && $_POST['action'] === 'get_user_state') {
+    $userState = loadUserState($userStateFile);
+    header('Content-Type: application/json');
+    echo json_encode(['answeredQuestions' => $userState]);
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
