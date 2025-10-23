@@ -141,7 +141,20 @@ if (isset($_POST['action']) && $_POST['action'] === 'get_user_state') {
    $gatewayIP = "10.10.{$userNumber}.254";
    ?>
 <!--================================ end ================================-->
-	<?php require 'assets/source/installUbuntu.html'?>
+	<?php 
+	// HTMLファイルを読み込んで変数を置換
+	$htmlContent = file_get_contents('assets/source/installUbuntu.html');
+	
+	// 変数を置換
+	$htmlContent = str_replace('<?php echo $serverHostname; ?>', $serverHostname, $htmlContent);
+	$htmlContent = str_replace('<?php echo $clientHostname; ?>', $clientHostname, $htmlContent);
+	$htmlContent = str_replace('<?php echo $serverIP; ?>', $serverIP, $htmlContent);
+	$htmlContent = str_replace('<?php echo $clientIP; ?>', $clientIP, $htmlContent);
+	$htmlContent = str_replace('<?php echo $gatewayIP; ?>', $gatewayIP, $htmlContent);
+	
+	// 置換されたHTMLを出力
+	echo $htmlContent;
+	?>
 
     <!-- PAGE TOP ボタン -->
     <button id="pageTop" class="page-top" title="ページトップ">↑</button>
