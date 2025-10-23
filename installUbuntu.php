@@ -142,18 +142,16 @@ if (isset($_POST['action']) && $_POST['action'] === 'get_user_state') {
    ?>
 <!--================================ end ================================-->
 	<?php 
-	// HTMLファイルを読み込んで変数を置換
+	// HTMLファイルを読み込んでPHPコードを実行
 	$htmlContent = file_get_contents('assets/source/installUbuntu.html');
 	
-	// 変数を置換
-	$htmlContent = str_replace('<?php echo $serverHostname; ?>', $serverHostname, $htmlContent);
-	$htmlContent = str_replace('<?php echo $clientHostname; ?>', $clientHostname, $htmlContent);
-	$htmlContent = str_replace('<?php echo $serverIP; ?>', $serverIP, $htmlContent);
-	$htmlContent = str_replace('<?php echo $clientIP; ?>', $clientIP, $htmlContent);
-	$htmlContent = str_replace('<?php echo $gatewayIP; ?>', $gatewayIP, $htmlContent);
+	// PHPコードを実行して変数を置換
+	ob_start();
+	eval('?>' . $htmlContent);
+	$processedContent = ob_get_clean();
 	
-	// 置換されたHTMLを出力
-	echo $htmlContent;
+	// 処理されたHTMLを出力
+	echo $processedContent;
 	?>
 
     <!-- PAGE TOP ボタン -->
