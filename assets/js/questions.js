@@ -1,4 +1,7 @@
 // 問題機能のJavaScript
+// 正解済みの問題を追跡するグローバル変数
+let answeredQuestions = new Set();
+
 document.addEventListener('DOMContentLoaded', function() {
     // 回答入力欄のイベントリスナー
     document.querySelectorAll('.answer-input').forEach(input => {
@@ -27,24 +30,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // ページ読み込み時に正解済みの問題を復元
-    loadUserStateFromServer();
-    
-    // ページ読み込み後にスポイラーを動的に生成
-    setTimeout(() => {
-        generateSpoilersAfterLoad();
-    }, 50);
+    // ページ読み込み時に正解済みの問題を復元してからスポイラーを生成
+    loadUserStateFromServer().then(() => {
+        // 正解済み問題の復元後にスポイラーを動的に生成
+        setTimeout(() => {
+            generateSpoilersAfterLoad();
+        }, 100);
+    });
     
     // ページ読み込み後にスポイラーを動的に生成する関数
     function generateSpoilersAfterLoad() {
-        console.log('generateSpoilersAfterLoad called');
         // 問題データを取得（グローバル変数から）
         const questions = window.questionsData || [];
         
         questions.forEach(question => {
             const answer = question.answer;
             const questionId = question.id;
-            console.log('Processing spoilers for:', answer, questionId);
+            
+            // 正解済みの問題はスキップ
+            if (answeredQuestions.has(questionId)) {
+                return;
+            }
             
             // ページ内の回答文字列を検索してスポイラー化（コードブロック内も含む）
             const walker = document.createTreeWalker(
@@ -109,7 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                             });
                             textNode.parentNode.replaceChild(fragment, textNode);
-                            console.log('Spoiler created for:', answer);
                         }
                     }
                 }
@@ -129,9 +134,7 @@ function checkAnswerAndUpdateUI(questionId) {
     }
     
     // PHPにAJAXリクエストを送信して正解判定
-    console.log('正解判定開始:', questionId, userAnswer);
     checkAnswer(questionId, userAnswer, function(isCorrect, correctAnswer) {
-        console.log('正解判定結果:', isCorrect, correctAnswer);
         if (isCorrect) {
             // 正解の場合 - 緑色の背景とメッセージ表示
             input.classList.remove('incorrect');
@@ -146,17 +149,19 @@ function checkAnswerAndUpdateUI(questionId) {
             }
             
             // スポイラーを解除（遅延実行とDOM監視）
-            console.log('正解時のスポイラー解除を実行:', questionId);
             revealSpoilersWithRetry(questionId);
             
             // 正解した問題IDをlocalStorageに保存（ユーザー別）
             const userId = getCurrentUserId();
             const storageKey = 'answeredQuestions_' + userId;
-            const answeredQuestions = JSON.parse(localStorage.getItem(storageKey) || '[]');
-            if (!answeredQuestions.includes(questionId)) {
-                answeredQuestions.push(questionId);
-                localStorage.setItem(storageKey, JSON.stringify(answeredQuestions));
+            const answeredQuestionsList = JSON.parse(localStorage.getItem(storageKey) || '[]');
+            if (!answeredQuestionsList.includes(questionId)) {
+                answeredQuestionsList.push(questionId);
+                localStorage.setItem(storageKey, JSON.stringify(answeredQuestionsList));
             }
+            
+            // 正解済み問題セットに追加
+            answeredQuestions.add(questionId);
         } else {
             // 不正解の場合 - 赤色の背景
             input.classList.remove('correct');
@@ -173,14 +178,11 @@ function checkAnswerAndUpdateUI(questionId) {
 
 // 正解判定のAJAX関数
 function checkAnswer(questionId, userAnswer, callback) {
-    console.log('AJAX正解判定開始:', questionId, userAnswer);
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
-        console.log('AJAX状態:', xhr.readyState, xhr.status);
         if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log('AJAXレスポンス:', xhr.responseText);
             const response = JSON.parse(xhr.responseText);
             callback(response.isCorrect, response.correctAnswer);
         }
@@ -192,8 +194,11 @@ function checkAnswer(questionId, userAnswer, callback) {
 function restoreAnsweredQuestions() {
     const userId = getCurrentUserId();
     const storageKey = 'answeredQuestions_' + userId;
-    const answeredQuestions = JSON.parse(localStorage.getItem(storageKey) || '[]');
-    answeredQuestions.forEach(questionId => {
+    const answeredQuestionsList = JSON.parse(localStorage.getItem(storageKey) || '[]');
+    answeredQuestionsList.forEach(questionId => {
+        // 正解済み問題セットに追加
+        answeredQuestions.add(questionId);
+        
         const input = document.getElementById(questionId + '_input');
         const button = document.querySelector('[data-question-id="' + questionId + '"]');
         const successMessage = document.getElementById(questionId + '_success');
@@ -223,24 +228,31 @@ function getCurrentUserId() {
 
 // サーバーからユーザー状態を取得
 function loadUserStateFromServer() {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            const response = JSON.parse(xhr.responseText);
-            restoreAnsweredQuestionsFromServer(response.answeredQuestions);
-        } else if (xhr.readyState === 4 && xhr.status !== 200) {
-            // サーバーからの取得に失敗した場合はlocalStorageから復元
-            restoreAnsweredQuestions();
-        }
-    };
-    xhr.send('action=get_user_state');
+    return new Promise((resolve) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                restoreAnsweredQuestionsFromServer(response.answeredQuestions);
+                resolve();
+            } else if (xhr.readyState === 4 && xhr.status !== 200) {
+                // サーバーからの取得に失敗した場合はlocalStorageから復元
+                restoreAnsweredQuestions();
+                resolve();
+            }
+        };
+        xhr.send('action=get_user_state');
+    });
 }
 
 // サーバーから取得した状態で問題を復元
-function restoreAnsweredQuestionsFromServer(answeredQuestions) {
-    answeredQuestions.forEach(questionId => {
+function restoreAnsweredQuestionsFromServer(answeredQuestionsList) {
+    answeredQuestionsList.forEach(questionId => {
+        // 正解済み問題セットに追加
+        answeredQuestions.add(questionId);
+        
         const input = document.getElementById(questionId + '_input');
         const button = document.querySelector('[data-question-id="' + questionId + '"]');
         const successMessage = document.getElementById(questionId + '_success');
@@ -264,18 +276,8 @@ function restoreAnsweredQuestionsFromServer(answeredQuestions) {
 
 // スポイラー解除関数（リトライ機能付き）
 function revealSpoilersWithRetry(questionId, retryCount = 0) {
-    console.log('revealSpoilersWithRetry called for questionId:', questionId, 'retryCount:', retryCount);
     const selector = '.spoiler[data-question-id="' + questionId + '"]';
-    console.log('Selector:', selector);
     const spoilers = document.querySelectorAll(selector);
-    console.log('Found spoilers:', spoilers.length);
-    
-    // 全てのスポイラー要素を確認
-    const allSpoilers = document.querySelectorAll('.spoiler');
-    console.log('All spoilers on page:', allSpoilers.length);
-    allSpoilers.forEach((spoiler, index) => {
-        console.log('Spoiler ' + index + ':', spoiler.getAttribute('data-question-id'), spoiler.textContent);
-    });
     
     if (spoilers.length > 0) {
         // スポイラーが見つかった場合
@@ -285,17 +287,13 @@ function revealSpoilersWithRetry(questionId, retryCount = 0) {
         const answer = question ? question.answer : '';
         
         spoilers.forEach(spoiler => {
-            console.log('Revealing spoiler:', answer);
             spoiler.textContent = answer;
             spoiler.classList.add('revealed');
         });
     } else if (retryCount < 10) {
         // スポイラーが見つからない場合、リトライ
-        console.log('Spoilers not found, retrying in 50ms...');
         setTimeout(() => {
             revealSpoilersWithRetry(questionId, retryCount + 1);
         }, 50);
-    } else {
-        console.log('Max retries reached, spoilers not found');
     }
 }
