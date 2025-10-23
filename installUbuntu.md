@@ -151,7 +151,7 @@ root@{{serverHostname}}:~# ip a
 ```bash
 root@{{serverHostname}}:~# cat /etc/hostname
 ```
-これでホスト名が正しく表示された、ホスト名の設定は完了です。
+これでホスト名が正しく表示されたら設定は完了です。
 
 ## NTPの設定
 デフォルトではヨーロッパのNTPサーバに接続されているため、学内に設置された`ntp-a.t-kougei.ac.jp`に接続するように設定します。
