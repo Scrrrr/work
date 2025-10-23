@@ -150,6 +150,7 @@ root@{{serverHostname}}:~# ip a
 また、enp1s0にipv6の項目がなければ、ipv6を無効に設定できています。
 
 ### ホスト名の設定の確認
+{question:プログラムの設定ファイルが格納されているディレクトリはどこでしょうか(絶対パスで入力)}{answer:/etc}
 ```bash
 root@{{serverHostname}}:~# cat /etc/hostname
 ```
@@ -259,6 +260,8 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 ```
 
 ### パッケージの更新とインストール
+{question:aptコマンドでアップデート可能なパッケージの情報を更新をするサブコマンドは何でしょうか}{answer:update}
+以下のコマンでアップデート可能なパッケージ情報を更新します。
 ```bash
 root@{{serverHostname}}:~# apt update
 ```
@@ -271,6 +274,8 @@ root@{{serverHostname}}:~# apt update
 :::
 
 パッケージのアップグレードをします。
+{question:aptコマンドでパッケージを更新するサブコマンドは何でしょうか}{answer:upgrade}
+以下のコマンで、パッケージを更新します。
 ```bash
 root@{{serverHostname}}:~# apt upgrade -y
 ```
@@ -322,6 +327,7 @@ root@{{serverHostname}}:~# systemctl restart postfix.service
 ```
 
 ## ファイアウォールの設定
+{question:Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか}{answer:ufw}
 `ufw`コマンドでファイアウォールを設定します。
 
 ### ufwの有効化
@@ -569,13 +575,13 @@ root@{{serverHostname}}:~# apt install -y apache2
 
 ## Apache2の設定
 ```bash
-root@{{serverHostname}}:~# vi /etc/apache2/site-available/000-default.conf
+root@{{serverHostname}}:~# vi /etc/apache2/sites-available/000-default.conf
 ```
 
 サーバの名前を記載します。
 コメントアウトされている`ServerName`ディレクティブの下にコメントアウトを外した内容を`{{serverHostname}}.netsys.cs.t-kougei.ac.jp`を追記します。
 
-```{file=/etc/apache2/site-available/000-default.conf}
+```{file=/etc/apache2/sites-available/000-default.conf}
 #ServerName www.example.com
 +[[ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp]]
 ```
