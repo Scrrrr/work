@@ -1,21 +1,12 @@
 <?php
-// ユーザー名の取得と検証
-// issetでusernameパラメータが存在しない場合はrootに設定する
-$user = isset($_GET['username']) ? $_GET['username'] : 'root';
+$user = trim(exec('whoami'));
 
-// whoamiコマンドの実行結果を取得
-$actualUser = trim(exec('whoami'));
-
-// whoamiの結果とusernameパラメータが一致しない場合はリダイレクト
-if ($actualUser !== $user) {
-    // 現在のURLパラメータを取得
+// usernameパラメータ（URL）と実際のユーザー名が異なる場合はURLを再構築
+if (!isset($_GET['username']) || $_GET['username'] !== $user) {
     $params = $_GET;
-    $params['username'] = $actualUser;
-    
-    // 新しいURLを構築
+    $params['username'] = $user;
+    // ユーザー名を含むURLパラメータを再構築し、新しいURLを生成
     $newUrl = $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-    
-    // リダイレクト
     header('Location: ' . $newUrl);
     exit;
 }
