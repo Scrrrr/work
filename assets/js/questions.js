@@ -32,10 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // ページ読み込み時に正解済みの問題を復元してからスポイラーを生成
     loadUserStateFromServer().then(() => {
-        // 正解済み問題の復元後にスポイラーを動的に生成
+        // 正解済み問題の復元後にスポイラーを動的に生成（遅延を短く）
         setTimeout(() => {
             generateSpoilersAfterLoad();
-        }, 100);
+        }, 5);
     });
     
     // ページ読み込み後にスポイラーを動的に生成する関数
@@ -87,18 +87,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 const lowerAnswer = answer.toLowerCase();
                 
                 if (lowerText.includes(lowerAnswer)) {
-                    // 親要素が問題ボックス内でないことを確認
+                    // 親要素が問題ボックス内や既に処理済みでないことを確認
                     let parent = textNode.parentElement;
                     let isInQuestionBox = false;
+                    let isInInputField = false;
                     while (parent) {
-                        if (parent.classList && parent.classList.contains('question-box')) {
-                            isInQuestionBox = true;
-                            break;
+                        if (parent.classList) {
+                            if (parent.classList.contains('question-box') || 
+                                parent.classList.contains('answer-input') ||
+                                parent.classList.contains('spoiler')) {
+                                isInQuestionBox = true;
+                                break;
+                            }
+                            // 入力欄内かチェック
+                            if (parent.tagName === 'INPUT') {
+                                isInInputField = true;
+                                break;
+                            }
                         }
                         parent = parent.parentElement;
                     }
                     
-                    if (!isInQuestionBox) {
+                    if (!isInQuestionBox && !isInInputField) {
                         // 単語境界を考慮した置換
                         const parts = text.split(new RegExp('(' + answer + ')', 'gi'));
                         if (parts.length > 1) {
@@ -106,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             parts.forEach((part, index) => {
                                 if (part.toLowerCase() === lowerAnswer) {
                                     const span = document.createElement('span');
-                                    span.className = 'spoiler';
+                                    span.className = 'spoiler processed';
                                     span.setAttribute('data-question-id', questionId);
                                     span.textContent = '*'.repeat(part.length);
                                     fragment.appendChild(span);
@@ -209,6 +219,13 @@ function restoreAnsweredQuestions() {
             input.disabled = true;
             button.disabled = true;
             
+            // 回答を表示（問題データから取得）
+            const questions = window.questionsData || [];
+            const question = questions.find(q => q.id === questionId);
+            if (question) {
+                input.value = question.answer;
+            }
+            
             // 正解メッセージを表示
             if (successMessage) {
                 successMessage.style.display = 'block';
@@ -263,6 +280,13 @@ function restoreAnsweredQuestionsFromServer(answeredQuestionsList) {
             input.disabled = true;
             button.disabled = true;
             
+            // 回答を表示（問題データから取得）
+            const questions = window.questionsData || [];
+            const question = questions.find(q => q.id === questionId);
+            if (question) {
+                input.value = question.answer;
+            }
+            
             // 正解メッセージを表示
             if (successMessage) {
                 successMessage.style.display = 'block';
@@ -291,9 +315,9 @@ function revealSpoilersWithRetry(questionId, retryCount = 0) {
             spoiler.classList.add('revealed');
         });
     } else if (retryCount < 10) {
-        // スポイラーが見つからない場合、リトライ
+        // スポイラーが見つからない場合、リトライ（間隔を短く）
         setTimeout(() => {
             revealSpoilersWithRetry(questionId, retryCount + 1);
-        }, 50);
+        }, 5);
     }
 }
