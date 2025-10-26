@@ -6,9 +6,18 @@ $user = isset($_GET['username']) ? $_GET['username'] : 'root';
 // whoamiコマンドの実行結果を取得
 $actualUser = trim(exec('whoami'));
 
-// whoamiの結果とusernameパラメータが一致しない場合はwhoamiの結果に書き換え
+// whoamiの結果とusernameパラメータが一致しない場合はリダイレクト
 if ($actualUser !== $user) {
-    $user = $actualUser;
+    // 現在のURLパラメータを取得
+    $params = $_GET;
+    $params['username'] = $actualUser;
+    
+    // 新しいURLを構築
+    $newUrl = $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
+    
+    // リダイレクト
+    header('Location: ' . $newUrl);
+    exit;
 }
 
 // ユーザー別の状態管理ファイル
@@ -54,6 +63,11 @@ if (isset($_POST['action']) && $_POST['action'] === 'check_answer') {
         }
     }
     
+    // 出力バッファをクリア（余分な出力を防ぐ）
+    if (ob_get_level()) {
+        ob_clean();
+    }
+    
     $questionId = isset($_POST['question_id']) ? $_POST['question_id'] : '';
     $userAnswer = isset($_POST['answer']) ? $_POST['answer'] : '';
     
@@ -91,6 +105,11 @@ if (isset($_POST['action']) && $_POST['action'] === 'check_answer') {
 
 // ユーザー状態取得のAPIエンドポイント
 if (isset($_POST['action']) && $_POST['action'] === 'get_user_state') {
+    // 出力バッファをクリア（余分な出力を防ぐ）
+    if (ob_get_level()) {
+        ob_clean();
+    }
+    
     $userState = loadUserState($userStateFile);
     header('Content-Type: application/json');
     echo json_encode(['answeredQuestions' => $userState]);
@@ -142,10 +161,10 @@ if (isset($_POST['action']) && $_POST['action'] === 'get_user_state') {
    ?>
 <!--================================ end ================================-->
 	<?php 
-	// HTMLファイルを読み込んでPHPコードを実行
+	// HTMLファイルを読み込んで変数を置換
 	$htmlContent = file_get_contents('assets/source/installUbuntu.html');
 	
-	// PHPコードを実行して変数を置換
+	// PHPコードを実行して変数を置換（evalを使用）
 	ob_start();
 	eval('?>' . $htmlContent);
 	$processedContent = ob_get_clean();
