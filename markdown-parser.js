@@ -3,12 +3,14 @@
  * 既存のUbuntuインストールマニュアルテーマに完全対応
  */
 class MarkdownParser {
-    constructor() {
+    constructor(appPrefix = '') {
         // 動的変数は外部で設定される
         this.variables = {};
         // 問題データを保存
         this.questions = [];
         this.questionCounter = 0;
+        // アプリケーションのプレフィックス（例: 'ubuntu_' または 'rocky_'）
+        this.appPrefix = appPrefix;
     }
 
     /**
@@ -99,7 +101,7 @@ class MarkdownParser {
             const questionText = match[1];
             const answerText = match[2];
             this.questionCounter++;
-            const questionId = `question_${this.questionCounter}`;
+            const questionId = `${this.appPrefix}question_${this.questionCounter}`;
             
             // 問題データを保存
             this.questions.push({

@@ -97,8 +97,12 @@ try {
     process.exit(1);
 }
 
+// 入力ファイル名からアプリケーション名を取得（例: installUbuntu.md -> ubuntu）
+const appName = path.basename(options.input, path.extname(options.input)).replace(/^install/, '').toLowerCase();
+const appPrefix = appName ? `${appName}_` : '';
+
 // MarkdownParserのインスタンスを作成
-const parser = new MarkdownParser();
+const parser = new MarkdownParser(appPrefix);
 
 // 動的変数を登録
 parser.variables = {
