@@ -1,18 +1,51 @@
 <?php
-// usernameパラメータからユーザー名を取得（必須）
-if (!isset($_GET['username'])) {
-    // usernameパラメータがない場合はエラー
-    http_response_code(400);
-    die('username parameter is required');
+// 実際のユーザー名を取得する関数
+function getActualUser() {
+    // 環境変数から取得を試みる
+    $methods = [
+        'echo $USER',
+        'who am i | awk \'{print $1}\'',
+        'logname',
+        'stat -c \'%U\' /proc/self'
+    ];
+    
+    foreach ($methods as $method) {
+        $result = trim(shell_exec($method . ' 2>/dev/null'));
+        if (!empty($result) && $result !== 'apache' && $result !== 'www-data') {
+            return $result;
+        }
+    }
+    
+    // デフォルト値を返す
+    return 'root';
 }
 
-$user = $_GET['username'];
+// 実際のユーザー名を取得
+$actualUser = getActualUser();
+
+// usernameパラメータからユーザー名を取得
+$user = isset($_GET['username']) ? $_GET['username'] : $actualUser;
 
 // 許可されたユーザー名かチェック（セキュリティ）
 $allowedUsers = ['root', 'user1', 'user2', 'user3', 'user4', 'user5'];
 if (!in_array($user, $allowedUsers)) {
     http_response_code(403);
     die('Invalid username');
+}
+
+// AJAXリクエストでない場合のみ、パラメータと実際のユーザー名を一致させる
+$isAjaxRequest = isset($_POST['action']) && (
+    $_POST['action'] === 'check_answer' || 
+    $_POST['action'] === 'get_user_state'
+);
+
+if (!$isAjaxRequest && ($user !== $actualUser)) {
+    // ユーザー名が一致しない場合はリダイレクト
+    $params = $_GET;
+    $params['username'] = $actualUser;
+    $newUrl = $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
+    header('Location: ' . $newUrl);
+    exit;
 }
 
 // ユーザー別の状態管理ファイル
