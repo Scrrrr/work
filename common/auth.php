@@ -11,5 +11,3 @@ function getAuthenticatedUser() {
     }
     return $_SESSION['username'];
 }
-?>
-

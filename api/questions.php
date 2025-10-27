@@ -1,4 +1,7 @@
 <?php
+// 出力バッファを開始（余分な出力を防ぐ）
+ob_start();
+
 require_once __DIR__ . '/../common/auth.php';
 require_once __DIR__ . '/../common/config.php';
 
@@ -12,6 +15,9 @@ if (isset($_POST['action']) && $_POST['action'] === 'check_answer') {
     
     // HTMLファイル名を環境に応じて決定
     $htmlFile = isset($_GET['app']) ? "assets/source/install{$_GET['app']}.html" : 'assets/source/installUbuntu.html';
+    
+    // ファイルパスを絶対パスに変換
+    $htmlFile = __DIR__ . '/../' . $htmlFile;
     
     // HTMLファイルから問題データを読み込み
     $htmlContent = file_get_contents($htmlFile);
@@ -82,5 +88,3 @@ if (isset($_POST['action']) && $_POST['action'] === 'get_user_state') {
     echo json_encode(['answeredQuestions' => $userState]);
     exit;
 }
-?>
-

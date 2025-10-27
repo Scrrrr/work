@@ -23,5 +23,3 @@ function saveUserState($userStateFile, $state) {
     }
     file_put_contents($userStateFile, json_encode($state));
 }
-?>
-

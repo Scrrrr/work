@@ -21,11 +21,6 @@ extract($config);
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-<!--================================ PHP ================================-->
-   <?php
-   // 変数は既に extract($config) で展開済み
-   ?>
-<!--================================ end ================================-->
 	<?php 
 	// HTMLファイルを読み込んで変数を置換
 	$htmlContent = file_get_contents('assets/source/installUbuntu.html');
