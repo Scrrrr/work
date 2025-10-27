@@ -189,7 +189,9 @@ function checkAnswerAndUpdateUI(questionId) {
 // 正解判定のAJAX関数
 function checkAnswer(questionId, userAnswer, callback) {
     const xhr = new XMLHttpRequest();
-    const apiUrl = 'api/questions.php';
+    // 現在のページ名からアプリ名を取得
+    const pageName = window.location.pathname.split('/').pop().replace('install', '').replace('.php', '');
+    const apiUrl = 'api/questions.php?app=' + encodeURIComponent(pageName);
     xhr.open('POST', apiUrl, true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
@@ -248,7 +250,9 @@ function getCurrentUserId() {
 function loadUserStateFromServer() {
     return new Promise((resolve) => {
         const xhr = new XMLHttpRequest();
-        const apiUrl = 'api/questions.php';
+        // 現在のページ名からアプリ名を取得
+        const pageName = window.location.pathname.split('/').pop().replace('install', '').replace('.php', '');
+        const apiUrl = 'api/questions.php?app=' + encodeURIComponent(pageName);
         xhr.open('POST', apiUrl, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function() {
