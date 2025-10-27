@@ -1,14 +1,18 @@
 <?php
-$user = trim(exec('whoami'));
+// usernameパラメータからユーザー名を取得（必須）
+if (!isset($_GET['username'])) {
+    // usernameパラメータがない場合はエラー
+    http_response_code(400);
+    die('username parameter is required');
+}
 
-// usernameパラメータ（URL）と実際のユーザー名が異なる場合はURLを再構築
-if (!isset($_GET['username']) || $_GET['username'] !== $user) {
-    $params = $_GET;
-    $params['username'] = $user;
-    // ユーザー名を含むURLパラメータを再構築し、新しいURLを生成
-    $newUrl = $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-    header('Location: ' . $newUrl);
-    exit;
+$user = $_GET['username'];
+
+// 許可されたユーザー名かチェック（セキュリティ）
+$allowedUsers = ['root', 'user1', 'user2', 'user3', 'user4', 'user5'];
+if (!in_array($user, $allowedUsers)) {
+    http_response_code(403);
+    die('Invalid username');
 }
 
 // ユーザー別の状態管理ファイル
