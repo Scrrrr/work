@@ -1,45 +1,17 @@
 <?php
-// 実際のユーザー名を取得する関数
-function getActualUser() {
-    // 環境変数$USERから取得
-    $user = trim(shell_exec('echo $USER'));
-    
-    // Webサーバーのユーザー名でない場合はそのまま返す
-    if (!empty($user) && $user !== 'apache' && $user !== 'www-data') {
-        return $user;
+session_start();
+
+// セッションにユーザー名が保存されていない場合のみ設定
+if (!isset($_SESSION['username'])) {
+    if (isset($_GET['username'])) {
+        $_SESSION['username'] = $_GET['username'];
+    } else {
+        die("usernameパラメータを指定してください。");
     }
-    
-    // デフォルト値を返す
-    return 'root';
 }
 
-// AJAXリクエストでない場合のみ、パラメータと実際のユーザー名を一致させる
-$isAjaxRequest = isset($_POST['action']) && (
-    $_POST['action'] === 'check_answer' || 
-    $_POST['action'] === 'get_user_state'
-);
-
-if (!$isAjaxRequest) {
-    // usernameパラメータからユーザー名を取得
-    $paramUser = isset($_GET['username']) ? $_GET['username'] : null;
-    
-    // 実際のユーザー名を取得
-    $actualUser = getActualUser();
-    
-    // パラメータと実際のユーザー名が異なる場合は、実際のユーザー名を優先
-    if ($paramUser !== $actualUser) {
-        $params = $_GET;
-        $params['username'] = $actualUser;
-        $newUrl = $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-        header('Location: ' . $newUrl);
-        exit;
-    }
-    
-    $user = $actualUser;
-} else {
-    // AJAXリクエストの場合は、パラメータから取得
-    $user = isset($_GET['username']) ? $_GET['username'] : 'root';
-}
+// セッションからユーザー名を取得
+$user = $_SESSION['username'];
 
 // ユーザー別の状態管理ファイル
 $userStateFile = 'user_states/' . $user . '_state.json';
@@ -57,15 +29,9 @@ function loadUserState($userStateFile) {
 function saveUserState($userStateFile, $state) {
     $dir = dirname($userStateFile);
     if (!is_dir($dir)) {
-        // ディレクトリを作成し、所有者をapache:apacheに設定
-        system("mkdir -p " . escapeshellarg($dir) . " && chmod 755 " . escapeshellarg($dir));
-        chown($dir, 'apache');
-        chgrp($dir, 'apache');
+        mkdir($dir, 0755, true);
     }
     file_put_contents($userStateFile, json_encode($state));
-    // ファイルの所有者もapache:apacheに設定
-    chown($userStateFile, 'apache');
-    chgrp($userStateFile, 'apache');
 }
 
 // AJAXリクエストの処理
