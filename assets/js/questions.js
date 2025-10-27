@@ -189,7 +189,8 @@ function checkAnswerAndUpdateUI(questionId) {
 // 正解判定のAJAX関数
 function checkAnswer(questionId, userAnswer, callback) {
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', '', true);
+    const apiUrl = 'api/questions.php';
+    xhr.open('POST', apiUrl, true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4 && xhr.status === 200) {
@@ -247,7 +248,8 @@ function getCurrentUserId() {
 function loadUserStateFromServer() {
     return new Promise((resolve) => {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', '', true);
+        const apiUrl = 'api/questions.php';
+        xhr.open('POST', apiUrl, true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4 && xhr.status === 200) {

@@ -25,5 +25,3 @@ function getServerConfig($user, $servers) {
         'gatewayIP' => "10.10.$no.254"
     ];
 }
-?>
-
