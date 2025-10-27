@@ -1,5 +1,13 @@
 <?php
-$user = $_GET['username'];
+require_once 'common/auth.php';
+require_once 'common/server_config.php';
+
+$user = getAuthenticatedUser();
+$servers = ["tr200", "client1"];
+$config = getServerConfig($user, $servers);
+
+// 変数を展開
+extract($config);
 ?>
 
 <!DOCTYPE html>
@@ -11,35 +19,11 @@ $user = $_GET['username'];
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/plugins/command-line/prism-command-line.css">
     <link rel="stylesheet" href="assets/css/styles.css">
-   </head>
+</head>
 <body>
 <!--================================ PHP ================================-->
    <?php
-   $servers = ["tr200", "client1"];
-
-   $ip = [];
-   $ser = [];
-
-   if($user == "root"){
-      foreach ($servers as $server) {
-         $ser[$server] = $server;
-         $ip[$server] = exec("nslookup $server | grep Address: | tail -n 1 | awk '{print $2}'");
-         $no = "0";
-      }
-   } else {
-      $no = exec("echo $user | cut -c 5-");
-      foreach ($servers as $server) {
-         $ser[$server] = "u{$no}-$server";
-         $ip[$server] = exec("nslookup u{$no}-$server | grep Address: | tail -n 1 | awk '{print $2}'");
-      }
-   }
-
-   // よく使用される変数を個別に設定（installUbuntu.phpと同じ変数名）
-   $clientIP = $ip["client1"];
-   $clientHostname = $ser["client1"];
-   $serverHostname = $ser["tr200"];
-   $serverIP = $ip["tr200"];
-   $gatewayIP = "10.10.$no.254";
+   // 変数は既に extract($config) で展開済み
    ?>
 <!--================================ end ================================-->
 	<?php require 'assets/source/installRocky.html'?>
