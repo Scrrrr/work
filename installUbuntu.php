@@ -1,36 +1,16 @@
 <?php
 // 実際のユーザー名を取得する関数
 function getActualUser() {
-    // 環境変数から取得を試みる
-    $methods = [
-        'echo $USER',
-        'who am i | awk \'{print $1}\'',
-        'logname',
-        'stat -c \'%U\' /proc/self'
-    ];
+    // 環境変数$USERから取得
+    $user = trim(shell_exec('echo $USER'));
     
-    foreach ($methods as $method) {
-        $result = trim(shell_exec($method . ' 2>/dev/null'));
-        if (!empty($result) && $result !== 'apache' && $result !== 'www-data') {
-            return $result;
-        }
+    // Webサーバーのユーザー名でない場合はそのまま返す
+    if (!empty($user) && $user !== 'apache' && $user !== 'www-data') {
+        return $user;
     }
     
     // デフォルト値を返す
     return 'root';
-}
-
-// 実際のユーザー名を取得
-$actualUser = getActualUser();
-
-// usernameパラメータからユーザー名を取得
-$user = isset($_GET['username']) ? $_GET['username'] : $actualUser;
-
-// 許可されたユーザー名かチェック（セキュリティ）
-$allowedUsers = ['root', 'user1', 'user2', 'user3', 'user4', 'user5'];
-if (!in_array($user, $allowedUsers)) {
-    http_response_code(403);
-    die('Invalid username');
 }
 
 // AJAXリクエストでない場合のみ、パラメータと実際のユーザー名を一致させる
@@ -39,13 +19,26 @@ $isAjaxRequest = isset($_POST['action']) && (
     $_POST['action'] === 'get_user_state'
 );
 
-if (!$isAjaxRequest && ($user !== $actualUser)) {
-    // ユーザー名が一致しない場合はリダイレクト
-    $params = $_GET;
-    $params['username'] = $actualUser;
-    $newUrl = $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
-    header('Location: ' . $newUrl);
-    exit;
+if (!$isAjaxRequest) {
+    // usernameパラメータからユーザー名を取得
+    $paramUser = isset($_GET['username']) ? $_GET['username'] : null;
+    
+    // 実際のユーザー名を取得
+    $actualUser = getActualUser();
+    
+    // パラメータと実際のユーザー名が異なる場合は、実際のユーザー名を優先
+    if ($paramUser !== $actualUser) {
+        $params = $_GET;
+        $params['username'] = $actualUser;
+        $newUrl = $_SERVER['PHP_SELF'] . '?' . http_build_query($params);
+        header('Location: ' . $newUrl);
+        exit;
+    }
+    
+    $user = $actualUser;
+} else {
+    // AJAXリクエストの場合は、パラメータから取得
+    $user = isset($_GET['username']) ? $_GET['username'] : 'root';
 }
 
 // ユーザー別の状態管理ファイル
