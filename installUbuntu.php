@@ -64,9 +64,15 @@ function loadUserState($userStateFile) {
 function saveUserState($userStateFile, $state) {
     $dir = dirname($userStateFile);
     if (!is_dir($dir)) {
-        mkdir($dir, 0755, true);
+        // ディレクトリを作成し、所有者をapache:apacheに設定
+        system("mkdir -p " . escapeshellarg($dir) . " && chmod 755 " . escapeshellarg($dir));
+        chown($dir, 'apache');
+        chgrp($dir, 'apache');
     }
     file_put_contents($userStateFile, json_encode($state));
+    // ファイルの所有者もapache:apacheに設定
+    chown($userStateFile, 'apache');
+    chgrp($userStateFile, 'apache');
 }
 
 // AJAXリクエストの処理
