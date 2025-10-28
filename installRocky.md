@@ -107,6 +107,7 @@ rootのパスワードと同様に［このパスワードは辞書チェック�
 中央下に表示されているアイコンにカーソルを合わせるとアプリケーション名が表示されるので、そこから[端末]を探します。もしくは、<win>キーを押した後に、[Terminal]と検索して提示された[端末]というソフトを起動します。
 
 ## SELinuxの無効化
+{question:管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？}{answer:SELinux}
 SELinuxの無効化を行います。
 
 :::warning
@@ -184,6 +185,7 @@ root@{{serverHostname}}:~# source /etc/profile.d/proxy.sh
 ```
 
 ### yumのプロキシ設定
+{question:RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？}{answer:yum}
 パッケージマネージャーyumの設定を行います。
 
 ```bash
@@ -284,7 +286,10 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 +[[home_mailbox = Maildir/]]
 ```
 
+{question:postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか}{answer:relayhost}
+
 ### postfixの設定の反映
+{question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}
 `systemctl`コマンドでpostfixを再起動します。
 
 ```bash
@@ -297,6 +302,7 @@ root@{{serverHostname}}:~# systemctl enable postfix
 ```
 
 ## ファイアウォールの設定
+{question:RedHat系でデフォルトのファイアウォールとして使用されるソフトの名前はなんですか？}{answer:firewall-cmd}
 `firewall-cmd`コマンドでファイアウォールを設定します。
 
 ### firewall-cmdの起動確認
