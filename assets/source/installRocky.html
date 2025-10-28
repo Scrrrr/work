@@ -1,18 +1,29 @@
-<!-- ハンバーガーメニュー -->
-        <button id="hamburger" class="hamburger" aria-label="メニューを開く">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+<?php
+// 問題データ
+$questions = array(
+    'rocky_question_1' => 'SELinux',
+    'rocky_question_2' => 'yum',
+    'rocky_question_3' => 'relayhost',
+    'rocky_question_4' => 'systemctl',
+    'rocky_question_5' => 'firewall-cmd'
+);
+?>
 
-        <!-- オーバーレイ -->
-        <div id="sidebarOverlay" class="sidebar-overlay"></div>
+    <!-- ハンバーガーメニュー -->
+    <button id="hamburger" class="hamburger" aria-label="メニューを開く">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
 
-        <div class="container">
-            <!-- サイドバー（目次） -->
-            <nav class="sidebar">
-                <h3>目次</h3>
-                <ul class="toc">
+    <!-- オーバーレイ -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="container">
+        <!-- サイドバー（目次） -->
+        <nav class="sidebar">
+            <h3>目次</h3>
+            <ul class="toc">
 <li><a href="#1">RockyLinuxのインストール</a>
 <ul>
 <li><a href="#1.1">言語選択</a></li>
@@ -55,10 +66,10 @@
 </ul>
 </li>
 </ul>
-            </nav>
+        </nav>
 
-            <!-- メインコンテンツ -->
-            <main class="main-content">
+        <!-- メインコンテンツ -->
+        <main class="main-content">
                 <h1 id="1">RockyLinuxのインストール</h1>
 
 <h2 id="1.1">言語選択</h2>
@@ -69,8 +80,8 @@
 <p>[インストール先]を選択すると自動でインストール先が決定されるので、左上の青いボタンの[完了]をクリックします。</p>
 
 <div class="note">
-<p><strong>注記:</strong></p>
-<p>システムの[インストール先]のアイコンに注意が表示されていたのが消えていればＯＫです。</p>
+<p><p><strong>注記:</strong></p></p>
+<p><p>システムの[インストール先]のアイコンに注意が表示されていたのが消えていればＯＫです。</p></p>
 </div>
 
 <h2 id="1.3">Kdump</h2>
@@ -81,8 +92,8 @@
 
 <p>ホスト名入力後、[適用]をクリックします。すると、右下に現在のホスト名が表示されます。</p>
 <div class="caution">
-<p><strong>注意:</strong></p>
-<p>[適用]をクリックしないと設定が反映されないため注意してください。</p>
+<p><p><strong>注意:</strong></p></p>
+<p><p>[適用]をクリックしないと設定が反映されないため注意してください。</p></p>
 </div>
 
 <p>さらに、[設定]を選択し、[IPv4の設定]をクリックし、方式を<strong>自動(DHCP)</strong>から<strong>手動</strong>に変更します。</p>
@@ -154,8 +165,8 @@
 <p>入力が完了したら左上の[完了]をクリックします。</p>
 
 <div class="caution">
-<p><strong>注意:</strong></p>
-<p>［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。</p>
+<p><p><strong>注意:</strong></p></p>
+<p><p>［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。</p></p>
 </div>
 
 <h2 id="1.8">ユーザーの作成</h2>
@@ -189,15 +200,15 @@
 </table>
 
 <div class="caution">
-<p><strong>注意:</strong></p>
-<p>rootのパスワードと同様に［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。</p>
+<p><p><strong>注意:</strong></p></p>
+<p><p>rootのパスワードと同様に［このパスワードは辞書チェックに失敗しました］と表示されますが、この場合完了を2回クリックします。</p></p>
 </div>
 
 <h2 id="1.9">インストールの開始</h2>
 <p>全ての設定項目が完了したら、[インストールの開始]を選択します。</p>
 <div class="note">
-<p><strong>注記:</strong></p>
-<p>インストールには時間がかかるため、終わるまで待機してください。</p>
+<p><p><strong>注記:</strong></p></p>
+<p><p>インストールには時間がかかるため、終わるまで待機してください。</p></p>
 </div>
 
 <p>インストールが完了したら、[システムの再起動]を選択して、サーバを再起動します。</p>
@@ -232,11 +243,12 @@
 <p>中央下に表示されているアイコンにカーソルを合わせるとアプリケーション名が表示されるので、そこから[端末]を探します。もしくは、<win>キーを押した後に、[Terminal]と検索して提示された[端末]というソフトを起動します。</p>
 
 <h2 id="2.3">SELinuxの無効化</h2>
+<div class="question-box" id="rocky_question_1"><div class="question-content"><div class="question-header"><p class="question-text">管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？</p><span class="success-message" id="rocky_question_1_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_1_input" class="answer-input" placeholder="*******" data-question-id="rocky_question_1"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_1">回答</button></div></div></div>
 <p>SELinuxの無効化を行います。</p>
 
 <div class="warning">
-<p><strong>警告:</strong></p>
-<p>この設定にミスがあるとコンピュータが起動しなくなる可能性があるため注意してください。</p>
+<p><p><strong>警告:</strong></p></p>
+<p><p>この設定にミスがあるとコンピュータが起動しなくなる可能性があるため注意してください。</p></p>
 </div>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/selinux/config</code></pre>
@@ -247,13 +259,13 @@
 <span class="git-add">SELINUX=disabled</span></code></pre>
 
 <div class="hint">
-<p><strong>ヒント:</strong></p>
-<p>viエディタは通常モードで「h」で左に移動、「j」で下に移動、「k」で上に移動、「l」で右に移動。  </p>
+<p><p><strong>ヒント:</strong></p></p>
+<p><p>viエディタは通常モードで「h」で左に移動、「j」で下に移動、「k」で上に移動、「l」で右に移動。  </p>
 <p>「i」で入力モードに切り替える。「Esc」を押して通常モードに戻る。</p>
 <p>通常モードで「:w」で保存「:q」で終了、「:wq」で保存して終了。</p>
 
 <p>また、通常モードで<code>/<探したい文字></code>で文字検索ができる。検索を辞める時は<strong><Esc></strong>キーを押す。</p></p>
-<p></div>  </p>
+</div>  
 
 <h2 id="2.4">電源の設定</h2>
 <p>デフォルトの設定では5分起きにロックされてしまうので、設定で無効にします。</p>
@@ -314,12 +326,12 @@
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/profile.d/proxy.sh</code></pre>
 
-<p><div class="hint"></p>
+<div class="hint">
 <p><p><strong>ヒント:</strong></p></p>
 <p><p>viエディタは通常モードで「h」で左に移動、「j」で下に移動、「k」で上に移動、「l」で右に移動。  </p>
 <p>「i」で入力モードに切り替える。「Esc」を押して通常モードに戻る。</p>
 <p>通常モードで「:w」で保存「:q」で終了、「:wq」で保存して終了。</p></p>
-<p></div>  </p>
+</div>  
 
 <div class="code-file-info">📁 /etc/profile.d/proxy.sh</div>
 <pre><code>HTTP_PROXY=http://proxy-a.t-kougei.ac.jp:8080
@@ -333,6 +345,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# source /etc/profile.d/proxy.sh</code></pre>
 
 <h3 id="2.5.3">yumのプロキシ設定</h3>
+<div class="question-box" id="rocky_question_2"><div class="question-content"><div class="question-header"><p class="question-text">RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？</p><span class="success-message" id="rocky_question_2_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_2_input" class="answer-input" placeholder="***" data-question-id="rocky_question_2"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_2">回答</button></div></div></div>
 <p>パッケージマネージャーyumの設定を行います。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/yum.conf</code></pre>
@@ -360,12 +373,12 @@ skip_if_unavailable=False
 <h2 id="3.1">Postfix</h2>
 <p>Postfixは、オープンソースのメール転送エージェント(MTA: Mail Transfer Agent)で、電子メールの送信・配送を担当するサーバソフトウェアです。</p>
 
-<p><div class="note"></p>
+<div class="note">
 <p><p><strong>注記:</strong></p></p>
 <p><p>OSのインストールで既にPostfixをインストールしていますが、チェック項目を忘れていた場合は以下のコマンドでインストールしてください。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y install postfix</code></pre>
-<p></div></p>
+</div>
 
 <h3 id="3.1.4">Postfixの設定</h3>
 
@@ -424,7 +437,10 @@ skip_if_unavailable=False
 #home_mailbox = Maildir/
 <span class="git-add">home_mailbox = Maildir/</span></code></pre>
 
+<div class="question-box" id="rocky_question_3"><div class="question-content"><div class="question-header"><p class="question-text">postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか</p><span class="success-message" id="rocky_question_3_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_3_input" class="answer-input" placeholder="*********" data-question-id="rocky_question_3"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_3">回答</button></div></div></div>
+
 <h3 id="3.1.5">postfixの設定の反映</h3>
+<div class="question-box" id="rocky_question_4"><div class="question-content"><div class="question-header"><p class="question-text">Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか</p><span class="success-message" id="rocky_question_4_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_4_input" class="answer-input" placeholder="*********" data-question-id="rocky_question_4"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_4">回答</button></div></div></div>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart postfix</code></pre>
@@ -433,6 +449,7 @@ skip_if_unavailable=False
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable postfix</code></pre>
 
 <h2 id="3.2">ファイアウォールの設定</h2>
+<div class="question-box" id="rocky_question_5"><div class="question-content"><div class="question-header"><p class="question-text">RedHat系でデフォルトのファイアウォールとして使用されるソフトの名前はなんですか？</p><span class="success-message" id="rocky_question_5_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_5_input" class="answer-input" placeholder="************" data-question-id="rocky_question_5"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_5">回答</button></div></div></div>
 <p><code>firewall-cmd</code>コマンドでファイアウォールを設定します。</p>
 
 <h3 id="3.2.6">firewall-cmdの起動確認</h3>
@@ -442,13 +459,13 @@ runnning</code></pre>
 
 <p><code>runnning</code>と表示されれば起動しています。</p>
 
-<p><div class="hint"></p>
+<div class="hint">
 <p><p><strong>ヒント:</strong></p></p>
 <p><p>もし起動していな場合以下の方法で起動します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl start firewalld</code></pre>
 <p>また、自動起動を有効にします。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable firewalld</code></pre>
-<p></div></p>
+</div>
 
 <h3 id="3.2.7">許可するサービスの追加</h3>
 <p>外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpです。以下のようにして許可をします。</p>
@@ -512,11 +529,11 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <h2 id="3.4">Dovecot（POP3）</h2>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
 
-<p><div class="note"></p>
+<div class="note">
 <p><p><strong>注記:</strong></p></p>
 <p><p>既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y install dovecot-core dovecot-pop3d</code></pre>
-<p></div></p>
+</div>
 
 <h3 id="3.4.14">Dovecotの設定</h3>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/dovecot.conf</code>ファイルをviエディタで開きます。</p>
@@ -602,7 +619,7 @@ Escape character is '^]'.
 <span class="git-add">+OK Dovecto ready.</span></code></pre>
 <p><code>+OK Dovecto ready.</code>という情報から、Dovecotに接続できたことが確認できました。</p>
 
-<p><div class="hint"></p>
+<div class="hint">
 <p><p><strong>ヒント:</strong></p></p>
 <p><p>telnetから抜けるには<code>quit</code>を入力して抜ける。</p>
 <pre><code class="language-bash">[root@<?php echo $clientHostname; ?> ~]# telnet <?php echo $serverHostname; ?> 25
@@ -611,7 +628,7 @@ Escape character is '^]'.
 quit
 +OK Logging out
 Connection closed by foreign host.</code></pre>
-<p></div></p>
+</div>
 
 
 <h3 id="3.6.19">メールの内容を確認する</h3>
@@ -640,12 +657,12 @@ X-Original-TO: tome
 
 <h1 id="4">WEBサーバの構築</h1>
 
-<p><div class="note"></p>
+<div class="note">
 <p><p><strong>注記:</strong></p></p>
 <p><p>既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y install httpd</code></pre>
-<p></div></p>
+</div>
 
 <h2 id="4.1">httpdの設定</h2>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/httpd/conf/httpd.conf</code></pre>
@@ -678,11 +695,11 @@ X-Original-TO: tome
 
 <p>ナビゲーションバーに<a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a>を入力してアクセスします。</p>
 
-<p><div class="hint"></p>
+<div class="hint">
 <p><p><strong>ヒント:</strong></p></p>
 <p><p>警告が表示されたら以下の手順でアクセスします。</p>
 
-<p><strong>[詳細へ進...]</strong> -> <strong>[危険性を承知の上で使用]</strong></p>
+<p><strong>[詳細へ進...]</strong> -> <strong>[危険性を承知の上で使用]</strong></p></p>
 </div>
 
 <p>真っ白な背景にhello worldと表示されていればサーバからの確認は成功です。</p>
@@ -718,5 +735,15 @@ success</code></pre>
 <p>以上でOSのインストールと設定は完了となります。</p>
 
 
-            </main>
-        </div>
+        </main>
+    </div>
+
+        <script>
+            // 問題データをグローバル変数に設定
+            window.questionsData = [{"id":"rocky_question_1","question":"管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？","answer":"SELinux"},{"id":"rocky_question_2","question":"RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？","answer":"yum"},{"id":"rocky_question_3","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"rocky_question_4","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"rocky_question_5","question":"RedHat系でデフォルトのファイアウォールとして使用されるソフトの名前はなんですか？","answer":"firewall-cmd"}];
+        </script>
+        <script src="assets/js/questions.js"></script>
+        <script>
+            // 問題機能のJavaScriptは外部ファイルに移動済み
+            
+        </script>
