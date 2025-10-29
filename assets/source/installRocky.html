@@ -1,13 +1,14 @@
 <?php
 // 問題データ
 $questions = array(
-    'rocky_question_1' => 'SELinux',
-    'rocky_question_2' => 'dnf',
-    'rocky_question_3' => 'relayhost',
-    'rocky_question_4' => 'systemctl',
-    'rocky_question_5' => 'firewall-cmd',
-    'rocky_question_6' => 'ssl = no',
-    'rocky_question_7' => '/etc/httpd/conf/httpd.conf'
+    'rocky_question_1' => 'Linus Torvalds',
+    'rocky_question_2' => 'SELinux',
+    'rocky_question_3' => 'dnf',
+    'rocky_question_4' => 'relayhost',
+    'rocky_question_5' => 'systemctl',
+    'rocky_question_6' => 'firewall-cmd',
+    'rocky_question_7' => 'ssl = no',
+    'rocky_question_8' => '/etc/httpd/conf/httpd.conf'
 );
 ?>
 
@@ -26,7 +27,7 @@ $questions = array(
         <nav class="sidebar">
             <h3>目次</h3>
             <ul class="toc">
-<li><a href="#1">RockyLinuxのインストール</a>
+<li><a href="#1">RockyLinuxとは</a>
 <ul>
 <li><a href="#1.1">言語選択</a></li>
 <li><a href="#1.2">インストール先</a></li>
@@ -72,7 +73,21 @@ $questions = array(
 
         <!-- メインコンテンツ -->
         <main class="main-content">
-                <h1 id="1">RockyLinuxのインストール</h1>
+                <h1 id="1">RockyLinuxとは</h1>
+<p>RockyLinuxは、サーバ向け用途に特化した安定性の高いLinuxディストリビューションです。これからRockyLinuxをコンピュータにインストールし、メールサーバやウェブサーバとしての機能を持つサーバを構築していきます。</p>
+<p>今回インストールするバージョンはRocky Linux 9.5です。</p>
+
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>本マニュアルの各所に確認用の質問が配置されています。正解すると、本文中の伏せ字が自動で解放され、続きが読めるようになります。答えに迷ったら、Firefoxでキーワード検索して調べてください。</p>
+
+<p>試しに下の質問に答えてください。</p>
+<div class="question-box" id="rocky_question_1"><div class="question-content"><div class="question-header"><p class="question-text">Linuxを作った人の氏名を英語で答えてください</p><span class="success-message" id="rocky_question_1_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_1_input" class="answer-input" placeholder="**************" data-question-id="rocky_question_1"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_1">回答</button><button type="button" class="giveup-btn" id="rocky_question_1_giveup" data-question-id="rocky_question_1" style="display: none;">解答を見る</button></div></div></div>
+
+<p>問題は何回でも回答できます。  </p>
+<p>もしも、最初の回答から3分経過してもわからない場合は、<strong>「解答を表示する」ボタン</strong>が現れます。</p>
+<p><strong>!!一度も回答しないと3分経過してもボタンは表示されません!!</strong></p></p>
+</div>
 
 <h2 id="1.1">言語選択</h2>
 <p>インストールが開始されると言語選択メニューが表示されます。左のメニューの中央付近にある[日本語]を選択し、[続行]を選択します。</p>
@@ -247,7 +262,7 @@ $questions = array(
 <p>中央下に表示されているアイコンにカーソルを合わせるとアプリケーション名が表示されるので、そこから[端末]を探します。もしくは、<win>キーを押した後に、[Terminal]と検索して提示された[端末]というソフトを起動します。</p>
 
 <h2 id="2.3">SELinuxの無効化</h2>
-<div class="question-box" id="rocky_question_1"><div class="question-content"><div class="question-header"><p class="question-text">管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？</p><span class="success-message" id="rocky_question_1_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_1_input" class="answer-input" placeholder="*******" data-question-id="rocky_question_1"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_1">回答</button><button type="button" class="giveup-btn" id="rocky_question_1_giveup" data-question-id="rocky_question_1" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="rocky_question_2"><div class="question-content"><div class="question-header"><p class="question-text">管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？</p><span class="success-message" id="rocky_question_2_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_2_input" class="answer-input" placeholder="*******" data-question-id="rocky_question_2"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_2">回答</button><button type="button" class="giveup-btn" id="rocky_question_2_giveup" data-question-id="rocky_question_2" style="display: none;">解答を見る</button></div></div></div>
 <p>SELinuxの無効化を行います。</p>
 
 <div class="warning">
@@ -349,7 +364,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# source /etc/profile.d/proxy.sh</code></pre>
 
 <h3 id="2.5.3">dnfのプロキシ設定</h3>
-<div class="question-box" id="rocky_question_2"><div class="question-content"><div class="question-header"><p class="question-text">RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？</p><span class="success-message" id="rocky_question_2_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_2_input" class="answer-input" placeholder="***" data-question-id="rocky_question_2"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_2">回答</button><button type="button" class="giveup-btn" id="rocky_question_2_giveup" data-question-id="rocky_question_2" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="rocky_question_3"><div class="question-content"><div class="question-header"><p class="question-text">RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？</p><span class="success-message" id="rocky_question_3_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_3_input" class="answer-input" placeholder="***" data-question-id="rocky_question_3"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_3">回答</button><button type="button" class="giveup-btn" id="rocky_question_3_giveup" data-question-id="rocky_question_3" style="display: none;">解答を見る</button></div></div></div>
 <p>パッケージマネージャーdnfの設定を行います。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dnf/dnf.conf</code></pre>
@@ -394,7 +409,7 @@ skip_if_unavailable=False
 <p>赤色は削除する場所で、緑色は追記する行です。</p>
 <p>無地は周辺の設定項目を表しています。</p>
 
-<div class="question-box" id="rocky_question_3"><div class="question-content"><div class="question-header"><p class="question-text">postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか</p><span class="success-message" id="rocky_question_3_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_3_input" class="answer-input" placeholder="*********" data-question-id="rocky_question_3"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_3">回答</button><button type="button" class="giveup-btn" id="rocky_question_3_giveup" data-question-id="rocky_question_3" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="rocky_question_4"><div class="question-content"><div class="question-header"><p class="question-text">postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか</p><span class="success-message" id="rocky_question_4_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_4_input" class="answer-input" placeholder="*********" data-question-id="rocky_question_4"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_4">回答</button><button type="button" class="giveup-btn" id="rocky_question_4_giveup" data-question-id="rocky_question_4" style="display: none;">解答を見る</button></div></div></div>
 
 <div class="code-file-info">📁 /etc/postfix/main.cf</div>
 <pre><code>#myhostname = host.domain.tld
@@ -444,7 +459,7 @@ skip_if_unavailable=False
 <span class="git-add">home_mailbox = Maildir/</span></code></pre>
 
 <h3 id="3.1.5">postfixの設定の反映</h3>
-<div class="question-box" id="rocky_question_4"><div class="question-content"><div class="question-header"><p class="question-text">Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか</p><span class="success-message" id="rocky_question_4_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_4_input" class="answer-input" placeholder="*********" data-question-id="rocky_question_4"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_4">回答</button><button type="button" class="giveup-btn" id="rocky_question_4_giveup" data-question-id="rocky_question_4" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="rocky_question_5"><div class="question-content"><div class="question-header"><p class="question-text">Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか</p><span class="success-message" id="rocky_question_5_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_5_input" class="answer-input" placeholder="*********" data-question-id="rocky_question_5"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_5">回答</button><button type="button" class="giveup-btn" id="rocky_question_5_giveup" data-question-id="rocky_question_5" style="display: none;">解答を見る</button></div></div></div>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart postfix</code></pre>
@@ -453,7 +468,7 @@ skip_if_unavailable=False
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable postfix</code></pre>
 
 <h2 id="3.2">ファイアウォールの設定</h2>
-<div class="question-box" id="rocky_question_5"><div class="question-content"><div class="question-header"><p class="question-text">RedHat系でデフォルトのファイアウォールとして使用されるソフトの名前はなんですか？</p><span class="success-message" id="rocky_question_5_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_5_input" class="answer-input" placeholder="************" data-question-id="rocky_question_5"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_5">回答</button><button type="button" class="giveup-btn" id="rocky_question_5_giveup" data-question-id="rocky_question_5" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="rocky_question_6"><div class="question-content"><div class="question-header"><p class="question-text">RedHat系でデフォルトのファイアウォールとして使用されるソフトの名前はなんですか？</p><span class="success-message" id="rocky_question_6_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_6_input" class="answer-input" placeholder="************" data-question-id="rocky_question_6"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_6">回答</button><button type="button" class="giveup-btn" id="rocky_question_6_giveup" data-question-id="rocky_question_6" style="display: none;">解答を見る</button></div></div></div>
 <p><code>firewall-cmd</code>コマンドでファイアウォールを設定します。</p>
 
 <h3 id="3.2.6">firewall-cmdの起動確認</h3>
@@ -555,7 +570,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
 
 <p>SSLを無効にします。</p>
-<div class="question-box" id="rocky_question_6"><div class="question-content"><div class="question-header"><p class="question-text">DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)</p><span class="success-message" id="rocky_question_6_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_6_input" class="answer-input" placeholder="********" data-question-id="rocky_question_6"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_6">回答</button><button type="button" class="giveup-btn" id="rocky_question_6_giveup" data-question-id="rocky_question_6" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="rocky_question_7"><div class="question-content"><div class="question-header"><p class="question-text">DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)</p><span class="success-message" id="rocky_question_7_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_7_input" class="answer-input" placeholder="********" data-question-id="rocky_question_7"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_7">回答</button><button type="button" class="giveup-btn" id="rocky_question_7_giveup" data-question-id="rocky_question_7" style="display: none;">解答を見る</button></div></div></div>
 
 <div class="code-file-info">📁 /etc/dovecot/conf.d/10-ssl.conf</div>
 <pre><code><span class="git-remove">ssl = required</span>
@@ -670,7 +685,7 @@ X-Original-TO: tome
 </div>
 
 <h2 id="4.1">httpdの設定</h2>
-<div class="question-box" id="rocky_question_7"><div class="question-content"><div class="question-header"><p class="question-text">httpdの設定ファイルの場所はどこですか？(絶対パスで入力)</p><span class="success-message" id="rocky_question_7_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_7_input" class="answer-input" placeholder="**************************" data-question-id="rocky_question_7"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_7">回答</button><button type="button" class="giveup-btn" id="rocky_question_7_giveup" data-question-id="rocky_question_7" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="rocky_question_8"><div class="question-content"><div class="question-header"><p class="question-text">httpdの設定ファイルの場所はどこですか？(絶対パスで入力)</p><span class="success-message" id="rocky_question_8_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_8_input" class="answer-input" placeholder="**************************" data-question-id="rocky_question_8"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_8">回答</button><button type="button" class="giveup-btn" id="rocky_question_8_giveup" data-question-id="rocky_question_8" style="display: none;">解答を見る</button></div></div></div>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/httpd/conf/httpd.conf</code></pre>
 
@@ -747,7 +762,7 @@ success</code></pre>
 
         <script>
             // 問題データをグローバル変数に設定
-            window.questionsData = [{"id":"rocky_question_1","question":"管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？","answer":"SELinux"},{"id":"rocky_question_2","question":"RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？","answer":"dnf"},{"id":"rocky_question_3","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"rocky_question_4","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"rocky_question_5","question":"RedHat系でデフォルトのファイアウォールとして使用されるソフトの名前はなんですか？","answer":"firewall-cmd"},{"id":"rocky_question_6","question":"DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"rocky_question_7","question":"httpdの設定ファイルの場所はどこですか？(絶対パスで入力)","answer":"/etc/httpd/conf/httpd.conf"}];
+            window.questionsData = [{"id":"rocky_question_1","question":"Linuxを作った人の氏名を英語で答えてください","answer":"Linus Torvalds"},{"id":"rocky_question_2","question":"管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？","answer":"SELinux"},{"id":"rocky_question_3","question":"RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？","answer":"dnf"},{"id":"rocky_question_4","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"rocky_question_5","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"rocky_question_6","question":"RedHat系でデフォルトのファイアウォールとして使用されるソフトの名前はなんですか？","answer":"firewall-cmd"},{"id":"rocky_question_7","question":"DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"rocky_question_8","question":"httpdの設定ファイルの場所はどこですか？(絶対パスで入力)","answer":"/etc/httpd/conf/httpd.conf"}];
         </script>
         <script src="assets/js/spoiler-manager.js"></script>
         <script src="assets/js/timer-manager.js"></script>
