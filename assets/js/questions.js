@@ -36,13 +36,19 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // ページ読み込み時に正解済みの問題を復元してからスポイラーを生成
-    window.apiManager.loadUserStateFromServer().then((answeredQuestions) => {
-        if (answeredQuestions.length > 0) {
-            window.stateManager.restoreAnsweredQuestionsFromServer(answeredQuestions);
+    window.apiManager.loadUserStateFromServer().then((result) => {
+        if (result && result.success) {
+            // サーバー応答が成功: サーバーの結果のみを採用（空配列でもそのまま）
+            window.stateManager.restoreAnsweredQuestionsFromServer(result.answeredQuestions);
+            // localStorageもサーバーの状態に同期
+            const userId = window.stateManager.getCurrentUserId();
+            const storageKey = 'answeredQuestions_' + userId;
+            localStorage.setItem(storageKey, JSON.stringify(result.answeredQuestions));
         } else {
+            // サーバー取得に失敗した場合のみlocalStorageから復元
             window.stateManager.restoreAnsweredQuestions();
         }
-        
+
         // 正解済み問題の復元後にスポイラーを動的に生成
         setTimeout(() => {
             window.spoilerManager.generateSpoilersAfterLoad();

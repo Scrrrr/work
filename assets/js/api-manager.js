@@ -25,18 +25,21 @@ class ApiManager {
     }
 
     // サーバーからユーザー状態を取得
+    // 成功時: { success: true, answeredQuestions: [...] }
+    // 失敗時: { success: false }
     loadUserStateFromServer() {
         return new Promise((resolve) => {
             const xhr = new XMLHttpRequest();
             xhr.open('POST', this.baseUrl, true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    const response = JSON.parse(xhr.responseText);
-                    resolve(response.answeredQuestions);
-                } else if (xhr.readyState === 4 && xhr.status !== 200) {
-                    // サーバーからの取得に失敗した場合は空配列を返す
-                    resolve([]);
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        resolve({ success: true, answeredQuestions: response.answeredQuestions || [] });
+                    } else {
+                        resolve({ success: false });
+                    }
                 }
             };
             xhr.send('action=get_user_state');

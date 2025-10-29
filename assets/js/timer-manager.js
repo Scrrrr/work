@@ -27,6 +27,7 @@ class TimerManager {
             }
             this.giveUpTimers.delete(questionId);
         }, 180000); // 3分 = 180秒 = 180000ミリ秒
+      //  }, 10000); // 10秒 = 10000ミリ秒 Debug用
         
         this.giveUpTimers.set(questionId, timerId);
     }
