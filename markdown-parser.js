@@ -727,6 +727,10 @@ ${questionsPHP}
             // 問題データをグローバル変数に設定
             window.questionsData = ${JSON.stringify(this.questions)};
         </script>
+        <script src="assets/js/spoiler-manager.js"></script>
+        <script src="assets/js/timer-manager.js"></script>
+        <script src="assets/js/api-manager.js"></script>
+        <script src="assets/js/state-manager.js"></script>
         <script src="assets/js/questions.js"></script>
         `;
     }
