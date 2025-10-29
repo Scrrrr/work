@@ -1,6 +1,8 @@
 // 問題機能のJavaScript
 // 正解済みの問題を追跡するグローバル変数
 let answeredQuestions = new Set();
+// 問題ごとのGive Upタイマーを管理するグローバル変数
+const giveUpTimers = new Map();
 
 document.addEventListener('DOMContentLoaded', function() {
     // 回答入力欄のイベントリスナー
@@ -27,6 +29,14 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const questionId = this.getAttribute('data-question-id');
             checkAnswerAndUpdateUI(questionId);
+        });
+    });
+    
+    // Give Upボタンのイベントリスナー
+    document.querySelectorAll('.giveup-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const questionId = this.getAttribute('data-question-id');
+            showAnswerAndDisable(questionId);
         });
     });
     
@@ -152,6 +162,18 @@ function checkAnswerAndUpdateUI(questionId) {
             input.disabled = true;
             button.disabled = true;
             
+            // Give Upボタンを非表示にする（既に表示されていた場合）
+            const giveUpBtn = document.getElementById(questionId + '_giveup');
+            if (giveUpBtn) {
+                giveUpBtn.style.display = 'none';
+            }
+            
+            // タイマーをクリア
+            if (giveUpTimers.has(questionId)) {
+                clearTimeout(giveUpTimers.get(questionId));
+                giveUpTimers.delete(questionId);
+            }
+            
             // 正解メッセージを表示
             const successMessage = document.getElementById(questionId + '_success');
             if (successMessage) {
@@ -176,6 +198,9 @@ function checkAnswerAndUpdateUI(questionId) {
             // 不正解の場合 - 赤色の背景
             input.classList.remove('correct');
             input.classList.add('incorrect');
+            
+            // 最初の誤答から3分後にGive Upボタンを表示
+            startGiveUpTimerForQuestion(questionId);
             
             // 少し遅延してから背景色をリセット（再入力可能にする）
             setTimeout(() => {
@@ -325,5 +350,61 @@ function revealSpoilersWithRetry(questionId, retryCount = 0) {
         setTimeout(() => {
             revealSpoilersWithRetry(questionId, retryCount + 1);
         }, 5);
+    }
+}
+
+// 問題ごとのGive Upボタンのタイマーを開始（最初の誤答から3分）
+function startGiveUpTimerForQuestion(questionId) {
+    // 既にタイマーが開始されている場合はスキップ
+    if (giveUpTimers.has(questionId)) {
+        return;
+    }
+    
+    // 既に回答済みの場合はスキップ
+    if (answeredQuestions.has(questionId)) {
+        return;
+    }
+    
+    // 3分（180秒）後にGive Upボタンを表示
+    const timerId = setTimeout(() => {
+        const giveUpBtn = document.getElementById(questionId + '_giveup');
+        if (giveUpBtn) {
+            // まだ回答済みでない場合のみ表示
+            if (!answeredQuestions.has(questionId)) {
+                giveUpBtn.style.display = 'inline-block';
+            }
+        }
+        giveUpTimers.delete(questionId);
+    }, 180000); // 3分 = 180秒 = 180000ミリ秒
+    
+    giveUpTimers.set(questionId, timerId);
+}
+
+// Give Upボタンをクリックした時の処理
+function showAnswerAndDisable(questionId) {
+    const input = document.getElementById(questionId + '_input');
+    const button = document.querySelector('[data-question-id="' + questionId + '"].submit-answer-btn');
+    const giveUpBtn = document.getElementById(questionId + '_giveup');
+    const successMessage = document.getElementById(questionId + '_success');
+    
+    // 問題データから回答を取得
+    const questions = window.questionsData || [];
+    const question = questions.find(q => q.id === questionId);
+    const answer = question ? question.answer : '';
+    
+    if (input && button && giveUpBtn) {
+        // 回答を表示
+        input.value = answer;
+        input.classList.add('correct');
+        input.disabled = true;
+        button.disabled = true;
+        giveUpBtn.style.display = 'none';
+        
+        if (successMessage) {
+            successMessage.style.display = 'none'; // Give Upの場合は「正解」メッセージは表示しない
+        }
+        
+        // スポイラーを解除
+        revealSpoilersWithRetry(questionId);
     }
 }

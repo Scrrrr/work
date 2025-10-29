@@ -137,7 +137,7 @@ class MarkdownParser {
         const answerLength = answerText.length;
         const asteriskHint = '*'.repeat(answerLength);
         
-        return `<div class="question-box" id="${questionId}"><div class="question-content"><div class="question-header"><p class="question-text">${questionText}</p><span class="success-message" id="${questionId}_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="${questionId}_input" class="answer-input" placeholder="${asteriskHint}" data-question-id="${questionId}"><button type="button" class="submit-answer-btn" data-question-id="${questionId}">回答</button></div></div></div>`;
+        return `<div class="question-box" id="${questionId}"><div class="question-content"><div class="question-header"><p class="question-text">${questionText}</p><span class="success-message" id="${questionId}_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="${questionId}_input" class="answer-input" placeholder="${asteriskHint}" data-question-id="${questionId}"><button type="button" class="submit-answer-btn" data-question-id="${questionId}">回答</button><button type="button" class="giveup-btn" id="${questionId}_giveup" data-question-id="${questionId}" style="display: none;">回答を見る</button></div></div></div>`;
     }
 
     /**
@@ -728,10 +728,7 @@ ${questionsPHP}
             window.questionsData = ${JSON.stringify(this.questions)};
         </script>
         <script src="assets/js/questions.js"></script>
-        <script>
-            // 問題機能のJavaScriptは外部ファイルに移動済み
-            
-        </script>`;
+        `;
     }
 
     /**
