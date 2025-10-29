@@ -2,7 +2,7 @@
 // 問題データ
 $questions = array(
     'rocky_question_1' => 'SELinux',
-    'rocky_question_2' => 'yum',
+    'rocky_question_2' => 'dnf',
     'rocky_question_3' => 'relayhost',
     'rocky_question_4' => 'systemctl',
     'rocky_question_5' => 'firewall-cmd',
@@ -348,15 +348,15 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# source /etc/profile.d/proxy.sh</code></pre>
 
-<h3 id="2.5.3">yumのプロキシ設定</h3>
+<h3 id="2.5.3">dnfのプロキシ設定</h3>
 <div class="question-box" id="rocky_question_2"><div class="question-content"><div class="question-header"><p class="question-text">RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？</p><span class="success-message" id="rocky_question_2_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_2_input" class="answer-input" placeholder="***" data-question-id="rocky_question_2"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_2">回答</button><button type="button" class="giveup-btn" id="rocky_question_2_giveup" data-question-id="rocky_question_2" style="display: none;">解答を見る</button></div></div></div>
-<p>パッケージマネージャーyumの設定を行います。</p>
+<p>パッケージマネージャーdnfの設定を行います。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/yum.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dnf/dnf.conf</code></pre>
 
 <p><code>skip_if_unavailable=False</code>の下に以下を記入します。</p>
 
-<div class="code-file-info">📁 /etc/yum.conf</div>
+<div class="code-file-info">📁 /etc/dnf/dnf.conf</div>
 <pre><code>…
 best=True
 skip_if_unavailable=False
@@ -365,7 +365,7 @@ skip_if_unavailable=False
 
 <p>保存して終了後アップデートを行います。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y update --nobest</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# dnf -y update</code></pre>
 
 <p>問題なくアップデートが行われれば、プロキシの設定は完了です。</p>
 
@@ -381,7 +381,7 @@ skip_if_unavailable=False
 <p><p><strong>注記:</strong></p></p>
 <p><p>OSのインストールで既にPostfixをインストールしていますが、チェック項目を忘れていた場合は以下のコマンドでインストールしてください。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y install postfix</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# dnf -y install postfix</code></pre>
 </div>
 
 <h3 id="3.1.4">Postfixの設定</h3>
@@ -393,6 +393,8 @@ skip_if_unavailable=False
 <p>以下の設定を行います。</p>
 <p>赤色は削除する場所で、緑色は追記する行です。</p>
 <p>無地は周辺の設定項目を表しています。</p>
+
+<div class="question-box" id="rocky_question_3"><div class="question-content"><div class="question-header"><p class="question-text">postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか</p><span class="success-message" id="rocky_question_3_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_3_input" class="answer-input" placeholder="*********" data-question-id="rocky_question_3"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_3">回答</button><button type="button" class="giveup-btn" id="rocky_question_3_giveup" data-question-id="rocky_question_3" style="display: none;">解答を見る</button></div></div></div>
 
 <div class="code-file-info">📁 /etc/postfix/main.cf</div>
 <pre><code>#myhostname = host.domain.tld
@@ -440,8 +442,6 @@ skip_if_unavailable=False
 #home_mailbox = Mailbox
 #home_mailbox = Maildir/
 <span class="git-add">home_mailbox = Maildir/</span></code></pre>
-
-<div class="question-box" id="rocky_question_3"><div class="question-content"><div class="question-header"><p class="question-text">postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか</p><span class="success-message" id="rocky_question_3_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_3_input" class="answer-input" placeholder="*********" data-question-id="rocky_question_3"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_3">回答</button><button type="button" class="giveup-btn" id="rocky_question_3_giveup" data-question-id="rocky_question_3" style="display: none;">解答を見る</button></div></div></div>
 
 <h3 id="3.1.5">postfixの設定の反映</h3>
 <div class="question-box" id="rocky_question_4"><div class="question-content"><div class="question-header"><p class="question-text">Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか</p><span class="success-message" id="rocky_question_4_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_4_input" class="answer-input" placeholder="*********" data-question-id="rocky_question_4"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_4">回答</button><button type="button" class="giveup-btn" id="rocky_question_4_giveup" data-question-id="rocky_question_4" style="display: none;">解答を見る</button></div></div></div>
@@ -536,7 +536,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <div class="note">
 <p><p><strong>注記:</strong></p></p>
 <p><p>既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y install dovecot-core dovecot-pop3d</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# dnf -y install dovecot-core dovecot-pop3d</code></pre>
 </div>
 
 <h3 id="3.4.14">Dovecotの設定</h3>
@@ -666,7 +666,7 @@ X-Original-TO: tome
 <p><p><strong>注記:</strong></p></p>
 <p><p>既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y install httpd</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# dnf -y install httpd</code></pre>
 </div>
 
 <h2 id="4.1">httpdの設定</h2>
@@ -747,7 +747,7 @@ success</code></pre>
 
         <script>
             // 問題データをグローバル変数に設定
-            window.questionsData = [{"id":"rocky_question_1","question":"管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？","answer":"SELinux"},{"id":"rocky_question_2","question":"RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？","answer":"yum"},{"id":"rocky_question_3","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"rocky_question_4","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"rocky_question_5","question":"RedHat系でデフォルトのファイアウォールとして使用されるソフトの名前はなんですか？","answer":"firewall-cmd"},{"id":"rocky_question_6","question":"DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"rocky_question_7","question":"httpdの設定ファイルの場所はどこですか？(絶対パスで入力)","answer":"/etc/httpd/conf/httpd.conf"}];
+            window.questionsData = [{"id":"rocky_question_1","question":"管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？","answer":"SELinux"},{"id":"rocky_question_2","question":"RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？","answer":"dnf"},{"id":"rocky_question_3","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"rocky_question_4","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"rocky_question_5","question":"RedHat系でデフォルトのファイアウォールとして使用されるソフトの名前はなんですか？","answer":"firewall-cmd"},{"id":"rocky_question_6","question":"DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"rocky_question_7","question":"httpdの設定ファイルの場所はどこですか？(絶対パスで入力)","answer":"/etc/httpd/conf/httpd.conf"}];
         </script>
         <script src="assets/js/spoiler-manager.js"></script>
         <script src="assets/js/timer-manager.js"></script>

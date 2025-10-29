@@ -1,4 +1,17 @@
-# RockyLinuxのインストール
+# RockyLinuxとは
+RockyLinuxは、サーバ向け用途に特化した安定性の高いLinuxディストリビューションです。これからRockyLinuxをコンピュータにインストールし、メールサーバやウェブサーバとしての機能を持つサーバを構築していきます。
+今回インストールするバージョンはRocky Linux 9.5です。
+
+:::note
+本マニュアルの各所に確認用の質問が配置されています。正解すると、本文中の伏せ字が自動で解放され、続きが読めるようになります。答えに迷ったら、Firefoxでキーワード検索して調べてください。
+
+試しに下の質問に答えてください。
+{question:Linuxを作った人の氏名を英語で答えてください}{answer:Linus Torvalds}
+
+問題は何回でも回答できます。  
+もしも、最初の回答から3分経過してもわからない場合は、**「解答を表示する」ボタン**が現れます。
+**!!一度も回答しないと3分経過してもボタンは表示されません!!**
+:::
 
 ## 言語選択
 インストールが開始されると言語選択メニューが表示されます。左のメニューの中央付近にある[日本語]を選択し、[続行]を選択します。
@@ -186,17 +199,17 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080
 root@{{serverHostname}}:~# source /etc/profile.d/proxy.sh
 ```
 
-### yumのプロキシ設定
-{question:RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？}{answer:yum}
-パッケージマネージャーyumの設定を行います。
+### dnfのプロキシ設定
+{question:RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？}{answer:dnf}
+パッケージマネージャーdnfの設定を行います。
 
 ```bash
-root@{{serverHostname}}:~# vi /etc/yum.conf
+root@{{serverHostname}}:~# vi /etc/dnf/dnf.conf
 ```
 
 `skip_if_unavailable=False`の下に以下を記入します。
 
-```{file=/etc/yum.conf}
+```{file=/etc/dnf/dnf.conf}
 …
 best=True
 skip_if_unavailable=False
@@ -207,7 +220,7 @@ skip_if_unavailable=False
 保存して終了後アップデートを行います。
 
 ```bash
-root@{{serverHostname}}:~# yum -y update --nobest
+root@{{serverHostname}}:~# dnf -y update 
 ```
 
 問題なくアップデートが行われれば、プロキシの設定は完了です。
@@ -224,7 +237,7 @@ Postfixは、オープンソースのメール転送エージェント(MTA: Mail
 OSのインストールで既にPostfixをインストールしていますが、チェック項目を忘れていた場合は以下のコマンドでインストールしてください。
 
 ```bash
-root@{{serverHostname}}:~# yum -y install postfix
+root@{{serverHostname}}:~# dnf -y install postfix
 ```
 :::
 
@@ -239,6 +252,8 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 以下の設定を行います。
 赤色は削除する場所で、緑色は追記する行です。
 無地は周辺の設定項目を表しています。
+
+{question:postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか}{answer:relayhost}
 
 ```{file=/etc/postfix/main.cf}
 #myhostname = host.domain.tld
@@ -287,8 +302,6 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 #home_mailbox = Maildir/
 +[[home_mailbox = Maildir/]]
 ```
-
-{question:postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか}{answer:relayhost}
 
 ### postfixの設定の反映
 {question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}
@@ -411,7 +424,7 @@ Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオー�
 :::note
 既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。
 ```bash
-root@{{serverHostname}}:~# yum -y install dovecot-core dovecot-pop3d
+root@{{serverHostname}}:~# dnf -y install dovecot-core dovecot-pop3d
 ```
 :::
 
@@ -573,7 +586,7 @@ X-Original-TO: tome
 既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。
 
 ```bash
-root@{{serverHostname}}:~# yum -y install httpd
+root@{{serverHostname}}:~# dnf -y install httpd
 ```
 :::
 
