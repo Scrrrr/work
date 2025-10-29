@@ -175,7 +175,7 @@ $questions = array(
 <p>端末を開き、root のパスワードを設定します。</p>
 <p>rootのパスワードは<code>netsys00</code>に設定します。</p>
 
-<div class="question-box" id="ubuntu_question_1"><div class="question-content"><div class="question-header"><p class="question-text">一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？</p><span class="success-message" id="ubuntu_question_1_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_1_input" class="answer-input" placeholder="****" data-question-id="ubuntu_question_1"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_1">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_1_giveup" data-question-id="ubuntu_question_1" style="display: none;">回答を表示</button></div></div></div>
+<div class="question-box" id="ubuntu_question_1"><div class="question-content"><div class="question-header"><p class="question-text">一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？</p><span class="success-message" id="ubuntu_question_1_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_1_input" class="answer-input" placeholder="****" data-question-id="ubuntu_question_1"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_1">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_1_giveup" data-question-id="ubuntu_question_1" style="display: none;">解答を見る</button></div></div></div>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo passwd root
 tomeのパスワード:
@@ -271,7 +271,7 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 <p>また、enp1s0にipv6の項目がなければ、ipv6を無効に設定できています。</p>
 
 <h3 id="2.6.3">ホスト名の設定の確認</h3>
-<div class="question-box" id="ubuntu_question_2"><div class="question-content"><div class="question-header"><p class="question-text">プログラムの設定ファイルが格納されているディレクトリはどこでしょうか(絶対パスで入力)</p><span class="success-message" id="ubuntu_question_2_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_2_input" class="answer-input" placeholder="****" data-question-id="ubuntu_question_2"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_2">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_2_giveup" data-question-id="ubuntu_question_2" style="display: none;">回答を表示</button></div></div></div>
+<div class="question-box" id="ubuntu_question_2"><div class="question-content"><div class="question-header"><p class="question-text">プログラムの設定ファイルが格納されているディレクトリはどこでしょうか(絶対パスで入力)</p><span class="success-message" id="ubuntu_question_2_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_2_input" class="answer-input" placeholder="****" data-question-id="ubuntu_question_2"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_2">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_2_giveup" data-question-id="ubuntu_question_2" style="display: none;">解答を見る</button></div></div></div>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# cat /etc/hostname</code></pre>
 <p>これでホスト名が正しく表示されたら設定は完了です。</p>
 
@@ -393,7 +393,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 
 <h3 id="2.8.11">パッケージの更新とインストール</h3>
-<div class="question-box" id="ubuntu_question_3"><div class="question-content"><div class="question-header"><p class="question-text">aptコマンドでアップデート可能なパッケージの情報を更新をするサブコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_3_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_3_input" class="answer-input" placeholder="******" data-question-id="ubuntu_question_3"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_3">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_3_giveup" data-question-id="ubuntu_question_3" style="display: none;">回答を表示</button></div></div></div>
+<div class="question-box" id="ubuntu_question_3"><div class="question-content"><div class="question-header"><p class="question-text">aptコマンドでアップデート可能なパッケージの情報を更新をするサブコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_3_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_3_input" class="answer-input" placeholder="******" data-question-id="ubuntu_question_3"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_3">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_3_giveup" data-question-id="ubuntu_question_3" style="display: none;">解答を見る</button></div></div></div>
 <p>以下のコマンでアップデート可能なパッケージ情報を更新します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt update</code></pre>
 <p>先頭にステータスが表示されます。<strong>取得</strong>と表示されていれば</p>
@@ -406,7 +406,7 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 </div>
 
 <p>パッケージのアップグレードをします。</p>
-<div class="question-box" id="ubuntu_question_4"><div class="question-content"><div class="question-header"><p class="question-text">aptコマンドでパッケージを更新するサブコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_4_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_4_input" class="answer-input" placeholder="*******" data-question-id="ubuntu_question_4"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_4">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_4_giveup" data-question-id="ubuntu_question_4" style="display: none;">回答を表示</button></div></div></div>
+<div class="question-box" id="ubuntu_question_4"><div class="question-content"><div class="question-header"><p class="question-text">aptコマンドでパッケージを更新するサブコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_4_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_4_input" class="answer-input" placeholder="*******" data-question-id="ubuntu_question_4"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_4">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_4_giveup" data-question-id="ubuntu_question_4" style="display: none;">解答を見る</button></div></div></div>
 <p>以下のコマンで、パッケージを更新します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt upgrade -y</code></pre>
 <div class="note">
@@ -451,7 +451,7 @@ mynetworks = 10.10.0.0/16
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart postfix.service</code></pre>
 
 <h2 id="3.2">ファイアウォールの設定</h2>
-<div class="question-box" id="ubuntu_question_5"><div class="question-content"><div class="question-header"><p class="question-text">Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_5_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_5_input" class="answer-input" placeholder="***" data-question-id="ubuntu_question_5"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_5">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_5_giveup" data-question-id="ubuntu_question_5" style="display: none;">回答を表示</button></div></div></div>
+<div class="question-box" id="ubuntu_question_5"><div class="question-content"><div class="question-header"><p class="question-text">Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_5_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_5_input" class="answer-input" placeholder="***" data-question-id="ubuntu_question_5"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_5">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_5_giveup" data-question-id="ubuntu_question_5" style="display: none;">解答を見る</button></div></div></div>
 <p><code>ufw</code>コマンドでファイアウォールを設定します。</p>
 
 <h3 id="3.2.15">ufwの有効化</h3>
@@ -733,5 +733,9 @@ To                         Action      From
             // 問題データをグローバル変数に設定
             window.questionsData = [{"id":"ubuntu_question_1","question":"一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？","answer":"sudo"},{"id":"ubuntu_question_2","question":"プログラムの設定ファイルが格納されているディレクトリはどこでしょうか(絶対パスで入力)","answer":"/etc"},{"id":"ubuntu_question_3","question":"aptコマンドでアップデート可能なパッケージの情報を更新をするサブコマンドは何でしょうか","answer":"update"},{"id":"ubuntu_question_4","question":"aptコマンドでパッケージを更新するサブコマンドは何でしょうか","answer":"upgrade"},{"id":"ubuntu_question_5","question":"Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか","answer":"ufw"}];
         </script>
+        <script src="assets/js/spoiler-manager.js"></script>
+        <script src="assets/js/timer-manager.js"></script>
+        <script src="assets/js/api-manager.js"></script>
+        <script src="assets/js/state-manager.js"></script>
         <script src="assets/js/questions.js"></script>
         
