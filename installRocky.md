@@ -317,7 +317,7 @@ root@{{serverHostname}}:~# systemctl enable postfix
 ```
 
 ## ファイアウォールの設定
-{question:RedHat系でデフォルトのファイアウォールとして使用されるソフトの名前はなんですか？}{answer:firewall-cmd}
+{question:RedHat系でデフォルトのファイアウォールであるfirewalldを操作するためのコマンドは何でしょうか}{answer:firewall-cmd}
 `firewall-cmd`コマンドでファイアウォールを設定します。
 
 ### firewall-cmdの起動確認
