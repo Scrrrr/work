@@ -84,7 +84,7 @@ $questions = array(
 <p>試しに下の質問に答えてください。</p>
 <div class="question-box" id="rocky_question_1"><div class="question-content"><div class="question-header"><p class="question-text">Linuxを作った人の氏名を英語で答えてください</p><span class="success-message" id="rocky_question_1_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_1_input" class="answer-input" placeholder="**************" data-question-id="rocky_question_1"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_1">回答</button><button type="button" class="giveup-btn" id="rocky_question_1_giveup" data-question-id="rocky_question_1" style="display: none;">解答を見る</button></div></div></div>
 
-<p>問題は何回でも回答できます。  </p>
+<p>質問への回答は何回でもできます。</p>
 <p>もしも、最初の回答から3分経過してもわからない場合は、<strong>「解答を表示する」ボタン</strong>が現れます。</p>
 <p><strong>!!一度も回答しないと3分経過してもボタンは表示されません!!</strong></p></p>
 </div>
@@ -468,7 +468,7 @@ skip_if_unavailable=False
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable postfix</code></pre>
 
 <h2 id="3.2">ファイアウォールの設定</h2>
-<div class="question-box" id="rocky_question_6"><div class="question-content"><div class="question-header"><p class="question-text">RedHat系でデフォルトのファイアウォールとして使用されるソフトの名前はなんですか？</p><span class="success-message" id="rocky_question_6_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_6_input" class="answer-input" placeholder="************" data-question-id="rocky_question_6"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_6">回答</button><button type="button" class="giveup-btn" id="rocky_question_6_giveup" data-question-id="rocky_question_6" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="rocky_question_6"><div class="question-content"><div class="question-header"><p class="question-text">RedHat系でデフォルトのファイアウォールであるfirewalldを操作するためのコマンドは何でしょうか</p><span class="success-message" id="rocky_question_6_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_6_input" class="answer-input" placeholder="************" data-question-id="rocky_question_6"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_6">回答</button><button type="button" class="giveup-btn" id="rocky_question_6_giveup" data-question-id="rocky_question_6" style="display: none;">解答を見る</button></div></div></div>
 <p><code>firewall-cmd</code>コマンドでファイアウォールを設定します。</p>
 
 <h3 id="3.2.6">firewall-cmdの起動確認</h3>
@@ -762,7 +762,7 @@ success</code></pre>
 
         <script>
             // 問題データをグローバル変数に設定
-            window.questionsData = [{"id":"rocky_question_1","question":"Linuxを作った人の氏名を英語で答えてください","answer":"Linus Torvalds"},{"id":"rocky_question_2","question":"管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？","answer":"SELinux"},{"id":"rocky_question_3","question":"RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？","answer":"dnf"},{"id":"rocky_question_4","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"rocky_question_5","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"rocky_question_6","question":"RedHat系でデフォルトのファイアウォールとして使用されるソフトの名前はなんですか？","answer":"firewall-cmd"},{"id":"rocky_question_7","question":"DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"rocky_question_8","question":"httpdの設定ファイルの場所はどこですか？(絶対パスで入力)","answer":"/etc/httpd/conf/httpd.conf"}];
+            window.questionsData = [{"id":"rocky_question_1","question":"Linuxを作った人の氏名を英語で答えてください","answer":"Linus Torvalds"},{"id":"rocky_question_2","question":"管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？","answer":"SELinux"},{"id":"rocky_question_3","question":"RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？","answer":"dnf"},{"id":"rocky_question_4","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"rocky_question_5","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"rocky_question_6","question":"RedHat系でデフォルトのファイアウォールであるfirewalldを操作するためのコマンドは何でしょうか","answer":"firewall-cmd"},{"id":"rocky_question_7","question":"DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"rocky_question_8","question":"httpdの設定ファイルの場所はどこですか？(絶対パスで入力)","answer":"/etc/httpd/conf/httpd.conf"}];
         </script>
         <script src="assets/js/spoiler-manager.js"></script>
         <script src="assets/js/timer-manager.js"></script>
