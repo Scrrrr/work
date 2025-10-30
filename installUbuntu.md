@@ -334,7 +334,12 @@ mynetworks = 10.10.0.0/16
 `systemctl`コマンドでpostfixを再起動します。
 
 ```bash
-root@{{serverHostname}}:~# systemctl restart postfix.service
+root@{{serverHostname}}:~# systemctl restart postfix
+```
+
+また、サーバの再起動後もサービスが開始されるように設定します。
+```bash
+root@{{serverHostname}}:~# systemctl enable postfix
 ```
 
 ## ファイアウォールの設定
@@ -490,6 +495,11 @@ root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-mail.conf
 
 ```bash
 root@{{serverHostname}}:~# systemctl restart dovecot
+```
+
+また、サーバの再起動後もサービスが開始されるように設定します。
+```bash
+root@{{serverHostname}}:~# systemctl enable dovecot
 ```
 
 ## ファイアウォールの設定
