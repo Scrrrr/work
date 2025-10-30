@@ -6,12 +6,14 @@
 #include<unistd.h>
 #include"functions.h"
 
-#define USER_STATE_DIR "/home/user/ドキュメント/work/api/user_states"
+#define BASE_DIR "/var/www/html/SCTS/"
+#define USER_STATE_DIR BASE_DIR "api/user_states"
+
 
 static void render_once(void)
 {
-    FILE *rocky = fopen("assets/source/installRocky.html", "r");
-    FILE *ubuntu = fopen("assets/source/installUbuntu.html", "r");
+    FILE *rocky = fopen(BASE_DIR "assets/source/installRocky.html", "r");
+    FILE *ubuntu = fopen(BASE_DIR "assets/source/installUbuntu.html", "r");
     int RockyQuestionNum  = rocky ? GetQuestionCount(rocky) : 0;
     int UbuntuQuestionNum = ubuntu ? GetQuestionCount(ubuntu) : 0;
     if (rocky) fclose(rocky);
