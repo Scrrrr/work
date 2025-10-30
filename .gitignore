@@ -1,1 +1,3 @@
 api/user_states/*
+scripts/watch_user_states.sh
+scripts/check
