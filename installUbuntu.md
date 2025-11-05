@@ -82,7 +82,7 @@ SCTSのメニューより、「インストールサーバの起動」からUbun
 端末を開き、root のパスワードを設定します。
 rootのパスワードは`netsys00`に設定します。
 
-{question:一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？}{answer:sudo}
+{question:一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？}{answer:sudo}{hint:super user do の略}
 
 ```bash
 tome@{{serverHostname}}:~$ sudo passwd root
@@ -183,7 +183,7 @@ NTP=ntp-a.t-kougei.ac.jp
 ```
 
 ### systemd-timesyncdの再起動
-{question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}
+{question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}{hint:systemd + control}
 `systemdctl`コマンドで`systemd-timesyncd`を再起動します。
 ```bash
 root@{{serverHostname}}:~# systemctl restart systemd-timesyncd
@@ -254,7 +254,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080
 root@{{serverHostname}}:~# source /etc/profile.d/proxy.sh
 ```
 ### aptのプロキシ設定
-{question:Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？}{answer:apt}
+{question:Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？}{answer:apt}{hint:advanced package toolの略}
 `/etc/apt/apt.conf.d`の配下に`30proxy.conf`ファイルを新たに作成します。
 ```bash
 root@{{serverHostname}}:~# vi /etc/apt/apt.conf.d/30proxy.conf
@@ -324,7 +324,7 @@ mynetworks = 10.10.0.0/16
 +[[home_mailbox = Maildir/]]
 ```
 
-{question:postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか}{answer:relayhost}
+{question:postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか}{answer:relayhost}{hint:メールをリレーさせる}
 
 ### postfixの設定の反映
 `systemctl`コマンドでpostfixを再起動します。
@@ -339,7 +339,7 @@ root@{{serverHostname}}:~# systemctl enable postfix
 ```
 
 ## ファイアウォールの設定
-{question:Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか}{answer:ufw}
+{question:Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか}{answer:ufw}{hint:uncomplicated firewallの略}
 `ufw`コマンドでファイアウォールを設定します。
 
 ### ufwの有効化
@@ -454,7 +454,7 @@ root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-ssl.conf
 
 SSLを無効にします。
 
-{question:DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)}{answer:ssl = no}
+{question:DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)}{answer:ssl = no}{hint:「10-ssl.conf ssl 無効」でWeb検索}
 
 `ssl = no`をコメントアウトし、`ssl = yes`を追記します。
 ```
@@ -596,7 +596,7 @@ root@{{serverHostname}}:~# apt install -y apache2
 ## Apache2の設定
 apache2の設定ファイルを記述します。作成するサイトの設定ファイルは`mywebsite.conf`とします。
 
-{question:apache2で新たにウェブサイトを作成するとき、どこのディレクトリに作成しますか。(絶対パスで入力)}{answer:/etc/apache2/sites-available}
+{question:apache2で新たにウェブサイトを作成するとき、どこのディレクトリに設定ファイルを作成しますか。(絶対パスで入力)}{answer:/etc/apache2/sites-available}{hint:「利用可能なWebサイトの固有設定をおくディレクトリ apach2」でWeb検索}
 ```bash
 root@{{serverHostname}}:~# vi /etc/apache2/sites-available/mywebsite.conf
 ```
@@ -607,7 +607,7 @@ ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp
 ```
 
 作成した設定ファイル`a2ensite`コマンドでを有効化します。
-{question:apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか}{answer:a2ensite}
+{question:apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか}{answer:a2ensite}{hint:コマンドの先頭は「a2」から始まる}
 
 ```bash
 root@{{serverHostname}}:~# a2ensite mywebsite

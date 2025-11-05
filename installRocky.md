@@ -122,7 +122,7 @@ rootのパスワードと同様に［このパスワードは辞書チェック�
 中央下に表示されているアイコンにカーソルを合わせるとアプリケーション名が表示されるので、そこから[端末]を探します。もしくは、<win>キーを押した後に、[Terminal]と検索して提示された[端末]というソフトを起動します。
 
 ## SELinuxの無効化
-{question:システム全体の管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？}{answer:SELinux}
+{question:システム全体の管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？}{answer:SELinux}{hint:強制アクセス(MAC)}
 SELinuxの無効化を行います。
 
 :::warning
@@ -200,7 +200,7 @@ root@{{serverHostname}}:~# source /etc/profile.d/proxy.sh
 ```
 
 ### dnfのプロキシ設定
-{question:RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？}{answer:dnf}
+{question:RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？}{answer:dnf}{hint: dandified yum}
 パッケージマネージャーdnfの設定を行います。
 
 ```bash
@@ -253,7 +253,7 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 赤色は削除する場所で、緑色は追記する行です。
 無地は周辺の設定項目を表しています。
 
-{question:postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか}{answer:relayhost}
+{question:postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか}{answer:relayhost}{hint:メールをリレーさせる}
 
 ```{file=/etc/postfix/main.cf}
 #myhostname = host.domain.tld
@@ -304,7 +304,7 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 ```
 
 ### postfixの設定の反映
-{question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}
+{question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}{hint:systemd + control}
 `systemctl`コマンドでpostfixを再起動します。
 
 ```bash
@@ -449,7 +449,7 @@ root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-ssl.conf
 ```
 
 SSLを無効にします。
-{question:DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)}{answer:ssl = no}
+{question:DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)}{answer:ssl = no}{hint:「10-ssl.conf ssl 無効」でWeb検索}
 
 ```{file=/etc/dovecot/conf.d/10-ssl.conf}
 -[[ssl = required]]
@@ -591,7 +591,7 @@ root@{{serverHostname}}:~# dnf -y install httpd
 :::
 
 ## httpdの設定
-{question:httpdの設定ファイルの場所はどこですか？(絶対パスで入力)}{answer:/etc/httpd/conf/httpd.conf}
+{question:httpdの設定ファイルの場所はどこですか？(絶対パスで入力)}{answer:/etc/httpd/conf/httpd.conf}{hint:httpd.conf}
 
 ```bash
 root@{{serverHostname}}:~# vi /etc/httpd/conf/httpd.conf
