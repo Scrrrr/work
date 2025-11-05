@@ -2,9 +2,9 @@
 require_once 'common/auth.php';
 require_once 'common/server_config.php';
 
-$user = getAuthenticatedUser();
+$user = getAuthenticatedUser();              //common/auth.phpで定義
 $servers = ["tr201", "client1"];
-$config = getServerConfig($user, $servers);
+$config = getServerConfig($user, $servers);  //common/server_config.phpで定義
 
 // 変数を展開
 extract($config);
@@ -21,18 +21,7 @@ extract($config);
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-	<?php 
-	// HTMLファイルを読み込んで変数を置換
-	$htmlContent = file_get_contents('assets/source/installUbuntu.html');
-	
-	// PHPコードを実行して変数を置換（evalを使用）
-	ob_start();
-	eval('?>' . $htmlContent);
-	$processedContent = ob_get_clean();
-	
-	// 処理されたHTMLを出力
-	echo $processedContent;
-	?>
+	<?php require 'assets/source/installUbuntu.html'?>
 
     <!-- PAGE TOP ボタン -->
     <button id="pageTop" class="page-top" title="ページトップ">↑</button>

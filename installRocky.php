@@ -21,11 +21,6 @@ extract($config);
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-<!--================================ PHP ================================-->
-   <?php
-   // 変数は既に extract($config) で展開済み
-   ?>
-<!--================================ end ================================-->
 	<?php require 'assets/source/installRocky.html'?>
 
     <!-- PAGE TOP ボタン -->
