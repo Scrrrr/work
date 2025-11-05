@@ -3,19 +3,15 @@ UbuntuはLinuxディストリビューションの中でもサーバ向け、デ
 今回インストールするバージョンはUbuntu 22.04.2 - Desktopです。
 
 :::note
-本マニュアルの各所に確認用の質問が配置されています。正解すると、本文中の伏せ字が自動で解放され、続きが読めるようになります。答えに迷ったら、Firefoxでキーワード検索して調べてください。
+本マニュアルの各所に確認用の質問が配置されています。正解すると、本文中の伏せ字が自動で解放され、続きが読めるようになります。答えに迷ったら、**Firefoxでキーワード検索して調べてください。**
 
 試しに下の質問に答えてください。
-{question:Linuxを作った人の氏名を英語で答えてください}{answer:Linus Torvalds}
+{question:Linuxをカタカナで入力してください}{answer:リナックス}
 
 質問への回答は何回でもできます。
 もしも、最初の回答から3分経過してもわからない場合は、**「解答を表示する」ボタン**が現れます。
 **!!一度も回答しないと3分経過してもボタンは表示されません!!**
 :::
-
-## ブートローダーの起動
-黒い画面が現れたら`「Try or Install Ubuntu」`に矢印キーでカーソルを合わせて[Enter]
-しばらくの時間、起動の準備が行われます。
 
 ## 言語の選択
 使用する言語を選択します。デフォルトでは日本語に設定されています。
@@ -161,7 +157,6 @@ root@{{serverHostname}}:~# ip a
 また、enp1s0にipv6の項目がなければ、ipv6を無効に設定できています。
 
 ### ホスト名の設定の確認
-{question:プログラムの設定ファイルが格納されているディレクトリはどこでしょうか(絶対パスで入力)}{answer:/etc}
 ```bash
 root@{{serverHostname}}:~# cat /etc/hostname
 ```
@@ -188,6 +183,7 @@ NTP=ntp-a.t-kougei.ac.jp
 ```
 
 ### systemd-timesyncdの再起動
+{question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}
 `systemdctl`コマンドで`systemd-timesyncd`を再起動します。
 ```bash
 root@{{serverHostname}}:~# systemctl restart systemd-timesyncd
@@ -272,7 +268,6 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 ```
 
 ### パッケージの更新とインストール
-{question:aptコマンドでアップデート可能なパッケージの情報を更新をするサブコマンドは何でしょうか}{answer:update}
 以下のコマンでアップデート可能なパッケージ情報を更新します。
 ```bash
 root@{{serverHostname}}:~# apt update
@@ -285,7 +280,6 @@ root@{{serverHostname}}:~# apt update
 :::
 
 パッケージのアップグレードをします。
-{question:aptコマンドでパッケージを更新するサブコマンドは何でしょうか}{answer:upgrade}
 以下のコマンで、パッケージを更新します。
 ```bash
 root@{{serverHostname}}:~# apt upgrade -y
@@ -329,6 +323,8 @@ mynetworks = 10.10.0.0/16
 +[[inet_protocols = ipv4]]
 +[[home_mailbox = Maildir/]]
 ```
+
+{question:postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか}{answer:relayhost}
 
 ### postfixの設定の反映
 `systemctl`コマンドでpostfixを再起動します。
@@ -457,6 +453,9 @@ root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-ssl.conf
 ```
 
 SSLを無効にします。
+
+{question:DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)}{answer:ssl = no}
+
 `ssl = no`をコメントアウトし、`ssl = yes`を追記します。
 ```
 -[[ssl = no]]
@@ -595,16 +594,28 @@ root@{{serverHostname}}:~# apt install -y apache2
 ```
 
 ## Apache2の設定
+apache2の設定ファイルを記述します。作成するサイトの設定ファイルは`mywebsite.conf`とします。
+
+{question:apache2で新たにウェブサイトを作成するとき、どこのディレクトリに作成しますか。(絶対パスで入力)}{answer:/etc/apache2/sites-available}
 ```bash
-root@{{serverHostname}}:~# vi /etc/apache2/sites-available/000-default.conf
+root@{{serverHostname}}:~# vi /etc/apache2/sites-available/mywebsite.conf
 ```
 
 サーバの名前を記載します。
-コメントアウトされている`ServerName`ディレクティブの下にコメントアウトを外した内容を`{{serverHostname}}.netsys.cs.t-kougei.ac.jp`を追記します。
+```{file=/etc/apache2/sites-available/mywebsite.conf}
+ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp
+```
 
-```{file=/etc/apache2/sites-available/000-default.conf}
-#ServerName www.example.com
-+[[ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp]]
+作成した設定ファイル`a2ensite`コマンドでを有効化します。
+{question:apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか}{answer:a2ensite}
+
+```bash
+root@{{serverHostname}}:~# a2ensite mywebsite
+```
+
+`systemctl`コマンドでApache2の設定を再読み込みします。
+```bash
+root@{{serverHostname}}:~# systemctl reload apache2
 ```
 
 ## コンテンツの設置
