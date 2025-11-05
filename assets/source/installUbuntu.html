@@ -30,14 +30,13 @@ $questions = array(
             <ul class="toc">
 <li><a href="#1">Ubuntuのインストール</a>
 <ul>
-<li><a href="#1.1">ブートローダーの起動</a></li>
-<li><a href="#1.2">言語の選択</a></li>
-<li><a href="#1.3">キーボードレイアウトの設定</a></li>
-<li><a href="#1.4">アップデートと他のソフトウェア</a></li>
-<li><a href="#1.5">インストールの種類</a></li>
-<li><a href="#1.6">どこに住んでいますか</a></li>
-<li><a href="#1.7">あなたの情報を入力してください</a></li>
-<li><a href="#1.8">インストールの開始</a></li>
+<li><a href="#1.1">言語の選択</a></li>
+<li><a href="#1.2">キーボードレイアウトの設定</a></li>
+<li><a href="#1.3">アップデートと他のソフトウェア</a></li>
+<li><a href="#1.4">インストールの種類</a></li>
+<li><a href="#1.5">どこに住んでいますか</a></li>
+<li><a href="#1.6">あなたの情報を入力してください</a></li>
+<li><a href="#1.7">インストールの開始</a></li>
 </ul>
 </li>
 <li><a href="#2">基本設定</a>
@@ -93,33 +92,29 @@ $questions = array(
 <p><strong>!!一度も回答しないと3分経過してもボタンは表示されません!!</strong></p></p>
 </div>
 
-<h2 id="1.1">ブートローダーの起動</h2>
-<p>黒い画面が現れたら<code>「Try or Install Ubuntu」</code>に矢印キーでカーソルを合わせて[Enter]</p>
-<p>しばらくの時間、起動の準備が行われます。</p>
-
-<h2 id="1.2">言語の選択</h2>
+<h2 id="1.1">言語の選択</h2>
 <p>使用する言語を選択します。デフォルトでは日本語に設定されています。</p>
 <p>使用する言語に併せて、左のリストを下にスクロールして、言語を選択してください。</p>
 <p>言語が選択出来たら<strong>[ Ubuntuをインストール ]</strong>を選択します。</p>
 
-<h2 id="1.3">キーボードレイアウトの設定</h2>
+<h2 id="1.2">キーボードレイアウトの設定</h2>
 <p>キーボードの配列を設定します。</p>
 <p>デフォルトでは日本語配列になっています。</p>
 <p>問題がなければ、<strong>[続ける]</strong>を選択します。</p>
 
-<h2 id="1.4">アップデートと他のソフトウェア</h2>
+<h2 id="1.3">アップデートと他のソフトウェア</h2>
 <p><strong>[通常のインストール]</strong>を選択し、<strong>[続ける]</strong>を選択します。</p>
 
-<h2 id="1.5">インストールの種類</h2>
+<h2 id="1.4">インストールの種類</h2>
 <p><strong>[ディスクを削除してUbuntuをインストール]</strong>を選択し、<strong>[インストール]</strong>を選択します。</p>
 
 <p><strong>[ディスクに変更を書き込みますか？]</strong>というウィンドウが出現します。問題がなければ、<strong>[続ける]</strong>を選択します。</p>
 
-<h2 id="1.6">どこに住んでいますか</h2>
+<h2 id="1.5">どこに住んでいますか</h2>
 <p>時刻の設定をします。  </p>
 <p>世界地図で日本にピンが刺されてあり、下の入力欄に「Tokyo」とあったら[続ける]を選択します。</p>
 
-<h2 id="1.7">あなたの情報を入力してください</h2>
+<h2 id="1.6">あなたの情報を入力してください</h2>
 <p>表示された項目を以下の表から設定してください。</p>
 <table class="table-auto">
 <thead>
@@ -153,7 +148,7 @@ $questions = array(
 </table>
 <p>[ログイン時にパスワードを要求する]にチェックを付けて[続ける]を選択します。</p>
 
-<h2 id="1.8">インストールの開始</h2>
+<h2 id="1.7">インストールの開始</h2>
 <p>インストールの準備が完了すると、インストールが開始されます。</p>
 <p>インストールにしばらくかかります。</p>
 
@@ -191,7 +186,7 @@ $questions = array(
 <p>端末を開き、root のパスワードを設定します。</p>
 <p>rootのパスワードは<code>netsys00</code>に設定します。</p>
 
-<div class="question-box" id="ubuntu_question_2"><div class="question-content"><div class="question-header"><p class="question-text">一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？</p><span class="success-message" id="ubuntu_question_2_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_2_input" class="answer-input" placeholder="****" data-question-id="ubuntu_question_2"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_2">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_2_giveup" data-question-id="ubuntu_question_2" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="ubuntu_question_2"><div class="question-content"><div class="question-header"><p class="question-text">一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？</p><span class="success-message" id="ubuntu_question_2_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: super user do の略</p><div class="answer-input-container"><input type="text" id="ubuntu_question_2_input" class="answer-input" placeholder="****" data-question-id="ubuntu_question_2"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_2">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_2_giveup" data-question-id="ubuntu_question_2" style="display: none;">解答を見る</button></div></div></div>
 
 <pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo passwd root
 tomeのパスワード:
@@ -306,7 +301,7 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 NTP=ntp-a.t-kougei.ac.jp</code></pre>
 
 <h3 id="2.7.6">systemd-timesyncdの再起動</h3>
-<div class="question-box" id="ubuntu_question_3"><div class="question-content"><div class="question-header"><p class="question-text">Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_3_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_3_input" class="answer-input" placeholder="*********" data-question-id="ubuntu_question_3"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_3">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_3_giveup" data-question-id="ubuntu_question_3" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="ubuntu_question_3"><div class="question-content"><div class="question-header"><p class="question-text">Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_3_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: systemd + control</p><div class="answer-input-container"><input type="text" id="ubuntu_question_3_input" class="answer-input" placeholder="*********" data-question-id="ubuntu_question_3"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_3">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_3_giveup" data-question-id="ubuntu_question_3" style="display: none;">解答を見る</button></div></div></div>
 <p><code>systemdctl</code>コマンドで<code>systemd-timesyncd</code>を再起動します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart systemd-timesyncd</code></pre>
 
@@ -399,7 +394,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# source /etc/profile.d/proxy.sh</code></pre>
 <h3 id="2.8.10">aptのプロキシ設定</h3>
-<div class="question-box" id="ubuntu_question_4"><div class="question-content"><div class="question-header"><p class="question-text">Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？</p><span class="success-message" id="ubuntu_question_4_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_4_input" class="answer-input" placeholder="***" data-question-id="ubuntu_question_4"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_4">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_4_giveup" data-question-id="ubuntu_question_4" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="ubuntu_question_4"><div class="question-content"><div class="question-header"><p class="question-text">Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？</p><span class="success-message" id="ubuntu_question_4_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: advanced package toolの略</p><div class="answer-input-container"><input type="text" id="ubuntu_question_4_input" class="answer-input" placeholder="***" data-question-id="ubuntu_question_4"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_4">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_4_giveup" data-question-id="ubuntu_question_4" style="display: none;">解答を見る</button></div></div></div>
 <p><code>/etc/apt/apt.conf.d</code>の配下に<code>30proxy.conf</code>ファイルを新たに作成します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/apt/apt.conf.d/30proxy.conf</code></pre>
 
@@ -459,7 +454,7 @@ mynetworks = 10.10.0.0/16
 <span class="git-add">inet_protocols = ipv4</span>
 <span class="git-add">home_mailbox = Maildir/</span></code></pre>
 
-<div class="question-box" id="ubuntu_question_5"><div class="question-content"><div class="question-header"><p class="question-text">postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか</p><span class="success-message" id="ubuntu_question_5_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_5_input" class="answer-input" placeholder="*********" data-question-id="ubuntu_question_5"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_5">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_5_giveup" data-question-id="ubuntu_question_5" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="ubuntu_question_5"><div class="question-content"><div class="question-header"><p class="question-text">postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか</p><span class="success-message" id="ubuntu_question_5_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: メールをリレーさせる</p><div class="answer-input-container"><input type="text" id="ubuntu_question_5_input" class="answer-input" placeholder="*********" data-question-id="ubuntu_question_5"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_5">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_5_giveup" data-question-id="ubuntu_question_5" style="display: none;">解答を見る</button></div></div></div>
 
 <h3 id="3.1.14">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
@@ -470,7 +465,7 @@ mynetworks = 10.10.0.0/16
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable postfix</code></pre>
 
 <h2 id="3.2">ファイアウォールの設定</h2>
-<div class="question-box" id="ubuntu_question_6"><div class="question-content"><div class="question-header"><p class="question-text">Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_6_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_6_input" class="answer-input" placeholder="***" data-question-id="ubuntu_question_6"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_6">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_6_giveup" data-question-id="ubuntu_question_6" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="ubuntu_question_6"><div class="question-content"><div class="question-header"><p class="question-text">Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_6_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: uncomplicated firewallの略</p><div class="answer-input-container"><input type="text" id="ubuntu_question_6_input" class="answer-input" placeholder="***" data-question-id="ubuntu_question_6"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_6">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_6_giveup" data-question-id="ubuntu_question_6" style="display: none;">解答を見る</button></div></div></div>
 <p><code>ufw</code>コマンドでファイアウォールを設定します。</p>
 
 <h3 id="3.2.15">ufwの有効化</h3>
@@ -579,7 +574,7 @@ grep "st.t-kougei.ac.jp" /var/log/mail.log | tail -1 | egrep 'to=|relay=|status=
 
 <p>SSLを無効にします。</p>
 
-<div class="question-box" id="ubuntu_question_7"><div class="question-content"><div class="question-header"><p class="question-text">DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)</p><span class="success-message" id="ubuntu_question_7_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_7_input" class="answer-input" placeholder="********" data-question-id="ubuntu_question_7"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_7">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_7_giveup" data-question-id="ubuntu_question_7" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="ubuntu_question_7"><div class="question-content"><div class="question-header"><p class="question-text">DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)</p><span class="success-message" id="ubuntu_question_7_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: 「10-ssl.conf ssl 無効」でWeb検索</p><div class="answer-input-container"><input type="text" id="ubuntu_question_7_input" class="answer-input" placeholder="********" data-question-id="ubuntu_question_7"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_7">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_7_giveup" data-question-id="ubuntu_question_7" style="display: none;">解答を見る</button></div></div></div>
 
 <p><code>ssl = no</code>をコメントアウトし、<code>ssl = yes</code>を追記します。</p>
 <pre><code><span class="git-remove">ssl = no</span>
@@ -691,7 +686,7 @@ Connection closed by foreign host.</code></pre>
 <h2 id="4.2">Apache2の設定</h2>
 <p>apache2の設定ファイルを記述します。作成するサイトの設定ファイルは<code>mywebsite.conf</code>とします。</p>
 
-<div class="question-box" id="ubuntu_question_8"><div class="question-content"><div class="question-header"><p class="question-text">apache2で新たにウェブサイトを作成するとき、どこのディレクトリに作成しますか。(絶対パスで入力)</p><span class="success-message" id="ubuntu_question_8_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_8_input" class="answer-input" placeholder="****************************" data-question-id="ubuntu_question_8"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_8">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_8_giveup" data-question-id="ubuntu_question_8" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="ubuntu_question_8"><div class="question-content"><div class="question-header"><p class="question-text">apache2で新たにウェブサイトを作成するとき、どこのディレクトリに設定ファイルを作成しますか。(絶対パスで入力)</p><span class="success-message" id="ubuntu_question_8_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: 「利用可能なWebサイトの固有設定をおくディレクトリ apach2」でWeb検索</p><div class="answer-input-container"><input type="text" id="ubuntu_question_8_input" class="answer-input" placeholder="****************************" data-question-id="ubuntu_question_8"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_8">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_8_giveup" data-question-id="ubuntu_question_8" style="display: none;">解答を見る</button></div></div></div>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/apache2/sites-available/mywebsite.conf</code></pre>
 
 <p>サーバの名前を記載します。</p>
@@ -699,7 +694,7 @@ Connection closed by foreign host.</code></pre>
 <pre><code>ServerName <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
 
 <p>作成した設定ファイル<code>a2ensite</code>コマンドでを有効化します。</p>
-<div class="question-box" id="ubuntu_question_9"><div class="question-content"><div class="question-header"><p class="question-text">apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_9_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_9_input" class="answer-input" placeholder="********" data-question-id="ubuntu_question_9"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_9">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_9_giveup" data-question-id="ubuntu_question_9" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="ubuntu_question_9"><div class="question-content"><div class="question-header"><p class="question-text">apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_9_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: コマンドの先頭は「a2」から始まる</p><div class="answer-input-container"><input type="text" id="ubuntu_question_9_input" class="answer-input" placeholder="********" data-question-id="ubuntu_question_9"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_9">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_9_giveup" data-question-id="ubuntu_question_9" style="display: none;">解答を見る</button></div></div></div>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# a2ensite mywebsite</code></pre>
 
@@ -764,7 +759,7 @@ To                         Action      From
 
         <script>
             // 問題データをグローバル変数に設定
-            window.questionsData = [{"id":"ubuntu_question_1","question":"Linuxをカタカナで入力してください","answer":"リナックス"},{"id":"ubuntu_question_2","question":"一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？","answer":"sudo"},{"id":"ubuntu_question_3","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"ubuntu_question_4","question":"Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？","answer":"apt"},{"id":"ubuntu_question_5","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"ubuntu_question_6","question":"Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか","answer":"ufw"},{"id":"ubuntu_question_7","question":"DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"ubuntu_question_8","question":"apache2で新たにウェブサイトを作成するとき、どこのディレクトリに作成しますか。(絶対パスで入力)","answer":"/etc/apache2/sites-available"},{"id":"ubuntu_question_9","question":"apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか","answer":"a2ensite"}];
+            window.questionsData = [{"id":"ubuntu_question_1","question":"Linuxをカタカナで入力してください","answer":"リナックス"},{"id":"ubuntu_question_2","question":"一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？","answer":"sudo"},{"id":"ubuntu_question_3","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"ubuntu_question_4","question":"Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？","answer":"apt"},{"id":"ubuntu_question_5","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"ubuntu_question_6","question":"Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか","answer":"ufw"},{"id":"ubuntu_question_7","question":"DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"ubuntu_question_8","question":"apache2で新たにウェブサイトを作成するとき、どこのディレクトリに設定ファイルを作成しますか。(絶対パスで入力)","answer":"/etc/apache2/sites-available"},{"id":"ubuntu_question_9","question":"apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか","answer":"a2ensite"}];
         </script>
         <script src="assets/js/spoiler-manager.js"></script>
         <script src="assets/js/timer-manager.js"></script>
