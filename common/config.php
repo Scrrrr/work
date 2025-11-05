@@ -1,5 +1,4 @@
 <?php
-// 共通設定ファイル
 
 // ユーザー状態管理ファイルのパスを取得
 function getUserStateFile($user) {
