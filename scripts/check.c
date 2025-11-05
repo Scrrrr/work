@@ -1,14 +1,7 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<dirent.h>
-#include<stdbool.h>
-#include<unistd.h>
 #include"functions.h"
 
 #define BASE_DIR "/var/www/html/SCTS/"
 #define USER_STATE_DIR BASE_DIR "api/user_states"
-
 
 static void render_once(void)
 {
@@ -38,8 +31,7 @@ static void render_once(void)
             int rocky_pct = (RockyQuestionNum > 0) ? (rocky_cnt * 100 / RockyQuestionNum) : 0;
             int ubuntu_pct = (UbuntuQuestionNum > 0) ? (ubuntu_cnt * 100 / UbuntuQuestionNum) : 0;
 
-            puts(" ");
-            printf("---------------  %s  -------------------\n", username);
+            printf("\n---------------  %s  -------------------\n", username);
             printf("Rocky   "); print_bar10(rocky_pct);
             printf("Ubuntu  "); print_bar10(ubuntu_pct);
         }
