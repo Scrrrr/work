@@ -35,6 +35,79 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // ヒントアイコンのイベントリスナー
+    document.querySelectorAll('.hint-icon').forEach(icon => {
+        icon.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const questionId = this.getAttribute('data-question-id');
+            const popup = document.getElementById(questionId + '_hint_popup');
+            
+            if (popup) {
+                // 他のポップアップを閉じる
+                document.querySelectorAll('.hint-popup').forEach(p => {
+                    if (p !== popup) {
+                        p.style.display = 'none';
+                    }
+                });
+                
+                // 現在のポップアップを表示/非表示を切り替え
+                if (popup.style.display === 'none' || popup.style.display === '') {
+                    // ヒントアイコンの位置を取得してポップアップの位置を調整
+                    const iconRect = this.getBoundingClientRect();
+                    const questionHeader = popup.closest('.question-header') || popup.parentElement;
+                    
+                    if (questionHeader) {
+                        const headerRect = questionHeader.getBoundingClientRect();
+                        
+                        // ポップアップを一時的に表示してサイズを取得
+                        popup.style.display = 'block';
+                        const popupRect = popup.getBoundingClientRect();
+                        const popupWidth = popupRect.width;
+                        
+                        // ヒントアイコンの位置を基準に左位置を計算（question-headerからの相対位置）
+                        let leftOffset = iconRect.left - headerRect.left;
+                        
+                        // 画面右端からはみ出すかどうかを判定
+                        const windowWidth = window.innerWidth;
+                        const iconRight = iconRect.right;
+                        const spaceRight = windowWidth - iconRight;
+                        const margin = 20; // 画面端からのマージン
+                        
+                        // 右側に十分なスペースがない場合、位置を調整
+                        if (spaceRight < popupWidth + margin) {
+                            // ポップアップの右端を画面右端に合わせる（マージンを考慮）
+                            const popupRight = windowWidth - margin; // 絶対座標：ポップアップの右端
+                            const popupLeftAbsolute = popupRight - popupWidth; // 絶対座標：ポップアップの左端
+                            const headerLeft = headerRect.left; // 絶対座標：question-headerの左端
+                            leftOffset = popupLeftAbsolute - headerLeft; // question-header内での相対位置
+                            // 左端からはみ出さないようにする
+                            leftOffset = Math.max(0, leftOffset);
+                        } else {
+                            // 通常通り右側に表示（アイコンの位置を基準に）
+                            leftOffset = Math.max(0, leftOffset - 10);
+                        }
+                        
+                        popup.style.left = leftOffset + 'px';
+                    } else {
+                        // question-headerが見つからない場合は単純に表示
+                        popup.style.display = 'block';
+                    }
+                } else {
+                    popup.style.display = 'none';
+                }
+            }
+        });
+    });
+    
+    // ドキュメント全体のクリックでポップアップを閉じる
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.hint-icon') && !e.target.closest('.hint-popup')) {
+            document.querySelectorAll('.hint-popup').forEach(popup => {
+                popup.style.display = 'none';
+            });
+        }
+    });
+    
     // ページ読み込み時に正解済みの問題を復元してからスポイラーを生成
     window.apiManager.loadUserStateFromServer().then((result) => {
         if (result && result.success) {

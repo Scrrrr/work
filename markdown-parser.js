@@ -91,15 +91,16 @@ class MarkdownParser {
     processQuestions(markdown) {
         let processed = markdown;
         
-        // {question:質問文}{answer:回答} のペアを検出（同じ行内）
-        const questionAnswerRegex = /\{question:([^}]+)\}\{answer:([^}]+)\}/g;
+        // {question:質問文}{answer:回答}{hint:ヒント} のペアを検出（hintはオプショナル）
+        const questionAnswerHintRegex = /\{question:([^}]+)\}\{answer:([^}]+)\}(?:\{hint:([^}]+)\})?/g;
         
         let match;
         
         // 問題と回答のペアを処理
-        while ((match = questionAnswerRegex.exec(markdown)) !== null) {
+        while ((match = questionAnswerHintRegex.exec(markdown)) !== null) {
             const questionText = match[1];
             const answerText = match[2];
+            const hintText = match[3] || null; // hintはオプショナル
             this.questionCounter++;
             const questionId = `${this.appPrefix}question_${this.questionCounter}`;
             
@@ -107,11 +108,12 @@ class MarkdownParser {
             this.questions.push({
                 id: questionId,
                 question: questionText,
-                answer: answerText
+                answer: answerText,
+                hint: hintText
             });
             
             // 問題ボックスのHTMLを生成
-            const questionBox = this.generateQuestionBox(questionId, questionText, answerText);
+            const questionBox = this.generateQuestionBox(questionId, questionText, answerText, hintText);
             
             // 元のテキストを置換
             const fullText = match[0];
@@ -133,11 +135,34 @@ class MarkdownParser {
     /**
      * 問題ボックスのHTMLを生成
      */
-    generateQuestionBox(questionId, questionText, answerText) {
+    generateQuestionBox(questionId, questionText, answerText, hintText = null) {
         const answerLength = answerText.length;
         const asteriskHint = '*'.repeat(answerLength);
         
-        return `<div class="question-box" id="${questionId}"><div class="question-content"><div class="question-header"><p class="question-text">${questionText}</p><span class="success-message" id="${questionId}_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="${questionId}_input" class="answer-input" placeholder="${asteriskHint}" data-question-id="${questionId}"><button type="button" class="submit-answer-btn" data-question-id="${questionId}">回答</button><button type="button" class="giveup-btn" id="${questionId}_giveup" data-question-id="${questionId}" style="display: none;">解答を見る</button></div></div></div>`;
+        // ヒントシンボルを生成（hintがある場合のみ）
+        let hintSymbol = '';
+        let hintPopup = '';
+        if (hintText) {
+            hintSymbol = `<span class="hint-icon" id="${questionId}_hint_icon" data-question-id="${questionId}" title="ヒントを表示">💡</span>`;
+            hintPopup = `<div class="hint-popup" id="${questionId}_hint_popup" style="display: none;">${this.escapeHtml(hintText)}</div>`;
+        }
+        
+        return `<div class="question-box" id="${questionId}"><div class="question-content"><div class="question-header"><p class="question-text">${questionText}${hintSymbol}</p><span class="success-message" id="${questionId}_success" style="display: none;">正解</span>${hintPopup}</div><div class="answer-input-container"><input type="text" id="${questionId}_input" class="answer-input" placeholder="${asteriskHint}" data-question-id="${questionId}"><button type="button" class="submit-answer-btn" data-question-id="${questionId}">回答</button><button type="button" class="giveup-btn" id="${questionId}_giveup" data-question-id="${questionId}" style="display: none;">解答を見る</button></div></div></div>`;
+    }
+    
+    /**
+     * HTMLエスケープ
+     */
+    escapeHtml(text) {
+        if (!text) return '';
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, m => map[m]);
     }
 
     /**
