@@ -46,7 +46,13 @@ if (isset($_POST['action']) && $_POST['action'] === 'check_answer') {
     
     if (isset($questions[$questionId])) {
         $correctAnswer = $questions[$questionId];
-        $isCorrect = (strtolower($userAnswer) === strtolower($correctAnswer));
+        
+        // 末尾の「/」を削除して正規化（ファイルパスの末尾スラッシュを無視）
+        $normalizeAnswer = function($str) {
+            return rtrim(strtolower($str), '/');
+        };
+        
+        $isCorrect = ($normalizeAnswer($userAnswer) === $normalizeAnswer($correctAnswer));
         
         // 正解の場合はユーザー状態を更新
         if ($isCorrect) {
