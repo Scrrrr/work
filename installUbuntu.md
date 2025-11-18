@@ -133,13 +133,21 @@ TUI(Terminal User Interface)での操作は主に`Tabキー`,`矢印キー`,`Ent
 すべての設定が終わったら、一番下の`**<ＯＫ>**`を選択して、[Enter]を押します。
 `**<戻る>**`を押して、一番最初に戻ります。
 
+:::caution
+もし、再起動後、ネットワークに接続できない場合、設定→ネットワークの設定→IPv4　の項目のうち、「自動」を「手動」に変更してください。
+:::
+
 ### ホスト名の設定
 `nmtui`の一番最初のオプション選択メニューから`システムのホスト名を設定する`を選択します。
 ホスト名を`{{serverHostname}}`を`{{serverHostname}}.netsys.cs.t-kougei.ac.jp`に変更して`**<ＯＫ>**`を[Enter]します。
+:::caution
+ホスト名を間違えると、今後の構築でトラブルが発生します。
+入力内容を慎重に確認してください。特に「cs」と「sc」の混同や、「t-kougei」と「t-kuogei」のようなスペルミスなど、小さな誤りがないか注意深く確認することをお勧めします。
+:::
 
-「ホスト名を'{{serverHostname}}.cs.t-kougei.a.cjp'に設定します」と表示されたら完了です。`**<ＯＫ>**`を[Enter]します。
+「ホスト名を'{{serverHostname}}.netsys.cs.t-kougei.ac.jp'に設定します」と表示されたら完了です。`**<ＯＫ>**`を[Enter]します。
 
-すべての設定が完了したら一番最初のオプション選択メニューの最後にあ`**<ＯＫ>**`を[Enter]します。
+すべての設定が完了したら一番最初のオプション選択メニューの最後にある`**<ＯＫ>**`を[Enter]します。
 
 ### ネットワークの設定の確認
 `ip`コマンドを使用して正しくネットワークに接続できているか確認します。
@@ -184,7 +192,7 @@ NTP=ntp-a.t-kougei.ac.jp
 
 ### systemd-timesyncdの再起動
 {question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}{hint:systemd + control}
-`systemdctl`コマンドで`systemd-timesyncd`を再起動します。
+`systemctl`コマンドで`systemd-timesyncd`を再起動します。
 ```bash
 root@{{serverHostname}}:~# systemctl restart systemd-timesyncd
 ```
@@ -212,9 +220,9 @@ Root distance: 2.700ms (max: 5s)
 
 ## 各ツール別のプロキシ設定
 
-### NetworkMangaerのプロキシ設定
+### NetworkManagerのプロキシ設定
 右上の電源アイコンをクリックして、表示された項目欄から[設定]を選択します。
-ネットワークの設定項目のうち`ネットワークプロキシ`をの歯車マークをクリックします。
+ネットワークの設定項目のうち`ネットワークプロキシ`の歯車マークをクリックします。
 **無効**から**手動**に変更して、以下の項目を入力します。
 | 項目名           | 入力値                   | ポート|
 | HTTPプロキシ     | proxy-a.t-kougei.ac.jp   | 8080  |
@@ -268,7 +276,7 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 ```
 
 ### パッケージの更新とインストール
-以下のコマンでアップデート可能なパッケージ情報を更新します。
+以下のコマンドでアップデート可能なパッケージ情報を更新します。
 ```bash
 root@{{serverHostname}}:~# apt update
 ```
@@ -280,7 +288,7 @@ root@{{serverHostname}}:~# apt update
 :::
 
 パッケージのアップグレードをします。
-以下のコマンで、パッケージを更新します。
+以下のコマンドで、パッケージを更新します。
 ```bash
 root@{{serverHostname}}:~# apt upgrade -y
 ```
@@ -291,7 +299,7 @@ root@{{serverHostname}}:~# apt upgrade -y
 # メールサーバの構築
 
 メールサーバはメールの送受信を行うためのサーバです。  
-メールの送信には**Postfix**が、受信には**Davcot**が使用されます。  
+メールの送信には**Postfix**が、受信には**Dovecot**が使用されます。  
 
 ## Postfix
 Postfixは、オープンソースのメール転送エージェント(MTA: Mail Transfer Agent)で、電子メールの送信・配送を担当するサーバソフトウェアです。
@@ -315,10 +323,10 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 以下の設定を行います。
 
 ```{file=/etc/postfix/main.cf}
-relayhost = +[[[smtp-a.t-kougei.ac.jp]]]
++[[relayhost = [smtp-a.t-kougei.ac.jp]]]
 -[[mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128]]
 +[[#mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128]]
-mynetworks = 10.10.0.0/16
++[[mynetworks = 10.10.0.0/16]]
 -[[#inet_protocols = all]]
 +[[inet_protocols = ipv4]]
 +[[home_mailbox = Maildir/]]
@@ -408,7 +416,7 @@ relayhost = [{{serverHostname}}.netsys.cs.t-kougei.ac.jp]
 root@{{clientHostname}}:~# echo "test" | mail tome@{{serverHostname}}.netsys.cs.t-kougei.ac.jp
 ```
 
-サーバの`/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
+サーバの`/home/tome/Maildir/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
 ```bash
 root@{{serverHostname}}:~# ls /home/tome/Maildir/new/
 ```
@@ -426,7 +434,7 @@ root@{{clientHostname}}:~# echo "test" | mail <学籍番号>@st.t-kougei.ac.jp
 もしも以下のコマンドを実行した結果、パラメータの値が表と合致していたらメールが届いてなくても成功です。
 ```bash
 root@{{serverHostname}}:~# 
-grep "st.t-kougei.ac.jp" /var/log/mail.log | tail -1 | egrep 'to=|relay=|status="
+grep "st.t-kougei.ac.jp" /var/log/mail.log | tail -1 | egrep 'to=|relay=|status='
 ```
 
 |auto|
@@ -454,13 +462,13 @@ root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-ssl.conf
 
 SSLを無効にします。
 
-{question:DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)}{answer:ssl = no}{hint:「10-ssl.conf ssl 無効」でWeb検索}
+{question:DovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)}{answer:ssl = no}{hint:「10-ssl.conf ssl 無効」でWeb検索}
 
-`ssl = no`をコメントアウトし、`ssl = yes`を追記します。
+`ssl = yes`をコメントアウトし、`ssl = no`を追記します。
 ```
--[[ssl = no]]
-+[[#ssl = no]]
-+[[ssl = yes]]
+-[[ssl = yes]]
++[[#ssl = yes]]
++[[ssl = no]]
 ```
 Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-auth.conf`ファイルをviエディタで開きます。
 
@@ -484,8 +492,8 @@ root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-mail.conf
 `mail_location` を `maildir:~/Maildir` に変更します。
 
 ```markdown
--[[mail_locatoin = mbox:~/mail:IBBOX=/var/mail/%u]]
-+[[#mail_locatoin = mbox:~/mail:IBBOX=/var/mail/%u]]
+-[[mail_location = mbox:~/mail:INBOX=/var/mail/%u]]
++[[#mail_location = mbox:~/mail:INBOX=/var/mail/%u]]
 +[[mail_location = maildir:~/Maildir]]
 ```
 
@@ -606,7 +614,7 @@ root@{{serverHostname}}:~# vi /etc/apache2/sites-available/mywebsite.conf
 ServerName {{serverHostname}}.netsys.cs.t-kougei.ac.jp
 ```
 
-作成した設定ファイル`a2ensite`コマンドでを有効化します。
+作成した設定ファイルを`a2ensite`コマンドで有効化します。
 {question:apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか}{answer:a2ensite}{hint:コマンドの先頭は「a2」から始まる}
 
 ```bash
@@ -675,6 +683,6 @@ To                         Action      From
 ## クライアントからの動作確認
 {{clientHostname}}を起動して、WEBサーバにアクセスできるか確認します。  
 
-{{clientHostname}}を起動したらFirefoxから[http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp](http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp)にアクセスしてます。
+Firefoxから[http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp](http://{{serverHostname}}.netsys.cs.t-kougei.ac.jp)にアクセスします。
 
 サーバでの確認と同様に真っ白な背景にhello worldと表示されていればクライアントからの確認は成功です。
