@@ -260,13 +260,23 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 <p>すべての設定が終わったら、一番下の<code><strong><ＯＫ></strong></code>を選択して、[Enter]を押します。</p>
 <p><code><strong><戻る></strong></code>を押して、一番最初に戻ります。</p>
 
+<div class="caution">
+<p><p><strong>注意:</strong></p></p>
+<p><p>もし、再起動後、ネットワークに接続できない場合、設定→ネットワークの設定→IPv4　の項目のうち、「自動」を「手動」に変更してください。</p></p>
+</div>
+
 <h3 id="2.6.1">ホスト名の設定</h3>
 <p><code>nmtui</code>の一番最初のオプション選択メニューから<code>システムのホスト名を設定する</code>を選択します。</p>
 <p>ホスト名を<code><?php echo $serverHostname; ?></code>を<code><?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code>に変更して<code><strong><ＯＫ></strong></code>を[Enter]します。</p>
+<div class="caution">
+<p><p><strong>注意:</strong></p></p>
+<p><p>ホスト名を間違えると、今後の構築でトラブルが発生します。</p>
+<p>入力内容を慎重に確認してください。特に「cs」と「sc」の混同や、「t-kougei」と「t-kuogei」のようなスペルミスなど、小さな誤りがないか注意深く確認することをお勧めします。</p></p>
+</div>
 
-<p>「ホスト名を'<?php echo $serverHostname; ?>.cs.t-kougei.a.cjp'に設定します」と表示されたら完了です。<code><strong><ＯＫ></strong></code>を[Enter]します。</p>
+<p>「ホスト名を'<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp'に設定します」と表示されたら完了です。<code><strong><ＯＫ></strong></code>を[Enter]します。</p>
 
-<p>すべての設定が完了したら一番最初のオプション選択メニューの最後にあ<code><strong><ＯＫ></strong></code>を[Enter]します。</p>
+<p>すべての設定が完了したら一番最初のオプション選択メニューの最後にある<code><strong><ＯＫ></strong></code>を[Enter]します。</p>
 
 <h3 id="2.6.2">ネットワークの設定の確認</h3>
 <p><code>ip</code>コマンドを使用して正しくネットワークに接続できているか確認します。</p>
@@ -302,7 +312,7 @@ NTP=ntp-a.t-kougei.ac.jp</code></pre>
 
 <h3 id="2.7.6">systemd-timesyncdの再起動</h3>
 <div class="question-box" id="ubuntu_question_3"><div class="question-content"><div class="question-header"><p class="question-text">Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_3_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: systemd + control</p><div class="answer-input-container"><input type="text" id="ubuntu_question_3_input" class="answer-input" placeholder="*********" data-question-id="ubuntu_question_3"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_3">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_3_giveup" data-question-id="ubuntu_question_3" style="display: none;">解答を見る</button></div></div></div>
-<p><code>systemdctl</code>コマンドで<code>systemd-timesyncd</code>を再起動します。</p>
+<p><code>systemctl</code>コマンドで<code>systemd-timesyncd</code>を再起動します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart systemd-timesyncd</code></pre>
 
 <h3 id="2.7.7">NTPの接続確認</h3>
@@ -326,9 +336,9 @@ Root distance: 2.700ms (max: 5s)
 
 <h2 id="2.8">各ツール別のプロキシ設定</h2>
 
-<h3 id="2.8.8">NetworkMangaerのプロキシ設定</h3>
+<h3 id="2.8.8">NetworkManagerのプロキシ設定</h3>
 <p>右上の電源アイコンをクリックして、表示された項目欄から[設定]を選択します。</p>
-<p>ネットワークの設定項目のうち<code>ネットワークプロキシ</code>をの歯車マークをクリックします。</p>
+<p>ネットワークの設定項目のうち<code>ネットワークプロキシ</code>の歯車マークをクリックします。</p>
 <p><strong>無効</strong>から<strong>手動</strong>に変更して、以下の項目を入力します。</p>
 <table class="table-fixed">
 <thead>
@@ -405,7 +415,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 
 <h3 id="2.8.11">パッケージの更新とインストール</h3>
-<p>以下のコマンでアップデート可能なパッケージ情報を更新します。</p>
+<p>以下のコマンドでアップデート可能なパッケージ情報を更新します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt update</code></pre>
 <p>先頭にステータスが表示されます。<strong>取得</strong>と表示されていれば既存のリポジトリからパッケージの更新がされていることを意味します。</p>
 <p><strong>取得</strong>の文字が確認できたら成功です。</p>
@@ -416,7 +426,7 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 </div>
 
 <p>パッケージのアップグレードをします。</p>
-<p>以下のコマンで、パッケージを更新します。</p>
+<p>以下のコマンドで、パッケージを更新します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt upgrade -y</code></pre>
 <div class="note">
 <p><p><strong>注記:</strong></p></p>
@@ -426,7 +436,7 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 <h1 id="3">メールサーバの構築</h1>
 
 <p>メールサーバはメールの送受信を行うためのサーバです。  </p>
-<p>メールの送信には<strong>Postfix</strong>が、受信には<strong>Davcot</strong>が使用されます。  </p>
+<p>メールの送信には<strong>Postfix</strong>が、受信には<strong>Dovecot</strong>が使用されます。  </p>
 
 <h2 id="3.1">Postfix</h2>
 <p>Postfixは、オープンソースのメール転送エージェント(MTA: Mail Transfer Agent)で、電子メールの送信・配送を担当するサーバソフトウェアです。</p>
@@ -446,10 +456,10 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 <p>以下の設定を行います。</p>
 
 <div class="code-file-info">📁 /etc/postfix/main.cf</div>
-<pre><code>relayhost = <span class="git-add">[smtp-a.t-kougei.ac.jp</span>]
+<pre><code><span class="git-add">relayhost = [smtp-a.t-kougei.ac.jp</span>]
 <span class="git-remove">mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128</span>
 <span class="git-add">#mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128</span>
-mynetworks = 10.10.0.0/16
+<span class="git-add">mynetworks = 10.10.0.0/16</span>
 <span class="git-remove">#inet_protocols = all</span>
 <span class="git-add">inet_protocols = ipv4</span>
 <span class="git-add">home_mailbox = Maildir/</span></code></pre>
@@ -520,7 +530,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <p>ターミナルを起動して、<code>mail</code>コマンドでtomeに「test」というメッセージを送ります。  </p>
 <pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# echo "test" | mail tome@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
 
-<p>サーバの<code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
+<p>サーバの<code>/home/tome/Maildir/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ls /home/tome/Maildir/new/</code></pre>
 
 <h3 id="3.3.21">外部ネットワークへのメール送信確認</h3>
@@ -534,7 +544,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <p><p><strong>注記:</strong></p></p>
 <p><p>もしも以下のコマンドを実行した結果、パラメータの値が表と合致していたらメールが届いてなくても成功です。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# 
-grep "st.t-kougei.ac.jp" /var/log/mail.log | tail -1 | egrep 'to=|relay=|status="</code></pre>
+grep "st.t-kougei.ac.jp" /var/log/mail.log | tail -1 | egrep 'to=|relay=|status='</code></pre>
 
 <table class="table-auto">
 <thead>
@@ -574,12 +584,12 @@ grep "st.t-kougei.ac.jp" /var/log/mail.log | tail -1 | egrep 'to=|relay=|status=
 
 <p>SSLを無効にします。</p>
 
-<div class="question-box" id="ubuntu_question_7"><div class="question-content"><div class="question-header"><p class="question-text">DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)</p><span class="success-message" id="ubuntu_question_7_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: 「10-ssl.conf ssl 無効」でWeb検索</p><div class="answer-input-container"><input type="text" id="ubuntu_question_7_input" class="answer-input" placeholder="********" data-question-id="ubuntu_question_7"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_7">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_7_giveup" data-question-id="ubuntu_question_7" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="ubuntu_question_7"><div class="question-content"><div class="question-header"><p class="question-text">DovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)</p><span class="success-message" id="ubuntu_question_7_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: 「10-ssl.conf ssl 無効」でWeb検索</p><div class="answer-input-container"><input type="text" id="ubuntu_question_7_input" class="answer-input" placeholder="********" data-question-id="ubuntu_question_7"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_7">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_7_giveup" data-question-id="ubuntu_question_7" style="display: none;">解答を見る</button></div></div></div>
 
-<p><code>ssl = no</code>をコメントアウトし、<code>ssl = yes</code>を追記します。</p>
-<pre><code><span class="git-remove">ssl = no</span>
-<span class="git-add">#ssl = no</span>
-<span class="git-add">ssl = yes</span></code></pre>
+<p><code>ssl = yes</code>をコメントアウトし、<code>ssl = no</code>を追記します。</p>
+<pre><code><span class="git-remove">ssl = yes</span>
+<span class="git-add">#ssl = yes</span>
+<span class="git-add">ssl = no</span></code></pre>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-auth.conf</code>ファイルをviエディタで開きます。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
@@ -595,8 +605,8 @@ grep "st.t-kougei.ac.jp" /var/log/mail.log | tail -1 | egrep 'to=|relay=|status=
 
 <p><code>mail_location</code> を <code>maildir:~/Maildir</code> に変更します。</p>
 
-<pre><code><span class="git-remove">mail_locatoin = mbox:~/mail:IBBOX=/var/mail/%u</span>
-<span class="git-add">#mail_locatoin = mbox:~/mail:IBBOX=/var/mail/%u</span>
+<pre><code><span class="git-remove">mail_location = mbox:~/mail:INBOX=/var/mail/%u</span>
+<span class="git-add">#mail_location = mbox:~/mail:INBOX=/var/mail/%u</span>
 <span class="git-add">mail_location = maildir:~/Maildir</span></code></pre>
 
 <h3 id="3.4.24">Dovecotの設定の反映</h3>
@@ -693,7 +703,7 @@ Connection closed by foreign host.</code></pre>
 <div class="code-file-info">📁 /etc/apache2/sites-available/mywebsite.conf</div>
 <pre><code>ServerName <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
 
-<p>作成した設定ファイル<code>a2ensite</code>コマンドでを有効化します。</p>
+<p>作成した設定ファイルを<code>a2ensite</code>コマンドで有効化します。</p>
 <div class="question-box" id="ubuntu_question_9"><div class="question-content"><div class="question-header"><p class="question-text">apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_9_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: コマンドの先頭は「a2」から始まる</p><div class="answer-input-container"><input type="text" id="ubuntu_question_9_input" class="answer-input" placeholder="********" data-question-id="ubuntu_question_9"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_9">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_9_giveup" data-question-id="ubuntu_question_9" style="display: none;">解答を見る</button></div></div></div>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# a2ensite mywebsite</code></pre>
@@ -750,7 +760,7 @@ To                         Action      From
 <h2 id="4.6">クライアントからの動作確認</h2>
 <p><?php echo $clientHostname; ?>を起動して、WEBサーバにアクセスできるか確認します。  </p>
 
-<p><?php echo $clientHostname; ?>を起動したらFirefoxから<a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a>にアクセスしてます。</p>
+<p>Firefoxから<a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a>にアクセスします。</p>
 
 <p>サーバでの確認と同様に真っ白な背景にhello worldと表示されていればクライアントからの確認は成功です。</p>
 
@@ -759,7 +769,7 @@ To                         Action      From
 
         <script>
             // 問題データをグローバル変数に設定
-            window.questionsData = [{"id":"ubuntu_question_1","question":"Linuxをカタカナで入力してください","answer":"リナックス"},{"id":"ubuntu_question_2","question":"一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？","answer":"sudo"},{"id":"ubuntu_question_3","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"ubuntu_question_4","question":"Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？","answer":"apt"},{"id":"ubuntu_question_5","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"ubuntu_question_6","question":"Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか","answer":"ufw"},{"id":"ubuntu_question_7","question":"DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"ubuntu_question_8","question":"apache2で新たにウェブサイトを作成するとき、どこのディレクトリに設定ファイルを作成しますか。(絶対パスで入力)","answer":"/etc/apache2/sites-available"},{"id":"ubuntu_question_9","question":"apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか","answer":"a2ensite"}];
+            window.questionsData = [{"id":"ubuntu_question_1","question":"Linuxをカタカナで入力してください","answer":"リナックス"},{"id":"ubuntu_question_2","question":"一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？","answer":"sudo"},{"id":"ubuntu_question_3","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"ubuntu_question_4","question":"Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？","answer":"apt"},{"id":"ubuntu_question_5","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"ubuntu_question_6","question":"Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか","answer":"ufw"},{"id":"ubuntu_question_7","question":"DovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"ubuntu_question_8","question":"apache2で新たにウェブサイトを作成するとき、どこのディレクトリに設定ファイルを作成しますか。(絶対パスで入力)","answer":"/etc/apache2/sites-available"},{"id":"ubuntu_question_9","question":"apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか","answer":"a2ensite"}];
         </script>
         <script src="assets/js/spoiler-manager.js"></script>
         <script src="assets/js/timer-manager.js"></script>

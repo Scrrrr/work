@@ -33,6 +33,9 @@ Kdumpの無効化を行うために、[KDUMP]を選択し、[kdumpを有効に�
 ホスト名入力後、[適用]をクリックします。すると、右下に現在のホスト名が表示されます。
 :::caution
 [適用]をクリックしないと設定が反映されないため注意してください。
+
+ホスト名を間違えると、今後の構築でトラブルが発生します。
+入力内容を慎重に確認してください。特に「cs」と「sc」の混同や、「t-kougei」と「t-kuogei」のようなスペルミスなど、小さな誤りがないか注意深く確認することをお勧めします。
 :::
 
 さらに、[設定]を選択し、[IPv4の設定]をクリックし、方式を**自動(DHCP)**から**手動**に変更します。
@@ -152,11 +155,11 @@ viエディタは通常モードで「h」で左に移動、「j」で下に移�
 デフォルトの設定では5分起きにロックされてしまうので、設定で無効にします。
 
 右上の電源アイコンをクリックして、表示された項目欄から**[設定]**をクリックして、設定メニューを起動します。
-設定メニューのサイドバー中部にある**[電源]**を見つけクリックし、設定項目の**[Screen Blank]**を`5分`から`Naver`に変更します。
+設定メニューのサイドバー中部にある**[電源]**を見つけクリックし、設定項目の**[Screen Blank]**を`5分`から`Never`に変更します。
 
 ## 各ツール別のプロキシ設定
 
-### NetworkMangaerのプロキシ設定
+### NetworkManagerのプロキシ設定
 設定メニューのサイドバー上部にある**[ネットワーク]**を見つけクリックし、設定項目の**ネットワークプロキシ**を見つけ、**歯車マーク**をクリックします。  
 **[無効]**から**[手動]**を変更し、次の項目に以下の入力値を入力していきます。
 
@@ -294,9 +297,9 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 +[[inet_interfaces = all]]
 
 # Enable IPv4, and IPv6 if supported
--[[inte_protocols = all]]
-+[[#inte_protocols = all]]
-+[[inte_protocols = ipv4]]
+-[[inet_protocols = all]]
++[[#inet_protocols = all]]
++[[inet_protocols = ipv4]]
 
 #home_mailbox = Mailbox
 #home_mailbox = Maildir/
@@ -324,13 +327,13 @@ root@{{serverHostname}}:~# systemctl enable postfix
 初めに、firewall-cmdが起動しているかどうか確認します。
 ```bash
 root@{{serverHostname}}:~# firewall-cmd --state
-runnning
+running
 ```
 
-`runnning`と表示されれば起動しています。
+`running`と表示されれば起動しています。
 
 :::hint
-もし起動していな場合以下の方法で起動します。
+もし起動していない場合以下の方法で起動します。
 ```bash
 root@{{serverHostname}}:~# systemctl start firewalld
 ```
@@ -402,7 +405,7 @@ root@{{clientHostname}}:~# systemctl restart postfix
 root@{{clientHostname}}:~# echo "test" | mail tome@{{serverHostname}}.netsys.cs.t-kougei.ac.jp
 ```
 
-サーバの`/home/tome/Maildi/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
+サーバの`/home/tome/Maildir/new`ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。
 ```bash
 root@{{serverHostname}}:~# ls /home/tome/Maildir/new
 ```
@@ -474,7 +477,7 @@ Dovcotの設定ファイルである`/etc/dovecot/conf.d/10-mail.conf`ファイ�
 root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-mail.conf
 ```
 
-`mail_locaution` を `maildir` に変更します。
+`mail_location` を `maildir` に変更します。
 
 ```{file=/etc/dovecot/conf.d/10-mail.conf}
 #   mail_location = maildir:~/Maildir
@@ -484,7 +487,7 @@ root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-mail.conf
 # <doc/wiki/MailLocation.txt>
 #
 #mail_location = 
-+[[mail_locaution = maildir:~/Maildir]]
++[[mail_location = maildir:~/Maildir]]
 ```
 
 ### Dovecotの設定の反映

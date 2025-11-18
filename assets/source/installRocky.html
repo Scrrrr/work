@@ -110,7 +110,10 @@ $questions = array(
 <p>ホスト名入力後、[適用]をクリックします。すると、右下に現在のホスト名が表示されます。</p>
 <div class="caution">
 <p><p><strong>注意:</strong></p></p>
-<p><p>[適用]をクリックしないと設定が反映されないため注意してください。</p></p>
+<p><p>[適用]をクリックしないと設定が反映されないため注意してください。</p>
+
+<p>ホスト名を間違えると、今後の構築でトラブルが発生します。</p>
+<p>入力内容を慎重に確認してください。特に「cs」と「sc」の混同や、「t-kougei」と「t-kuogei」のようなスペルミスなど、小さな誤りがないか注意深く確認することをお勧めします。</p></p>
 </div>
 
 <p>さらに、[設定]を選択し、[IPv4の設定]をクリックし、方式を<strong>自動(DHCP)</strong>から<strong>手動</strong>に変更します。</p>
@@ -290,11 +293,11 @@ $questions = array(
 <p>デフォルトの設定では5分起きにロックされてしまうので、設定で無効にします。</p>
 
 <p>右上の電源アイコンをクリックして、表示された項目欄から<strong>[設定]</strong>をクリックして、設定メニューを起動します。</p>
-<p>設定メニューのサイドバー中部にある<strong>[電源]</strong>を見つけクリックし、設定項目の<strong>[Screen Blank]</strong>を<code>5分</code>から<code>Naver</code>に変更します。</p>
+<p>設定メニューのサイドバー中部にある<strong>[電源]</strong>を見つけクリックし、設定項目の<strong>[Screen Blank]</strong>を<code>5分</code>から<code>Never</code>に変更します。</p>
 
 <h2 id="2.5">各ツール別のプロキシ設定</h2>
 
-<h3 id="2.5.1">NetworkMangaerのプロキシ設定</h3>
+<h3 id="2.5.1">NetworkManagerのプロキシ設定</h3>
 <p>設定メニューのサイドバー上部にある<strong>[ネットワーク]</strong>を見つけクリックし、設定項目の<strong>ネットワークプロキシ</strong>を見つけ、<strong>歯車マーク</strong>をクリックします。  </p>
 <p><strong>[無効]</strong>から<strong>[手動]</strong>を変更し、次の項目に以下の入力値を入力していきます。</p>
 
@@ -450,9 +453,9 @@ skip_if_unavailable=False
 <span class="git-add">inet_interfaces = all</span>
 
 # Enable IPv4, and IPv6 if supported
-<span class="git-remove">inte_protocols = all</span>
-<span class="git-add">#inte_protocols = all</span>
-<span class="git-add">inte_protocols = ipv4</span>
+<span class="git-remove">inet_protocols = all</span>
+<span class="git-add">#inet_protocols = all</span>
+<span class="git-add">inet_protocols = ipv4</span>
 
 #home_mailbox = Mailbox
 #home_mailbox = Maildir/
@@ -474,13 +477,13 @@ skip_if_unavailable=False
 <h3 id="3.2.6">firewall-cmdの起動確認</h3>
 <p>初めに、firewall-cmdが起動しているかどうか確認します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --state
-runnning</code></pre>
+running</code></pre>
 
-<p><code>runnning</code>と表示されれば起動しています。</p>
+<p><code>running</code>と表示されれば起動しています。</p>
 
 <div class="hint">
 <p><p><strong>ヒント:</strong></p></p>
-<p><p>もし起動していな場合以下の方法で起動します。</p>
+<p><p>もし起動していない場合以下の方法で起動します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl start firewalld</code></pre>
 <p>また、自動起動を有効にします。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable firewalld</code></pre>
@@ -533,7 +536,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <p>ターミナルを起動して、<code>mail</code>コマンドでtomeに「test」というメッセージを送ります。  </p>
 <pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# echo "test" | mail tome@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
 
-<p>サーバの<code>/home/tome/Maildi/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
+<p>サーバの<code>/home/tome/Maildir/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ls /home/tome/Maildir/new</code></pre>
 
 <h3 id="3.3.13">外部ネットワークへのメール送信確認</h3>
@@ -589,7 +592,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
 
-<p><code>mail_locaution</code> を <code>maildir</code> に変更します。</p>
+<p><code>mail_location</code> を <code>maildir</code> に変更します。</p>
 
 <div class="code-file-info">📁 /etc/dovecot/conf.d/10-mail.conf</div>
 <pre><code>#   mail_location = maildir:~/Maildir
@@ -599,7 +602,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 # <doc/wiki/MailLocation.txt>
 #
 #mail_location = 
-<span class="git-add">mail_locaution = maildir:~/Maildir</span></code></pre>
+<span class="git-add">mail_location = maildir:~/Maildir</span></code></pre>
 
 <h3 id="3.4.15">Dovecotの設定の反映</h3>
 <p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
