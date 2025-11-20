@@ -79,7 +79,7 @@ $questions = array(
 
 <div class="note">
 <p><p><strong>注記:</strong></p></p>
-<p><p>本マニュアルの各所に確認用の質問が配置されています。正解すると、本文中の伏せ字が自動で解放され、続きが読めるようになります。答えに迷ったら、<strong>Firefoxでキーワード検索して調べてください。</strong></p>
+<p><p>本マニュアルの各所に確認用の質問が配置されています。正解すると、本文中の伏せ字が自動で解放され、続きが読めるようになります。答えに迷ったら、<strong>このマニュアルから新規タブをクリックしてインターネットでキーワード検索して調べてください。</strong></p>
 
 <p>試しに下の質問に答えてください。</p>
 <div class="question-box" id="rocky_question_1"><div class="question-content"><div class="question-header"><p class="question-text">Linuxをカタカナで入力してください</p><span class="success-message" id="rocky_question_1_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_1_input" class="answer-input" placeholder="*****" data-question-id="rocky_question_1"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_1">回答</button><button type="button" class="giveup-btn" id="rocky_question_1_giveup" data-question-id="rocky_question_1" style="display: none;">解答を見る</button></div></div></div>
@@ -465,7 +465,8 @@ skip_if_unavailable=False
 <div class="question-box" id="rocky_question_5"><div class="question-content"><div class="question-header"><p class="question-text">Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか</p><span class="success-message" id="rocky_question_5_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: systemd + control</p><div class="answer-input-container"><input type="text" id="rocky_question_5_input" class="answer-input" placeholder="*********" data-question-id="rocky_question_5"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_5">回答</button><button type="button" class="giveup-btn" id="rocky_question_5_giveup" data-question-id="rocky_question_5" style="display: none;">解答を見る</button></div></div></div>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart postfix</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart postfix
+root@<?php echo $serverHostname; ?>:~# systemctl status postfix</code></pre>
 
 <p>また、サーバの再起動後にサービスを自動起動するように設定します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable postfix</code></pre>
@@ -605,9 +606,10 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <span class="git-add">mail_location = maildir:~/Maildir</span></code></pre>
 
 <h3 id="3.4.15">Dovecotの設定の反映</h3>
-<p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
+<p><code>systemctl</code>コマンドでdovecotを再起動しステータスを確認します。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart dovecot</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart dovecot
+root@<?php echo $serverHostname; ?>:~# systemctl status dovecot</code></pre>
 
 <h2 id="3.5">ファイアウォールの設定</h2>
 <p><code>firewall-cmd</code>コマンドでファイアウォールを設定します。</p>
@@ -706,11 +708,16 @@ X-Original-TO: tome
 <div class="code-file-info">📁 /var/www/html/index.html</div>
 <pre><code>hello world</code></pre>
 
-<h3 id="4.2.20">サーバの再起動</h3>
-<p>サーバを再起動させて再起動後に自動で起動するよう設定します。</p>
+<h3 id="4.2.20">httpdの再起動</h3>
+<p>httpdを再起動させて、設定ファイルを読み込みます。</p>
+<p>読み込んだあとに、statusで状態を確認します。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart httpd</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart httpd
+root@<?php echo $serverHostname; ?>:~# systemctl status httpd</code></pre>
 
+<p>緑のマークと共に<code>Active: active (exited)</code>とあれば、<code>q</code>で抜けます。</p>
+
+<p>再起動後に自動で起動するよう設定します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable httpd</code></pre>
 
 <h2 id="4.3">サーバでの動作確認</h2>
