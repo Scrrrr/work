@@ -3,7 +3,7 @@ RockyLinuxは、サーバ向け用途に特化した安定性の高いLinuxデ�
 今回インストールするバージョンはRocky Linux 9.5です。
 
 :::note
-本マニュアルの各所に確認用の質問が配置されています。正解すると、本文中の伏せ字が自動で解放され、続きが読めるようになります。答えに迷ったら、**Firefoxでキーワード検索して調べてください。**
+本マニュアルの各所に確認用の質問が配置されています。正解すると、本文中の伏せ字が自動で解放され、続きが読めるようになります。答えに迷ったら、**このマニュアルから新規タブをクリックしてインターネットでキーワード検索して調べてください。**
 
 試しに下の質問に答えてください。
 {question:Linuxをカタカナで入力してください}{answer:リナックス}
@@ -312,6 +312,7 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 
 ```bash
 root@{{serverHostname}}:~# systemctl restart postfix
+root@{{serverHostname}}:~# systemctl status postfix
 ```
 
 また、サーバの再起動後にサービスを自動起動するように設定します。
@@ -491,10 +492,11 @@ root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-mail.conf
 ```
 
 ### Dovecotの設定の反映
-`systemctl`コマンドでdovecotを再起動します。
+`systemctl`コマンドでdovecotを再起動しステータスを確認します。
 
 ```bash
 root@{{serverHostname}}:~# systemctl restart dovecot
+root@{{serverHostname}}:~# systemctl status dovecot
 ```
 
 ## ファイアウォールの設定
@@ -618,13 +620,18 @@ root@{{serverHostname}}:~# vi /var/www/html/index.html
 hello world
 ```
 
-### サーバの再起動
-サーバを再起動させて再起動後に自動で起動するよう設定します。
+### httpdの再起動
+httpdを再起動させて、設定ファイルを読み込みます。
+読み込んだあとに、statusで状態を確認します。
 
 ```bash
 root@{{serverHostname}}:~# systemctl restart httpd
+root@{{serverHostname}}:~# systemctl status httpd
 ```
 
+緑のマークと共に`Active: active (exited)`とあれば、`q`で抜けます。
+
+再起動後に自動で起動するよう設定します。
 ```bash
 root@{{serverHostname}}:~# systemctl enable httpd
 ```

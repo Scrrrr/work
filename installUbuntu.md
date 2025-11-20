@@ -3,7 +3,7 @@ UbuntuはLinuxディストリビューションの中でもサーバ向け、デ
 今回インストールするバージョンはUbuntu 22.04.2 - Desktopです。
 
 :::note
-本マニュアルの各所に確認用の質問が配置されています。正解すると、本文中の伏せ字が自動で解放され、続きが読めるようになります。答えに迷ったら、**Firefoxでキーワード検索して調べてください。**
+本マニュアルの各所に確認用の質問が配置されています。正解すると、本文中の伏せ字が自動で解放され、続きが読めるようになります。答えに迷ったら、**このマニュアルから新規タブをクリックしてインターネットでキーワード検索して調べてください。**
 
 試しに下の質問に答えてください。
 {question:Linuxをカタカナで入力してください}{answer:リナックス}
@@ -121,7 +121,7 @@ TUI(Terminal User Interface)での操作は主に`Tabキー`,`矢印キー`,`Ent
 
 次の項目に以下を記入します。
 |項目名|入力値|
-|アドレス|{{serverIP}}|
+|アドレス|{{serverIP}}/24|
 |ゲートウェイ|{{gatewayIP}}|
 |DNSサーバー|{{gatewayIP}}|
 |検索ドメイン|netsys.cs.t-kougei.ac.jp
@@ -323,10 +323,20 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 以下の設定を行います。
 
 ```{file=/etc/postfix/main.cf}
+smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+myhostname = {{serverHostname}}.netsys.cs.t-kougei.ac.jp
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+myorigin = /etc/mailname
+mydestination = $myhostname, {{serverHostname}}.netsys.cs.t-kougei.ac.jp, localhost.netsys.cs.t-kougei.ac.jp, , localhost
+-[[relayhost = ]]
 +[[relayhost = [smtp-a.t-kougei.ac.jp]]]
 -[[mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128]]
 +[[#mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128]]
 +[[mynetworks = 10.10.0.0/16]]
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
 -[[#inet_protocols = all]]
 +[[inet_protocols = ipv4]]
 +[[home_mailbox = Maildir/]]
@@ -420,6 +430,9 @@ root@{{clientHostname}}:~# echo "test" | mail tome@{{serverHostname}}.netsys.cs.
 ```bash
 root@{{serverHostname}}:~# ls /home/tome/Maildir/new/
 ```
+:::caution
+もしも、`/home/tome/Maildir/new/`にない場合は、`/home/tome/Maildir/cur`を確認してみてください。
+:::
 
 ### 外部ネットワークへのメール送信確認
 サーバ外にメールが届くかテストを行います。
@@ -429,21 +442,6 @@ root@{{clientHostname}}:~# echo "test" | mail <学籍番号>@st.t-kougei.ac.jp
 ```
 
 自分の大学用のメールボックスにrootから「test」というメッセージが来ていたら成功です。
-
-:::note
-もしも以下のコマンドを実行した結果、パラメータの値が表と合致していたらメールが届いてなくても成功です。
-```bash
-root@{{serverHostname}}:~# 
-grep "st.t-kougei.ac.jp" /var/log/mail.log | tail -1 | egrep 'to=|relay=|status='
-```
-
-|auto|
-|パラメータ|値|
-|to|大学用のメールアドレス|
-|relay|smtp-a.t-kougei.ac.jp|
-|status|sent|
-
-:::
 
 
 ## Dovecot（POP3）
@@ -492,6 +490,12 @@ root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-mail.conf
 `mail_location` を `maildir:~/Maildir` に変更します。
 
 ```markdown
+#   mail_location = maildir:~/Maildir
+#   mail_location = mbox:~/mail:INBOX=/var/mail/%u
+#   mail_location = mbox:/var/mail/%d/%1n/%n:INDEX=/var/indexes/%d/%1n/%n
+#
+# <doc/wiki/MailLocation.txt>
+#
 -[[mail_location = mbox:~/mail:INBOX=/var/mail/%u]]
 +[[#mail_location = mbox:~/mail:INBOX=/var/mail/%u]]
 +[[mail_location = maildir:~/Maildir]]

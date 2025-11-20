@@ -82,7 +82,7 @@ $questions = array(
 
 <div class="note">
 <p><p><strong>注記:</strong></p></p>
-<p><p>本マニュアルの各所に確認用の質問が配置されています。正解すると、本文中の伏せ字が自動で解放され、続きが読めるようになります。答えに迷ったら、<strong>Firefoxでキーワード検索して調べてください。</strong></p>
+<p><p>本マニュアルの各所に確認用の質問が配置されています。正解すると、本文中の伏せ字が自動で解放され、続きが読めるようになります。答えに迷ったら、<strong>このマニュアルから新規タブをクリックしてインターネットでキーワード検索して調べてください。</strong></p>
 
 <p>試しに下の質問に答えてください。</p>
 <div class="question-box" id="ubuntu_question_1"><div class="question-content"><div class="question-header"><p class="question-text">Linuxをカタカナで入力してください</p><span class="success-message" id="ubuntu_question_1_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntu_question_1_input" class="answer-input" placeholder="*****" data-question-id="ubuntu_question_1"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_1">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_1_giveup" data-question-id="ubuntu_question_1" style="display: none;">解答を見る</button></div></div></div>
@@ -230,7 +230,7 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 <tbody>
 <tr>
 <td>アドレス</td>
-<td><?php echo $serverIP; ?></td>
+<td><?php echo $serverIP; ?>/24</td>
 </tr>
 <tr>
 <td>ゲートウェイ</td>
@@ -456,10 +456,20 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 <p>以下の設定を行います。</p>
 
 <div class="code-file-info">📁 /etc/postfix/main.cf</div>
-<pre><code><span class="git-add">relayhost = [smtp-a.t-kougei.ac.jp</span>]
+<pre><code>smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+myhostname = <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+myorigin = /etc/mailname
+mydestination = $myhostname, <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp, localhost.netsys.cs.t-kougei.ac.jp, , localhost
+<span class="git-remove">relayhost = </span>
+<span class="git-add">relayhost = [smtp-a.t-kougei.ac.jp</span>]
 <span class="git-remove">mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128</span>
 <span class="git-add">#mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128</span>
 <span class="git-add">mynetworks = 10.10.0.0/16</span>
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
 <span class="git-remove">#inet_protocols = all</span>
 <span class="git-add">inet_protocols = ipv4</span>
 <span class="git-add">home_mailbox = Maildir/</span></code></pre>
@@ -532,6 +542,10 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 
 <p>サーバの<code>/home/tome/Maildir/new</code>ディレクトリに新しくファイルが作成されており、ファイルの内容が「test」とあれば、成功です。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ls /home/tome/Maildir/new/</code></pre>
+<div class="caution">
+<p><p><strong>注意:</strong></p></p>
+<p><p>もしも、<code>/home/tome/Maildir/new/</code>にない場合は、<code>/home/tome/Maildir/cur</code>を確認してみてください。</p></p>
+</div>
 
 <h3 id="3.3.21">外部ネットワークへのメール送信確認</h3>
 <p>サーバ外にメールが届くかテストを行います。</p>
@@ -539,37 +553,6 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# echo "test" | mail <学籍番号>@st.t-kougei.ac.jp</code></pre>
 
 <p>自分の大学用のメールボックスにrootから「test」というメッセージが来ていたら成功です。</p>
-
-<div class="note">
-<p><p><strong>注記:</strong></p></p>
-<p><p>もしも以下のコマンドを実行した結果、パラメータの値が表と合致していたらメールが届いてなくても成功です。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# 
-grep "st.t-kougei.ac.jp" /var/log/mail.log | tail -1 | egrep 'to=|relay=|status='</code></pre>
-
-<table class="table-auto">
-<thead>
-<tr>
-<th>パラメータ</th>
-<th>値</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>to</td>
-<td>大学用のメールアドレス</td>
-</tr>
-<tr>
-<td>relay</td>
-<td>smtp-a.t-kougei.ac.jp</td>
-</tr>
-<tr>
-<td>status</td>
-<td>sent</td>
-</tr>
-</tbody>
-</table>
-<p></p></p>
-</div>
 
 
 <h2 id="3.4">Dovecot（POP3）</h2>
@@ -605,7 +588,13 @@ grep "st.t-kougei.ac.jp" /var/log/mail.log | tail -1 | egrep 'to=|relay=|status=
 
 <p><code>mail_location</code> を <code>maildir:~/Maildir</code> に変更します。</p>
 
-<pre><code><span class="git-remove">mail_location = mbox:~/mail:INBOX=/var/mail/%u</span>
+<pre><code>#   mail_location = maildir:~/Maildir
+#   mail_location = mbox:~/mail:INBOX=/var/mail/%u
+#   mail_location = mbox:/var/mail/%d/%1n/%n:INDEX=/var/indexes/%d/%1n/%n
+#
+# <doc/wiki/MailLocation.txt>
+#
+<span class="git-remove">mail_location = mbox:~/mail:INBOX=/var/mail/%u</span>
 <span class="git-add">#mail_location = mbox:~/mail:INBOX=/var/mail/%u</span>
 <span class="git-add">mail_location = maildir:~/Maildir</span></code></pre>
 
