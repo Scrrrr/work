@@ -125,19 +125,19 @@ rootのパスワードと同様に［このパスワードは辞書チェック�
 中央下に表示されているアイコンにカーソルを合わせるとアプリケーション名が表示されるので、そこから[端末]を探します。もしくは、<win>キーを押した後に、[Terminal]と検索して提示された[端末]というソフトを起動します。
 
 ## SELinuxの無効化
-{question:システム全体の管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？}{answer:SELinux}{hint:強制アクセス(MAC)}
+{question:システム全体の管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？}{answer:selinux}{hint:強制アクセス(MAC)}
 SELinuxの無効化を行います。
-
-:::warning
-この設定にミスがあるとコンピュータが起動しなくなる可能性があるため注意してください。
-:::
 
 ```bash
 root@{{serverHostname}}:~# vi /etc/selinux/config
 ```
 
+
+:::note
+**赤色**で囲まれている行を削除し、**緑色**で囲まれている行を追記してください。
+:::
 以下を変更:
-```
+```{file=/etc/selinux/config}
 -[[SELINUX=enforcing]]
 +[[#SELINUX=enforcing]]
 +[[SELINUX=disabled]]
@@ -148,7 +148,7 @@ viエディタは通常モードで「h」で左に移動、「j」で下に移�
 「i」で入力モードに切り替える。「Esc」を押して通常モードに戻る。
 通常モードで「:w」で保存「:q」で終了、「:wq」で保存して終了。
 
-また、通常モードで`/<探したい文字>`で文字検索ができる。検索を辞める時は**Esc**キーを押す。
+また、通常モードで`/<探したい文字>`で文字検索ができる。検索をやめる時は**Esc**キーを押す。
 :::  
 
 ## 電源の設定
@@ -308,14 +308,20 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 
 ### postfixの設定の反映
 {question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}{hint:systemd + control}
-`systemctl`コマンドでpostfixを再起動します。
 
+`systemctl`コマンドでpostfixを再起動します。
 ```bash
 root@{{serverHostname}}:~# systemctl restart postfix
+```
+
+再起動後、状態を確認します。
+```bash
 root@{{serverHostname}}:~# systemctl status postfix
 ```
 
-また、サーバの再起動後にサービスを自動起動するように設定します。
+緑のマークと共に`Active: active (exited)`とあれば、`q`で抜けます。
+
+再起動後に自動で起動するよう設定します。
 ```bash
 root@{{serverHostname}}:~# systemctl enable postfix
 ```
@@ -338,7 +344,8 @@ running
 ```bash
 root@{{serverHostname}}:~# systemctl start firewalld
 ```
-また、自動起動を有効にします。
+
+また、自動起動するように設定します。
 ```bash
 root@{{serverHostname}}:~# systemctl enable firewalld
 ```
@@ -428,7 +435,7 @@ Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオー�
 :::note
 既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。
 ```bash
-root@{{serverHostname}}:~# dnf -y install dovecot-core dovecot-pop3d
+root@{{serverHostname}}:~# dnf -y install dovecot
 ```
 :::
 
@@ -492,11 +499,22 @@ root@{{serverHostname}}:~# vi /etc/dovecot/conf.d/10-mail.conf
 ```
 
 ### Dovecotの設定の反映
-`systemctl`コマンドでdovecotを再起動しステータスを確認します。
+`systemctl`コマンドでdovecotを再起動します。
 
 ```bash
 root@{{serverHostname}}:~# systemctl restart dovecot
+```
+
+再起動後、動作を行っているか状態の確認をします。
+```bash
 root@{{serverHostname}}:~# systemctl status dovecot
+```
+
+緑のマークと共に`Active: active (exited)`とあれば、`q`で抜けます。
+
+状態に問題がなければ、自動起動をするように設定します。
+```bash
+root@{{serverHostname}}:~# systemctl enable dovecot
 ```
 
 ## ファイアウォールの設定
@@ -622,16 +640,19 @@ hello world
 
 ### httpdの再起動
 httpdを再起動させて、設定ファイルを読み込みます。
-読み込んだあとに、statusで状態を確認します。
 
 ```bash
 root@{{serverHostname}}:~# systemctl restart httpd
+```
+
+読み込んだあとに、statusで状態を確認します。
+```bash
 root@{{serverHostname}}:~# systemctl status httpd
 ```
 
 緑のマークと共に`Active: active (exited)`とあれば、`q`で抜けます。
 
-再起動後に自動で起動するよう設定します。
+状態に問題がなければ、自動起動をするように設定します。
 ```bash
 root@{{serverHostname}}:~# systemctl enable httpd
 ```

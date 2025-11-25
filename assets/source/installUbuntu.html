@@ -455,6 +455,11 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 
 <p>以下の設定を行います。</p>
 
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>赤色で囲まれている行を削除し、緑色で囲まれている行を追記してください。</p></p>
+</div>
+
 <div class="code-file-info">📁 /etc/postfix/main.cf</div>
 <pre><code>smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
 myhostname = <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp
