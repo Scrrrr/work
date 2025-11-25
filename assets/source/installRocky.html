@@ -2,7 +2,7 @@
 // 問題データ
 $questions = array(
     'rocky_question_1' => 'リナックス',
-    'rocky_question_2' => 'SELinux',
+    'rocky_question_2' => 'selinux',
     'rocky_question_3' => 'dnf',
     'rocky_question_4' => 'relayhost',
     'rocky_question_5' => 'systemctl',
@@ -268,14 +268,15 @@ $questions = array(
 <div class="question-box" id="rocky_question_2"><div class="question-content"><div class="question-header"><p class="question-text">システム全体の管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？</p><span class="success-message" id="rocky_question_2_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: 強制アクセス(MAC)</p><div class="answer-input-container"><input type="text" id="rocky_question_2_input" class="answer-input" placeholder="*******" data-question-id="rocky_question_2"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_2">回答</button><button type="button" class="giveup-btn" id="rocky_question_2_giveup" data-question-id="rocky_question_2" style="display: none;">解答を見る</button></div></div></div>
 <p>SELinuxの無効化を行います。</p>
 
-<div class="warning">
-<p><p><strong>警告:</strong></p></p>
-<p><p>この設定にミスがあるとコンピュータが起動しなくなる可能性があるため注意してください。</p></p>
-</div>
-
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/selinux/config</code></pre>
 
+
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p><strong>赤色</strong>で囲まれている行を削除し、<strong>緑色</strong>で囲まれている行を追記してください。</p></p>
+</div>
 <p>以下を変更:</p>
+<div class="code-file-info">📁 /etc/selinux/config</div>
 <pre><code><span class="git-remove">SELINUX=enforcing</span>
 <span class="git-add">#SELINUX=enforcing</span>
 <span class="git-add">SELINUX=disabled</span></code></pre>
@@ -286,7 +287,7 @@ $questions = array(
 <p>「i」で入力モードに切り替える。「Esc」を押して通常モードに戻る。</p>
 <p>通常モードで「:w」で保存「:q」で終了、「:wq」で保存して終了。</p>
 
-<p>また、通常モードで<code>/<探したい文字></code>で文字検索ができる。検索を辞める時は<strong>Esc</strong>キーを押す。</p></p>
+<p>また、通常モードで<code>/<探したい文字></code>で文字検索ができる。検索をやめる時は<strong>Esc</strong>キーを押す。</p></p>
 </div>  
 
 <h2 id="2.4">電源の設定</h2>
@@ -463,12 +464,16 @@ skip_if_unavailable=False
 
 <h3 id="3.1.5">postfixの設定の反映</h3>
 <div class="question-box" id="rocky_question_5"><div class="question-content"><div class="question-header"><p class="question-text">Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか</p><span class="success-message" id="rocky_question_5_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: systemd + control</p><div class="answer-input-container"><input type="text" id="rocky_question_5_input" class="answer-input" placeholder="*********" data-question-id="rocky_question_5"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_5">回答</button><button type="button" class="giveup-btn" id="rocky_question_5_giveup" data-question-id="rocky_question_5" style="display: none;">解答を見る</button></div></div></div>
+
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart postfix</code></pre>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart postfix
-root@<?php echo $serverHostname; ?>:~# systemctl status postfix</code></pre>
+<p>再起動後、状態を確認します。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl status postfix</code></pre>
 
-<p>また、サーバの再起動後にサービスを自動起動するように設定します。</p>
+<p>緑のマークと共に<code>Active: active (exited)</code>とあれば、<code>q</code>で抜けます。</p>
+
+<p>再起動後に自動で起動するよう設定します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable postfix</code></pre>
 
 <h2 id="3.2">ファイアウォールの設定</h2>
@@ -486,7 +491,8 @@ running</code></pre>
 <p><p><strong>ヒント:</strong></p></p>
 <p><p>もし起動していない場合以下の方法で起動します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl start firewalld</code></pre>
-<p>また、自動起動を有効にします。</p>
+
+<p>また、自動起動するように設定します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable firewalld</code></pre>
 </div>
 
@@ -555,7 +561,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <div class="note">
 <p><p><strong>注記:</strong></p></p>
 <p><p>既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# dnf -y install dovecot-core dovecot-pop3d</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# dnf -y install dovecot</code></pre>
 </div>
 
 <h3 id="3.4.14">Dovecotの設定</h3>
@@ -606,10 +612,17 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <span class="git-add">mail_location = maildir:~/Maildir</span></code></pre>
 
 <h3 id="3.4.15">Dovecotの設定の反映</h3>
-<p><code>systemctl</code>コマンドでdovecotを再起動しステータスを確認します。</p>
+<p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart dovecot
-root@<?php echo $serverHostname; ?>:~# systemctl status dovecot</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart dovecot</code></pre>
+
+<p>再起動後、動作を行っているか状態の確認をします。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl status dovecot</code></pre>
+
+<p>緑のマークと共に<code>Active: active (exited)</code>とあれば、<code>q</code>で抜けます。</p>
+
+<p>状態に問題がなければ、自動起動をするように設定します。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable dovecot</code></pre>
 
 <h2 id="3.5">ファイアウォールの設定</h2>
 <p><code>firewall-cmd</code>コマンドでファイアウォールを設定します。</p>
@@ -710,14 +723,15 @@ X-Original-TO: tome
 
 <h3 id="4.2.20">httpdの再起動</h3>
 <p>httpdを再起動させて、設定ファイルを読み込みます。</p>
-<p>読み込んだあとに、statusで状態を確認します。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart httpd
-root@<?php echo $serverHostname; ?>:~# systemctl status httpd</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart httpd</code></pre>
+
+<p>読み込んだあとに、statusで状態を確認します。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl status httpd</code></pre>
 
 <p>緑のマークと共に<code>Active: active (exited)</code>とあれば、<code>q</code>で抜けます。</p>
 
-<p>再起動後に自動で起動するよう設定します。</p>
+<p>状態に問題がなければ、自動起動をするように設定します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable httpd</code></pre>
 
 <h2 id="4.3">サーバでの動作確認</h2>
@@ -772,7 +786,7 @@ success</code></pre>
 
         <script>
             // 問題データをグローバル変数に設定
-            window.questionsData = [{"id":"rocky_question_1","question":"Linuxをカタカナで入力してください","answer":"リナックス"},{"id":"rocky_question_2","question":"システム全体の管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？","answer":"SELinux"},{"id":"rocky_question_3","question":"RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？","answer":"dnf"},{"id":"rocky_question_4","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"rocky_question_5","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"rocky_question_6","question":"RedHat系でデフォルトのファイアウォールであるfirewalldを操作するためのコマンドは何でしょうか","answer":"firewall-cmd"},{"id":"rocky_question_7","question":"DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"rocky_question_8","question":"httpdの設定ファイルの場所はどこですか？(絶対パスで入力)","answer":"/etc/httpd/conf/httpd.conf"}];
+            window.questionsData = [{"id":"rocky_question_1","question":"Linuxをカタカナで入力してください","answer":"リナックス"},{"id":"rocky_question_2","question":"システム全体の管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？","answer":"selinux"},{"id":"rocky_question_3","question":"RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？","answer":"dnf"},{"id":"rocky_question_4","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"rocky_question_5","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"rocky_question_6","question":"RedHat系でデフォルトのファイアウォールであるfirewalldを操作するためのコマンドは何でしょうか","answer":"firewall-cmd"},{"id":"rocky_question_7","question":"DeovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"rocky_question_8","question":"httpdの設定ファイルの場所はどこですか？(絶対パスで入力)","answer":"/etc/httpd/conf/httpd.conf"}];
         </script>
         <script src="assets/js/spoiler-manager.js"></script>
         <script src="assets/js/timer-manager.js"></script>

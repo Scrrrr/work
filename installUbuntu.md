@@ -322,6 +322,10 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 
 以下の設定を行います。
 
+:::note
+赤色で囲まれている行を削除し、緑色で囲まれている行を追記してください。
+:::
+
 ```{file=/etc/postfix/main.cf}
 smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
 myhostname = {{serverHostname}}.netsys.cs.t-kougei.ac.jp
