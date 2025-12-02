@@ -234,12 +234,11 @@ $questions = array(
 </div>
 
 <p>インストールが完了したら、[システムの再起動]を選択して、サーバを再起動します。</p>
-<p>サーバが停止したら、SCTSメニューより、<strong>[インストールサーバの起動]→[RockyLinux]</strong>でサーバを起動します。</p>
 
 <h1 id="2">基本設定</h1>
 
 <h2 id="2.1">ログイン</h2>
-<p>ライセンスに同意後、ログイン画面が表示されるため、ログインを行います。rootでログインを行うため、[アカウントが見つかりませんか？]を選択しrootでログインします。</p>
+<p>ログイン画面が表示されたら、ログインを行います。rootでログインを行うため、<strong>[アカウントが見つかりませんか？]</strong>を選択しrootでログインします。</p>
 
 <table class="table-auto">
 <thead>
@@ -470,6 +469,10 @@ skip_if_unavailable=False
 
 <p>再起動後、状態を確認します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl status postfix</code></pre>
+<div class="caution">
+<p><p><strong>注意:</strong></p></p>
+<p><p>ターミナルのウィンドウが小さいときは、「q」を押して抜けます。</p></p>
+</div>
 
 <p>緑のマークと共に<code>Active: active (exited)</code>とあれば、<code>q</code>で抜けます。</p>
 
@@ -518,6 +521,7 @@ success</code></pre>
 <h2 id="3.3">クライアントからの動作確認</h2>
 
 <h3 id="3.3.10">クライアントの起動とログイン</h3>
+<p>しばらくすると<strong>「クライアントを起動します？」</strong>と尋ねるウィンドウが現れます。「はい」を選択してください。</p>
 
 <p>クライアントを起動して<code>mail</code>コマンドでメールの送信テストをします。</p>
 
