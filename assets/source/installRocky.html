@@ -264,7 +264,7 @@ $questions = array(
 <p>中央下に表示されているアイコンにカーソルを合わせるとアプリケーション名が表示されるので、そこから[端末]を探します。もしくは、<win>キーを押した後に、[Terminal]と検索して提示された[端末]というソフトを起動します。</p>
 
 <h2 id="2.3">SELinuxの無効化</h2>
-<div class="question-box" id="rocky_question_2"><div class="question-content"><div class="question-header"><p class="question-text">システム全体の管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？</p><span class="success-message" id="rocky_question_2_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: 強制アクセス(MAC)</p><div class="answer-input-container"><input type="text" id="rocky_question_2_input" class="answer-input" placeholder="*******" data-question-id="rocky_question_2"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_2">回答</button><button type="button" class="giveup-btn" id="rocky_question_2_giveup" data-question-id="rocky_question_2" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="rocky_question_2"><div class="question-content"><div class="question-header"><p class="question-text">システム全体の管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？</p><span class="success-message" id="rocky_question_2_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: 強制アクセス(MAC) Rocky Linux</p><div class="answer-input-container"><input type="text" id="rocky_question_2_input" class="answer-input" placeholder="*******" data-question-id="rocky_question_2"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_2">回答</button><button type="button" class="giveup-btn" id="rocky_question_2_giveup" data-question-id="rocky_question_2" style="display: none;">解答を見る</button></div></div></div>
 <p>SELinuxの無効化を行います。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/selinux/config</code></pre>
@@ -469,10 +469,6 @@ skip_if_unavailable=False
 
 <p>再起動後、状態を確認します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl status postfix</code></pre>
-<div class="caution">
-<p><p><strong>注意:</strong></p></p>
-<p><p>ターミナルのウィンドウが小さいときは、「q」を押して抜けます。</p></p>
-</div>
 
 <p>緑のマークと共に<code>Active: active (exited)</code>とあれば、<code>q</code>で抜けます。</p>
 
@@ -733,9 +729,10 @@ X-Original-TO: tome
 <p>読み込んだあとに、statusで状態を確認します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl status httpd</code></pre>
 
-<p>緑のマークと共に<code>Active: active (exited)</code>とあれば、<code>q</code>で抜けます。</p>
+<p>緑のマークと共に<code>Active: active (exited)</code>とあることを確認し<code>q</code>で抜けます。</p>
 
-<p>状態に問題がなければ、自動起動をするように設定します。</p>
+
+<p>自動起動をするように設定します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable httpd</code></pre>
 
 <h2 id="4.3">サーバでの動作確認</h2>

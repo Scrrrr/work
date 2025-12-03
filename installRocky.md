@@ -124,7 +124,7 @@ rootのパスワードと同様に［このパスワードは辞書チェック�
 中央下に表示されているアイコンにカーソルを合わせるとアプリケーション名が表示されるので、そこから[端末]を探します。もしくは、<win>キーを押した後に、[Terminal]と検索して提示された[端末]というソフトを起動します。
 
 ## SELinuxの無効化
-{question:システム全体の管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？}{answer:selinux}{hint:強制アクセス(MAC)}
+{question:システム全体の管理者の権限を分散させて安全性を高めるLinuxのセキュリティ機能はなんですか？}{answer:selinux}{hint:強制アクセス(MAC) Rocky Linux}
 SELinuxの無効化を行います。
 
 ```bash
@@ -317,9 +317,6 @@ root@{{serverHostname}}:~# systemctl restart postfix
 ```bash
 root@{{serverHostname}}:~# systemctl status postfix
 ```
-:::caution
-ターミナルのウィンドウが小さいときは、「q」を押して抜けます。
-:::
 
 緑のマークと共に`Active: active (exited)`とあれば、`q`で抜けます。
 
@@ -653,9 +650,10 @@ root@{{serverHostname}}:~# systemctl restart httpd
 root@{{serverHostname}}:~# systemctl status httpd
 ```
 
-緑のマークと共に`Active: active (exited)`とあれば、`q`で抜けます。
+緑のマークと共に`Active: active (exited)`とあることを確認し`q`で抜けます。
 
-状態に問題がなければ、自動起動をするように設定します。
+
+自動起動をするように設定します。
 ```bash
 root@{{serverHostname}}:~# systemctl enable httpd
 ```
