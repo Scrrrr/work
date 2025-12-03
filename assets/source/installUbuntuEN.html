@@ -1,0 +1,774 @@
+<?php
+// 問題データ
+$questions = array(
+    'ubuntuen_question_1' => 'リナックス',
+    'ubuntuen_question_2' => 'sudo',
+    'ubuntuen_question_3' => 'systemctl',
+    'ubuntuen_question_4' => 'apt',
+    'ubuntuen_question_5' => 'relayhost',
+    'ubuntuen_question_6' => 'ufw',
+    'ubuntuen_question_7' => 'ssl = no',
+    'ubuntuen_question_8' => '/etc/apache2/sites-available',
+    'ubuntuen_question_9' => 'a2ensite'
+);
+?>
+
+    <!-- ハンバーガーメニュー -->
+    <button id="hamburger" class="hamburger" aria-label="メニューを開く">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- オーバーレイ -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="container">
+        <!-- サイドバー（目次） -->
+        <nav class="sidebar">
+            <h3>目次</h3>
+            <ul class="toc">
+<li><a href="#1">Ubuntu Installation</a>
+<ul>
+<li><a href="#1.1">Language Selection</a></li>
+<li><a href="#1.2">Keyboard Layout Settings</a></li>
+<li><a href="#1.3">Updates and Other Software</a></li>
+<li><a href="#1.4">Installation Type</a></li>
+<li><a href="#1.5">Where Are You?</a></li>
+<li><a href="#1.6">Enter Your Information</a></li>
+<li><a href="#1.7">Begin Installation</a></li>
+</ul>
+</li>
+<li><a href="#2">Basic Configuration</a>
+<ul>
+<li><a href="#2.1">Login</a></li>
+<li><a href="#2.2">Initial Setup Window</a></li>
+<li><a href="#2.3">Terminal Launch</a></li>
+<li><a href="#2.4">Root Password Setup</a></li>
+<li><a href="#2.5">Login as Root User</a></li>
+<li><a href="#2.6">Network Configuration</a></li>
+<li><a href="#2.7">NTP Configuration</a></li>
+<li><a href="#2.8">Proxy Settings for Each Tool</a></li>
+</ul>
+</li>
+<li><a href="#3">Mail Server Setup</a>
+<ul>
+<li><a href="#3.1">Postfix</a></li>
+<li><a href="#3.2">Firewall Configuration</a></li>
+<li><a href="#3.3">Verification from Client</a></li>
+<li><a href="#3.4">Dovecot (POP3)</a></li>
+<li><a href="#3.5">Firewall Configuration</a></li>
+<li><a href="#3.6">Verification from Client</a></li>
+</ul>
+</li>
+<li><a href="#4">Web Server Setup</a>
+<ul>
+<li><a href="#4.1">Apache2 Installation</a></li>
+<li><a href="#4.2">Apache2 Configuration</a></li>
+<li><a href="#4.3">Content Placement</a></li>
+<li><a href="#4.4">Verification on Server</a></li>
+<li><a href="#4.5">Firewall Configuration</a></li>
+<li><a href="#4.6">Verification from Client</a></li>
+</ul>
+</li>
+</ul>
+        </nav>
+
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+                <h1 id="1">Ubuntu Installation</h1>
+<p>Ubuntu is a highly popular Linux distribution for both server and desktop use. We will now install Ubuntu on your computer and build a server with mail server and web server functionality.</p>
+<p>The version to be installed is Ubuntu 22.04.2 - Desktop.</p>
+
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>This manual contains verification questions throughout. When you answer correctly, the hidden text in the main body will be automatically revealed, allowing you to continue reading. If you are unsure of the answer, <strong>please open a new tab from this manual and search the internet using keywords.</strong></p>
+
+<p>Try answering the question below.</p>
+<div class="question-box" id="ubuntuen_question_1"><div class="question-content"><div class="question-header"><p class="question-text">Enter Linux in katakana</p><span class="success-message" id="ubuntuen_question_1_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="ubuntuen_question_1_input" class="answer-input" placeholder="*****" data-question-id="ubuntuen_question_1"><button type="button" class="submit-answer-btn" data-question-id="ubuntuen_question_1">回答</button><button type="button" class="giveup-btn" id="ubuntuen_question_1_giveup" data-question-id="ubuntuen_question_1" style="display: none;">解答を見る</button></div></div></div>
+
+<p>You can answer the questions as many times as you like.</p>
+<p>If you don't know the answer even after 3 minutes have passed since your first attempt, the <strong>"Show Answer" button</strong> will appear.</p>
+<p><strong>!!If you never answer, the button will not appear even after 3 minutes have passed!!</strong></p></p>
+</div>
+
+<h2 id="1.1">Language Selection</h2>
+<p>Select the language to use. By default, it is set to Japanese.</p>
+<p>Scroll down the left list and select a language according to the language you want to use.</p>
+<p>After selecting the language, select <strong>[ Install Ubuntu ]</strong>.</p>
+
+<h2 id="1.2">Keyboard Layout Settings</h2>
+<p>Configure the keyboard layout.</p>
+<p>By default, it is set to Japanese layout.</p>
+<p>If there are no problems, select <strong>[ Continue ]</strong>.</p>
+
+<h2 id="1.3">Updates and Other Software</h2>
+<p>Select <strong>[ Normal installation ]</strong> and select <strong>[ Continue ]</strong>.</p>
+
+<h2 id="1.4">Installation Type</h2>
+<p>Select <strong>[ Erase disk and install Ubuntu ]</strong> and select <strong>[ Install ]</strong>.</p>
+
+<p>A window asking <strong>[ Write the changes to disks? ]</strong> will appear. If there are no problems, select <strong>[ Continue ]</strong>.</p>
+
+<h2 id="1.5">Where Are You?</h2>
+<p>Configure the time settings.  </p>
+<p>If a pin is placed on Japan on the world map and "Tokyo" appears in the input field below, select [Continue].</p>
+
+<h2 id="1.6">Enter Your Information</h2>
+<p>Configure the displayed items according to the following table.</p>
+<table class="table-auto">
+<thead>
+<tr>
+<th>Item</th>
+<th>Input Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Your Name</td>
+<td>tome</td>
+</tr>
+<tr>
+<td>Computer Name</td>
+<td><?php echo $serverHostname; ?></td>
+</tr>
+<tr>
+<td>Username</td>
+<td>tome</td>
+</tr>
+<tr>
+<td>Password</td>
+<td>netsys00</td>
+</tr>
+<tr>
+<td>Confirm Password</td>
+<td>netsys00</td>
+</tr>
+</tbody>
+</table>
+<p>Check [Require my password to log in] and select [Continue].</p>
+
+<h2 id="1.7">Begin Installation</h2>
+<p>Once the installation preparation is complete, the installation will begin.</p>
+<p>The installation will take some time.</p>
+
+<p>When the installation is complete, you will be prompted to restart along with a popup saying [Installation Complete].</p>
+
+<p>Select <strong>[ Restart Now ]</strong> to restart.</p>
+
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>While the Ubuntu logo and loading mark are displayed, you will see "Please remove the installation medium, then press ENTER: (Please remove the installation medium and press the ENTER key.)". Follow the instructions and press Enter, and the machine will completely shut down.</p></p>
+</div>
+
+<p>From the SCTS menu, select "Start Installation Server" and select Ubuntu to start it again.</p>
+
+<h1 id="2">Basic Configuration</h1>
+
+<h2 id="2.1">Login</h2>
+<p>When the startup is complete, a login screen will be displayed.</p>
+
+<p>Click the <code>tome</code> icon in the center, enter the password you set <code>netsys00</code>, and press Enter to log in.</p>
+
+<h2 id="2.2">Initial Setup Window</h2>
+<p>When you log in for the first time, the Livepatch security setup will be displayed.</p>
+<p>Click [Next] on the left and press [Done].</p>
+
+<h2 id="2.3">Terminal Launch</h2>
+<p>Click the [Applications] icon at the bottom left and click [Terminal] from the items. Alternatively, enter [Terminal] in the [Search Keywords] field and click [Terminal].</p>
+
+<div class="hint">
+<p><p><strong>ヒント:</strong></p></p>
+<p><p>You can also open the terminal with <code>Ctrl+Alt+T</code></p></p>
+</div>
+
+<h2 id="2.4">Root Password Setup</h2>
+<p>Open the terminal and set the root password.</p>
+<p>Set the root password to <code>netsys00</code>.</p>
+
+<div class="question-box" id="ubuntuen_question_2"><div class="question-content"><div class="question-header"><p class="question-text">What command is used when a regular user executes commands with administrator privileges?</p><span class="success-message" id="ubuntuen_question_2_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: abbreviation of super user do</p><div class="answer-input-container"><input type="text" id="ubuntuen_question_2_input" class="answer-input" placeholder="****" data-question-id="ubuntuen_question_2"><button type="button" class="submit-answer-btn" data-question-id="ubuntuen_question_2">回答</button><button type="button" class="giveup-btn" id="ubuntuen_question_2_giveup" data-question-id="ubuntuen_question_2" style="display: none;">解答を見る</button></div></div></div>
+
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~$ sudo passwd root
+Password for tome:
+New password:
+Retype new password:</code></pre>
+<div class="caution">
+<p><p><strong>注意:</strong></p></p>
+<p><p>No characters will be displayed while entering the password.</p>
+<p>After entering with the keyboard, press Enter.</p></p>
+</div>
+
+<h2 id="2.5">Login as Root User</h2>
+<p>Currently, you are logged in as tome, but to work as root in the future, log in as root.</p>
+<pre><code class="language-bash">tome@<?php echo $serverHostname; ?>:~# su -
+Password:
+root@<?php echo $serverHostname; ?>:~#</code></pre>
+<p>In root privileges, the shell prompt changes from <code>$</code> to <code>#</code>.</p>
+<p>Since root privileges have all system permissions, please operate carefully.</p>
+
+<h2 id="2.6">Network Configuration</h2>
+<p>Launch nmtui to configure the network.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# nmtui</code></pre>
+
+<p>Edit the network configuration file with <code>Edit Connection</code> -> <code>Edit</code>.</p>
+<div class="hint">
+<p><p><strong>ヒント:</strong></p></p>
+<p><p>TUI (Terminal User Interface) operations are mainly performed with <code>Tab key</code>, <code>Arrow keys</code>, and <code>Enter key</code>.</p></p>
+</div>
+
+<p>Press [Enter] on <code><strong>Automatic</strong></code> under <strong>IPv4 Configuration</strong> and change it to <code><strong>Manual</strong></code>.</p>
+<p>Move the cursor to <code><strong><Show></strong></code> on the right and press [Enter].</p>
+
+<p>Enter the following for each item:</p>
+<table class="table-fixed">
+<thead>
+<tr>
+<th>Item Name</th>
+<th>Input Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Address</td>
+<td><?php echo $serverIP; ?>/24</td>
+</tr>
+<tr>
+<td>Gateway</td>
+<td><?php echo $gatewayIP; ?></td>
+</tr>
+<tr>
+<td>DNS Server</td>
+<td><?php echo $gatewayIP; ?></td>
+</tr>
+<tr>
+<td>Search Domain</td>
+<td>netsys.cs.t-kougei.ac.jp</td>
+</tr>
+<tr>
+<td>Search Domain</td>
+<td>cs.t-kougei.ac.jp</td>
+</tr>
+<tr>
+<td>Search Domain</td>
+<td>t-kougei.ac.jp</td>
+</tr>
+</tbody>
+</table>
+
+<p>Next, press [Enter] on <code><strong>Automatic</strong></code> under <strong>IPv6 Configuration</strong> and change it to <code><strong>Disable</strong></code>.</p>
+
+<p>After all settings are complete, select <code><strong><OK></strong></code> at the bottom and press [Enter].</p>
+<p>Press <code><strong><Back></strong></code> to return to the beginning.</p>
+
+<div class="caution">
+<p><p><strong>注意:</strong></p></p>
+<p><p>If you cannot connect to the network after restarting, go to Settings -> Network Settings -> IPv4 and change "Automatic" to "Manual".</p></p>
+</div>
+
+<h3 id="2.6.1">Hostname Configuration</h3>
+<p>Select <code>Set System Hostname</code> from the first option selection menu in <code>nmtui</code>.</p>
+<p>Change the hostname from <code><?php echo $serverHostname; ?></code> to <code><?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code> and press [Enter] on <code><strong><OK></strong></code>.</p>
+<div class="caution">
+<p><p><strong>注意:</strong></p></p>
+<p><p>If you make a mistake with the hostname, it will cause problems in future configurations.</p>
+<p>Please carefully verify the input. We recommend paying special attention to small errors such as confusing "cs" and "sc" or typos like "t-kougei" and "t-kuogei".</p></p>
+</div>
+
+<p>When "Set hostname to '<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp'" is displayed, it's complete. Press [Enter] on <code><strong><OK></strong></code>.</p>
+
+<p>After all settings are complete, press [Enter] on <code><strong><OK></strong></code> at the end of the first option selection menu.</p>
+
+<h3 id="2.6.2">Verify Network Configuration</h3>
+<p>Use the <code>ip</code> command to verify that the network connection is working correctly.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+…
+2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 52:54:00:62:e8:57 brd ff:ff:ff:ff:ff:ff
+    inet <?php echo $serverIP; ?>/24 brd 10.10.1.255 scope global noprefixroute enp1s0
+       valid_lft forever preferred_lft forever</code></pre>
+
+<p>If the <code>inet</code> of the network device <code>enp1s0</code> shows <code><?php echo $serverIP; ?>/24</code>, it is configured correctly.</p>
+<p>Also, if there is no ipv6 item for enp1s0, ipv6 has been disabled.</p>
+
+<h3 id="2.6.3">Verify Hostname Configuration</h3>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# cat /etc/hostname</code></pre>
+<p>If the hostname is displayed correctly, the configuration is complete.</p>
+
+<h2 id="2.7">NTP Configuration</h2>
+<p>By default, it is connected to European NTP servers, so we will configure it to connect to <code>ntp-a.t-kougei.ac.jp</code> installed on campus.</p>
+
+<h3 id="2.7.4">Create Configuration File Directory</h3>
+<p>The NTP protocol is managed by Systemd. Creating <code>timesyncd.conf.d</code> allows us to place configuration files.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# mkdir -p /etc/systemd/timesyncd.conf.d/</code></pre>
+
+<h3 id="2.7.5">Create Configuration File</h3>
+<p>Create a new NTP configuration file <code>ntp-kougei.conf</code> using vi.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/systemd/timesyncd.conf.d/ntp-kougei.conf</code></pre>
+
+<div class="code-file-info">📁 /etc/systemd/timesyncd.conf.d/ntp-kougei.conf</div>
+<pre><code>[Time]
+NTP=ntp-a.t-kougei.ac.jp</code></pre>
+
+<h3 id="2.7.6">Restart systemd-timesyncd</h3>
+<div class="question-box" id="ubuntuen_question_3"><div class="question-content"><div class="question-header"><p class="question-text">What is the command to operate systemd, the software that manages Linux systems?</p><span class="success-message" id="ubuntuen_question_3_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: systemd + control</p><div class="answer-input-container"><input type="text" id="ubuntuen_question_3_input" class="answer-input" placeholder="*********" data-question-id="ubuntuen_question_3"><button type="button" class="submit-answer-btn" data-question-id="ubuntuen_question_3">回答</button><button type="button" class="giveup-btn" id="ubuntuen_question_3_giveup" data-question-id="ubuntuen_question_3" style="display: none;">解答を見る</button></div></div></div>
+<p>Restart <code>systemd-timesyncd</code> using the <code>systemctl</code> command.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart systemd-timesyncd</code></pre>
+
+<h3 id="2.7.7">Verify NTP Connection</h3>
+<p>Use the <code>timedatectl</code> command to verify that it is connected to the university's NTP server.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# timedatectl timesync-status
+       Server: 192.168.16.188 (ntp-a.t-kougei.ac.jp)
+Poll interval: 1min 4s (min: 32s; max 34min 8s)
+         Leap: normal
+      Version: 4
+      Stratum: 2
+    Reference: 96640107
+    Precision: 1us (-26)
+Root distance: 2.700ms (max: 5s)
+       Offset: +26.200ms
+        Delay: 336us
+       Jitter: 0
+ Packet count: 1
+    Frequency: +191.938ppm</code></pre>
+<p>If <code>ntp-a.t-kougei.ac.jp</code> is written in the [Server] field, it's complete.</p>
+
+
+<h2 id="2.8">Proxy Settings for Each Tool</h2>
+
+<h3 id="2.8.8">NetworkManager Proxy Settings</h3>
+<p>Click the power icon in the upper right and select [Settings] from the displayed items.</p>
+<p>Click the gear icon for <code>Network Proxy</code> in the network settings.</p>
+<p>Change from <strong>Off</strong> to <strong>Manual</strong> and enter the following items:</p>
+<table class="table-fixed">
+<thead>
+<tr>
+<th>Item Name</th>
+<th>Input Value</th>
+<th>Port</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTP Proxy</td>
+<td>proxy-a.t-kougei.ac.jp</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>HTTPS Proxy</td>
+<td>proxy-a.t-kougei.ac.jp</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>FTP Proxy</td>
+<td>proxy-a.t-kougei.ac.jp</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>SOCKS Host</td>
+<td>proxy-a.t-kougei.ac.jp</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>Ignore Hosts</td>
+<td>*.t-kougei.ac.jp</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+
+<p>After entering, close with ×.</p>
+<p>Also close the settings window with ×.</p>
+
+<h3 id="2.8.9">Bash Proxy Settings</h3>
+<p>Return to the terminal to configure.  </p>
+<p>Create a new <code>/etc/profile.d/proxy.sh</code> file and write the proxy settings.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/profile.d/proxy.sh</code></pre>
+
+<div class="hint">
+<p><p><strong>ヒント:</strong></p></p>
+<p><p>In vi editor, in normal mode, "h" moves left, "j" moves down, "k" moves up, "l" moves right.  </p>
+<p>Press "i" to enter insert mode. Press "Esc" to return to normal mode.</p>
+<p>In normal mode, ":w" saves, ":q" quits, ":wq" saves and quits.</p></p>
+</div>  
+
+<div class="code-file-info">📁 /etc/profile.d/proxy.sh</div>
+<pre><code>HTTP_PROXY=http://proxy-a.t-kougei.ac.jp:8080
+HTTPS_PROXY=http://proxy-a.t-kougei.ac.jp:8080
+
+http_proxy=http://proxy-a.t-kougei.ac.jp:8080
+https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
+
+<p>Load the created configuration file using the <code>source</code> command.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# source /etc/profile.d/proxy.sh</code></pre>
+<h3 id="2.8.10">apt Proxy Settings</h3>
+<div class="question-box" id="ubuntuen_question_4"><div class="question-content"><div class="question-header"><p class="question-text">What is the command for the advanced package manager used in Debian-based Linux?</p><span class="success-message" id="ubuntuen_question_4_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: abbreviation of advanced package tool</p><div class="answer-input-container"><input type="text" id="ubuntuen_question_4_input" class="answer-input" placeholder="***" data-question-id="ubuntuen_question_4"><button type="button" class="submit-answer-btn" data-question-id="ubuntuen_question_4">回答</button><button type="button" class="giveup-btn" id="ubuntuen_question_4_giveup" data-question-id="ubuntuen_question_4" style="display: none;">解答を見る</button></div></div></div>
+<p>Create a new <code>30proxy.conf</code> file under <code>/etc/apt/apt.conf.d</code>.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/apt/apt.conf.d/30proxy.conf</code></pre>
+
+<p>Write the following in the file.</p>
+
+<div class="code-file-info">📁 /etc/apt/apt.conf.d/30proxy.conf</div>
+<pre><code>Acquire::http::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
+Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
+
+<h3 id="2.8.11">Package Update and Installation</h3>
+<p>Update the available package information using the following command.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt update</code></pre>
+<p>Status is displayed at the beginning. If <strong>Hit</strong> is displayed, it means packages have been updated from existing repositories.</p>
+<p>If you can see the <strong>Hit</strong> text, it's successful.</p>
+
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>After package updates, a "Software Updates" popup may appear. Select <strong>"Remind Me Later"</strong> to dismiss it.</p></p>
+</div>
+
+<p>Upgrade the packages.</p>
+<p>Update the packages using the following command.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt upgrade -y</code></pre>
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>The upgrade will take some time, so please be patient</p></p>
+</div>
+
+<h1 id="3">Mail Server Setup</h1>
+
+<p>A mail server is a server for sending and receiving mail.  </p>
+<p><strong>Postfix</strong> is used for sending mail, and <strong>Dovecot</strong> is used for receiving mail.  </p>
+
+<h2 id="3.1">Postfix</h2>
+<p>Postfix is an open-source Mail Transfer Agent (MTA) that handles email sending and delivery.</p>
+
+<h3 id="3.1.12">Postfix Installation</h3>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt install -y postfix</code></pre>
+
+<p>During installation, [Package Configuration] will be displayed.</p>
+<p>Press Done, select <strong>[ Internet Site ]</strong>, verify that the configured hostname is written, and select <strong><OK></strong>.</p>
+
+<h3 id="3.1.13">Postfix Configuration</h3>
+<p>Edit the Postfix configuration file <code>/etc/postfix/main.cf</code> using the <code>vi</code> editor.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/postfix/main.cf</code></pre>
+
+<p>Make the following configuration changes.</p>
+
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>Delete the lines marked in red and add the lines marked in green.</p></p>
+</div>
+
+<div class="code-file-info">📁 /etc/postfix/main.cf</div>
+<pre><code>smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_unauth_destination
+myhostname = <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+myorigin = /etc/mailname
+mydestination = $myhostname, <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp, localhost.netsys.cs.t-kougei.ac.jp, , localhost
+<span class="git-remove">relayhost = </span>
+<span class="git-add">relayhost = [smtp-a.t-kougei.ac.jp</span>]
+<span class="git-remove">mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128</span>
+<span class="git-add">#mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128</span>
+<span class="git-add">mynetworks = 10.10.0.0/16</span>
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+<span class="git-remove">#inet_protocols = all</span>
+<span class="git-add">inet_protocols = ipv4</span>
+<span class="git-add">home_mailbox = Maildir/</span></code></pre>
+
+<div class="question-box" id="ubuntuen_question_5"><div class="question-content"><div class="question-header"><p class="question-text">What is the Postfix directive that forwards mail to a specified server?</p><span class="success-message" id="ubuntuen_question_5_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: relay mail</p><div class="answer-input-container"><input type="text" id="ubuntuen_question_5_input" class="answer-input" placeholder="*********" data-question-id="ubuntuen_question_5"><button type="button" class="submit-answer-btn" data-question-id="ubuntuen_question_5">回答</button><button type="button" class="giveup-btn" id="ubuntuen_question_5_giveup" data-question-id="ubuntuen_question_5" style="display: none;">解答を見る</button></div></div></div>
+
+<h3 id="3.1.14">Apply Postfix Configuration</h3>
+<p>Restart Postfix using the <code>systemctl</code> command.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart postfix</code></pre>
+
+<p>Also, configure it so that the service starts after server restart.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable postfix</code></pre>
+
+<h2 id="3.2">Firewall Configuration</h2>
+<div class="question-box" id="ubuntuen_question_6"><div class="question-content"><div class="question-header"><p class="question-text">What is the command to easily configure a firewall in Ubuntu?</p><span class="success-message" id="ubuntuen_question_6_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: abbreviation of uncomplicated firewall</p><div class="answer-input-container"><input type="text" id="ubuntuen_question_6_input" class="answer-input" placeholder="***" data-question-id="ubuntuen_question_6"><button type="button" class="submit-answer-btn" data-question-id="ubuntuen_question_6">回答</button><button type="button" class="giveup-btn" id="ubuntuen_question_6_giveup" data-question-id="ubuntuen_question_6" style="display: none;">解答を見る</button></div></div></div>
+<p>Configure the firewall using the <code>ufw</code> command.</p>
+
+<h3 id="3.2.15">Enable ufw</h3>
+<p>First, activate ufw.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw enable
+Firewall is active and enabled on system startup.</code></pre>
+
+<p>Verify that ufw is in an active state.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw status
+Status: active</code></pre>
+<p>If the status is active, it's complete.</p>
+
+<h3 id="3.2.16">Add Allowed Services</h3>
+<p>Specify services to allow connections from outside. The services to add this time are smtp and pop3. Allow them as follows.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw allow smtp
+Rule added
+Rule added (v6)</code></pre>
+
+<h3 id="3.2.17">Verify Firewall Configuration Items</h3>
+<p>Check the current firewall configuration with the <code>status</code> option.</p>
+<p>If the Action field for <code>25</code> in the To column is <code>ALLOW</code> and the From field is <code>Anywhere</code>, it's successful.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw status
+Status: active
+
+To                         Action      From
+--                         ------      ----
+25/tcp                     ALLOW       Anywhere                  
+25/tcp (v6)                ALLOW       Anywhere (v6)</code></pre>
+
+<h2 id="3.3">Verification from Client</h2>
+
+<h3 id="3.3.18">Client Launch and Login</h3>
+
+<p>After a while, a window asking <strong>"Start the client?"</strong> will appear. Select "Yes".</p>
+<p>Launch the client, install the <code>mail</code> command, and test email sending.</p>
+
+<p>Log in with username <code>root</code> and password <code>netsys00</code>.</p>
+
+<h3 id="3.3.19">Specify Client relayhost</h3>
+<p>Change the Postfix mail delivery destination on the client to the server you built.</p>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# vi /etc/postfix/main.cf</code></pre>
+
+<p>Comment out all existing <code>relayhost</code> directives in main.cf and add the newly built server.</p>
+
+<div class="code-file-info">📁 /etc/postfix/main.cf</div>
+<pre><code>#relayhost = [smtp-a.t-kougei.ac.jp]
+relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pre>
+
+<h3 id="3.3.20">Send to tome using mail command</h3>
+<p>Launch the terminal and send a message "test" to tome using the <code>mail</code> command.  </p>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# echo "test" | mail tome@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
+
+<p>If a new file has been created in the server's <code>/home/tome/Maildir/new</code> directory and the file content is "test", it's successful.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ls /home/tome/Maildir/new/</code></pre>
+<div class="caution">
+<p><p><strong>注意:</strong></p></p>
+<p><p>If it's not in <code>/home/tome/Maildir/new/</code>, please check <code>/home/tome/Maildir/cur</code>.</p></p>
+</div>
+
+<h3 id="3.3.21">Verify Email Sending to External Network</h3>
+<p>Test whether mail reaches outside the server.</p>
+<p>Send an email from the client to your university email address and verify that the mail arrives.</p>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# echo "test" | mail <student ID>@st.t-kougei.ac.jp</code></pre>
+
+<p>If a message "test" from root has arrived in your university mailbox, it's successful.</p>
+
+
+<h2 id="3.4">Dovecot (POP3)</h2>
+<p>Dovecot is an open-source mail receiving server that supports both IMAP and POP3 protocols.</p>
+
+<h3 id="3.4.22">Dovecot Installation</h3>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt install -y dovecot-core dovecot-pop3d</code></pre>
+
+<h3 id="3.4.23">Dovecot Configuration</h3>
+<p>Open the Dovecot configuration file <code>/etc/dovecot/conf.d/10-ssl.conf</code> using the vi editor.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
+
+<p>Disable SSL.</p>
+
+<div class="question-box" id="ubuntuen_question_7"><div class="question-content"><div class="question-header"><p class="question-text">What setting should be written to disable SSL in Dovecot? Enter the directive name and parameter (include spaces before and after the equals sign)</p><span class="success-message" id="ubuntuen_question_7_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: Search the web for "10-ssl.conf ssl disable"</p><div class="answer-input-container"><input type="text" id="ubuntuen_question_7_input" class="answer-input" placeholder="********" data-question-id="ubuntuen_question_7"><button type="button" class="submit-answer-btn" data-question-id="ubuntuen_question_7">回答</button><button type="button" class="giveup-btn" id="ubuntuen_question_7_giveup" data-question-id="ubuntuen_question_7" style="display: none;">解答を見る</button></div></div></div>
+
+<p>Comment out <code>ssl = yes</code> and add <code>ssl = no</code>.</p>
+<pre><code><span class="git-remove">ssl = yes</span>
+<span class="git-add">#ssl = yes</span>
+<span class="git-add">ssl = no</span></code></pre>
+<p>Open the Dovecot configuration file <code>/etc/dovecot/conf.d/10-auth.conf</code> using the vi editor.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
+
+<p>Uncomment to allow plain text authentication.</p>
+
+<pre><code>#disable_plaintext_auth = yes
+<span class="git-add">disable_plaintext_auth = no</span></code></pre>
+
+<p>Open the Dovecot configuration file <code>/etc/dovecot/conf.d/10-mail.conf</code> using the vi editor.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
+
+<p>Change <code>mail_location</code> to <code>maildir:~/Maildir</code>.</p>
+
+<pre><code>#   mail_location = maildir:~/Maildir
+#   mail_location = mbox:~/mail:INBOX=/var/mail/%u
+#   mail_location = mbox:/var/mail/%d/%1n/%n:INDEX=/var/indexes/%d/%1n/%n
+#
+# <doc/wiki/MailLocation.txt>
+#
+<span class="git-remove">mail_location = mbox:~/mail:INBOX=/var/mail/%u</span>
+<span class="git-add">#mail_location = mbox:~/mail:INBOX=/var/mail/%u</span>
+<span class="git-add">mail_location = maildir:~/Maildir</span></code></pre>
+
+<h3 id="3.4.24">Apply Dovecot Configuration</h3>
+<p>Restart Dovecot using the <code>systemctl</code> command.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart dovecot</code></pre>
+
+<p>Also, configure it so that the service starts after server restart.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable dovecot</code></pre>
+
+<h2 id="3.5">Firewall Configuration</h2>
+<p>Configure the firewall using the <code>ufw</code> command.</p>
+
+<h3 id="3.5.25">Add Allowed Services</h3>
+<p>Specify services to allow connections from outside. The service to add this time is pop3. Allow it as follows.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw allow pop3
+Rule added
+Rule added (v6)</code></pre>
+
+<h3 id="3.5.26">Verify Firewall Configuration Items</h3>
+<p>Check the current firewall configuration with the <code>status</code> option.</p>
+<p>If the Action field for <code>110</code> in the To column is <code>ALLOW</code> and the From field is <code>Anywhere</code>, it's successful.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw status
+Status: active
+
+To                         Action      From
+--                         ------      ----
+25/tcp                     ALLOW       Anywhere                  
+110/tcp                    ALLOW       Anywhere                  
+25/tcp (v6)                ALLOW       Anywhere (v6)             
+110/tcp (v6)               ALLOW       Anywhere (v6)</code></pre>
+
+<h2 id="3.6">Verification from Client</h2>
+<p>Launch <?php echo $clientHostname; ?> and verify mail reception from the Client using the <code>telnet</code> command.</p>
+
+<pre><code class="language-bash">root@client1:~$ telnet <?php echo $serverHostname; ?> 110
+Trying <?php echo $serverIP; ?>...
+Connected to <?php echo $serverHostname; ?>.
+Escape character is '^]'.
+<span class="git-add">+OK Dovecto (Ubuntu) ready.</span></code></pre>
+<p>From the message <code>+OK Dovecto (Ubuntu) ready.</code>, we can confirm that we've connected to Dovecot.</p>
+
+
+<h3 id="3.6.27">Check Mail Content</h3>
+<p>Enter Dovecot commands via telnet.</p>
+<p>First, log in by specifying <code>USER</code> and <code>PASS</code>.</p>
+<pre><code>USER tome
++OK
+PASS netsys00
++OK Logged in.</code></pre>
+<p>If <code>+OK Logged in.</code> is displayed, you are logged in.</p>
+
+<pre><code class="language-bash">list
++OK 1 message:
+1 516</code></pre>
+
+<p>From the message <code>+OK 1 message:</code>, we can confirm that there is 1 email.</p>
+<p><code>1 516</code> represents the email number and email size in bytes.</p>
+
+<pre><code class="language-bash">retr 1
++OK 516 octets
+Return-Path: root@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp
+X-Original-TO: tome
+<略></code></pre>
+
+<div class="hint">
+<p><p><strong>ヒント:</strong></p></p>
+<p><p>To exit telnet, enter <code>quit</code>.</p>
+<pre><code class="language-bash">…
++OK Dovecto (Ubuntu) ready.
+quit
+221 2.0.0 Bye
+Connection closed by foreign host.</code></pre>
+</div>
+
+<p>If the sent email is displayed, the mail server setup is complete.</p>
+
+<h1 id="4">Web Server Setup</h1>
+
+<h2 id="4.1">Apache2 Installation</h2>
+
+<p>Install apache2 using the <code>apt</code> command.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt install -y apache2</code></pre>
+
+<h2 id="4.2">Apache2 Configuration</h2>
+<p>Write the apache2 configuration file. The configuration file for the site to be created will be <code>mywebsite.conf</code>.</p>
+
+<div class="question-box" id="ubuntuen_question_8"><div class="question-content"><div class="question-header"><p class="question-text">When creating a new website in apache2, in which directory should the configuration file be created? (Enter absolute path)</p><span class="success-message" id="ubuntuen_question_8_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: Search the web for "directory for unique settings of available websites apache2"</p><div class="answer-input-container"><input type="text" id="ubuntuen_question_8_input" class="answer-input" placeholder="****************************" data-question-id="ubuntuen_question_8"><button type="button" class="submit-answer-btn" data-question-id="ubuntuen_question_8">回答</button><button type="button" class="giveup-btn" id="ubuntuen_question_8_giveup" data-question-id="ubuntuen_question_8" style="display: none;">解答を見る</button></div></div></div>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/apache2/sites-available/mywebsite.conf</code></pre>
+
+<p>Enter the server name.</p>
+<div class="code-file-info">📁 /etc/apache2/sites-available/mywebsite.conf</div>
+<pre><code>ServerName <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
+
+<p>Enable the created configuration file using the <code>a2ensite</code> command.</p>
+<div class="question-box" id="ubuntuen_question_9"><div class="question-content"><div class="question-header"><p class="question-text">What is the command to enable a website configuration file created in apache2?</p><span class="success-message" id="ubuntuen_question_9_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: The command starts with "a2"</p><div class="answer-input-container"><input type="text" id="ubuntuen_question_9_input" class="answer-input" placeholder="********" data-question-id="ubuntuen_question_9"><button type="button" class="submit-answer-btn" data-question-id="ubuntuen_question_9">回答</button><button type="button" class="giveup-btn" id="ubuntuen_question_9_giveup" data-question-id="ubuntuen_question_9" style="display: none;">解答を見る</button></div></div></div>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# a2ensite mywebsite</code></pre>
+
+<p>Reload the Apache2 configuration using the <code>systemctl</code> command.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl reload apache2</code></pre>
+
+<h2 id="4.3">Content Placement</h2>
+<p>Place the content provided by the server in <code>/var/www/html/</code>. Since <code>index.html</code> already exists, delete its contents and write new content.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /var/www/html/index.html</code></pre>
+
+<div class="hint">
+<p><p><strong>ヒント:</strong></p></p>
+<p><p>In vi, you can delete all text with <code>:%d</code>.</p></p>
+</div>
+
+<div class="code-file-info">📁 /var/www/html/index.html</div>
+<pre><code>hello world</code></pre>
+
+<h2 id="4.4">Verification on Server</h2>
+<p>Verify that hello world is actually displayed.</p>
+
+<p>Click the application icon in the bottom left, enter <code>Firefox</code> in the search bar, and launch the application that appears.</p>
+
+<p>Enter <a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a> in the navigation bar to access it.</p>
+
+<p>If "hello world" is displayed on a plain white background, the verification from the server is successful.</p>
+
+<h2 id="4.5">Firewall Configuration</h2>
+<p>Configure the firewall using the <code>ufw</code> command.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw allow http</code></pre>
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>If you haven't activated ufw with Postfix, activate it with the following command.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw enable</code></pre>
+</div>
+
+<h3 id="4.5.28">Verify Firewall Configuration Items</h3>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw status
+Status: active
+
+To                         Action      From
+--                         ------      ----
+25/tcp                     ALLOW       Anywhere                  
+110/tcp                    ALLOW       Anywhere                  
+80/tcp                     ALLOW       Anywhere                  
+25/tcp (v6)                ALLOW       Anywhere (v6)             
+110/tcp (v6)               ALLOW       Anywhere (v6) 
+80/tcp (v6)                ALLOW       Anywhere (v6)</code></pre>
+
+<p>If <code>80/tcp</code> has been added, the firewall configuration is complete.</p>
+
+<h2 id="4.6">Verification from Client</h2>
+<p>Launch <?php echo $clientHostname; ?> and verify that you can access the web server.  </p>
+
+<p>Access <a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a> from Firefox.</p>
+
+<p>If "hello world" is displayed on a plain white background, similar to the server verification, the client verification is successful.</p>
+
+
+
+        </main>
+    </div>
+
+        <script>
+            // 問題データをグローバル変数に設定
+            window.questionsData = [{"id":"ubuntuen_question_1","question":"Enter Linux in katakana","answer":"リナックス"},{"id":"ubuntuen_question_2","question":"What command is used when a regular user executes commands with administrator privileges?","answer":"sudo"},{"id":"ubuntuen_question_3","question":"What is the command to operate systemd, the software that manages Linux systems?","answer":"systemctl"},{"id":"ubuntuen_question_4","question":"What is the command for the advanced package manager used in Debian-based Linux?","answer":"apt"},{"id":"ubuntuen_question_5","question":"What is the Postfix directive that forwards mail to a specified server?","answer":"relayhost"},{"id":"ubuntuen_question_6","question":"What is the command to easily configure a firewall in Ubuntu?","answer":"ufw"},{"id":"ubuntuen_question_7","question":"What setting should be written to disable SSL in Dovecot? Enter the directive name and parameter (include spaces before and after the equals sign)","answer":"ssl = no"},{"id":"ubuntuen_question_8","question":"When creating a new website in apache2, in which directory should the configuration file be created? (Enter absolute path)","answer":"/etc/apache2/sites-available"},{"id":"ubuntuen_question_9","question":"What is the command to enable a website configuration file created in apache2?","answer":"a2ensite"}];
+        </script>
+        <script src="assets/js/spoiler-manager.js"></script>
+        <script src="assets/js/timer-manager.js"></script>
+        <script src="assets/js/api-manager.js"></script>
+        <script src="assets/js/state-manager.js"></script>
+        <script src="assets/js/questions.js"></script>
+        

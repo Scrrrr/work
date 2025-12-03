@@ -1,0 +1,798 @@
+<?php
+// 問題データ
+$questions = array(
+    'rockyen_question_1' => 'リナックス',
+    'rockyen_question_2' => 'selinux',
+    'rockyen_question_3' => 'dnf',
+    'rockyen_question_4' => 'relayhost',
+    'rockyen_question_5' => 'systemctl',
+    'rockyen_question_6' => 'firewall-cmd',
+    'rockyen_question_7' => 'ssl = no',
+    'rockyen_question_8' => '/etc/httpd/conf/httpd.conf'
+);
+?>
+
+    <!-- ハンバーガーメニュー -->
+    <button id="hamburger" class="hamburger" aria-label="メニューを開く">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- オーバーレイ -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="container">
+        <!-- サイドバー（目次） -->
+        <nav class="sidebar">
+            <h3>目次</h3>
+            <ul class="toc">
+<li><a href="#1">Rocky Linux Installation</a>
+<ul>
+<li><a href="#1.1">Language Selection</a></li>
+<li><a href="#1.2">Installation Destination</a></li>
+<li><a href="#1.3">Kdump</a></li>
+<li><a href="#1.4">Network Configuration</a></li>
+<li><a href="#1.5">Date & Time Settings</a></li>
+<li><a href="#1.6">Software Selection</a></li>
+<li><a href="#1.7">Root Password Setup</a></li>
+<li><a href="#1.8">User Creation</a></li>
+<li><a href="#1.9">Begin Installation</a></li>
+</ul>
+</li>
+<li><a href="#2">Basic Configuration</a>
+<ul>
+<li><a href="#2.1">Login</a></li>
+<li><a href="#2.2">Terminal Launch</a></li>
+<li><a href="#2.3">Disable SELinux</a></li>
+<li><a href="#2.4">Power Settings</a></li>
+<li><a href="#2.5">Proxy Settings for Each Tool</a></li>
+</ul>
+</li>
+<li><a href="#3">Mail Server Setup</a>
+<ul>
+<li><a href="#3.1">Postfix</a></li>
+<li><a href="#3.2">Firewall Configuration</a></li>
+<li><a href="#3.3">Verification from Client</a></li>
+<li><a href="#3.4">Dovecot (POP3)</a></li>
+<li><a href="#3.5">Firewall Configuration</a></li>
+<li><a href="#3.6">Verification from Client</a></li>
+</ul>
+</li>
+<li><a href="#4">Web Server Setup</a>
+<ul>
+<li><a href="#4.1">httpd Configuration</a></li>
+<li><a href="#4.2">Content Placement</a></li>
+<li><a href="#4.3">Verification on Server</a></li>
+<li><a href="#4.4">Firewall Configuration</a></li>
+<li><a href="#4.5">Verification from Client</a></li>
+</ul>
+</li>
+</ul>
+        </nav>
+
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+                <h1 id="1">Rocky Linux Installation</h1>
+<p>Rocky Linux is a highly stable Linux distribution specialized for server use. We will now install Rocky Linux on your computer and build a server with mail server and web server functionality.</p>
+<p>The version to be installed is Rocky Linux 9.5.</p>
+
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>This manual contains verification questions throughout. When you answer correctly, the hidden text in the main body will be automatically revealed, allowing you to continue reading. If you are unsure of the answer, <strong>please open a new tab from this manual and search the internet using keywords.</strong></p>
+
+<p>Try answering the question below.</p>
+<div class="question-box" id="rockyen_question_1"><div class="question-content"><div class="question-header"><p class="question-text">Enter Linux in katakana</p><span class="success-message" id="rockyen_question_1_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rockyen_question_1_input" class="answer-input" placeholder="*****" data-question-id="rockyen_question_1"><button type="button" class="submit-answer-btn" data-question-id="rockyen_question_1">回答</button><button type="button" class="giveup-btn" id="rockyen_question_1_giveup" data-question-id="rockyen_question_1" style="display: none;">解答を見る</button></div></div></div>
+
+<p>You can answer the questions as many times as you like.</p>
+<p>If you don't know the answer even after 3 minutes have passed since your first attempt, the <strong>"Show Answer" button</strong> will appear.</p>
+<p><strong>!!If you never answer, the button will not appear even after 3 minutes have passed!!</strong></p></p>
+</div>
+
+<h2 id="1.1">Language Selection</h2>
+<p>When the installation starts, a language selection menu will be displayed. Select [Japanese] from the middle of the left menu, then select [Continue].</p>
+
+<h2 id="1.2">Installation Destination</h2>
+<p>Determine the system installation destination.</p>
+<p>Select [Installation Destination] to automatically determine the installation destination, then click the blue [Done] button in the upper left.</p>
+
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>It's OK if the warning icon on the system's [Installation Destination] has disappeared.</p></p>
+</div>
+
+<h2 id="1.3">Kdump</h2>
+<p>To disable Kdump, select [KDUMP], uncheck [Enable kdump], and select [Done].</p>
+
+<h2 id="1.4">Network Configuration</h2>
+<p>Next, configure the network. Select [Network & Host Name] and enter <code><?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code> in the hostname text box at the bottom left.</p>
+
+<p>After entering the hostname, click [Apply]. The current hostname will then be displayed at the bottom right.</p>
+<div class="caution">
+<p><p><strong>注意:</strong></p></p>
+<p><p>Please note that if you don't click [Apply], the settings will not be applied.</p>
+
+<p>If you make a mistake with the hostname, it will cause problems in future configurations.</p>
+<p>Please carefully verify the input. We recommend paying special attention to small errors such as confusing "cs" and "sc" or typos like "t-kougei" and "t-kuogei".</p></p>
+</div>
+
+<p>Furthermore, select [Configure], click [IPv4 Settings], and change the method from <strong>Automatic (DHCP)</strong> to <strong>Manual</strong>.</p>
+
+<p>Select [Add] for Address and enter values for the following items.</p>
+
+<table class="table-fixed">
+<thead>
+<tr>
+<th>Item Name</th>
+<th>Input Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Address</td>
+<td><?php echo $serverIP; ?></td>
+</tr>
+<tr>
+<td>Netmask</td>
+<td>24</td>
+</tr>
+<tr>
+<td>Gateway</td>
+<td><?php echo $gatewayIP; ?></td>
+</tr>
+<tr>
+<td>DNS Server</td>
+<td><?php echo $gatewayIP; ?></td>
+</tr>
+<tr>
+<td>Search Domains</td>
+<td>netsys.cs.t-kougei.ac.jp, cs.t-kougei.ac.jp, t-kougei.ac.jp</td>
+</tr>
+</tbody>
+</table>
+
+<p>After entering, press [Save] to close.</p>
+
+<p>After entering, click the toggle button in the upper right to enable it.</p>
+
+<p>If Ethernet displays "Connected", the network connection is complete.</p>
+
+<p>Press [Done] in the upper left.</p>
+
+<h2 id="1.5">Date & Time Settings</h2>
+<p>Select <strong>[Date & Time]</strong> from the regional settings.</p>
+<p>Click the <strong>gear icon</strong> in the upper left and enter <code>ntp-a.t-kougei.ac.jp</code> in <strong>[Add NTP Server]</strong>, then press the <strong>[+] button</strong>.</p>
+
+<p>If there is a check mark in the active field for <code>ntp-a.t-kougei.ac.jp</code>, the addition is complete.</p>
+<p>Check the "In Use" checkbox on the far right of the <code>ntp-a.t-kougei.ac.jp</code> item, and <strong>uncheck all other "In Use" checkboxes.</strong></p>
+
+<p>Close with OK and press the <strong>[Done]</strong> button in the upper left.</p>
+
+<h2 id="1.6">Software Selection</h2>
+<p>Select the software to install. Select [Software Selection] and choose [Server with GUI] as the base environment.</p>
+<p>Select the following additional software for the selected environment:</p>
+<ul>
+<li><strong>Mail Server</strong></li>
+<li><strong>Basic Web Server</strong></li>
+</ul>
+<p>After making your selections, click <strong>[Done]</strong> in the upper left.</p>
+
+<h2 id="1.7">Root Password Setup</h2>
+<p>Click <strong>[Root Password]</strong> under [User Settings].</p>
+
+<p>Enter [netsys00] as the root password, and enter the same password again for confirmation.</p>
+
+<p>After entering, click <strong>[Done]</strong> in the upper left.</p>
+
+<div class="caution">
+<p><p><strong>注意:</strong></p></p>
+<p><p>A message saying [This password fails the dictionary check] will be displayed, but in this case, click Done twice.</p></p>
+</div>
+
+<h2 id="1.8">User Creation</h2>
+<p>Create user tome.</p>
+
+<table class="table-auto">
+<thead>
+<tr>
+<th>Item Name</th>
+<th>Input Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Full Name</td>
+<td>tome</td>
+</tr>
+<tr>
+<td>Username</td>
+<td>tome</td>
+</tr>
+<tr>
+<td>Password</td>
+<td>netsys00</td>
+</tr>
+<tr>
+<td>Confirm Password</td>
+<td>netsys00</td>
+</tr>
+</tbody>
+</table>
+
+<p>After entering, click <strong>[Done]</strong> in the upper left.</p>
+
+<div class="caution">
+<p><p><strong>注意:</strong></p></p>
+<p><p>Similar to the root password, a message saying [This password fails the dictionary check] will be displayed, but in this case, click Done twice.</p></p>
+</div>
+
+<h2 id="1.9">Begin Installation</h2>
+<p>After all configuration items are complete, select <strong>[Begin Installation]</strong>.</p>
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>The installation will take some time, so please wait until it finishes.</p></p>
+</div>
+
+<p>After the installation is complete, select [Reboot System] to restart the server.</p>
+
+<h1 id="2">Basic Configuration</h1>
+
+<h2 id="2.1">Login</h2>
+<p>When the login screen is displayed, perform the login. To log in as root, select <strong>[Can't find your account?]</strong> and log in as root.</p>
+
+<table class="table-auto">
+<thead>
+<tr>
+<th>Item Name</th>
+<th>Input Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Username</td>
+<td>root</td>
+</tr>
+<tr>
+<td>Password</td>
+<td>netsys00</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="2.2">Terminal Launch</h2>
+<p>Click [Activities] in the upper left, or press the <code>Win</code> key.</p>
+<p>Hover your cursor over the icons displayed at the bottom center to see the application names, then find [Terminal] from there. Alternatively, press the <win> key and search for [Terminal], then launch the [Terminal] application that appears.</p>
+
+<h2 id="2.3">Disable SELinux</h2>
+<div class="question-box" id="rockyen_question_2"><div class="question-content"><div class="question-header"><p class="question-text">What is the Linux security feature that distributes administrator privileges across the system to enhance security?</p><span class="success-message" id="rockyen_question_2_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: Mandatory Access Control (MAC) Rocky Linux</p><div class="answer-input-container"><input type="text" id="rockyen_question_2_input" class="answer-input" placeholder="*******" data-question-id="rockyen_question_2"><button type="button" class="submit-answer-btn" data-question-id="rockyen_question_2">回答</button><button type="button" class="giveup-btn" id="rockyen_question_2_giveup" data-question-id="rockyen_question_2" style="display: none;">解答を見る</button></div></div></div>
+<p>Disable SELinux.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/selinux/config</code></pre>
+
+
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>Delete the lines marked in <strong>red</strong> and add the lines marked in <strong>green</strong>.</p></p>
+</div>
+<p>Make the following changes:</p>
+<div class="code-file-info">📁 /etc/selinux/config</div>
+<pre><code><span class="git-remove">SELINUX=enforcing</span>
+<span class="git-add">#SELINUX=enforcing</span>
+<span class="git-add">SELINUX=disabled</span></code></pre>
+
+<div class="hint">
+<p><p><strong>ヒント:</strong></p></p>
+<p><p>In vi editor, in normal mode, "h" moves left, "j" moves down, "k" moves up, "l" moves right.  </p>
+<p>Press "i" to enter insert mode. Press "Esc" to return to normal mode.</p>
+<p>In normal mode, ":w" saves, ":q" quits, ":wq" saves and quits.</p>
+
+<p>Also, in normal mode, you can search for text with <code>/<text to search></code>. Press the <strong>Esc</strong> key to stop searching.</p></p>
+</div>  
+
+<h2 id="2.4">Power Settings</h2>
+<p>The default settings will lock the screen after 5 minutes, so we'll disable this in the settings.</p>
+
+<p>Click the power icon in the upper right, then click <strong>[Settings]</strong> from the displayed items to launch the settings menu.</p>
+<p>Find and click <strong>[Power]</strong> in the middle of the settings menu sidebar, and change the <strong>[Screen Blank]</strong> setting from <code>5 minutes</code> to <code>Never</code>.</p>
+
+<h2 id="2.5">Proxy Settings for Each Tool</h2>
+
+<h3 id="2.5.1">NetworkManager Proxy Settings</h3>
+<p>Find and click <strong>[Network]</strong> in the upper part of the settings menu sidebar, find the <strong>Network Proxy</strong> setting item, and click the <strong>gear icon</strong>.  </p>
+<p>Change from <strong>[Off]</strong> to <strong>[Manual]</strong> and enter the following input values for each item.</p>
+
+<table class="table-fixed">
+<thead>
+<tr>
+<th>Item Name</th>
+<th>Input Value</th>
+<th>Port</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTP Proxy</td>
+<td>proxy-a.t-kougei.ac.jp</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>HTTPS Proxy</td>
+<td>proxy-a.t-kougei.ac.jp</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>FTP Proxy</td>
+<td>proxy-a.t-kougei.ac.jp</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>SOCKS Host</td>
+<td>proxy-a.t-kougei.ac.jp</td>
+<td>8080</td>
+</tr>
+<tr>
+<td>Ignore Hosts</td>
+<td>*.t-kougei.ac.jp</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+
+<p>After entering, close with ×.</p>
+<p>Also close the settings menu with ×.</p>
+
+
+<h3 id="2.5.2">Bash Proxy Settings</h3>
+<p>Return to the terminal to configure.  </p>
+<p>Create a new <code>/etc/profile.d/proxy.sh</code> file and write the proxy settings.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/profile.d/proxy.sh</code></pre>
+
+<div class="hint">
+<p><p><strong>ヒント:</strong></p></p>
+<p><p>In vi editor, in normal mode, "h" moves left, "j" moves down, "k" moves up, "l" moves right.  </p>
+<p>Press "i" to enter insert mode. Press "Esc" to return to normal mode.</p>
+<p>In normal mode, ":w" saves, ":q" quits, ":wq" saves and quits.</p></p>
+</div>  
+
+<div class="code-file-info">📁 /etc/profile.d/proxy.sh</div>
+<pre><code>HTTP_PROXY=http://proxy-a.t-kougei.ac.jp:8080
+HTTPS_PROXY=http://proxy-a.t-kougei.ac.jp:8080
+
+http_proxy=http://proxy-a.t-kougei.ac.jp:8080
+https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
+
+<p>Load the created configuration file using the <code>source</code> command.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# source /etc/profile.d/proxy.sh</code></pre>
+
+<h3 id="2.5.3">dnf Proxy Settings</h3>
+<div class="question-box" id="rockyen_question_3"><div class="question-content"><div class="question-header"><p class="question-text">What is the name of the advanced package manager used in Red Hat-based Linux?</p><span class="success-message" id="rockyen_question_3_success" style="display: none;">正解</span></div><p class="question-hint">ヒント:  dandified yum</p><div class="answer-input-container"><input type="text" id="rockyen_question_3_input" class="answer-input" placeholder="***" data-question-id="rockyen_question_3"><button type="button" class="submit-answer-btn" data-question-id="rockyen_question_3">回答</button><button type="button" class="giveup-btn" id="rockyen_question_3_giveup" data-question-id="rockyen_question_3" style="display: none;">解答を見る</button></div></div></div>
+<p>Configure the dnf package manager.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dnf/dnf.conf</code></pre>
+
+<p>Add the following below <code>skip_if_unavailable=False</code>.</p>
+
+<div class="code-file-info">📁 /etc/dnf/dnf.conf</div>
+<pre><code>…
+best=True
+skip_if_unavailable=False
+<span class="git-add">proxy=http://proxy-a.t-kougei.ac.jp:8080</span>
+<span class="git-add">timeout=900</span></code></pre>
+
+<p>After saving and exiting, perform an update.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# dnf -y update</code></pre>
+
+<p>If the update completes without problems, the proxy configuration is complete.</p>
+
+<h1 id="3">Mail Server Setup</h1>
+
+<p>A mail server is a server for sending and receiving mail.  </p>
+<p><strong>Postfix</strong> is used for sending mail, and <strong>Dovecot</strong> is used for receiving mail.  </p>
+
+<h2 id="3.1">Postfix</h2>
+<p>Postfix is an open-source Mail Transfer Agent (MTA) that handles email sending and delivery.</p>
+
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>Postfix was already installed during OS installation, but if you forgot to check this item, please install it using the following command.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# dnf -y install postfix</code></pre>
+</div>
+
+<h3 id="3.1.4">Postfix Configuration</h3>
+
+<p>Edit the Postfix configuration file <code>/etc/postfix/main.cf</code> using the <code>vi</code> editor.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/postfix/main.cf</code></pre>
+
+<p>Make the following configuration changes.</p>
+<p>Red indicates lines to delete, and green indicates lines to add.</p>
+<p>Plain text represents surrounding configuration items.</p>
+
+<div class="question-box" id="rockyen_question_4"><div class="question-content"><div class="question-header"><p class="question-text">What is the Postfix directive that forwards mail to a specified server?</p><span class="success-message" id="rockyen_question_4_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: relay mail</p><div class="answer-input-container"><input type="text" id="rockyen_question_4_input" class="answer-input" placeholder="*********" data-question-id="rockyen_question_4"><button type="button" class="submit-answer-btn" data-question-id="rockyen_question_4">回答</button><button type="button" class="giveup-btn" id="rockyen_question_4_giveup" data-question-id="rockyen_question_4" style="display: none;">解答を見る</button></div></div></div>
+
+<div class="code-file-info">📁 /etc/postfix/main.cf</div>
+<pre><code>#myhostname = host.domain.tld
+#myhostname = virtual.domain.tld
+<span class="git-add">myhostname = <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</span>
+
+#mydomain = domain.tld
+<span class="git-add">mydomain = netsys.cs.t-kougei.ac.jp</span>
+
+#myorigin = $myhostname
+#myorigin = $mydomain
+<span class="git-add">myorigin = $mydomain</span>
+
+<span class="git-remove">mydestination = $myhostname, localhost.$mydomain, localhost</span>
+<span class="git-add">#mydestination = $myhostname, localhost.$mydomain, localhost</span>
+#mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+#mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain,
+        mail.$mydomain, www.$mydomain, ftp.$mydomain
+<span class="git-add">mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain</span>
+
+#relayhost = $mydomain
+#relayhost = [gateway.my.domain]
+#relayhost = [mailserver.isp.tld]
+#relayhost = uucphost
+#relayhost = [an.ip.add.ress]
+<span class="git-add">relayhost = [smtp-a.t-kougei.ac.jp</span>]
+
+#mynetworks = 168.100.189.0/28, 127.0.0.0/8
+#mynetworks = $config_directory/mynetworks
+#mynetworks = hash:/etc/postfix/network_table
+<span class="git-add">mynetworks = 10.10.0.0/16</span>
+
+#inet_interfaces = all
+#inet_interfaces = $myhostname
+#inet_interfaces = $myhostname,localhost
+<span class="git-remove">inet_interfaces = localhost</span>
+<span class="git-add">#inet_interfaces = localhost</span>
+<span class="git-add">inet_interfaces = all</span>
+
+# Enable IPv4, and IPv6 if supported
+<span class="git-remove">inet_protocols = all</span>
+<span class="git-add">#inet_protocols = all</span>
+<span class="git-add">inet_protocols = ipv4</span>
+
+#home_mailbox = Mailbox
+#home_mailbox = Maildir/
+<span class="git-add">home_mailbox = Maildir/</span></code></pre>
+
+<h3 id="3.1.5">Apply Postfix Configuration</h3>
+<div class="question-box" id="rockyen_question_5"><div class="question-content"><div class="question-header"><p class="question-text">What is the command to operate systemd, the software that manages Linux systems?</p><span class="success-message" id="rockyen_question_5_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: systemd + control</p><div class="answer-input-container"><input type="text" id="rockyen_question_5_input" class="answer-input" placeholder="*********" data-question-id="rockyen_question_5"><button type="button" class="submit-answer-btn" data-question-id="rockyen_question_5">回答</button><button type="button" class="giveup-btn" id="rockyen_question_5_giveup" data-question-id="rockyen_question_5" style="display: none;">解答を見る</button></div></div></div>
+
+<p>Restart Postfix using the <code>systemctl</code> command.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart postfix</code></pre>
+
+<p>After restarting, check the status.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl status postfix</code></pre>
+
+<p>If you see <code>Active: active (exited)</code> along with a green mark, press <code>q</code> to exit.</p>
+
+<p>Configure it to start automatically after restart.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable postfix</code></pre>
+
+<h2 id="3.2">Firewall Configuration</h2>
+<div class="question-box" id="rockyen_question_6"><div class="question-content"><div class="question-header"><p class="question-text">What is the command to operate firewalld, the default firewall in Red Hat-based systems?</p><span class="success-message" id="rockyen_question_6_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rockyen_question_6_input" class="answer-input" placeholder="************" data-question-id="rockyen_question_6"><button type="button" class="submit-answer-btn" data-question-id="rockyen_question_6">回答</button><button type="button" class="giveup-btn" id="rockyen_question_6_giveup" data-question-id="rockyen_question_6" style="display: none;">解答を見る</button></div></div></div>
+<p>Configure the firewall using the <code>firewall-cmd</code> command.</p>
+
+<h3 id="3.2.6">Check firewall-cmd Status</h3>
+<p>First, check if firewall-cmd is running.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --state
+running</code></pre>
+
+<p>If it displays <code>running</code>, it is running.</p>
+
+<div class="hint">
+<p><p><strong>ヒント:</strong></p></p>
+<p><p>If it's not running, start it using the following method.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl start firewalld</code></pre>
+
+<p>Also, configure it to start automatically.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable firewalld</code></pre>
+</div>
+
+<h3 id="3.2.7">Add Allowed Services</h3>
+<p>Specify services to allow connections from outside. The service to add this time is smtp. Allow it as follows.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --permanent --add-service=smtp
+success</code></pre>
+
+<p>If <code>success</code> is displayed after executing the command, the addition was successful.</p>
+
+<h3 id="3.2.8">Apply Allowed Service Settings</h3>
+<p>Apply the added settings using the following command.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --reload
+success</code></pre>
+
+<h3 id="3.2.9">Verify Settings</h3>
+<p>You can check the configured content using the following command.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --list-all</code></pre>
+
+<pre><code>services: cockpit dhcpv6-client <span class="git-add">smtp</span> ssh</code></pre>
+<p>If <code>smtp</code> appears in the [services] field, the firewall configuration is complete.</p>
+
+<h2 id="3.3">Verification from Client</h2>
+
+<h3 id="3.3.10">Client Launch and Login</h3>
+<p>After a while, a window asking <strong>"Start the client?"</strong> will appear. Select "Yes".</p>
+
+<p>Launch the client and test email sending using the <code>mail</code> command.</p>
+
+<p>From the SSCTS menu, click <strong>[Virtual Computer Operations]</strong>. Click <strong>[Control]</strong> for <strong>[Client]</strong>, then click <strong>[Start]</strong> to launch the client.</p>
+
+<p>Log in with username <code>root</code> and password <code>netsys00</code>.</p>
+
+<h3 id="3.3.11">Specify Client relayhost</h3>
+<p>Change the Postfix mail delivery destination on the client to the server you built.</p>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# vi /etc/postfix/main.cf</code></pre>
+
+<p>Comment out all existing <code>relayhost</code> directives in main.cf and add the newly built server.</p>
+
+<div class="code-file-info">📁 /etc/postfix/main.cf</div>
+<pre><code>#relayhost = [smtp-a.t-kougei.ac.jp]
+relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pre>
+
+<p>Restart Postfix.</p>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# systemctl restart postfix</code></pre>
+
+
+<h3 id="3.3.12">Send to tome using mail command</h3>
+<p>Launch the terminal and send a message "test" to tome using the <code>mail</code> command.  </p>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# echo "test" | mail tome@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
+
+<p>If a new file has been created in the server's <code>/home/tome/Maildir/new</code> directory and the file content is "test", it's successful.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ls /home/tome/Maildir/new</code></pre>
+
+<h3 id="3.3.13">Verify Email Sending to External Network</h3>
+<p>Test whether mail reaches outside the server.</p>
+<p>Send an email from the client to your university email address and verify that the mail arrives.</p>
+<pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# echo "test" | mail <student ID>@st.t-kougei.ac.jp</code></pre>
+
+<p>If a message "test" from root has arrived in your university mailbox, it's successful.</p>
+
+<p>This completes the Postfix setup.</p>
+
+<h2 id="3.4">Dovecot (POP3)</h2>
+<p>Dovecot is an open-source mail receiving server that supports both IMAP and POP3 protocols.</p>
+
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>It's already installed, but if it's not installed, please install it using the following command.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# dnf -y install dovecot</code></pre>
+</div>
+
+<h3 id="3.4.14">Dovecot Configuration</h3>
+<p>Open the Dovecot configuration file <code>/etc/dovecot/dovecot.conf</code> using the vi editor.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/dovecot.conf</code></pre>
+
+<p>Set protocols to pop3 only.  </p>
+
+<div class="code-file-info">📁 /etc/dovecot/dovecot.conf</div>
+<pre><code><span class="git-remove">protocols = imap pop3 lmtp submission</span>
+<span class="git-add">#protocols = imap pop3 lmtp submission</span>
+<span class="git-add">protocols = pop3</span></code></pre>
+
+<p>Open the Dovecot configuration file <code>/etc/dovecot/conf.d/10-ssl.conf</code> using the vi editor.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
+
+<p>Disable SSL.</p>
+<div class="question-box" id="rockyen_question_7"><div class="question-content"><div class="question-header"><p class="question-text">What setting should be written to disable SSL in Dovecot? Enter the directive name and parameter (include spaces before and after the equals sign)</p><span class="success-message" id="rockyen_question_7_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: Search the web for "10-ssl.conf ssl disable"</p><div class="answer-input-container"><input type="text" id="rockyen_question_7_input" class="answer-input" placeholder="********" data-question-id="rockyen_question_7"><button type="button" class="submit-answer-btn" data-question-id="rockyen_question_7">回答</button><button type="button" class="giveup-btn" id="rockyen_question_7_giveup" data-question-id="rockyen_question_7" style="display: none;">解答を見る</button></div></div></div>
+
+<div class="code-file-info">📁 /etc/dovecot/conf.d/10-ssl.conf</div>
+<pre><code><span class="git-remove">ssl = required</span>
+<span class="git-add">ssl = no</span></code></pre>
+<p>Open the Dovecot configuration file <code>/etc/dovecot/conf.d/10-auth.conf</code> using the vi editor.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-auth.conf</code></pre>
+
+<p>Allow plain text authentication.</p>
+
+<div class="code-file-info">📁 /etc/dovecot/conf.d/10-auth.conf</div>
+<pre><code>#disable_plaintext_auth = yes
+<span class="git-add">disable_plaintext_auth = no</span></code></pre>
+
+<p>Open the Dovecot configuration file <code>/etc/dovecot/conf.d/10-mail.conf</code> using the vi editor.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-mail.conf</code></pre>
+
+<p>Change <code>mail_location</code> to <code>maildir</code>.</p>
+
+<div class="code-file-info">📁 /etc/dovecot/conf.d/10-mail.conf</div>
+<pre><code>#   mail_location = maildir:~/Maildir
+#   mail_location = mbox:~/mail:INBOX=/var/mail/%u
+#   mail_location = mbox:/var/mail/%d/%1n/%n:INDEX=/var/indexes/%d/%1n/%n
+#
+# <doc/wiki/MailLocation.txt>
+#
+#mail_location = 
+<span class="git-add">mail_location = maildir:~/Maildir</span></code></pre>
+
+<h3 id="3.4.15">Apply Dovecot Configuration</h3>
+<p>Restart Dovecot using the <code>systemctl</code> command.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart dovecot</code></pre>
+
+<p>After restarting, check the status to see if it's running.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl status dovecot</code></pre>
+
+<p>If you see <code>Active: active (exited)</code> along with a green mark, press <code>q</code> to exit.</p>
+
+<p>If there are no problems with the status, configure it to start automatically.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable dovecot</code></pre>
+
+<h2 id="3.5">Firewall Configuration</h2>
+<p>Configure the firewall using the <code>firewall-cmd</code> command.</p>
+
+<h3 id="3.5.16">Add Allowed Services</h3>
+<p>Specify services to allow connections from outside. The service to add this time is pop3. Allow it as follows.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --permanent --add-service=pop3
+success</code></pre>
+
+<p>If <code>success</code> is displayed after executing the command, the addition was successful.</p>
+
+<h3 id="3.5.17">Apply Allowed Service Settings</h3>
+<p>Apply the added settings using the following command.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --reload
+success</code></pre>
+
+<h3 id="3.5.18">Verify Settings</h3>
+<p>You can check the configured content using the following command.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --list-all</code></pre>
+
+<pre><code>services: cockpit dhcpv6-client <span class="git-add">pop3</span> smtp ssh</code></pre>
+<p>If <code>pop3</code> appears in the [services] field, the firewall configuration is complete.</p>
+
+
+<h2 id="3.6">Verification from Client</h2>
+<p>Launch Client1 and verify mail reception from the client using the <code>telnet</code> command.</p>
+
+<pre><code class="language-bash">root@client1:~$ telnet <?php echo $serverHostname; ?> 110
+Trying <?php echo $serverIP; ?>...
+Connected to <?php echo $serverHostname; ?>.
+Escape character is '^]'.
+<span class="git-add">+OK Dovecto ready.</span></code></pre>
+<p>From the message <code>+OK Dovecto ready.</code>, we can confirm that we've connected to Dovecot.</p>
+
+<div class="hint">
+<p><p><strong>ヒント:</strong></p></p>
+<p><p>To exit telnet, enter <code>quit</code>.</p>
+<pre><code class="language-bash">[root@<?php echo $clientHostname; ?> ~]# telnet <?php echo $serverHostname; ?> 25
+…
++OK Dovecot ready.
+quit
++OK Logging out
+Connection closed by foreign host.</code></pre>
+</div>
+
+
+<h3 id="3.6.19">Check Mail Content</h3>
+<p>Enter Dovecot commands via telnet.</p>
+<p>First, log in by specifying <code>USER</code> and <code>PASS</code>.</p>
+<pre><code class="language-bash">USER tome
++OK
+PASS netsys00
++OK Logged in.</code></pre>
+<p>If <code>+OK Logged in.</code> is displayed, you are logged in.</p>
+
+<pre><code class="language-bash">list
++OK 1 message:
+1 792</code></pre>
+
+<p>From the message <code>+OK 1 message:</code>, we can confirm that there is 1 email.</p>
+<p><code>1 792</code> represents the email number and email size in bytes.</p>
+
+<pre><code class="language-bash">retr 1
++OK 792 octets
+Return-Path: root@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp
+X-Original-TO: tome
+<略></code></pre>
+
+<p>If the sent email is displayed, the mail server setup is complete.</p>
+
+<h1 id="4">Web Server Setup</h1>
+
+<div class="note">
+<p><p><strong>注記:</strong></p></p>
+<p><p>It's already installed, but if it's not installed, please install it using the following command.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# dnf -y install httpd</code></pre>
+</div>
+
+<h2 id="4.1">httpd Configuration</h2>
+<div class="question-box" id="rockyen_question_8"><div class="question-content"><div class="question-header"><p class="question-text">Where is the httpd configuration file located? (Enter absolute path)</p><span class="success-message" id="rockyen_question_8_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: httpd.conf</p><div class="answer-input-container"><input type="text" id="rockyen_question_8_input" class="answer-input" placeholder="**************************" data-question-id="rockyen_question_8"><button type="button" class="submit-answer-btn" data-question-id="rockyen_question_8">回答</button><button type="button" class="giveup-btn" id="rockyen_question_8_giveup" data-question-id="rockyen_question_8" style="display: none;">解答を見る</button></div></div></div>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/httpd/conf/httpd.conf</code></pre>
+
+<p>Enter the server name and port number.</p>
+
+<div class="code-file-info">📁 /etc/httpd/conf/httpd.conf</div>
+<pre><code>#ServerName www.example.com:80
+<span class="git-add">ServerName <?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp:80</span></code></pre>
+
+<h2 id="4.2">Content Placement</h2>
+<p>Place the content provided by the server in <code>/var/www/html/</code>. The filename should be <code>index.html</code>.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /var/www/html/index.html</code></pre>
+
+<div class="code-file-info">📁 /var/www/html/index.html</div>
+<pre><code>hello world</code></pre>
+
+<h3 id="4.2.20">httpd Restart</h3>
+<p>Restart httpd to load the configuration file.</p>
+
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart httpd</code></pre>
+
+<p>After loading, check the status.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl status httpd</code></pre>
+
+<p>Verify that it shows <code>Active: active (exited)</code> along with a green mark and press <code>q</code> to exit.</p>
+
+
+<p>Configure it to start automatically.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable httpd</code></pre>
+
+<h2 id="4.3">Verification on Server</h2>
+<p>Verify that hello world is actually displayed.</p>
+
+<p>Click the application icon in the bottom left, enter <code>Firefox</code> in the search bar, and launch the application that appears.</p>
+
+<p>Enter <a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a> in the navigation bar to access it.</p>
+
+<div class="hint">
+<p><p><strong>ヒント:</strong></p></p>
+<p><p>If a warning is displayed, access it using the following steps.</p>
+
+<p><strong>[Advanced...]</strong> -> <strong>[Accept the Risk and Continue]</strong></p></p>
+</div>
+
+<p>If "hello world" is displayed on a plain white background, the verification from the server is successful.</p>
+
+<h2 id="4.4">Firewall Configuration</h2>
+<p>Configure the firewall using the <code>firewall-cmd</code> command.</p>
+
+<h3 id="4.4.21">Add Allowed Services</h3>
+<p>Specify services to allow connections from outside. The service to add this time is http. Allow it as follows.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --permanent --add-service=http
+success</code></pre>
+
+<p>If <code>success</code> is displayed after executing the command, the addition was successful.</p>
+
+<h3 id="4.4.22">Apply Allowed Service Settings</h3>
+<p>Apply the added settings using the following command.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --reload
+success</code></pre>
+
+<h3 id="4.4.23">Verify Settings</h3>
+<p>You can check the configured content using the following command.</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# firewall-cmd --list-all</code></pre>
+
+<pre><code>services: cockpit dhcpv6-client <span class="git-add">http</span> pop3 smtp ssh</code></pre>
+<p>If <code>http</code> appears in the [services] field, the firewall configuration is complete.</p>
+
+<h2 id="4.5">Verification from Client</h2>
+<p>Launch <?php echo $clientHostname; ?> and access the following URL from Firefox.</p>
+<p><a href="http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp">http://<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</a></p>
+
+<p>If "hello world" appears on a plain white page, it's complete.</p>
+
+<p>This completes the OS installation and configuration.</p>
+
+
+
+        </main>
+    </div>
+
+        <script>
+            // 問題データをグローバル変数に設定
+            window.questionsData = [{"id":"rockyen_question_1","question":"Enter Linux in katakana","answer":"リナックス"},{"id":"rockyen_question_2","question":"What is the Linux security feature that distributes administrator privileges across the system to enhance security?","answer":"selinux"},{"id":"rockyen_question_3","question":"What is the name of the advanced package manager used in Red Hat-based Linux?","answer":"dnf"},{"id":"rockyen_question_4","question":"What is the Postfix directive that forwards mail to a specified server?","answer":"relayhost"},{"id":"rockyen_question_5","question":"What is the command to operate systemd, the software that manages Linux systems?","answer":"systemctl"},{"id":"rockyen_question_6","question":"What is the command to operate firewalld, the default firewall in Red Hat-based systems?","answer":"firewall-cmd"},{"id":"rockyen_question_7","question":"What setting should be written to disable SSL in Dovecot? Enter the directive name and parameter (include spaces before and after the equals sign)","answer":"ssl = no"},{"id":"rockyen_question_8","question":"Where is the httpd configuration file located? (Enter absolute path)","answer":"/etc/httpd/conf/httpd.conf"}];
+        </script>
+        <script src="assets/js/spoiler-manager.js"></script>
+        <script src="assets/js/timer-manager.js"></script>
+        <script src="assets/js/api-manager.js"></script>
+        <script src="assets/js/state-manager.js"></script>
+        <script src="assets/js/questions.js"></script>
+        
