@@ -3,10 +3,10 @@
 $questions = array(
     'ubuntu_question_1' => 'リナックス',
     'ubuntu_question_2' => 'sudo',
-    'ubuntu_question_3' => 'systemctl',
-    'ubuntu_question_4' => 'apt',
-    'ubuntu_question_5' => 'relayhost',
-    'ubuntu_question_6' => 'ufw',
+    'ubuntu_question_3' => 'ufw',
+    'ubuntu_question_4' => 'systemctl',
+    'ubuntu_question_5' => 'apt',
+    'ubuntu_question_6' => 'relayhost',
     'ubuntu_question_7' => 'ssl = no',
     'ubuntu_question_8' => '/etc/apache2/sites-available',
     'ubuntu_question_9' => 'a2ensite'
@@ -47,18 +47,18 @@ $questions = array(
 <li><a href="#2.4">root パスワードの設定</a></li>
 <li><a href="#2.5">rootユーザにログイン</a></li>
 <li><a href="#2.6">ネットワークの設定</a></li>
-<li><a href="#2.7">NTPの設定</a></li>
-<li><a href="#2.8">各ツール別のプロキシ設定</a></li>
+<li><a href="#2.7">ファイアウォールの起動</a></li>
+<li><a href="#2.8">NTPの設定</a></li>
+<li><a href="#2.9">各ツール別のプロキシ設定</a></li>
 </ul>
 </li>
 <li><a href="#3">メールサーバの構築</a>
 <ul>
 <li><a href="#3.1">Postfix</a></li>
-<li><a href="#3.2">ファイアウォールの設定</a></li>
-<li><a href="#3.3">クライアントからの動作確認</a></li>
-<li><a href="#3.4">Dovecot（POP3）</a></li>
-<li><a href="#3.5">ファイアウォールの設定</a></li>
-<li><a href="#3.6">クライアントからの動作確認</a></li>
+<li><a href="#3.2">クライアントからの動作確認</a></li>
+<li><a href="#3.3">Dovecot（POP3）</a></li>
+<li><a href="#3.4">ファイアウォールで許可するサービスの追加</a></li>
+<li><a href="#3.5">クライアントからの動作確認</a></li>
 </ul>
 </li>
 <li><a href="#4">WEBサーバの構築</a>
@@ -67,7 +67,7 @@ $questions = array(
 <li><a href="#4.2">Apache2の設定</a></li>
 <li><a href="#4.3">コンテンツの設置</a></li>
 <li><a href="#4.4">サーバでの動作確認</a></li>
-<li><a href="#4.5">ファイアウォールの設定</a></li>
+<li><a href="#4.5">ファイアウォールで許可するサービスの追加</a></li>
 <li><a href="#4.6">クライアントからの動作確認</a></li>
 </ul>
 </li>
@@ -295,14 +295,28 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# cat /etc/hostname</code></pre>
 <p>これでホスト名が正しく表示されたら設定は完了です。</p>
 
-<h2 id="2.7">NTPの設定</h2>
+<h2 id="2.7">ファイアウォールの起動</h2>
+<div class="question-box" id="ubuntu_question_3"><div class="question-content"><div class="question-header"><p class="question-text">Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_3_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: uncomplicated firewallの略</p><div class="answer-input-container"><input type="text" id="ubuntu_question_3_input" class="answer-input" placeholder="***" data-question-id="ubuntu_question_3"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_3">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_3_giveup" data-question-id="ubuntu_question_3" style="display: none;">解答を見る</button></div></div></div>
+<p><code>ufw</code>コマンドでファイアウォールを設定します。</p>
+
+<h3 id="2.7.4">ufwの有効化</h3>
+<p>ufwをアクティブに変更します。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw enable
+ファイアウォールはアクティブかつシステムの起動時に有効化されます。</code></pre>
+
+<p>ufwがアクティブな状態になっているか確認します。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw status
+状態: アクティブ</code></pre>
+<p>状態がアクティブであれば完了です。</p>
+
+<h2 id="2.8">NTPの設定</h2>
 <p>デフォルトではヨーロッパのNTPサーバに接続されているため、学内に設置された<code>ntp-a.t-kougei.ac.jp</code>に接続するように設定します。</p>
 
-<h3 id="2.7.4">設定ファイルディレクトリの作成</h3>
+<h3 id="2.8.5">設定ファイルディレクトリの作成</h3>
 <p>NTPプロトコルはSystemdが管理しています。<code>timesyncd.conf.d</code>を作成するとで、設定ファイルを設置できるようにします。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# mkdir -p /etc/systemd/timesyncd.conf.d/</code></pre>
 
-<h3 id="2.7.5">設定ファイルの作成</h3>
+<h3 id="2.8.6">設定ファイルの作成</h3>
 <p>viで新たにNTPの設定ファイル<code>ntp-kougei.conf</code>を作成します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/systemd/timesyncd.conf.d/ntp-kougei.conf</code></pre>
 
@@ -310,12 +324,12 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 <pre><code>[Time]
 NTP=ntp-a.t-kougei.ac.jp</code></pre>
 
-<h3 id="2.7.6">systemd-timesyncdの再起動</h3>
-<div class="question-box" id="ubuntu_question_3"><div class="question-content"><div class="question-header"><p class="question-text">Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_3_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: systemd + control</p><div class="answer-input-container"><input type="text" id="ubuntu_question_3_input" class="answer-input" placeholder="*********" data-question-id="ubuntu_question_3"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_3">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_3_giveup" data-question-id="ubuntu_question_3" style="display: none;">解答を見る</button></div></div></div>
+<h3 id="2.8.7">systemd-timesyncdの再起動</h3>
+<div class="question-box" id="ubuntu_question_4"><div class="question-content"><div class="question-header"><p class="question-text">Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_4_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: systemd + control</p><div class="answer-input-container"><input type="text" id="ubuntu_question_4_input" class="answer-input" placeholder="*********" data-question-id="ubuntu_question_4"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_4">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_4_giveup" data-question-id="ubuntu_question_4" style="display: none;">解答を見る</button></div></div></div>
 <p><code>systemctl</code>コマンドで<code>systemd-timesyncd</code>を再起動します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart systemd-timesyncd</code></pre>
 
-<h3 id="2.7.7">NTPの接続確認</h3>
+<h3 id="2.8.8">NTPの接続確認</h3>
 <p><code>timedatectl</code>コマンドで大学のNTPサーバに接続しているか確認します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# timedatectl timesync-status
        Server: 192.168.16.188 (ntp-a.t-kougei.ac.jp)
@@ -334,9 +348,9 @@ Root distance: 2.700ms (max: 5s)
 <p>[Server]の項目行に<code>ntp-a.t-kougei.ac.jp</code>が記述されていれば完了です。</p>
 
 
-<h2 id="2.8">各ツール別のプロキシ設定</h2>
+<h2 id="2.9">各ツール別のプロキシ設定</h2>
 
-<h3 id="2.8.8">NetworkManagerのプロキシ設定</h3>
+<h3 id="2.9.9">NetworkManagerのプロキシ設定</h3>
 <p>右上の電源アイコンをクリックして、表示された項目欄から[設定]を選択します。</p>
 <p>ネットワークの設定項目のうち<code>ネットワークプロキシ</code>の歯車マークをクリックします。</p>
 <p><strong>無効</strong>から<strong>手動</strong>に変更して、以下の項目を入力します。</p>
@@ -380,7 +394,7 @@ Root distance: 2.700ms (max: 5s)
 <p>入力が完了したら×で閉じます。</p>
 <p>設定ウィンドウも×で閉じます。</p>
 
-<h3 id="2.8.9">Bashのプロキシ設定</h3>
+<h3 id="2.9.10">Bashのプロキシ設定</h3>
 <p>再び端末に戻って設定を行います。  </p>
 <p>新たに<code>/etc/profile.d/proxy.sh</code>ファイルを作成してプロキシ設定を記述します。</p>
 
@@ -403,8 +417,8 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 <p><code>source</code>コマンドで作成した設定ファイルを読み込ませます。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# source /etc/profile.d/proxy.sh</code></pre>
-<h3 id="2.8.10">aptのプロキシ設定</h3>
-<div class="question-box" id="ubuntu_question_4"><div class="question-content"><div class="question-header"><p class="question-text">Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？</p><span class="success-message" id="ubuntu_question_4_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: advanced package toolの略</p><div class="answer-input-container"><input type="text" id="ubuntu_question_4_input" class="answer-input" placeholder="***" data-question-id="ubuntu_question_4"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_4">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_4_giveup" data-question-id="ubuntu_question_4" style="display: none;">解答を見る</button></div></div></div>
+<h3 id="2.9.11">aptのプロキシ設定</h3>
+<div class="question-box" id="ubuntu_question_5"><div class="question-content"><div class="question-header"><p class="question-text">Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？</p><span class="success-message" id="ubuntu_question_5_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: advanced package toolの略</p><div class="answer-input-container"><input type="text" id="ubuntu_question_5_input" class="answer-input" placeholder="***" data-question-id="ubuntu_question_5"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_5">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_5_giveup" data-question-id="ubuntu_question_5" style="display: none;">解答を見る</button></div></div></div>
 <p><code>/etc/apt/apt.conf.d</code>の配下に<code>30proxy.conf</code>ファイルを新たに作成します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/apt/apt.conf.d/30proxy.conf</code></pre>
 
@@ -414,7 +428,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 <pre><code>Acquire::http::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 
-<h3 id="2.8.11">パッケージの更新とインストール</h3>
+<h3 id="2.9.12">パッケージの更新とインストール</h3>
 <p>以下のコマンドでアップデート可能なパッケージ情報を更新します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt update</code></pre>
 <p>先頭にステータスが表示されます。<strong>取得</strong>と表示されていれば既存のリポジトリからパッケージの更新がされていることを意味します。</p>
@@ -441,14 +455,14 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 <h2 id="3.1">Postfix</h2>
 <p>Postfixは、オープンソースのメール転送エージェント(MTA: Mail Transfer Agent)で、電子メールの送信・配送を担当するサーバソフトウェアです。</p>
 
-<h3 id="3.1.12">Postfix のインストール</h3>
+<h3 id="3.1.13">Postfix のインストール</h3>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt install -y postfix</code></pre>
 
 <p>インストール中に[パッケージの設定]が表示されます。</p>
 <p>完了を押し、<strong>[インターネットサイト]</strong>を選択し、設定してたホスト名が記述されているか確認して<strong><了解></strong>を選択します。</p>
 
-<h3 id="3.1.13">postfixの設定</h3>
+<h3 id="3.1.14">postfixの設定</h3>
 <p>postfixの設定ファイルである<code>/etc/postfix/main.cf</code>を<code>vi</code>エディタで編集します。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/postfix/main.cf</code></pre>
@@ -479,9 +493,9 @@ inet_interfaces = all
 <span class="git-add">inet_protocols = ipv4</span>
 <span class="git-add">home_mailbox = Maildir/</span></code></pre>
 
-<div class="question-box" id="ubuntu_question_5"><div class="question-content"><div class="question-header"><p class="question-text">postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか</p><span class="success-message" id="ubuntu_question_5_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: メールをリレーさせる</p><div class="answer-input-container"><input type="text" id="ubuntu_question_5_input" class="answer-input" placeholder="*********" data-question-id="ubuntu_question_5"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_5">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_5_giveup" data-question-id="ubuntu_question_5" style="display: none;">解答を見る</button></div></div></div>
+<div class="question-box" id="ubuntu_question_6"><div class="question-content"><div class="question-header"><p class="question-text">postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか</p><span class="success-message" id="ubuntu_question_6_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: メールをリレーさせる</p><div class="answer-input-container"><input type="text" id="ubuntu_question_6_input" class="answer-input" placeholder="*********" data-question-id="ubuntu_question_6"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_6">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_6_giveup" data-question-id="ubuntu_question_6" style="display: none;">解答を見る</button></div></div></div>
 
-<h3 id="3.1.14">postfixの設定の反映</h3>
+<h3 id="3.1.15">postfixの設定の反映</h3>
 <p><code>systemctl</code>コマンドでpostfixを再起動します。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart postfix</code></pre>
@@ -489,27 +503,14 @@ inet_interfaces = all
 <p>また、サーバの再起動後もサービスが開始されるように設定します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable postfix</code></pre>
 
-<h2 id="3.2">ファイアウォールの設定</h2>
-<div class="question-box" id="ubuntu_question_6"><div class="question-content"><div class="question-header"><p class="question-text">Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_6_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: uncomplicated firewallの略</p><div class="answer-input-container"><input type="text" id="ubuntu_question_6_input" class="answer-input" placeholder="***" data-question-id="ubuntu_question_6"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_6">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_6_giveup" data-question-id="ubuntu_question_6" style="display: none;">解答を見る</button></div></div></div>
-<p><code>ufw</code>コマンドでファイアウォールを設定します。</p>
 
-<h3 id="3.2.15">ufwの有効化</h3>
-<p>はじめに、ufwをアクティブに変更します。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw enable
-ファイアウォールはアクティブかつシステムの起動時に有効化されます。</code></pre>
-
-<p>ufwがアクティブな状態になっているか確認します。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw status
-状態: アクティブ</code></pre>
-<p>状態がアクティブであれば完了です。</p>
-
-<h3 id="3.2.16">許可するサービスの追加</h3>
-<p>外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpとpop3です。以下のようにして許可をします。</p>
+<h3 id="3.1.16">ファイアウォールで許可するサービスの追加</h3>
+<p>外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpです。以下のようにして許可をします。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw allow smtp
 ルールを追加しました
 ルールを追加しました(v6)</code></pre>
 
-<h3 id="3.2.17">ファイアウォールの設定項目の確認</h3>
+<h3 id="3.1.17">ファイアウォールの設定項目の確認</h3>
 <p><code>status</code>オプションで現在のファイアウォールの設定を確認します。</p>
 <p>項目Toの<code>25</code>のAction項目が<code>ALLOW</code>であり、なおかつFromの項目が<code>Anywhere</code>であれば成功です。</p>
 
@@ -521,16 +522,16 @@ To                         Action      From
 25/tcp                     ALLOW       Anywhere                  
 25/tcp (v6)                ALLOW       Anywhere (v6)</code></pre>
 
-<h2 id="3.3">クライアントからの動作確認</h2>
+<h2 id="3.2">クライアントからの動作確認</h2>
 
-<h3 id="3.3.18">クライアントの起動とログイン</h3>
+<h3 id="3.2.18">クライアントの起動とログイン</h3>
 
 <p>しばらくすると<strong>「クライアントを起動します？」</strong>と尋ねるウィンドウが現れます。「はい」を選択してください。</p>
 <p>クライアントを起動して<code>mail</code>コマンドをインストールしてメールの送信テストをします。</p>
 
 <p>ユーザ名は<code>root</code>。パスワードは<code>netsys00</code>でログインします。</p>
 
-<h3 id="3.3.19">クライアントのrelayhostを指定。</h3>
+<h3 id="3.2.19">クライアントのrelayhostを指定。</h3>
 <p>クライアントのPostfixのメール配送先を構築したサーバに変更します。</p>
 <pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# vi /etc/postfix/main.cf</code></pre>
 
@@ -540,7 +541,7 @@ To                         Action      From
 <pre><code>#relayhost = [smtp-a.t-kougei.ac.jp]
 relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pre>
 
-<h3 id="3.3.20">mailコマンドでtomeに送信</h3>
+<h3 id="3.2.20">mailコマンドでtomeに送信</h3>
 <p>ターミナルを起動して、<code>mail</code>コマンドでtomeに「test」というメッセージを送ります。  </p>
 <pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# echo "test" | mail tome@<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code></pre>
 
@@ -551,7 +552,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <p><p>もしも、<code>/home/tome/Maildir/new/</code>にない場合は、<code>/home/tome/Maildir/cur</code>を確認してみてください。</p></p>
 </div>
 
-<h3 id="3.3.21">外部ネットワークへのメール送信確認</h3>
+<h3 id="3.2.21">外部ネットワークへのメール送信確認</h3>
 <p>サーバ外にメールが届くかテストを行います。</p>
 <p>クライアントから自分の大学用のメールアドレスにメールを送信してメールが届くか確認します。</p>
 <pre><code class="language-bash">root@<?php echo $clientHostname; ?>:~# echo "test" | mail <学籍番号>@st.t-kougei.ac.jp</code></pre>
@@ -559,13 +560,13 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <p>自分の大学用のメールボックスにrootから「test」というメッセージが来ていたら成功です。</p>
 
 
-<h2 id="3.4">Dovecot（POP3）</h2>
+<h2 id="3.3">Dovecot（POP3）</h2>
 <p>Dovecotは、IMAPおよびPOP3の両方のプロトコルに対応したオープンソースのメール受信サーバです。</p>
 
-<h3 id="3.4.22">Dovecotのインストール</h3>
+<h3 id="3.3.22">Dovecotのインストール</h3>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt install -y dovecot-core dovecot-pop3d</code></pre>
 
-<h3 id="3.4.23">Dovecotの設定</h3>
+<h3 id="3.3.23">Dovecotの設定</h3>
 <p>Dovcotの設定ファイルである<code>/etc/dovecot/conf.d/10-ssl.conf</code>ファイルをviエディタで開きます。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dovecot/conf.d/10-ssl.conf</code></pre>
 
@@ -602,7 +603,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <span class="git-add">#mail_location = mbox:~/mail:INBOX=/var/mail/%u</span>
 <span class="git-add">mail_location = maildir:~/Maildir</span></code></pre>
 
-<h3 id="3.4.24">Dovecotの設定の反映</h3>
+<h3 id="3.3.24">Dovecotの設定の反映</h3>
 <p><code>systemctl</code>コマンドでdovecotを再起動します。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart dovecot</code></pre>
@@ -610,16 +611,13 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <p>また、サーバの再起動後もサービスが開始されるように設定します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl enable dovecot</code></pre>
 
-<h2 id="3.5">ファイアウォールの設定</h2>
-<p><code>ufw</code>コマンドでファイアウォールを設定します。</p>
-
-<h3 id="3.5.25">許可するサービスの追加</h3>
+<h2 id="3.4">ファイアウォールで許可するサービスの追加</h2>
 <p>外部からの接続を許可するサービスを指定します。今回追加するサービスはpop3です。以下のようにして許可をします。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw allow pop3
 ルールを追加しました
 ルールを追加しました(v6)</code></pre>
 
-<h3 id="3.5.26">ファイアウォールの設定項目の確認</h3>
+<h3 id="3.4.25">ファイアウォールの設定項目の確認</h3>
 <p><code>status</code>オプションで現在のファイアウォールの設定を確認します。</p>
 <p>項目Toの<code>110</code>のAction項目が<code>ALLOW</code>であり、なおかつFromの項目が<code>Anywhere</code>であれば成功です。</p>
 
@@ -633,7 +631,7 @@ To                         Action      From
 25/tcp (v6)                ALLOW       Anywhere (v6)             
 110/tcp (v6)               ALLOW       Anywhere (v6)</code></pre>
 
-<h2 id="3.6">クライアントからの動作確認</h2>
+<h2 id="3.5">クライアントからの動作確認</h2>
 <p><?php echo $clientHostname; ?>を起動して、Clientから<code>telnet</code>コマンドを使用してメールの受信を確認します。</p>
 
 <pre><code class="language-bash">root@client1:~$ telnet <?php echo $serverHostname; ?> 110
@@ -644,7 +642,7 @@ Escape character is '^]'.
 <p><code>+OK Dovecto (Ubuntu) ready.</code>という情報から、Dovecotに接続できたことが確認できました。</p>
 
 
-<h3 id="3.6.27">メールの内容を確認する</h3>
+<h3 id="3.5.26">メールの内容を確認する</h3>
 <p>telnetでDovecotコマンドを入力します。</p>
 <p>始めに、<code>USER</code>と<code>PASS</code>を指定してログインを行います。</p>
 <pre><code>USER tome
@@ -726,16 +724,11 @@ Connection closed by foreign host.</code></pre>
 
 <p>真っ白な背景にhello worldと表示されていればサーバからの確認は成功です。</p>
 
-<h2 id="4.5">ファイアウォールの設定</h2>
-<p><code>ufw</code>コマンドでファイアウォールを設定します。</p>
+<h2 id="4.5">ファイアウォールで許可するサービスの追加</h2>
+<p>外部からの接続を許可するサービスを指定します。今回追加するサービスはhttpです。以下のようにして許可をします。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw allow http</code></pre>
-<div class="note">
-<p><p><strong>注記:</strong></p></p>
-<p><p>もしPostfixでufwをアクティブにしていない場合、以下のコマンドでアクティブにします。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw enable</code></pre>
-</div>
 
-<h3 id="4.5.28">ファイアウォールの設定項目の確認</h3>
+<h3 id="4.5.27">ファイアウォールの設定項目の確認</h3>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw status
 状態: アクティブ
 
@@ -762,7 +755,7 @@ To                         Action      From
 
         <script>
             // 問題データをグローバル変数に設定
-            window.questionsData = [{"id":"ubuntu_question_1","question":"Linuxをカタカナで入力してください","answer":"リナックス"},{"id":"ubuntu_question_2","question":"一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？","answer":"sudo"},{"id":"ubuntu_question_3","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"ubuntu_question_4","question":"Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？","answer":"apt"},{"id":"ubuntu_question_5","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"ubuntu_question_6","question":"Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか","answer":"ufw"},{"id":"ubuntu_question_7","question":"DovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"ubuntu_question_8","question":"apache2で新たにウェブサイトを作成するとき、どこのディレクトリに設定ファイルを作成しますか。(絶対パスで入力)","answer":"/etc/apache2/sites-available"},{"id":"ubuntu_question_9","question":"apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか","answer":"a2ensite"}];
+            window.questionsData = [{"id":"ubuntu_question_1","question":"Linuxをカタカナで入力してください","answer":"リナックス"},{"id":"ubuntu_question_2","question":"一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？","answer":"sudo"},{"id":"ubuntu_question_3","question":"Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか","answer":"ufw"},{"id":"ubuntu_question_4","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"ubuntu_question_5","question":"Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？","answer":"apt"},{"id":"ubuntu_question_6","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"ubuntu_question_7","question":"DovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"ubuntu_question_8","question":"apache2で新たにウェブサイトを作成するとき、どこのディレクトリに設定ファイルを作成しますか。(絶対パスで入力)","answer":"/etc/apache2/sites-available"},{"id":"ubuntu_question_9","question":"apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか","answer":"a2ensite"}];
         </script>
         <script src="assets/js/spoiler-manager.js"></script>
         <script src="assets/js/timer-manager.js"></script>
