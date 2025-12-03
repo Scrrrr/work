@@ -3,9 +3,9 @@
 $questions = array(
     'ubuntu_question_1' => 'リナックス',
     'ubuntu_question_2' => 'sudo',
-    'ubuntu_question_3' => 'ufw',
-    'ubuntu_question_4' => 'systemctl',
-    'ubuntu_question_5' => 'apt',
+    'ubuntu_question_3' => 'systemctl',
+    'ubuntu_question_4' => 'apt',
+    'ubuntu_question_5' => 'ufw',
     'ubuntu_question_6' => 'relayhost',
     'ubuntu_question_7' => 'ssl = no',
     'ubuntu_question_8' => '/etc/apache2/sites-available',
@@ -47,9 +47,9 @@ $questions = array(
 <li><a href="#2.4">root パスワードの設定</a></li>
 <li><a href="#2.5">rootユーザにログイン</a></li>
 <li><a href="#2.6">ネットワークの設定</a></li>
-<li><a href="#2.7">ファイアウォールの起動</a></li>
-<li><a href="#2.8">NTPの設定</a></li>
-<li><a href="#2.9">各ツール別のプロキシ設定</a></li>
+<li><a href="#2.7">NTPの設定</a></li>
+<li><a href="#2.8">各ツール別のプロキシ設定</a></li>
+<li><a href="#2.9">ファイアウォールの起動</a></li>
 </ul>
 </li>
 <li><a href="#3">メールサーバの構築</a>
@@ -295,28 +295,15 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# cat /etc/hostname</code></pre>
 <p>これでホスト名が正しく表示されたら設定は完了です。</p>
 
-<h2 id="2.7">ファイアウォールの起動</h2>
-<div class="question-box" id="ubuntu_question_3"><div class="question-content"><div class="question-header"><p class="question-text">Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_3_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: uncomplicated firewallの略</p><div class="answer-input-container"><input type="text" id="ubuntu_question_3_input" class="answer-input" placeholder="***" data-question-id="ubuntu_question_3"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_3">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_3_giveup" data-question-id="ubuntu_question_3" style="display: none;">解答を見る</button></div></div></div>
-<p><code>ufw</code>コマンドでファイアウォールを設定します。</p>
 
-<h3 id="2.7.4">ufwの有効化</h3>
-<p>ufwをアクティブに変更します。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw enable
-ファイアウォールはアクティブかつシステムの起動時に有効化されます。</code></pre>
-
-<p>ufwがアクティブな状態になっているか確認します。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw status
-状態: アクティブ</code></pre>
-<p>状態がアクティブであれば完了です。</p>
-
-<h2 id="2.8">NTPの設定</h2>
+<h2 id="2.7">NTPの設定</h2>
 <p>デフォルトではヨーロッパのNTPサーバに接続されているため、学内に設置された<code>ntp-a.t-kougei.ac.jp</code>に接続するように設定します。</p>
 
-<h3 id="2.8.5">設定ファイルディレクトリの作成</h3>
+<h3 id="2.7.4">設定ファイルディレクトリの作成</h3>
 <p>NTPプロトコルはSystemdが管理しています。<code>timesyncd.conf.d</code>を作成するとで、設定ファイルを設置できるようにします。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# mkdir -p /etc/systemd/timesyncd.conf.d/</code></pre>
 
-<h3 id="2.8.6">設定ファイルの作成</h3>
+<h3 id="2.7.5">設定ファイルの作成</h3>
 <p>viで新たにNTPの設定ファイル<code>ntp-kougei.conf</code>を作成します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/systemd/timesyncd.conf.d/ntp-kougei.conf</code></pre>
 
@@ -324,12 +311,12 @@ root@<?php echo $serverHostname; ?>:~#</code></pre>
 <pre><code>[Time]
 NTP=ntp-a.t-kougei.ac.jp</code></pre>
 
-<h3 id="2.8.7">systemd-timesyncdの再起動</h3>
-<div class="question-box" id="ubuntu_question_4"><div class="question-content"><div class="question-header"><p class="question-text">Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_4_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: systemd + control</p><div class="answer-input-container"><input type="text" id="ubuntu_question_4_input" class="answer-input" placeholder="*********" data-question-id="ubuntu_question_4"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_4">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_4_giveup" data-question-id="ubuntu_question_4" style="display: none;">解答を見る</button></div></div></div>
+<h3 id="2.7.6">systemd-timesyncdの再起動</h3>
+<div class="question-box" id="ubuntu_question_3"><div class="question-content"><div class="question-header"><p class="question-text">Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_3_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: systemd + control</p><div class="answer-input-container"><input type="text" id="ubuntu_question_3_input" class="answer-input" placeholder="*********" data-question-id="ubuntu_question_3"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_3">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_3_giveup" data-question-id="ubuntu_question_3" style="display: none;">解答を見る</button></div></div></div>
 <p><code>systemctl</code>コマンドで<code>systemd-timesyncd</code>を再起動します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# systemctl restart systemd-timesyncd</code></pre>
 
-<h3 id="2.8.8">NTPの接続確認</h3>
+<h3 id="2.7.7">NTPの接続確認</h3>
 <p><code>timedatectl</code>コマンドで大学のNTPサーバに接続しているか確認します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# timedatectl timesync-status
        Server: 192.168.16.188 (ntp-a.t-kougei.ac.jp)
@@ -348,9 +335,9 @@ Root distance: 2.700ms (max: 5s)
 <p>[Server]の項目行に<code>ntp-a.t-kougei.ac.jp</code>が記述されていれば完了です。</p>
 
 
-<h2 id="2.9">各ツール別のプロキシ設定</h2>
+<h2 id="2.8">各ツール別のプロキシ設定</h2>
 
-<h3 id="2.9.9">NetworkManagerのプロキシ設定</h3>
+<h3 id="2.8.8">NetworkManagerのプロキシ設定</h3>
 <p>右上の電源アイコンをクリックして、表示された項目欄から[設定]を選択します。</p>
 <p>ネットワークの設定項目のうち<code>ネットワークプロキシ</code>の歯車マークをクリックします。</p>
 <p><strong>無効</strong>から<strong>手動</strong>に変更して、以下の項目を入力します。</p>
@@ -394,7 +381,7 @@ Root distance: 2.700ms (max: 5s)
 <p>入力が完了したら×で閉じます。</p>
 <p>設定ウィンドウも×で閉じます。</p>
 
-<h3 id="2.9.10">Bashのプロキシ設定</h3>
+<h3 id="2.8.9">Bashのプロキシ設定</h3>
 <p>再び端末に戻って設定を行います。  </p>
 <p>新たに<code>/etc/profile.d/proxy.sh</code>ファイルを作成してプロキシ設定を記述します。</p>
 
@@ -417,8 +404,8 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 <p><code>source</code>コマンドで作成した設定ファイルを読み込ませます。</p>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# source /etc/profile.d/proxy.sh</code></pre>
-<h3 id="2.9.11">aptのプロキシ設定</h3>
-<div class="question-box" id="ubuntu_question_5"><div class="question-content"><div class="question-header"><p class="question-text">Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？</p><span class="success-message" id="ubuntu_question_5_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: advanced package toolの略</p><div class="answer-input-container"><input type="text" id="ubuntu_question_5_input" class="answer-input" placeholder="***" data-question-id="ubuntu_question_5"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_5">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_5_giveup" data-question-id="ubuntu_question_5" style="display: none;">解答を見る</button></div></div></div>
+<h3 id="2.8.10">aptのプロキシ設定</h3>
+<div class="question-box" id="ubuntu_question_4"><div class="question-content"><div class="question-header"><p class="question-text">Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？</p><span class="success-message" id="ubuntu_question_4_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: advanced package toolの略</p><div class="answer-input-container"><input type="text" id="ubuntu_question_4_input" class="answer-input" placeholder="***" data-question-id="ubuntu_question_4"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_4">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_4_giveup" data-question-id="ubuntu_question_4" style="display: none;">解答を見る</button></div></div></div>
 <p><code>/etc/apt/apt.conf.d</code>の配下に<code>30proxy.conf</code>ファイルを新たに作成します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/apt/apt.conf.d/30proxy.conf</code></pre>
 
@@ -428,7 +415,7 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 <pre><code>Acquire::http::Proxy "http://proxy-a.t-kougei.ac.jp:8080";
 Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 
-<h3 id="2.9.12">パッケージの更新とインストール</h3>
+<h3 id="2.8.11">パッケージの更新とインストール</h3>
 <p>以下のコマンドでアップデート可能なパッケージ情報を更新します。</p>
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# apt update</code></pre>
 <p>先頭にステータスが表示されます。<strong>取得</strong>と表示されていれば既存のリポジトリからパッケージの更新がされていることを意味します。</p>
@@ -446,6 +433,20 @@ Acquire::https::Proxy "http://proxy-a.t-kougei.ac.jp:8080";</code></pre>
 <p><p><strong>注記:</strong></p></p>
 <p><p>アップグレードには時間がかかるので気長に待ちましょう</p></p>
 </div>
+
+<h2 id="2.9">ファイアウォールの起動</h2>
+<div class="question-box" id="ubuntu_question_5"><div class="question-content"><div class="question-header"><p class="question-text">Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか</p><span class="success-message" id="ubuntu_question_5_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: uncomplicated firewallの略</p><div class="answer-input-container"><input type="text" id="ubuntu_question_5_input" class="answer-input" placeholder="***" data-question-id="ubuntu_question_5"><button type="button" class="submit-answer-btn" data-question-id="ubuntu_question_5">回答</button><button type="button" class="giveup-btn" id="ubuntu_question_5_giveup" data-question-id="ubuntu_question_5" style="display: none;">解答を見る</button></div></div></div>
+<p><code>ufw</code>コマンドでファイアウォールを設定します。</p>
+
+<h3 id="2.9.12">ufwの有効化</h3>
+<p>ufwをアクティブに変更します。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw enable
+ファイアウォールはアクティブかつシステムの起動時に有効化されます。</code></pre>
+
+<p>ufwがアクティブな状態になっているか確認します。</p>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# ufw status
+状態: アクティブ</code></pre>
+<p>状態がアクティブであれば完了です。</p>
 
 <h1 id="3">メールサーバの構築</h1>
 
@@ -755,7 +756,7 @@ To                         Action      From
 
         <script>
             // 問題データをグローバル変数に設定
-            window.questionsData = [{"id":"ubuntu_question_1","question":"Linuxをカタカナで入力してください","answer":"リナックス"},{"id":"ubuntu_question_2","question":"一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？","answer":"sudo"},{"id":"ubuntu_question_3","question":"Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか","answer":"ufw"},{"id":"ubuntu_question_4","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"ubuntu_question_5","question":"Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？","answer":"apt"},{"id":"ubuntu_question_6","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"ubuntu_question_7","question":"DovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"ubuntu_question_8","question":"apache2で新たにウェブサイトを作成するとき、どこのディレクトリに設定ファイルを作成しますか。(絶対パスで入力)","answer":"/etc/apache2/sites-available"},{"id":"ubuntu_question_9","question":"apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか","answer":"a2ensite"}];
+            window.questionsData = [{"id":"ubuntu_question_1","question":"Linuxをカタカナで入力してください","answer":"リナックス"},{"id":"ubuntu_question_2","question":"一般ユーザが管理者権限でコマンドを実行するとき使用するコマンドは何ですか？","answer":"sudo"},{"id":"ubuntu_question_3","question":"Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか","answer":"systemctl"},{"id":"ubuntu_question_4","question":"Debian系Linuxで使用される高機能なパッケージマネージャのコマンドはなんですか？","answer":"apt"},{"id":"ubuntu_question_5","question":"Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか","answer":"ufw"},{"id":"ubuntu_question_6","question":"postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか","answer":"relayhost"},{"id":"ubuntu_question_7","question":"DovecotでSSLを無効にするにはどのような設定を記述しますか？ディレクティブ名とパラメータを入力してください(イコールの前後にスペースを開けてください)","answer":"ssl = no"},{"id":"ubuntu_question_8","question":"apache2で新たにウェブサイトを作成するとき、どこのディレクトリに設定ファイルを作成しますか。(絶対パスで入力)","answer":"/etc/apache2/sites-available"},{"id":"ubuntu_question_9","question":"apache2で作成したウェブサイトの設定ファイルを有効化するコマンドは何でしょうか","answer":"a2ensite"}];
         </script>
         <script src="assets/js/spoiler-manager.js"></script>
         <script src="assets/js/timer-manager.js"></script>

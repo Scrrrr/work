@@ -170,23 +170,6 @@ root@{{serverHostname}}:~# cat /etc/hostname
 ```
 これでホスト名が正しく表示されたら設定は完了です。
 
-## ファイアウォールの起動
-{question:Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか}{answer:ufw}{hint:uncomplicated firewallの略}
-`ufw`コマンドでファイアウォールを設定します。
-
-### ufwの有効化
-ufwをアクティブに変更します。
-```bash
-root@{{serverHostname}}:~# ufw enable
-ファイアウォールはアクティブかつシステムの起動時に有効化されます。
-```
-
-ufwがアクティブな状態になっているか確認します。
-```bash
-root@{{serverHostname}}:~# ufw status
-状態: アクティブ
-```
-状態がアクティブであれば完了です。
 
 ## NTPの設定
 デフォルトではヨーロッパのNTPサーバに接続されているため、学内に設置された`ntp-a.t-kougei.ac.jp`に接続するように設定します。
@@ -313,6 +296,24 @@ root@{{serverHostname}}:~# apt upgrade -y
 :::note
 アップグレードには時間がかかるので気長に待ちましょう
 :::
+
+## ファイアウォールの起動
+{question:Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか}{answer:ufw}{hint:uncomplicated firewallの略}
+`ufw`コマンドでファイアウォールを設定します。
+
+### ufwの有効化
+ufwをアクティブに変更します。
+```bash
+root@{{serverHostname}}:~# ufw enable
+ファイアウォールはアクティブかつシステムの起動時に有効化されます。
+```
+
+ufwがアクティブな状態になっているか確認します。
+```bash
+root@{{serverHostname}}:~# ufw status
+状態: アクティブ
+```
+状態がアクティブであれば完了です。
 
 # メールサーバの構築
 
