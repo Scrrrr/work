@@ -170,6 +170,24 @@ root@{{serverHostname}}:~# cat /etc/hostname
 ```
 これでホスト名が正しく表示されたら設定は完了です。
 
+## ファイアウォールの起動
+{question:Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか}{answer:ufw}{hint:uncomplicated firewallの略}
+`ufw`コマンドでファイアウォールを設定します。
+
+### ufwの有効化
+ufwをアクティブに変更します。
+```bash
+root@{{serverHostname}}:~# ufw enable
+ファイアウォールはアクティブかつシステムの起動時に有効化されます。
+```
+
+ufwがアクティブな状態になっているか確認します。
+```bash
+root@{{serverHostname}}:~# ufw status
+状態: アクティブ
+```
+状態がアクティブであれば完了です。
+
 ## NTPの設定
 デフォルトではヨーロッパのNTPサーバに接続されているため、学内に設置された`ntp-a.t-kougei.ac.jp`に接続するように設定します。
 
@@ -360,26 +378,9 @@ root@{{serverHostname}}:~# systemctl restart postfix
 root@{{serverHostname}}:~# systemctl enable postfix
 ```
 
-## ファイアウォールの設定
-{question:Ubuntuで簡単にファイアウォールを設定するコマンドは何でしょうか}{answer:ufw}{hint:uncomplicated firewallの略}
-`ufw`コマンドでファイアウォールを設定します。
 
-### ufwの有効化
-はじめに、ufwをアクティブに変更します。
-```bash
-root@{{serverHostname}}:~# ufw enable
-ファイアウォールはアクティブかつシステムの起動時に有効化されます。
-```
-
-ufwがアクティブな状態になっているか確認します。
-```bash
-root@{{serverHostname}}:~# ufw status
-状態: アクティブ
-```
-状態がアクティブであれば完了です。
-
-### 許可するサービスの追加
-外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpとpop3です。以下のようにして許可をします。
+### ファイアウォールで許可するサービスの追加
+外部からの接続を許可するサービスを指定します。今回追加するサービスはsmtpです。以下のようにして許可をします。
 ```bash
 root@{{serverHostname}}:~# ufw allow smtp
 ルールを追加しました
@@ -516,10 +517,7 @@ root@{{serverHostname}}:~# systemctl restart dovecot
 root@{{serverHostname}}:~# systemctl enable dovecot
 ```
 
-## ファイアウォールの設定
-`ufw`コマンドでファイアウォールを設定します。
-
-### 許可するサービスの追加
+## ファイアウォールで許可するサービスの追加
 外部からの接続を許可するサービスを指定します。今回追加するサービスはpop3です。以下のようにして許可をします。
 ```bash
 root@{{serverHostname}}:~# ufw allow pop3
@@ -657,17 +655,11 @@ hello world
 
 真っ白な背景にhello worldと表示されていればサーバからの確認は成功です。
 
-## ファイアウォールの設定
-`ufw`コマンドでファイアウォールを設定します。
+## ファイアウォールで許可するサービスの追加
+外部からの接続を許可するサービスを指定します。今回追加するサービスはhttpです。以下のようにして許可をします。
 ```bash
 root@{{serverHostname}}:~# ufw allow http
 ```
-:::note
-もしPostfixでufwをアクティブにしていない場合、以下のコマンドでアクティブにします。
-```bash
-root@{{serverHostname}}:~# ufw enable
-```
-:::
 
 ### ファイアウォールの設定項目の確認
 ```bash
