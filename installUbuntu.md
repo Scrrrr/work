@@ -192,7 +192,7 @@ NTP=ntp-a.t-kougei.ac.jp
 ```
 
 ### systemd-timesyncdの再起動
-{question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}{hint:systemd + control}
+{question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}{hint:ubuntu systemd 操作コマンド}
 `systemctl`コマンドで`systemd-timesyncd`を再起動します。
 ```bash
 root@{{serverHostname}}:~# systemctl restart systemd-timesyncd
@@ -365,7 +365,7 @@ inet_interfaces = all
 +[[home_mailbox = Maildir/]]
 ```
 
-{question:postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか}{answer:relayhost}{hint:メールをリレーさせる}
+{question:postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか}{answer:relayhost}{hint:Postfixでメールをリレーする}
 
 ### postfixの設定の反映
 `systemctl`コマンドでpostfixを再起動します。
