@@ -202,7 +202,7 @@ root@{{serverHostname}}:~# source /etc/profile.d/proxy.sh
 ```
 
 ### dnfのプロキシ設定
-{question:RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？}{answer:dnf}{hint: dandified yum}
+{question:RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？}{answer:dnf}{hint:dandified yumの略称}
 パッケージマネージャーdnfの設定を行います。
 
 ```bash
@@ -255,7 +255,7 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 赤色は削除する場所で、緑色は追記する行です。
 無地は周辺の設定項目を表しています。
 
-{question:postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか}{answer:relayhost}{hint:メールをリレーさせる}
+{question:postfixのディレクティブについて、メールを指定したサーバに転送するディレクティブは何でしょうか}{answer:relayhost}{hint:Postfixでメールをリレーする}
 
 ```{file=/etc/postfix/main.cf}
 #myhostname = host.domain.tld
@@ -306,7 +306,7 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 ```
 
 ### postfixの設定の反映
-{question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}{hint:systemd + control}
+{question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}{hint:「rocky systemd 操作コマンド」でWeb検索}
 
 `systemctl`コマンドでpostfixを再起動します。
 ```bash
@@ -614,7 +614,7 @@ root@{{serverHostname}}:~# dnf -y install httpd
 :::
 
 ## httpdの設定
-{question:httpdの設定ファイルの場所はどこですか？(絶対パスで入力)}{answer:/etc/httpd/conf/httpd.conf}{hint:httpd.conf}
+{question:httpdの設定ファイルの場所はどこですか？(絶対パスで入力)}{answer:/etc/httpd/conf/httpd.conf}{hint:httpd 設定ファイルパス}
 
 ```bash
 root@{{serverHostname}}:~# vi /etc/httpd/conf/httpd.conf
