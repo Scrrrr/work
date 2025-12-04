@@ -306,7 +306,7 @@ root@{{serverHostname}}:~# vi /etc/postfix/main.cf
 ```
 
 ### postfixの設定の反映
-{question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}{hint:「rocky systemd 操作コマンド」でWeb検索}
+{question:Linuxのシステムを管理するソフトsystemdを操作するコマンドは何でしょうか}{answer:systemctl}{hint:Rocky systemd 操作コマンド}
 
 `systemctl`コマンドでpostfixを再起動します。
 ```bash
