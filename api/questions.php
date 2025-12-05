@@ -65,10 +65,11 @@ if (isset($_POST['action']) && $_POST['action'] === 'check_answer') {
         
         // JSONレスポンスを返す
         header('Content-Type: application/json');
-        echo json_encode([
-            'isCorrect' => $isCorrect,
-            'correctAnswer' => $correctAnswer
-        ]);
+        $response = ['isCorrect' => $isCorrect];
+        if ($isCorrect) {
+            $response['correctAnswer'] = $correctAnswer;
+        }
+        echo json_encode($response);
         exit;
     } else {
         // 問題が見つからない場合のエラーレスポンス
