@@ -11,6 +11,8 @@ $config = getServerConfig($user, $servers);  //common/server_config.phpで定義
 
 // 変数を展開
 extract($config);
+
+
 $isEnglish = ($lang === 'en');
 $htmlFile = $isEnglish ? 'assets/source/installUbuntuEN.html' : 'assets/source/installUbuntu.html';
 $pageTitle = $isEnglish ? 'Ubuntu Installation' : 'Ubuntuのインストール';
