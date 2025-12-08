@@ -687,6 +687,14 @@ class MarkdownParser {
         // スポイラー処理は動的生成で実行されるため、ここではそのまま使用
         const spoilerProcessedContent = content;
 
+        // クライアントには回答を持たせず、長さのみを保持
+        const maskedQuestions = this.questions.map(q => ({
+            id: q.id,
+            question: q.question,
+            answer: '', // 平文は渡さない
+            answerLength: q.answer.length
+        }));
+
         // PHP用の問題データを生成
         const questionsPHP = this.generateQuestionsPHP();
 
@@ -720,7 +728,7 @@ ${questionsPHP}
 
         <script>
             // 問題データをグローバル変数に設定
-            window.questionsData = ${JSON.stringify(this.questions)};
+            window.questionsData = ${JSON.stringify(maskedQuestions)};
         </script>
         <script src="assets/js/spoiler-manager.js"></script>
         <script src="assets/js/timer-manager.js"></script>

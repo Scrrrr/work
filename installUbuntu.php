@@ -2,6 +2,7 @@
 require_once 'common/auth.php';
 require_once 'common/server_config.php';
 require_once 'common/lang.php';
+require_once 'common/spoiler.php';
 
 $user = getAuthenticatedUser();              //common/auth.phpで定義
 $lang = getLanguage();
@@ -26,7 +27,7 @@ $pageTitle = $isEnglish ? 'Ubuntu Installation' : 'Ubuntuのインストール';
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-	<?php require $htmlFile; ?>
+    <?php echo render_with_spoiler($htmlFile, $config); ?>
 
     <!-- PAGE TOP ボタン -->
     <button id="pageTop" class="page-top" title="ページトップ">↑</button>

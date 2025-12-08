@@ -2,6 +2,7 @@
 require_once 'common/auth.php';
 require_once 'common/server_config.php';
 require_once 'common/lang.php';
+require_once 'common/spoiler.php'; // HTMLをスポイラー処理してインクルードする
 
 $user = getAuthenticatedUser();
 $lang = getLanguage();
@@ -28,7 +29,7 @@ $pageTitle = $isEnglish ? 'Rocky Linux Installation' : 'RockyLinuxのインス�
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-	<?php require $htmlFile; ?>
+    <?php echo render_with_spoiler($htmlFile, $config); ?>
 
     <!-- PAGE TOP ボタン -->
     <button id="pageTop" class="page-top" title="ページトップ">↑</button>

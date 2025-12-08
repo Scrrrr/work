@@ -41,20 +41,19 @@ class StateManager {
             input.disabled = true;
             button.disabled = true;
             
-            // 回答を表示（問題データから取得）
-            const questions = window.questionsData || [];
-            const question = questions.find(q => q.id === questionId);
-            if (question) {
-                input.value = question.answer;
-            }
-            
-            // 正解メッセージを表示
-            if (successMessage) {
-                successMessage.style.display = 'block';
-            }
-            
-            // スポイラーを解除（リトライ機能付き）
-            window.spoilerManager.revealSpoilersWithRetry(questionId);
+            // サーバーから回答を取得して表示
+            window.apiManager.getAnswer(questionId, (success, answer) => {
+                const resolvedAnswer = success ? answer : '';
+                input.value = resolvedAnswer;
+                
+                // 正解メッセージを表示
+                if (successMessage) {
+                    successMessage.style.display = 'block';
+                }
+                
+                // スポイラーを解除（リトライ機能付き）
+                window.spoilerManager.revealSpoilersWithRetry(questionId, resolvedAnswer);
+            });
         }
     }
 

@@ -74,6 +74,7 @@ function checkAnswerAndUpdateUI(questionId) {
             input.classList.add('correct');
             input.disabled = true;
             button.disabled = true;
+            input.value = correctAnswer || input.value;
             
             // Give Upボタンを非表示にする（既に表示されていた場合）
             const giveUpBtn = document.getElementById(questionId + '_giveup');
@@ -91,7 +92,7 @@ function checkAnswerAndUpdateUI(questionId) {
             }
             
             // スポイラーを解除
-            window.spoilerManager.revealSpoilersWithRetry(questionId);
+            window.spoilerManager.revealSpoilersWithRetry(questionId, correctAnswer);
             
             // 正解した問題を保存
             window.stateManager.saveAnsweredQuestion(questionId);

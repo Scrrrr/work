@@ -46,26 +46,24 @@ class TimerManager {
         const button = document.querySelector('[data-question-id="' + questionId + '"].submit-answer-btn');
         const giveUpBtn = document.getElementById(questionId + '_giveup');
         const successMessage = document.getElementById(questionId + '_success');
-        
-        // 問題データから回答を取得
-        const questions = window.questionsData || [];
-        const question = questions.find(q => q.id === questionId);
-        const answer = question ? question.answer : '';
-        
+
         if (input && button && giveUpBtn) {
-            // 回答を表示
-            input.value = answer;
-            input.classList.add('correct');
-            input.disabled = true;
-            button.disabled = true;
-            giveUpBtn.style.display = 'none';
-            
-            if (successMessage) {
-                successMessage.style.display = 'none'; // Give Upの場合は「正解」メッセージは表示しない
-            }
-            
-            // スポイラーを解除
-            window.spoilerManager.revealSpoilersWithRetry(questionId);
+            // サーバーから回答を取得して表示
+            window.apiManager.getAnswer(questionId, (success, answer) => {
+                const resolvedAnswer = success ? answer : '';
+                input.value = resolvedAnswer;
+                input.classList.add('correct');
+                input.disabled = true;
+                button.disabled = true;
+                giveUpBtn.style.display = 'none';
+                
+                if (successMessage) {
+                    successMessage.style.display = 'none'; // Give Upの場合は「正解」メッセージは表示しない
+                }
+                
+                // スポイラーを解除
+                window.spoilerManager.revealSpoilersWithRetry(questionId, resolvedAnswer);
+            });
         }
     }
 }

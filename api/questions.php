@@ -83,6 +83,40 @@ if (isset($_POST['action']) && $_POST['action'] === 'check_answer') {
     }
 }
 
+// 解答取得のAPIエンドポイント（Give Up/復元用）
+if (isset($_POST['action']) && $_POST['action'] === 'get_answer') {
+    // 出力バッファをクリア（余分な出力を防ぐ）
+    if (ob_get_level()) {
+        ob_clean();
+    }
+
+    $questions = array();
+    $htmlFile = isset($_GET['app']) ? "assets/source/install{$_GET['app']}.html" : 'assets/source/installUbuntu.html';
+    $htmlFile = __DIR__ . '/../' . $htmlFile;
+    $htmlContent = file_get_contents($htmlFile);
+
+    if (preg_match('/\$questions\s*=\s*array\s*\((.*?)\);/s', $htmlContent, $matches)) {
+        $arrayContent = $matches[1];
+        $lines = explode("\n", $arrayContent);
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if (preg_match("/'([^']+)'\s*=>\s*'([^']+)'/", $line, $questionMatches)) {
+                $questions[$questionMatches[1]] = $questionMatches[2];
+            }
+        }
+    }
+
+    $questionId = isset($_POST['question_id']) ? $_POST['question_id'] : '';
+
+    header('Content-Type: application/json');
+    if (isset($questions[$questionId])) {
+        echo json_encode(['success' => true, 'answer' => $questions[$questionId]]);
+    } else {
+        echo json_encode(['success' => false, 'answer' => '']);
+    }
+    exit;
+}
+
 // ユーザー状態取得のAPIエンドポイント
 if (isset($_POST['action']) && $_POST['action'] === 'get_user_state') {
     // 出力バッファをクリア（余分な出力を防ぐ）

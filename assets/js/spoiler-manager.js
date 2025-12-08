@@ -17,7 +17,10 @@ class SpoilerManager {
                 return;
             }
             
-            this.createSpoilersForQuestion(questionId, answer);
+            // クライアント側に平文回答を載せない場合、answerが空のためマスク処理をスキップ
+            if (answer && answer.trim() !== '') {
+                this.createSpoilersForQuestion(questionId, answer);
+            }
             this.processedSpoilers.add(questionId);
         });
     }
@@ -113,24 +116,29 @@ class SpoilerManager {
     }
 
     // スポイラー解除（リトライ機能付き）
-    revealSpoilersWithRetry(questionId, retryCount = 0) {
+    revealSpoilersWithRetry(questionId, providedAnswer = '', retryCount = 0) {
         const selector = '.spoiler[data-question-id="' + questionId + '"]';
         const spoilers = document.querySelectorAll(selector);
         
         if (spoilers.length > 0) {
             // スポイラーが見つかった場合
-            const questions = window.questionsData || [];
-            const question = questions.find(q => q.id === questionId);
-            const answer = question ? question.answer : '';
+            let answer = providedAnswer || '';
+            if (!answer) {
+                const questions = window.questionsData || [];
+                const question = questions.find(q => q.id === questionId);
+                answer = question ? (question.answer || '') : '';
+            }
             
             spoilers.forEach(spoiler => {
-                spoiler.textContent = answer;
-                spoiler.classList.add('revealed');
+                if (answer) {
+                    spoiler.textContent = answer;
+                    spoiler.classList.add('revealed');
+                }
             });
         } else if (retryCount < 10) {
             // スポイラーが見つからない場合、リトライ
             setTimeout(() => {
-                this.revealSpoilersWithRetry(questionId, retryCount + 1);
+                this.revealSpoilersWithRetry(questionId, providedAnswer, retryCount + 1);
             }, 5);
         }
     }
