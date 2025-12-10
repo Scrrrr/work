@@ -15,7 +15,7 @@ function render_with_spoiler($htmlFile, array $vars = []) {
     require $htmlFile; // ここで $questions 配列が定義される想定
     $htmlContent = ob_get_clean();
 
-    // 回答をサーバー側でマスク
+    // 回答をサーバー側でマスク（大文字小文字を区別しない、HTMLタグ内も対象）
     if (isset($questions) && is_array($questions)) {
         foreach ($questions as $qId => $answer) {
             if ($answer === '') {
@@ -23,7 +23,12 @@ function render_with_spoiler($htmlFile, array $vars = []) {
             }
             $mask = str_repeat('*', mb_strlen($answer, 'UTF-8'));
             $spoiler = '<span class="spoiler processed" data-question-id="' . htmlspecialchars($qId, ENT_QUOTES, 'UTF-8') . '">' . $mask . '</span>';
-            $htmlContent = str_replace($answer, $spoiler, $htmlContent);
+            
+            // 正規表現で大文字小文字を区別しない置換
+            // HTMLエンティティやタグ内の文字列も置換対象にする
+            // \b で単語境界を使用（ただし日本語には使えないため、完全一致のみ）
+            $pattern = '/' . preg_quote($answer, '/') . '/iu';
+            $htmlContent = preg_replace($pattern, $spoiler, $htmlContent);
         }
     }
 

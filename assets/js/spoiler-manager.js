@@ -1,148 +1,213 @@
 // スポイラー管理機能
 class SpoilerManager {
     constructor() {
-        this.processedSpoilers = new Set();
+        // Prism.js処理時のプレースホルダー管理
+        this.elementPlaceholders = new WeakMap();
+        this.initializePrism();
     }
 
-    // ページ読み込み後にスポイラーを動的に生成
-    generateSpoilersAfterLoad() {
-        const questions = window.questionsData || [];
-        
-        questions.forEach(question => {
-            const answer = question.answer;
-            const questionId = question.id;
-            
-            // 既に処理済みの場合はスキップ
-            if (this.processedSpoilers.has(questionId)) {
-                return;
-            }
-            
-            // クライアント側に平文回答を載せない場合、answerが空のためマスク処理をスキップ
-            if (answer && answer.trim() !== '') {
-                this.createSpoilersForQuestion(questionId, answer);
-            }
-            this.processedSpoilers.add(questionId);
-        });
-    }
-
-    // 特定の問題のスポイラーを作成
-    createSpoilersForQuestion(questionId, answer) {
-        const walker = document.createTreeWalker(
-            document.body,
-            NodeFilter.SHOW_TEXT,
-            {
-                acceptNode: function(node) {
-                    if (node.textContent.trim() === '') {
-                        return NodeFilter.FILTER_REJECT;
+    // Prism.jsの初期化（スポイラー要素の保護）
+    initializePrism() {
+        if (window.Prism) {
+            // シェルプロンプト用のカスタムハイライト
+            Prism.hooks.add('before-highlight', (env) => {
+                // env.element の innerHTML からスポイラー要素を検出して保護
+                if (env.element && env.element.innerHTML) {
+                    const spoilerRegex = /<span class="spoiler processed" data-question-id="([^"]+)">([^<]+)<\/span>/g;
+                    let match;
+                    const spoilers = [];
+                    const spoilerPlaceholders = new Map();
+                    let placeholderCounter = 0;
+                    
+                    // すべてのスポイラー要素を検出
+                    let htmlContent = env.element.innerHTML;
+                    while ((match = spoilerRegex.exec(htmlContent)) !== null) {
+                        spoilers.push({
+                            fullMatch: match[0],
+                            questionId: match[1],
+                            mask: match[2],
+                            index: match.index
+                        });
                     }
-                    return NodeFilter.FILTER_ACCEPT;
+                    
+                    // 後ろから前に処理（インデックスを維持するため）
+                    spoilers.reverse().forEach(spoiler => {
+                        const placeholder = `__SPOILER_PLACEHOLDER_${Date.now()}_${placeholderCounter}__`;
+                        spoilerPlaceholders.set(placeholder, {
+                            html: spoiler.fullMatch,
+                            questionId: spoiler.questionId,
+                            mask: spoiler.mask
+                        });
+                        placeholderCounter++;
+                        
+                        // HTMLを更新
+                        htmlContent = 
+                            htmlContent.substring(0, spoiler.index) +
+                            placeholder +
+                            htmlContent.substring(spoiler.index + spoiler.fullMatch.length);
+                    });
+                    
+                    // 更新されたHTMLを設定
+                    env.element.innerHTML = htmlContent;
+                    
+                    // この要素のプレースホルダーを保存
+                    if (spoilerPlaceholders.size > 0) {
+                        this.elementPlaceholders.set(env.element, spoilerPlaceholders);
+                    }
+                    
+                    // 保護されたHTMLからenv.codeを更新
+                    env.code = env.element.textContent || env.element.innerText || env.code;
                 }
-            },
-            false
-        );
-        
-        const textNodes = [];
-        let node;
-        while (node = walker.nextNode()) {
-            textNodes.push(node);
+
+                // シェルプロンプトを一時的にプレースホルダーに置換し、コメントと誤判定されないようにする
+                if (env.language === 'bash') {
+                    env.code = env.code.replace(
+                        /^(\s*)([^#\s]+@[^#\s]+[:\~][^#]*)#(\s*)/gm,
+                        '$1$2__PROMPT_SYMBOL__$3'
+                    );
+                }
+            });
+            
+            Prism.hooks.add('after-highlight', (env) => {
+                // この要素のプレースホルダーを取得
+                const spoilerPlaceholders = this.elementPlaceholders.get(env.element);
+                if (spoilerPlaceholders) {
+                    // プレースホルダーを元のスポイラー要素に戻す
+                    spoilerPlaceholders.forEach((spoilerData, placeholder) => {
+                        const escapedPlaceholder = placeholder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        env.element.innerHTML = env.element.innerHTML.replace(
+                            new RegExp(escapedPlaceholder, 'g'),
+                            spoilerData.html
+                        );
+                    });
+                    this.elementPlaceholders.delete(env.element);
+                }
+
+                // シェルプロンプトを復元して装飾
+                if (env.language === 'bash') {
+                    // # を元に戻す（追加のタグは付けない）
+                    env.element.innerHTML = env.element.innerHTML.replace(
+                        /__PROMPT_SYMBOL__/g,
+                        '#'
+                    );
+                }
+            });
+            
+            Prism.highlightAll();
+        } else {
+            setTimeout(() => this.initializePrism(), 100);
+        }
+    }
+
+    // スポイラー解除（リトライ機能付き、Prism.js処理後も対応）
+    revealSpoilersWithRetry(questionId, providedAnswer = '', retryCount = 0) {
+        let answer = providedAnswer || '';
+        if (!answer) {
+            const questions = window.questionsData || [];
+            const question = questions.find(q => q.id === questionId);
+            answer = question ? (question.answer || '') : '';
         }
         
-        textNodes.forEach(textNode => {
-            this.processTextNode(textNode, answer, questionId);
-        });
-    }
-
-    // テキストノードを処理してスポイラー化
-    processTextNode(textNode, answer, questionId) {
-        const text = textNode.textContent;
-        
-        // 既にスポイラー要素内のテキストはスキップ
-        if (textNode.parentElement && textNode.parentElement.classList.contains('spoiler')) {
+        if (!answer) {
             return;
         }
         
-        // 単純な文字列検索（大文字小文字を区別しない）
-        const lowerText = text.toLowerCase();
-        const lowerAnswer = answer.toLowerCase();
+        const answerLength = answer.length;
         
-        if (lowerText.includes(lowerAnswer)) {
-            // 親要素が問題ボックス内や既に処理済みでないことを確認
-            if (this.isInExcludedArea(textNode)) {
-                return;
-            }
-            
-            this.replaceTextWithSpoiler(textNode, text, answer, questionId);
-        }
-    }
-
-    // 除外エリア内かチェック
-    isInExcludedArea(textNode) {
-        let parent = textNode.parentElement;
-        while (parent) {
-            if (parent.classList) {
-                if (parent.classList.contains('question-box') || 
-                    parent.classList.contains('answer-input') ||
-                    parent.classList.contains('spoiler')) {
-                    return true;
-                }
-                // 入力欄内かチェック
-                if (parent.tagName === 'INPUT') {
-                    return true;
-                }
-            }
-            parent = parent.parentElement;
-        }
-        return false;
-    }
-
-    // テキストをスポイラーに置換
-    replaceTextWithSpoiler(textNode, text, answer, questionId) {
-        const parts = text.split(new RegExp('(' + answer + ')', 'gi'));
-        if (parts.length > 1) {
-            const fragment = document.createDocumentFragment();
-            parts.forEach((part, index) => {
-                if (part.toLowerCase() === answer.toLowerCase()) {
-                    const span = document.createElement('span');
-                    span.className = 'spoiler processed';
-                    span.setAttribute('data-question-id', questionId);
-                    span.textContent = '*'.repeat(part.length);
-                    fragment.appendChild(span);
-                } else if (part) {
-                    fragment.appendChild(document.createTextNode(part));
-                }
-            });
-            textNode.parentNode.replaceChild(fragment, textNode);
-        }
-    }
-
-    // スポイラー解除（リトライ機能付き）
-    revealSpoilersWithRetry(questionId, providedAnswer = '', retryCount = 0) {
+        // 通常のスポイラー要素を検索
         const selector = '.spoiler[data-question-id="' + questionId + '"]';
         const spoilers = document.querySelectorAll(selector);
         
+        let found = false;
         if (spoilers.length > 0) {
-            // スポイラーが見つかった場合
-            let answer = providedAnswer || '';
-            if (!answer) {
-                const questions = window.questionsData || [];
-                const question = questions.find(q => q.id === questionId);
-                answer = question ? (question.answer || '') : '';
+            found = true;
+            spoilers.forEach(spoiler => {
+                spoiler.textContent = answer;
+                spoiler.classList.add('revealed');
+            });
+        }
+        
+        // Prism.js処理後のコードブロック内のマスク文字列も検索して復元
+        const codeBlocks = document.querySelectorAll('code.language-bash, code[class*="language-"]');
+        codeBlocks.forEach(codeBlock => {
+            // テキストノードを走査してマスク文字列を検索
+            const walker = document.createTreeWalker(
+                codeBlock,
+                NodeFilter.SHOW_TEXT,
+                {
+                    acceptNode: function(node) {
+                        // スポイラー要素内のテキストは除外
+                        let parent = node.parentElement;
+                        while (parent && parent !== codeBlock) {
+                            if (parent.classList && parent.classList.contains('spoiler')) {
+                                return NodeFilter.FILTER_REJECT;
+                            }
+                            parent = parent.parentElement;
+                        }
+                        return NodeFilter.FILTER_ACCEPT;
+                    }
+                },
+                false
+            );
+            
+            const textNodes = [];
+            let node;
+            while (node = walker.nextNode()) {
+                if (node.textContent.includes('*'.repeat(answerLength))) {
+                    textNodes.push(node);
+                }
             }
             
-            spoilers.forEach(spoiler => {
-                if (answer) {
-                    spoiler.textContent = answer;
-                    spoiler.classList.add('revealed');
+            textNodes.forEach(textNode => {
+                const text = textNode.textContent;
+                const maskPattern = new RegExp(`(\\*{${answerLength}})`, 'g');
+                
+                if (maskPattern.test(text)) {
+                    // マスク文字列をスポイラー要素に置換
+                    const parts = text.split(maskPattern);
+                    if (parts.length > 1) {
+                        const fragment = document.createDocumentFragment();
+                        
+                        parts.forEach((part, index) => {
+                            if (part === '*'.repeat(answerLength)) {
+                                // マスク文字列をスポイラー要素に変換
+                                const spoilerSpan = document.createElement('span');
+                                spoilerSpan.className = 'spoiler processed revealed';
+                                spoilerSpan.setAttribute('data-question-id', questionId);
+                                spoilerSpan.textContent = answer;
+                                fragment.appendChild(spoilerSpan);
+                            } else if (part) {
+                                fragment.appendChild(document.createTextNode(part));
+                            }
+                        });
+                        
+                        textNode.parentNode.replaceChild(fragment, textNode);
+                        found = true;
+                    }
                 }
             });
-        } else if (retryCount < 10) {
-            // スポイラーが見つからない場合、リトライ
+        });
+        
+        if (found) {
+            return; // 見つかった場合は終了
+        }
+        
+        // 見つからない場合、リトライ
+        if (retryCount < 10) {
             setTimeout(() => {
                 this.revealSpoilersWithRetry(questionId, providedAnswer, retryCount + 1);
-            }, 5);
+            }, 50); // リトライ間隔を少し長くする
         }
     }
 }
 
 // グローバルインスタンス
 window.spoilerManager = new SpoilerManager();
+
+// DOM読み込み後にPrism.jsを初期化
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.Prism && !window.spoilerManager.prismInitialized) {
+        window.spoilerManager.initializePrism();
+        window.spoilerManager.prismInitialized = true;
+    }
+});

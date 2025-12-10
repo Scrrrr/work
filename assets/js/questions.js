@@ -49,10 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
             window.stateManager.restoreAnsweredQuestions();
         }
 
-        // 正解済み問題の復元後にスポイラーを動的に生成
-        setTimeout(() => {
-            window.spoilerManager.generateSpoilersAfterLoad();
-        }, 5);
     });
 });
 
