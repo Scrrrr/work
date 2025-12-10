@@ -3,7 +3,7 @@
 $questions = array(
     'rocky_question_1' => 'リナックス',
     'rocky_question_2' => 'selinux',
-    'rocky_question_3' => 'dnf',
+    'rocky_question_3' => 'yum',
     'rocky_question_4' => 'relayhost',
     'rocky_question_5' => 'systemctl',
     'rocky_question_6' => 'firewall-cmd',
@@ -84,41 +84,43 @@ $questions = array(
 <p>試しに下の質問に答えてください。</p>
 <div class="question-box" id="rocky_question_1"><div class="question-content"><div class="question-header"><p class="question-text">Linuxをカタカナで入力してください</p><span class="success-message" id="rocky_question_1_success" style="display: none;">正解</span></div><div class="answer-input-container"><input type="text" id="rocky_question_1_input" class="answer-input" placeholder="*****" data-question-id="rocky_question_1"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_1">回答</button><button type="button" class="giveup-btn" id="rocky_question_1_giveup" data-question-id="rocky_question_1" style="display: none;">解答を見る</button></div></div></div>
 
+<p>Linuxをカタカナで表記すると「リナックス」です。</p>
+
 <p>質問への回答は何回でもできます。</p>
 <p>もしも、最初の回答から3分経過してもわからない場合は、<strong>「解答を表示する」ボタン</strong>が現れます。</p>
 <p><strong>!!一度も回答しないと3分経過してもボタンは表示されません!!</strong></p></p>
 </div>
 
 <h2 id="1.1">言語選択</h2>
-<p>インストールが開始されると言語選択メニューが表示されます。左のメニューの中央付近にある[日本語]を選択し、[続行]を選択します。</p>
+<p>インストールメディアが起動すると言語選択メニューが表示されます。左のメニューの中央付近にある<strong>[日本語]</strong>を選択し、<strong>[続行]</strong>を選択します。</p>
 
 <h2 id="1.2">インストール先</h2>
 <p>システムのインストール先を決定します。</p>
-<p>[インストール先]を選択すると自動でインストール先が決定されるので、左上の青いボタンの[完了]をクリックします。</p>
+<p><strong>[インストール先]</strong>を選択すると自動でインストール先が決定されるので、左上の青いボタンの<strong>[完了]</strong>をクリックします。</p>
 
 <div class="note">
 <p><p><strong>注記:</strong></p></p>
-<p><p>システムの[インストール先]のアイコンに注意が表示されていたのが消えていればＯＫです。</p></p>
+<p><p>システムの<strong>[インストール先]</strong>のアイコンに注意が表示されていたのが消えていればＯＫです。</p></p>
 </div>
 
 <h2 id="1.3">Kdump</h2>
-<p>Kdumpの無効化を行うために、[KDUMP]を選択し、[kdumpを有効にする]のチェックボックスを外し、[完了]を選択します。</p>
+<p>Kdumpの無効化を行うために、<strong>[KDUMP]</strong>を選択し、<strong>[kdumpを有効にする]</strong>のチェックボックスを外し、<strong>[完了]</strong>を選択します。</p>
 
 <h2 id="1.4">ネットワーク設定</h2>
-<p>次に、ネットワークの設定を行います。[ネットワークとホスト名]を選択し、左下のホスト名のテキストボックスに<code><?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code>を入力します。</p>
+<p>次に、ネットワークの設定を行います。<strong>[ネットワークとホスト名]</strong>を選択し、左下のホスト名のテキストボックスに<code><?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp</code>を入力します。</p>
 
-<p>ホスト名入力後、[適用]をクリックします。すると、右下に現在のホスト名が表示されます。</p>
+<p>ホスト名入力後、<strong>[適用]</strong>をクリックします。すると、右下に現在のホスト名が表示されます。</p>
 <div class="caution">
 <p><p><strong>注意:</strong></p></p>
-<p><p>[適用]をクリックしないと設定が反映されないため注意してください。</p>
+<p><p><strong>[適用]</strong>をクリックしないと設定が反映されないため注意してください。</p>
 
 <p>ホスト名を間違えると、今後の構築でトラブルが発生します。</p>
 <p>入力内容を慎重に確認してください。特に「cs」と「sc」の混同や、「t-kougei」と「t-kuogei」のようなスペルミスなど、小さな誤りがないか注意深く確認することをお勧めします。</p></p>
 </div>
 
-<p>さらに、[設定]を選択し、[IPv4の設定]をクリックし、方式を<strong>自動(DHCP)</strong>から<strong>手動</strong>に変更します。</p>
+<p>さらに、<strong>[設定]</strong>を選択し、<strong>[IPv4の設定]</strong>をクリックし、メソッドを<strong>自動(DHCP)</strong>から<strong>手動</strong>に変更します。</p>
 
-<p>アドレスの[追加]を選択し、以下の項目に値を入力していきます。</p>
+<p>アドレスの<strong>[追加]</strong>を選択し、以下の項目に値を入力していきます。</p>
 
 <table class="table-fixed">
 <thead>
@@ -141,35 +143,35 @@ $questions = array(
 <td><?php echo $gatewayIP; ?></td>
 </tr>
 <tr>
-<td>DNSサーバー</td>
+<td>追加のDNSサーバー</td>
 <td><?php echo $gatewayIP; ?></td>
 </tr>
 <tr>
-<td>ドメインを検索</td>
+<td>追加のドメイン検索</td>
 <td>netsys.cs.t-kougei.ac.jp, cs.t-kougei.ac.jp, t-kougei.ac.jp</td>
 </tr>
 </tbody>
 </table>
 
-<p>入力が完了したら[保存]を押して閉じます。</p>
+<p>入力が完了したら<strong>[保存]</strong>を押して閉じます。</p>
 
 <p>入力後、右上のトグルボタンをクリックして有効に切り替えます。</p>
 
-<p>Ethernetが「接続済みです」と表示されていればネットワークの接続は完了です。</p>
+<p>Ethernetが<strong>「接続済みです」</strong>と表示されていればネットワークの接続は完了です。</p>
 
-<p>左上の[完了]を押します。</p>
+<p>左上の<strong>[完了]</strong>を押します。</p>
 
 <h2 id="1.5">時刻と日付の設定</h2>
 <p>地域設定から<strong>[時刻と日付]</strong>を選択します。</p>
 <p>左上の<strong>歯車マーク</strong>をクリックして<strong>[使用するNTPサーバの追加]</strong>に<code>ntp-a.t-kougei.ac.jp</code>を入力して<strong>[＋]ボタン</strong>を押します。</p>
 
-<p><code>ntp-a.t-kougei.ac.jp</code>の稼働中の項目欄にチェックがあれば追加は完了です。</p>
-<p><code>ntp-a.t-kougei.ac.jp</code>の項目欄の一番右の使用中のチェックを入れ、<strong>それ以外の使用中のチェックを外します。</strong></p>
+<p>追加した<code>ntp-a.t-kougei.ac.jp</code>の<strong>[稼働中]</strong>の項目欄にチェックがあれば追加は完了です。</p>
+<p><code>ntp-a.t-kougei.ac.jp</code>の<strong>[使用]</strong>と<strong>[プール]</strong>の項目欄チェックを入れ、それ以外の使用中のチェックを外します。</p>
 
 <p>OKで閉じて、左上の<strong>[完了]</strong>ボタンを押します。</p>
 
 <h2 id="1.6">追加ソフトウェアの選択</h2>
-<p>インストールするソフトウェアの選択を行います。[ソフトウェアの選択]を選択し、ベース環境は[サーバー(GUI使用)]を選択します。</p>
+<p>インストールするソフトウェアの選択を行います。<strong>[ソフトウェアの選択]</strong>を選択し、ベース環境は<strong>[サーバー(GUI使用)]</strong>を選択します。</p>
 <p>選択した環境用のその他のソフトウェアは以下を選択します。</p>
 <ul>
 <li><strong>メールサーバー</strong></li>
@@ -233,7 +235,7 @@ $questions = array(
 <p><p>インストールには時間がかかるため、終わるまで待機してください。</p></p>
 </div>
 
-<p>インストールが完了したら、[システムの再起動]を選択して、サーバを再起動します。</p>
+<p>インストールが完了したら、<strong>[システムの再起動]</strong>を選択して、サーバを再起動します。</p>
 
 <h1 id="2">基本設定</h1>
 
@@ -366,15 +368,15 @@ https_proxy=http://proxy-a.t-kougei.ac.jp:8080</code></pre>
 
 <pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# source /etc/profile.d/proxy.sh</code></pre>
 
-<h3 id="2.5.3">dnfのプロキシ設定</h3>
-<div class="question-box" id="rocky_question_3"><div class="question-content"><div class="question-header"><p class="question-text">RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？</p><span class="success-message" id="rocky_question_3_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: dandified yumの略称</p><div class="answer-input-container"><input type="text" id="rocky_question_3_input" class="answer-input" placeholder="***" data-question-id="rocky_question_3"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_3">回答</button><button type="button" class="giveup-btn" id="rocky_question_3_giveup" data-question-id="rocky_question_3" style="display: none;">解答を見る</button></div></div></div>
-<p>パッケージマネージャーdnfの設定を行います。</p>
+<h3 id="2.5.3">yumのプロキシ設定</h3>
+<div class="question-box" id="rocky_question_3"><div class="question-content"><div class="question-header"><p class="question-text">RedHat系Linuxで使用される高機能なパッケージマネージャの名前はなんですか？</p><span class="success-message" id="rocky_question_3_success" style="display: none;">正解</span></div><p class="question-hint">ヒント: Yellowdog Updater Modifiedの略称</p><div class="answer-input-container"><input type="text" id="rocky_question_3_input" class="answer-input" placeholder="***" data-question-id="rocky_question_3"><button type="button" class="submit-answer-btn" data-question-id="rocky_question_3">回答</button><button type="button" class="giveup-btn" id="rocky_question_3_giveup" data-question-id="rocky_question_3" style="display: none;">解答を見る</button></div></div></div>
+<p>パッケージマネージャーyumの設定を行います。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/dnf/dnf.conf</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# vi /etc/yum/yum.conf</code></pre>
 
 <p><code>skip_if_unavailable=False</code>の下に以下を記入します。</p>
 
-<div class="code-file-info">📁 /etc/dnf/dnf.conf</div>
+<div class="code-file-info">📁 /etc/yum/yum.conf</div>
 <pre><code>…
 best=True
 skip_if_unavailable=False
@@ -383,7 +385,7 @@ skip_if_unavailable=False
 
 <p>保存して終了後アップデートを行います。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# dnf -y update</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y update</code></pre>
 
 <p>問題なくアップデートが行われれば、プロキシの設定は完了です。</p>
 
@@ -399,7 +401,7 @@ skip_if_unavailable=False
 <p><p><strong>注記:</strong></p></p>
 <p><p>OSのインストールで既にPostfixをインストールしていますが、チェック項目を忘れていた場合は以下のコマンドでインストールしてください。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# dnf -y install postfix</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y install postfix</code></pre>
 </div>
 
 <h3 id="3.1.4">Postfixの設定</h3>
@@ -517,11 +519,9 @@ success</code></pre>
 <h2 id="3.3">クライアントからの動作確認</h2>
 
 <h3 id="3.3.10">クライアントの起動とログイン</h3>
-<p>しばらくすると<strong>「クライアントを起動します？」</strong>と尋ねるウィンドウが現れます。「はい」を選択してください。</p>
+<p>しばらくするとクライアントが自動的に起動します。</p>
 
-<p>クライアントを起動して<code>mail</code>コマンドでメールの送信テストをします。</p>
-
-<p>SSCTSメニューから、<strong>[仮想コンピュータの操作]</strong>をクリック。<strong>[Client]</strong>の<strong>[制御]</strong>をクリックし、<strong>[起動]</strong>をクリックしてクライアントを起動します。</p>
+<p>起動したクライアントにログインを行い構築したサービスのメールテストを行います。</p>
 
 <p>ユーザ名は<code>root</code>。パスワードは<code>netsys00</code>でログインします。</p>
 
@@ -561,7 +561,7 @@ relayhost = [<?php echo $serverHostname; ?>.netsys.cs.t-kougei.ac.jp]</code></pr
 <div class="note">
 <p><p><strong>注記:</strong></p></p>
 <p><p>既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。</p>
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# dnf -y install dovecot</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y install dovecot</code></pre>
 </div>
 
 <h3 id="3.4.14">Dovecotの設定</h3>
@@ -699,7 +699,7 @@ X-Original-TO: tome
 <p><p><strong>注記:</strong></p></p>
 <p><p>既にインストール済みですが、もしインストールされていない場合は以下のコマンドでインストールしてください。</p>
 
-<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# dnf -y install httpd</code></pre>
+<pre><code class="language-bash">root@<?php echo $serverHostname; ?>:~# yum -y install httpd</code></pre>
 </div>
 
 <h2 id="4.1">httpdの設定</h2>
